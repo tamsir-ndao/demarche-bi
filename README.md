@@ -43,7 +43,7 @@ Next.js (App Router) · TypeScript · Tailwind CSS · Neon (Postgres serverless)
 Guide complet pas à pas (GitHub, Neon, Groq, Vercel) : [`docs/SETUP.md`](docs/SETUP.md).
 
 ```bash
-git clone <url-du-depot>
+git clone https://github.com/tamsir-ndao/jend-jaay.git
 cd jend-jaay
 npm install
 cp .env.example .env.local   # renseigner DATABASE_URL (Neon) et les clés Groq

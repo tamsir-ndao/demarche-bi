@@ -32,7 +32,7 @@ Ouvre ensuite le dossier `jend-jaay` dans Antigravity. L'agent lit automatiqueme
 
 ```bash
 git branch -M main
-git remote add origin https://github.com/<ton-compte>/jend-jaay.git
+git remote add origin https://github.com/tamsir-ndao/jend-jaay.git
 git push -u origin main
 ```
 
