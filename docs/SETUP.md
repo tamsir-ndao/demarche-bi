@@ -7,7 +7,7 @@ Toutes les étapes pour passer de l'archive du projet à une application qui tou
 ## Prérequis
 
 - Node.js 20 ou plus récent, et Git
-- Un compte GitHub, un compte Supabase, un compte Groq (tous gratuits, sans carte bancaire pour démarrer)
+- Un compte GitHub, un compte Neon, un compte Groq (tous gratuits, sans carte bancaire pour démarrer)
 - Antigravity (ou tout autre éditeur) pour ouvrir le dossier
 
 ## Étape 1 — Ouvrir le projet
@@ -38,13 +38,13 @@ git push -u origin main
 
 L'historique Git visible fait partie des critères du jury : commite régulièrement, par petites fonctionnalités.
 
-## Étape 4 — Créer la base Supabase
+## Étape 4 — Créer la base Neon
 
-1. Sur supabase.com, crée un nouveau projet (choisis la région la plus proche disponible).
-2. Ouvre l'éditeur SQL du projet.
-3. Colle et exécute le contenu de `supabase/migrations/0001_init.sql`.
-4. Colle et exécute ensuite `supabase/seed.sql` pour charger les données de démonstration (fictives).
-5. Dans les paramètres du projet, section API, copie l'**URL du projet** et la clé **anon (publique)**. N'utilise jamais la clé `service_role` côté navigateur.
+1. Sur neon.com, crée un compte et un nouveau projet (choisis la région la plus proche disponible).
+2. Dans le tableau de bord du projet, ouvre la fenêtre de connexion (bouton « Connect ») et copie la **chaîne de connexion** (elle commence par `postgresql://`).
+3. Garde-la pour l'étape 7 : c'est `DATABASE_URL`. Elle contient ton mot de passe, ne la partage pas et ne la committe jamais.
+
+Le schéma et les données de démo seront appliqués à l'étape 8, depuis ton terminal.
 
 ## Étape 5 — Créer la clé Groq (IA principale)
 
@@ -74,15 +74,21 @@ Ouvre `.env.local` et remplis :
 
 | Variable | Valeur |
 |---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL du projet Supabase (étape 4) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé anon Supabase (étape 4) |
+| `DATABASE_URL` | chaîne de connexion Neon (étape 4) |
 | `AI_API_KEY` | clé Groq (étape 5) |
 | `WHISPER_API_KEY` | la même clé Groq |
 | `AI_FALLBACK_API_KEY` | clé OpenRouter (étape 6), ou laisse vide |
 
 Les autres variables ont déjà des valeurs par défaut correctes.
 
-## Étape 8 — Lancer et vérifier
+## Étape 8 — Créer les tables et lancer
+
+```bash
+npm run db:migrate   # crée les tables (db/migrations/0001_init.sql)
+npm run db:seed      # charge les données de démo fictives (db/seed.sql)
+```
+
+`db:migrate` ne doit être exécutée qu'une fois par migration. Pour repartir de zéro pendant le développement, supprime et recrée la base depuis le tableau de bord Neon, ou utilise une branche Neon.
 
 ```bash
 npm run dev      # http://localhost:3000
@@ -95,7 +101,7 @@ La page d'accueil doit s'afficher avec les boutons « Je suis acheteur » et « 
 ## Étape 9 — Déployer sur Vercel
 
 1. Sur vercel.com, importe le dépôt GitHub `jend-jaay`.
-2. Ajoute les mêmes variables d'environnement que dans `.env.local` (jamais dans le code).
+2. Ajoute les mêmes variables d'environnement que dans `.env.local`, dont `DATABASE_URL` (jamais dans le code).
 3. Déploie. Chaque `git push` sur `main` redéploie automatiquement.
 4. Mets l'URL publique dans le README, pour le jury.
 
@@ -115,4 +121,7 @@ Suis le workflow `preparer-soumission` : README final avec les modèles déclar�
 | HTTP 429 de Groq | Quota par minute ou par jour atteint : attends, passe sur `llama-3.1-8b-instant` ou active le secours OpenRouter |
 | HTTP 401 | Clé invalide ou mal copiée, sans espace ni guillemets |
 | Le build échoue sur les polices | Le projet utilise des polices système ; ne réintroduis pas `next/font/google` |
-| Rien dans la base | Vérifie que `0001_init.sql` a été exécuté avant `seed.sql` |
+| « DATABASE_URL manquante » | La variable n'est pas dans `.env.local`, ou le fichier n'est pas à la racine du projet |
+| `db:migrate` : « type already exists » | La migration a déjà été appliquée ; ne la relance pas |
+| Rien dans la base | Lance `npm run db:migrate` avant `npm run db:seed` |
+| Erreur de connexion SSL ou mot de passe | Recopie la chaîne de connexion complète depuis Neon (avec `sslmode=require`) |

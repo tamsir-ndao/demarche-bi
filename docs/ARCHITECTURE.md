@@ -11,7 +11,7 @@ Acheteur (texte / voix)
         │                  /api/match       ──► classement fournisseurs
         │                  /api/compare     ──► LLM : synthèse + recommandation
         ▼
-   Supabase (Postgres + Auth + RLS)
+   Neon (Postgres serverless)
         ▲
         │
 Fournisseur (catalogue, offres)
@@ -31,7 +31,7 @@ src/
       match/route.ts          demande -> fournisseurs classés
       compare/route.ts        offres -> recommandation
   lib/
-    supabase.ts               client Supabase
+    db.ts                     client Neon (serveur uniquement)
     ai/
       config.ts               fournisseurs (Groq, secours OpenRouter) et Whisper
       client.ts               chat() avec basculement + transcribe()
@@ -39,15 +39,17 @@ src/
       compare-offers.ts       synthèse des offres
       schemas.ts              schémas Zod partagés
     matching.ts               logique de score (déterministe)
-supabase/
+db/
   migrations/                 schéma SQL versionné
   seed.sql                    données de démo fictives
+scripts/
+  db.mjs                      npm run db:migrate / db:seed
 docs/                         PRD, architecture, tâches, prompts IA
 ```
 
 ## Modèle de données
 
-Tables : `profiles` (role buyer/supplier), `products`, `requests` (`raw_text` + `parsed` jsonb), `offers` (`match_score`, `ai_summary`). Détail dans `supabase/migrations/0001_init.sql`. RLS activée sur toutes les tables.
+Tables : `profiles` (role buyer/supplier), `products`, `requests` (`raw_text` + `parsed` jsonb), `offers` (`match_score`, `ai_summary`). Détail dans `db/migrations/0001_init.sql`. Pas de RLS (Neon est du Postgres standard) : les droits sont vérifiés côté serveur dans les routes API. L'authentification reste à brancher (J9).
 
 ## Flux de données
 
@@ -66,4 +68,4 @@ Tables : `profiles` (role buyer/supplier), `products`, `requests` (`raw_text` + 
 
 ## Variables d'environnement
 
-Voir `.env.example` et `docs/SETUP.md` : Supabase (URL, clé anon), IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`).
+Voir `.env.example` et `docs/SETUP.md` : Neon (`DATABASE_URL`), IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`).

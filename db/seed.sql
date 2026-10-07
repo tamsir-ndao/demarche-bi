@@ -1,6 +1,5 @@
 -- Données de démonstration (fictives) : fournisseurs alimentaires Thiès / Dakar / Mbour.
--- Les profils de démo n'ont pas de compte auth (auth_user_id nul).
-
+-- À appliquer après la migration : npm run db:seed
 insert into profiles (id, role, name, phone_whatsapp, city, zones_served) values
   ('11111111-0000-0000-0000-000000000001', 'supplier', 'Grossiste Diop & Fils', '221770000001', 'Thiès', array['Thiès','Mbour','Dakar']),
   ('11111111-0000-0000-0000-000000000002', 'supplier', 'Marché Central Légumes', '221770000002', 'Dakar', array['Dakar','Rufisque','Thiès']),

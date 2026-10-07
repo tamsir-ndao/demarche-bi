@@ -36,21 +36,21 @@ L'IA la transforme en commande structurée, trouve les fournisseurs adaptés, pu
 
 ## Stack
 
-Next.js (App Router) · TypeScript · Tailwind CSS · Supabase (Postgres, Auth, RLS) · Vercel
+Next.js (App Router) · TypeScript · Tailwind CSS · Neon (Postgres serverless) · Vercel
 
 ## Installation
 
-Guide complet pas à pas (GitHub, Supabase, Groq, Vercel) : [`docs/SETUP.md`](docs/SETUP.md).
+Guide complet pas à pas (GitHub, Neon, Groq, Vercel) : [`docs/SETUP.md`](docs/SETUP.md).
 
 ```bash
 git clone <url-du-depot>
 cd jend-jaay
 npm install
-cp .env.example .env.local   # renseigner les clés (Supabase, Groq)
+cp .env.example .env.local   # renseigner DATABASE_URL (Neon) et les clés Groq
 npm run dev
 ```
 
-Base de données : appliquer `supabase/migrations/0001_init.sql`, puis `supabase/seed.sql` pour les données de démonstration (fictives).
+Base de données (Neon) : `npm run db:migrate` applique le schéma (`db/migrations/`), puis `npm run db:seed` charge les données de démonstration fictives (`db/seed.sql`).
 
 ## Feuille de route
 

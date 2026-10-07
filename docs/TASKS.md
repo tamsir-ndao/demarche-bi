@@ -6,13 +6,13 @@ Cocher au fur et à mesure. Date limite de soumission : **19 octobre 2026**.
 
 - [x] Squelette Next.js + Tailwind + TypeScript
 - [x] Licence MIT
-- [x] Schéma Supabase + RLS (`0001_init.sql`)
+- [x] Schéma Postgres pour Neon (`db/migrations/0001_init.sql`) et scripts `db:migrate` / `db:seed`
 - [x] Données de démo fictives (`seed.sql`)
 - [x] README initial, `.env.example`
 - [x] Fichiers de contexte agent (`GEMINI.md`, `CLAUDE.md`, `.agent/`, `docs/`)
 - [x] Client IA Groq + secours OpenRouter + Whisper (`src/lib/ai/`), guide `docs/SETUP.md`
 - [ ] Dépôt GitHub public créé et code poussé (`docs/SETUP.md`, étape 3)
-- [ ] Projet Supabase créé, migration et seed appliqués (étape 4)
+- [ ] Base Neon créée, `npm run db:migrate` et `npm run db:seed` exécutés (étape 4)
 - [ ] Inscription au hackathon (https://tally.so/r/0Qp5rB) (étape 2)
 - [ ] Clés Groq (et OpenRouter en secours) dans `.env.local` (étapes 5 à 7)
 - [ ] Déploiement Vercel (étape 9)
@@ -34,7 +34,7 @@ Cocher au fur et à mesure. Date limite de soumission : **19 octobre 2026**.
 
 ## J9-10 — Interfaces (15-16 oct)
 
-- [ ] Auth Supabase (acheteur / fournisseur)
+- [ ] Authentification acheteur / fournisseur (Auth.js recommandé, mots de passe hachés ; colonnes `email` et `password_hash` déjà prévues)
 - [ ] Interface acheteur : publier, suivre, comparer, accepter, lien WhatsApp
 - [ ] Interface fournisseur : catalogue, demandes reçues, envoyer une offre
 - [ ] Mobile-first et vérification en connexion lente

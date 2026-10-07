@@ -18,7 +18,7 @@ Projet du **Open Source × AI Hackathon 2026 (Galsen DEV)**. Dates butoirs : sou
 ## Stack
 
 - Next.js (App Router) + TypeScript + Tailwind CSS
-- Supabase (Postgres, Auth, RLS)
+- Neon (Postgres serverless) via `@neondatabase/serverless` ; client dans `src/lib/db.ts`, côté serveur uniquement
 - Déploiement Vercel
 - IA : Groq (Llama 3.3 70B) via API compatible OpenAI, secours OpenRouter ; Whisper (Groq) pour la voix. Client dans `src/lib/ai/client.ts`
 - Guide d'installation et de déploiement : `docs/SETUP.md`
@@ -30,7 +30,7 @@ Projet du **Open Source × AI Hackathon 2026 (Galsen DEV)**. Dates butoirs : sou
 2. **Next.js a des changements incompatibles** : lis le guide concerné dans `node_modules/next/dist/docs/` avant d'écrire du code Next.js, sans te fier à ta mémoire de l'API.
 3. **Petits commits** : un commit par fonctionnalité, message clair. L'historique Git visible fait partie des critères du jury.
 4. **Secrets** : uniquement dans `.env.local` (ignoré par Git). Tout nouvel usage est ajouté à `.env.example` sans valeur.
-5. **Base de données** : toute modification passe par une nouvelle migration dans `supabase/migrations/` (jamais d'édition d'une migration déjà appliquée). Les tables ont la RLS activée.
+5. **Base de données** : toute modification passe par une nouvelle migration dans `db/migrations/` (jamais d'édition d'une migration déjà appliquée), exécutée par `npm run db:migrate`. Il n'y a pas de RLS : les droits d'accès sont vérifiés côté serveur dans les routes API, et `DATABASE_URL` ne doit jamais atteindre le navigateur (pas de `NEXT_PUBLIC_`).
 6. **IA** : tout appel modèle passe par `src/lib/ai/` ; la sortie est toujours validée (schéma Zod) avant d'être utilisée. Tout nouveau modèle ou API est déclaré dans le README.
 7. **Vérification** : avant de dire qu'une tâche est finie, exécute `npm run lint` et `npm run build`.
 8. **Périmètre** : respecte le MVP défini dans `docs/PRD.md`. Pas de paiement, de livraison ni de messagerie interne avant que le reste soit terminé.
