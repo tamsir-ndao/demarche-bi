@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jënd-Jaay
 
-## Getting Started
+Sourcing alimentaire par IA pour les restaurateurs, boutiquiers et traiteurs du Sénégal.
 
-First, run the development server:
+Projet réalisé pour l'**Open Source × AI Hackathon 2026** (Galsen DEV, Hacktoberfest Dakar).
+
+## Le problème
+
+Les petits acheteurs commandent leurs produits par appels et messages WhatsApp, comparent peu les prix et perdent du temps à chercher qui a quoi. Les grossistes et producteurs n'ont pas de vitrine structurée.
+
+## La solution
+
+L'acheteur écrit ou dicte sa demande librement, par exemple :
+
+> « Il me faut 50 kg d'oignons et 20 kg de pommes de terre pour demain à Thiès »
+
+L'IA la transforme en commande structurée, trouve les fournisseurs adaptés, puis compare leurs offres et recommande la meilleure.
+
+## Rôle de l'IA
+
+- **Compréhension de la demande** : texte ou vocal, français avec termes wolof, converti en produits, quantités, lieu et délai.
+- **Matching** : classement des fournisseurs par produits, zone, prix et fiabilité.
+- **Comparaison** : résumé des offres avec une recommandation justifiée.
+- **Côté fournisseur** : création de catalogue à partir d'une photo ou d'un message libre.
+
+## Modèles, APIs et outils IA utilisés
+
+À compléter au fil du développement :
+
+| Usage | Modèle / outil |
+|---|---|
+| Extraction et matching | Modèle open-weight (Llama ou Qwen) via API compatible OpenAI |
+| Transcription vocale | Whisper |
+| Aide au développement | Claude (Anthropic) |
+
+## Stack
+
+Next.js (App Router) · TypeScript · Tailwind CSS · Supabase (Postgres, Auth, RLS) · Vercel
+
+## Installation
 
 ```bash
+git clone <url-du-depot>
+cd jend-jaay
+npm install
+cp .env.example .env.local   # renseigner les variables
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Base de données : appliquer `supabase/migrations/0001_init.sql`, puis `supabase/seed.sql` pour les données de démonstration (fictives).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Feuille de route
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [x] Squelette, schéma de base de données, données de démo
+- [ ] Parsing de la demande par l'IA (texte puis voix)
+- [ ] Matching et comparaison des offres
+- [ ] Interfaces acheteur et fournisseur
+- [ ] Vidéo de démonstration
 
-## Learn More
+## Licence
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE)
