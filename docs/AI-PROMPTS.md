@@ -1,6 +1,6 @@
 # Prompts et schémas IA — Jënd-Jaay
 
-Tout appel modèle passe par `src/lib/ai/`. Chaque sortie est validée par un schéma Zod avant usage. À compléter et tester au fil du développement.
+Tout appel modèle passe par `src/lib/ai/client.ts` (`chat()` avec basculement Groq puis OpenRouter, `transcribe()` pour Whisper). Chaque sortie est validée par un schéma Zod avant usage. À compléter et tester au fil du développement.
 
 ## 1. Extraction de la demande (`parse-request`)
 
@@ -77,6 +77,7 @@ Entrée : photo d'un étal ou message libre du fournisseur. Sortie : liste de pr
 
 | Usage | Modèle / outil |
 |---|---|
-| Extraction et comparaison | Modèle open-weight (Llama ou Qwen) via API compatible OpenAI |
-| Transcription | Whisper |
+| Extraction et comparaison | Llama 3.3 70B via Groq (`llama-3.3-70b-versatile`) ; `llama-3.1-8b-instant` pour les tests |
+| Secours | Modèle gratuit open-weight via OpenRouter (optionnel) |
+| Transcription | Whisper large v3 turbo via Groq |
 | Aide au développement | Claude (Anthropic), Antigravity |

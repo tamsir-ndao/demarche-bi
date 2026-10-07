@@ -29,9 +29,10 @@ L'IA la transforme en commande structurée, trouve les fournisseurs adaptés, pu
 
 | Usage | Modèle / outil |
 |---|---|
-| Extraction et matching | Modèle open-weight (Llama ou Qwen) via API compatible OpenAI |
-| Transcription vocale | Whisper |
-| Aide au développement | Claude (Anthropic) |
+| Extraction et comparaison | Llama 3.3 70B (open-weight) via Groq, API compatible OpenAI |
+| Secours | Modèle gratuit open-weight via OpenRouter (optionnel) |
+| Transcription vocale | Whisper large v3 turbo via Groq |
+| Aide au développement | Claude (Anthropic), Antigravity |
 
 ## Stack
 
@@ -39,11 +40,13 @@ Next.js (App Router) · TypeScript · Tailwind CSS · Supabase (Postgres, Auth, 
 
 ## Installation
 
+Guide complet pas à pas (GitHub, Supabase, Groq, Vercel) : [`docs/SETUP.md`](docs/SETUP.md).
+
 ```bash
 git clone <url-du-depot>
 cd jend-jaay
 npm install
-cp .env.example .env.local   # renseigner les variables
+cp .env.example .env.local   # renseigner les clés (Supabase, Groq)
 npm run dev
 ```
 

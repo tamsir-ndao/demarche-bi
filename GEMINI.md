@@ -20,7 +20,8 @@ Projet du **Open Source × AI Hackathon 2026 (Galsen DEV)**. Dates butoirs : sou
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Supabase (Postgres, Auth, RLS)
 - Déploiement Vercel
-- IA : modèle open-weight (Llama ou Qwen) via API compatible OpenAI ; Whisper pour la voix
+- IA : Groq (Llama 3.3 70B) via API compatible OpenAI, secours OpenRouter ; Whisper (Groq) pour la voix. Client dans `src/lib/ai/client.ts`
+- Guide d'installation et de déploiement : `docs/SETUP.md`
 - Licence **MIT**. Le dépôt est **public** : jamais de secret, de clé ou de donnée réelle dans le code.
 
 ## Règles de travail

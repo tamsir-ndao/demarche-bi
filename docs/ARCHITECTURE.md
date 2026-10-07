@@ -33,7 +33,8 @@ src/
   lib/
     supabase.ts               client Supabase
     ai/
-      client.ts               client API compatible OpenAI
+      config.ts               fournisseurs (Groq, secours OpenRouter) et Whisper
+      client.ts               chat() avec basculement + transcribe()
       parse-request.ts        extraction + validation Zod
       compare-offers.ts       synthèse des offres
       schemas.ts              schémas Zod partagés
@@ -65,4 +66,4 @@ Tables : `profiles` (role buyer/supplier), `products`, `requests` (`raw_text` + 
 
 ## Variables d'environnement
 
-Voir `.env.example` : Supabase (URL, clé anon), IA (`AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`), Whisper (`WHISPER_BASE_URL`, `WHISPER_API_KEY`).
+Voir `.env.example` et `docs/SETUP.md` : Supabase (URL, clé anon), IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`).

@@ -10,15 +10,16 @@ Cocher au fur et à mesure. Date limite de soumission : **19 octobre 2026**.
 - [x] Données de démo fictives (`seed.sql`)
 - [x] README initial, `.env.example`
 - [x] Fichiers de contexte agent (`GEMINI.md`, `CLAUDE.md`, `.agent/`, `docs/`)
-- [ ] Dépôt GitHub public créé et code poussé
-- [ ] Projet Supabase créé, migration et seed appliqués
-- [ ] Inscription au hackathon (https://tally.so/r/0Qp5rB)
-- [ ] Choix du fournisseur d'IA (Groq, Together, OpenRouter...) et clés dans `.env.local`
+- [x] Client IA Groq + secours OpenRouter + Whisper (`src/lib/ai/`), guide `docs/SETUP.md`
+- [ ] Dépôt GitHub public créé et code poussé (`docs/SETUP.md`, étape 3)
+- [ ] Projet Supabase créé, migration et seed appliqués (étape 4)
+- [ ] Inscription au hackathon (https://tally.so/r/0Qp5rB) (étape 2)
+- [ ] Clés Groq (et OpenRouter en secours) dans `.env.local` (étapes 5 à 7)
+- [ ] Déploiement Vercel (étape 9)
 
 ## J3-5 — IA : comprendre la demande (9-11 oct)
 
 - [ ] Installer Zod ; schémas dans `src/lib/ai/schemas.ts`
-- [ ] Client IA compatible OpenAI (`src/lib/ai/client.ts`)
 - [ ] `parse-request.ts` : texte -> demande structurée (voir `docs/AI-PROMPTS.md`)
 - [ ] Route `/api/parse` + gestion d'erreur et repli
 - [ ] Page acheteur : saisie texte, affichage de la demande structurée à confirmer
