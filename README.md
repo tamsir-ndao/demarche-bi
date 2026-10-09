@@ -54,6 +54,21 @@ Résultats : à publier ici tels que mesurés, une fois le jeu d'évaluation éc
 
 Next.js (App Router) · TypeScript · Tailwind CSS · Zod · Markdown + YAML pour le contenu · Neon (Postgres, optionnel) · Vercel
 
+## Dépendances externes importantes
+
+Bibliothèques (voir `package.json`) :
+
+| Dépendance | Rôle |
+|---|---|
+| Next.js, React | Application web |
+| Tailwind CSS | Mise en forme |
+| Zod | Validation des fiches et des sorties de l'IA |
+| gray-matter, js-yaml | Lecture des fiches Markdown et de leur en-tête YAML |
+| @neondatabase/serverless, pg | Journal anonyme et migrations (optionnels) |
+| tsx | Exécution des scripts TypeScript (validation, évaluation) |
+
+Services externes (non open source, remplaçables par variables d'environnement) : API Groq (modèles Llama et Whisper), OpenRouter en secours (optionnel), Neon (optionnel), Vercel (hébergement).
+
 ## Installation
 
 Guide complet pas à pas : [`docs/SETUP.md`](docs/SETUP.md).
