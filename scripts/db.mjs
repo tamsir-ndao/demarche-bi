@@ -1,15 +1,10 @@
-// Applique les fichiers SQL sur la base Neon.
-//   npm run db:migrate   -> db/migrations/*.sql (ordre alphabétique)
-//   npm run db:seed      -> db/seed.sql (données de démo fictives)
+// Applique les migrations SQL (db/migrations/*.sql) sur la base Postgres (Neon).
+//   npm run db:migrate
+// Les migrations déjà appliquées sont enregistrées dans la table schema_migrations
+// et ne sont pas rejouées : on peut relancer la commande sans risque.
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import pg from "pg";
-
-const command = process.argv[2];
-if (!["migrate", "seed"].includes(command)) {
-  console.error("Usage : node scripts/db.mjs <migrate|seed>");
-  process.exit(1);
-}
 
 // Charge .env.local sans dépendance supplémentaire
 try {
@@ -30,23 +25,39 @@ if (!url) {
   process.exit(1);
 }
 
-const files =
-  command === "migrate"
-    ? readdirSync("db/migrations")
-        .filter((f) => f.endsWith(".sql"))
-        .sort()
-        .map((f) => join("db/migrations", f))
-    : ["db/seed.sql"];
+const files = readdirSync("db/migrations")
+  .filter((f) => f.endsWith(".sql"))
+  .sort();
 
-const client = new pg.Client({ connectionString: url, ssl: { rejectUnauthorized: true } });
+const client = new pg.Client({ connectionString: url });
 await client.connect();
 
 try {
+  await client.query(
+    "create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())",
+  );
+  const { rows } = await client.query("select name from schema_migrations");
+  const applied = new Set(rows.map((r) => r.name));
+
+  let count = 0;
   for (const file of files) {
+    if (applied.has(file)) {
+      console.log(`= ${file} (déjà appliquée)`);
+      continue;
+    }
     console.log(`> ${file}`);
-    await client.query(readFileSync(file, "utf8"));
+    await client.query("begin");
+    try {
+      await client.query(readFileSync(join("db/migrations", file), "utf8"));
+      await client.query("insert into schema_migrations (name) values ($1)", [file]);
+      await client.query("commit");
+      count++;
+    } catch (err) {
+      await client.query("rollback");
+      throw err;
+    }
   }
-  console.log("Terminé.");
+  console.log(count ? `Terminé : ${count} migration(s) appliquée(s).` : "Rien à appliquer.");
 } catch (err) {
   console.error("Erreur SQL :", err.message);
   process.exitCode = 1;

@@ -1,5 +1,5 @@
 {
-  "name": "jend-jaay",
+  "name": "demarche-bi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,16 +8,20 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node scripts/db.mjs migrate",
-    "db:seed": "node scripts/db.mjs seed"
+    "validate:fiches": "tsx scripts/validate-fiches.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^5.4.3",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
@@ -26,6 +30,7 @@
     "eslint-config-next": "16.4.0",
     "pg": "^8.23.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

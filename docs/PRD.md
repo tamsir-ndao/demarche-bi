@@ -1,64 +1,103 @@
-# PRD — Jënd-Jaay
+# PRD — Démarche-Bi
 
 ## Vision
 
-Permettre à un petit acheteur alimentaire (restaurateur, boutiquier, traiteur) de dire ce dont il a besoin en une phrase, et d'obtenir des offres comparées de fournisseurs, sans passer des heures au téléphone.
+Qu'un citoyen puisse poser sa question sur une démarche administrative, en français (texte ou voix), et obtenir une réponse claire, **fondée uniquement sur des fiches vérifiées et accompagnée de ses sources officielles**. Quand l'information n'existe pas, l'assistant le dit.
 
 ## Problème
 
-- Les commandes passent par appels et messages WhatsApp : lent, peu de comparaison de prix.
-- Les grossistes et producteurs n'ont pas de vitrine structurée.
+- Pièces à fournir, lieu, coût, délais : l'information est dispersée entre sites, affiches et bouche-à-oreille.
+- Les réponses trouvées en ligne ou dans les groupes de discussion citent rarement une source et peuvent être périmées.
+- Un assistant généraliste peut inventer une procédure ou un montant avec assurance. Pour une démarche administrative, c'est grave : le citoyen se déplace pour rien ou paie à tort.
 
 ## Utilisateurs
 
 | Rôle | Besoin |
 |---|---|
-| Acheteur | Publier une demande en langage naturel (texte ou vocal), comparer les offres, choisir |
-| Fournisseur | Tenir un catalogue simple, recevoir les demandes pertinentes, répondre par une offre |
+| Citoyen | Savoir quoi apporter, où aller, combien ça coûte et en combien de temps, sans se déplacer pour rien |
+| Contributeur | Ajouter ou corriger une fiche simplement, avec une validation automatique |
+| Développeur | Réutiliser le kit (fiches, recherche, garde-fous) pour un autre pays, une autre langue ou un autre domaine |
 
-## Parcours principal (démo de 3 minutes)
+## Principes
 
-1. L'acheteur dicte : « Il me faut 50 kg d'oignons et 20 kg de pommes de terre pour demain à Thiès ».
-2. L'IA affiche la demande structurée (produits, quantités, lieu, délai) pour confirmation.
-3. Les fournisseurs pertinents sont classés et reçoivent la demande.
-4. Les offres arrivent ; l'IA les compare et recommande la meilleure avec une justification.
-5. L'acheteur accepte une offre et contacte le fournisseur par WhatsApp.
+1. **Aucune information inventée** : tout vient d'une fiche sourcée.
+2. **« Je ne sais pas » est une réponse valide.**
+3. **Les sources sont affichées par le code**, jamais écrites par le modèle.
+4. **Le contenu est ouvert** : une fiche est un fichier Markdown que n'importe qui peut améliorer par pull request, avec contrôle automatique.
+5. **Aucune base de données obligatoire** : cloner le dépôt, ajouter une clé IA, lancer.
+
+## Parcours de démonstration (3 minutes)
+
+1. L'utilisateur pose une question à la voix (« Qu'est-ce qu'il faut pour faire un passeport ? »). La transcription s'affiche et reste modifiable.
+2. La réponse donne étapes, pièces, coût, délai et lieu, avec les sources cliquables et la date de vérification.
+3. Une question hors fiches reçoit « Je ne sais pas » et une invitation à contribuer.
+4. Une question vague (« Je veux un papier ») déclenche une question de précision.
+5. On montre la fiche Markdown, la validation automatique (CI) et la pull request : le contenu est ouvert.
+6. On affiche les chiffres du jeu d'évaluation, tels que mesurés.
 
 ## Périmètre du MVP (à tenir)
 
 Inclus :
-- Demande en texte, puis en voix (transcription Whisper).
-- Extraction structurée par l'IA, confirmée par l'acheteur.
-- Matching des fournisseurs par produit, zone et prix.
-- Création d'offres par les fournisseurs, comparaison par l'IA.
-- Catalogue fournisseur (saisie manuelle ; photo ou message libre en bonus).
-- Contact par lien WhatsApp.
-- Données de démonstration fictives réalistes.
+- Environ 15 fiches vérifiées, issues de sources officielles.
+- Question en texte, puis en voix (Whisper).
+- Compréhension de la question par l'IA, recherche lexicale dans les fiches, réponse ancrée dans les fiches, garde-fous, sources générées par le code.
+- Message d'avertissement permanent (information indicative).
+- Pages de consultation des fiches et page « Contribuer ».
+- Avis utilisateur (utile / pas utile).
+- Jeu d'évaluation de 30 questions et commande `npm run eval`.
+- CI GitHub : validation des fiches, lint, build.
+- Journal anonyme dans Neon (optionnel).
+- Déploiement Vercel.
 
-Exclus (après le hackathon) : paiement, livraison, messagerie interne, notation, application mobile native.
+Exclus (après le hackathon) : comptes utilisateurs, paiement, rendez-vous ou dépôt de dossier en ligne, application mobile native, wolof complet (compréhension partielle en bonus seulement), autres pays.
 
-Bonus si le temps le permet : paiement Bictorys, création de catalogue depuis une photo.
+## Rôle de l'IA
 
-## Critères du hackathon et réponse
+1. **Comprendre** : transformer une question informelle (français, parfois mêlé de wolof ou d'abréviations) en mots-clés et en question claire.
+2. **Répondre de façon ancrée** : rédiger une réponse simple à partir des seules fiches retrouvées.
+3. **Clarifier** : poser une question de précision quand la demande est trop vague.
+4. **Transcrire** : convertir la voix en texte avec Whisper.
 
-| Critère | Poids | Réponse du projet |
+Ce que l'IA ne fait pas : elle ne fournit aucun fait administratif de sa propre connaissance, et elle n'écrit pas les sources.
+
+## Qualité et évaluation
+
+Jeu de 30 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue).
+
+Mesures : la bonne fiche est-elle retrouvée (premier résultat, trois premiers), le refus est-il correct, combien de réponses sont rejetées par les garde-fous. Les chiffres sont publiés dans le README tels que mesurés, même imparfaits.
+
+## Critères du hackathon et réponse du projet
+
+| Critère | Poids | Réponse |
 |---|---|---|
-| Pertinence du problème et utilité | 25 % | Problème quotidien et réel des acheteurs alimentaires |
-| Pertinence de l'IA | 20 % | L'IA structure la demande, classe les fournisseurs et justifie la recommandation |
-| Qualité technique / prototype | 20 % | Démo de bout en bout fonctionnelle, sorties IA validées |
-| Démarche open source | 20 % | Dépôt public, MIT, README complet, historique Git, modèles déclarés |
-| Présentation, UX, potentiel | 15 % | Parcours en 3 minutes, mobile-first, extensible à d'autres secteurs |
+| Pertinence du problème et utilité | 25 % | Une question que tout le monde se pose, avec une réponse sourcée au lieu d'une rumeur |
+| Pertinence de l'IA | 20 % | Compréhension d'une question informelle, réponse ancrée, clarification, voix, avec garde-fous mesurés |
+| Qualité technique / prototype | 20 % | Démo de bout en bout, sorties IA validées par Zod, jeu d'évaluation chiffré |
+| Démarche open source | 20 % | Contenu ouvert (fiches Markdown), validation automatique, CONTRIBUTING, issues « good first issue », licence MIT |
+| Présentation, UX et potentiel | 15 % | Parcours en 3 minutes, mobile-first, réutilisable pour d'autres pays ou domaines |
+
+## Risques et réponses
+
+| Risque | Réponse |
+|---|---|
+| Fiche inexacte | Sources obligatoires, date et auteur de vérification, statut brouillon/vérifié, `null` pour l'inconnu, relecture |
+| Fiche périmée | Date de vérification affichée, alerte au-delà de 12 mois, modèle d'issue « fiche obsolète » |
+| Le modèle invente | Réponse limitée aux fiches, citations produites par le code, garde-fou sur les chiffres, refus quand rien n'est trouvé |
+| Utilisateur qui se fie à une information fausse | Avertissement permanent, date de vérification, lien vers la source officielle |
+| Quota ou panne Groq | Secours OpenRouter, quota surveillé, pas de test en boucle |
+| Vie privée | Aucun compte, aucune adresse IP stockée, questions tronquées, journal optionnel et purgeable |
+| Pas assez de fiches fiables à temps | Viser 15 fiches, accepter 10 vérifiées plutôt que 15 douteuses |
 
 ## Livrables de soumission (19 octobre 2026)
 
-- Dépôt public avec licence MIT et historique Git
-- README : problème, solution, rôle de l'IA, modèles/APIs/outils, installation
+- Dépôt public, licence MIT, historique Git visible
+- README : problème, solution, rôle de l'IA, modèles, installation, chiffres d'évaluation
 - Vidéo de démonstration de 3 minutes maximum
 - Description du problème, de la solution et de l'usage de l'IA
 
 ## Calendrier
 
-- 7 octobre : lancement
-- 19 octobre : soumission
+- 7 octobre : lancement du hackathon
+- 19 octobre : soumission (viser le 18)
 - 21 octobre : présélection des 5 finalistes
 - 24 octobre : finale à l'Impact Hub Dakar (7 min de pitch + 3 min de questions)

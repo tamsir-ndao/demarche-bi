@@ -1,117 +1,104 @@
-# Guide de démarrage — Jënd-Jaay
+# Guide de démarrage — Démarche-Bi
 
-Toutes les étapes pour passer de l'archive du projet à une application qui tourne, puis à la soumission du hackathon. Compte environ 45 minutes la première fois.
+Toutes les étapes pour passer de l'archive du projet à une application qui tourne, puis à la soumission du hackathon. Compte une trentaine de minutes la première fois.
 
 > Règle d'or : le dépôt est **public**. Les clés API vont uniquement dans `.env.local` (ignoré par Git) et dans les variables d'environnement de Vercel. Ne les colle jamais dans un fichier du dépôt, un commit ou un chat.
 
 ## Prérequis
 
-- Node.js 20 ou plus récent, et Git
-- Un compte GitHub, un compte Neon, un compte Groq (tous gratuits, sans carte bancaire pour démarrer)
+- Node.js 22 (LTS) recommandé, et Git
+- Un compte GitHub et un compte Groq (gratuits, sans carte bancaire pour démarrer)
+- Optionnel : un compte Neon (journal anonyme et avis) et un compte Vercel (déploiement)
 - Antigravity (ou tout autre éditeur) pour ouvrir le dossier
 
 ## Étape 1 — Ouvrir le projet
 
 ```bash
-unzip jend-jaay.zip
-cd jend-jaay
+unzip demarche-bi.zip
+cd demarche-bi
 npm install
 ```
 
-Ouvre ensuite le dossier `jend-jaay` dans Antigravity. L'agent lit automatiquement `GEMINI.md` et les règles de `.agent/`.
+Ouvre le dossier `demarche-bi` dans Antigravity. L'agent lit automatiquement `GEMINI.md` et les règles de `.agent/`.
 
-## Étape 2 — S'inscrire au hackathon
+## Étape 2 — Mettre à jour ton inscription au hackathon
 
-1. Ouvre https://tally.so/r/0Qp5rB et remplis le formulaire (participation individuelle).
-2. Pour assister à l'événement du 24 octobre à l'Impact Hub Dakar, inscris-toi aussi ici : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
+1. Si tu as déjà envoyé le formulaire avec l'ancien projet, préviens les organisateurs ou renvoie-le avec Démarche-Bi : https://tally.so/r/0Qp5rB
+2. Track à choisir : **Civic Tech & services publics**.
+3. Pour assister à l'événement du 24 octobre à l'Impact Hub Dakar, l'inscription MLH est séparée : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
 
 ## Étape 3 — Créer le dépôt GitHub public
 
-1. Sur GitHub, crée un dépôt **public** nommé `jend-jaay`, sans README ni licence (ils existent déjà dans le projet).
+1. Sur GitHub, crée un dépôt **public** nommé `demarche-bi`, sans README ni licence (ils existent déjà).
 2. Dans le dossier du projet :
 
 ```bash
 git branch -M main
-git remote add origin https://github.com/tamsir-ndao/jend-jaay.git
+git remote add origin https://github.com/tamsir-ndao/demarche-bi.git
 git push -u origin main
 ```
 
-L'historique Git visible fait partie des critères du jury : commite régulièrement, par petites fonctionnalités.
+La CI GitHub (fiches, lint, build) se lance seule à chaque push et à chaque pull request. L'historique Git visible compte pour le jury : commite régulièrement, par petites fonctionnalités.
 
-## Étape 4 — Créer la base Neon
-
-1. Sur neon.com, crée un compte et un nouveau projet (choisis la région la plus proche disponible).
-2. Dans le tableau de bord du projet, ouvre la fenêtre de connexion (bouton « Connect ») et copie la **chaîne de connexion** (elle commence par `postgresql://`).
-3. Garde-la pour l'étape 7 : c'est `DATABASE_URL`. Elle contient ton mot de passe, ne la partage pas et ne la committe jamais.
-
-Le schéma et les données de démo seront appliqués à l'étape 8, depuis ton terminal.
-
-## Étape 5 — Créer la clé Groq (IA principale)
+## Étape 4 — Créer la clé Groq
 
 1. Sur console.groq.com, crée un compte et génère une clé API.
-2. Modèle conseillé : `llama-3.3-70b-versatile` (extraction et comparaison). Pour les tests répétés, `llama-3.1-8b-instant` consomme moins de quota.
+2. Modèle conseillé : `llama-3.3-70b-versatile`. Pour les tests répétés, `llama-3.1-8b-instant` consomme moins de quota.
 3. Voix : `whisper-large-v3-turbo`, avec la même clé.
 
-Quotas gratuits indicatifs (à vérifier dans ta console, ils changent) : environ 30 requêtes par minute et 1 000 requêtes par jour sur Llama 3.3 70B. Le plafond de tokens par minute est souvent la vraie limite : évite les tests en boucle. Le quota est par organisation, créer plusieurs clés ne l'augmente pas.
+Quotas gratuits indicatifs, à vérifier dans ta console car ils changent : environ 30 requêtes par minute et 1 000 par jour sur Llama 3.3 70B. Le plafond de tokens par minute est souvent la vraie limite : évite les tests en boucle. Le quota est par organisation, créer plusieurs clés ne l'augmente pas.
 
-## Étape 6 — (Optionnel) Clé OpenRouter de secours
+## Étape 5 — (Optionnel) Clé OpenRouter de secours
 
-Le gratuit n'a pas de garantie de disponibilité. Pour la finale, prévois un secours :
+Le gratuit n'a pas de garantie de disponibilité. Pour la finale, prévois un secours : crée un compte sur openrouter.ai, une clé API, et note le nom exact d'un modèle gratuit dans leur liste. Le client essaie Groq d'abord, puis OpenRouter si Groq échoue.
 
-1. Sur openrouter.ai, crée un compte et une clé API.
-2. Choisis un modèle gratuit dans leur liste et note son nom exact.
-3. Renseigne les variables `AI_FALLBACK_*` à l'étape suivante.
-
-Le client (`src/lib/ai/client.ts`) essaie Groq d'abord, puis OpenRouter automatiquement si Groq échoue. Sans clé de secours, seul Groq est utilisé.
-
-## Étape 7 — Renseigner `.env.local`
+## Étape 6 — Renseigner `.env.local`
 
 ```bash
 cp .env.example .env.local
 ```
 
-Ouvre `.env.local` et remplis :
-
 | Variable | Valeur |
 |---|---|
-| `DATABASE_URL` | chaîne de connexion Neon (étape 4) |
-| `AI_API_KEY` | clé Groq (étape 5) |
+| `AI_API_KEY` | clé Groq (étape 4) |
 | `WHISPER_API_KEY` | la même clé Groq |
-| `AI_FALLBACK_API_KEY` | clé OpenRouter (étape 6), ou laisse vide |
+| `AI_FALLBACK_API_KEY` | clé OpenRouter (étape 5), ou laisse vide |
+| `DATABASE_URL` | chaîne de connexion Neon (étape 8), ou laisse vide |
+| `DEMARCHE_INCLUDE_DRAFTS` | `true` seulement en développement, pour tester avec des fiches brouillon |
 
 Les autres variables ont déjà des valeurs par défaut correctes.
 
-## Étape 8 — Créer les tables et lancer
+## Étape 7 — Lancer et vérifier
 
 ```bash
-npm run db:migrate   # crée les tables (db/migrations/0001_init.sql)
-npm run db:seed      # charge les données de démo fictives (db/seed.sql)
-```
-
-`db:migrate` ne doit être exécutée qu'une fois par migration. Pour repartir de zéro pendant le développement, supprime et recrée la base depuis le tableau de bord Neon, ou utilise une branche Neon.
-
-```bash
-npm run dev      # http://localhost:3000
+npm run dev               # http://localhost:3000
+npm run validate:fiches   # valide les fiches de content/demarches/
 npm run lint
 npm run build
 ```
 
-La page d'accueil doit s'afficher avec les boutons « Je suis acheteur » et « Je suis fournisseur ».
+## Étape 8 — (Optionnel) Base Neon
 
-## Étape 9 — Déployer sur Vercel
+L'application fonctionne sans base. Neon sert au journal anonyme des questions et aux avis des utilisateurs.
 
-1. Sur vercel.com, importe le dépôt GitHub `jend-jaay`.
-2. Ajoute les mêmes variables d'environnement que dans `.env.local`, dont `DATABASE_URL` (jamais dans le code).
-3. Déploie. Chaque `git push` sur `main` redéploie automatiquement.
+1. Sur neon.com, crée un projet. Dans la fenêtre de connexion (bouton « Connect »), copie la chaîne de connexion (elle commence par `postgresql://`).
+2. Mets-la dans `.env.local` : `DATABASE_URL=...`. Elle contient ton mot de passe : ne la partage pas et ne la committe jamais.
+3. Crée les tables : `npm run db:migrate`. La commande peut être relancée sans risque, les migrations déjà appliquées sont ignorées.
+
+## Étape 9 — (Optionnel) Déployer sur Vercel
+
+1. Sur vercel.com, importe le dépôt GitHub `demarche-bi`.
+2. Ajoute les mêmes variables d'environnement que dans `.env.local` (jamais dans le code). Laisse `DEMARCHE_INCLUDE_DRAFTS` à `false` ou absente.
+3. Déploie. Chaque `git push` sur `main` redéploie.
 4. Mets l'URL publique dans le README, pour le jury.
 
 ## Étape 10 — Développer avec l'agent
 
-Dans Antigravity, demande à l'agent de suivre `docs/TASKS.md`, tâche par tâche. Le workflow `nouvelle-fonctionnalite` (dans `.agent/workflows/`) décrit la boucle : plan, validation, code, `npm run lint` et `npm run build`, commit. Coche les tâches terminées.
+Dans Antigravity, demande à l'agent de suivre `docs/TASKS.md`, tâche par tâche. Les workflows de `.agent/workflows/` décrivent les boucles : `nouvelle-fonctionnalite` (plan, validation, code, vérifications, commit), `ajouter-une-fiche` et `preparer-soumission`. Coche les tâches terminées.
 
 ## Étape 11 — Soumettre (avant le 19 octobre 2026)
 
-Suis le workflow `preparer-soumission` : README final avec les modèles déclarés (Groq/Llama, Whisper, OpenRouter si utilisé, Claude et Antigravity pour le développement), vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis formulaire de soumission.
+Suis le workflow `preparer-soumission` : README final avec les chiffres d'évaluation et les modèles déclarés, vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis formulaire de soumission.
 
 ## Dépannage
 
@@ -120,8 +107,7 @@ Suis le workflow `preparer-soumission` : README final avec les modèles déclar�
 | « Aucun fournisseur IA configuré » | `AI_API_KEY` manquante dans `.env.local` ; relance `npm run dev` après modification |
 | HTTP 429 de Groq | Quota par minute ou par jour atteint : attends, passe sur `llama-3.1-8b-instant` ou active le secours OpenRouter |
 | HTTP 401 | Clé invalide ou mal copiée, sans espace ni guillemets |
+| `validate:fiches` échoue | Lis le message : il indique le fichier et le champ. Compare avec `content/demarches/_modele.md` |
 | Le build échoue sur les polices | Le projet utilise des polices système ; ne réintroduis pas `next/font/google` |
-| « DATABASE_URL manquante » | La variable n'est pas dans `.env.local`, ou le fichier n'est pas à la racine du projet |
-| `db:migrate` : « type already exists » | La migration a déjà été appliquée ; ne la relance pas |
-| Rien dans la base | Lance `npm run db:migrate` avant `npm run db:seed` |
+| « DATABASE_URL manquante » | La variable n'est pas dans `.env.local`, ou le fichier n'est pas à la racine du projet. Elle n'est nécessaire que pour `db:migrate` |
 | Erreur de connexion SSL ou mot de passe | Recopie la chaîne de connexion complète depuis Neon (avec `sslmode=require`) |

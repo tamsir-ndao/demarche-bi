@@ -8,6 +8,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Projet Jënd-Jaay
+## Projet Démarche-Bi
 
-Règles complètes du projet : voir `GEMINI.md` (français, FCFA, contexte Sénégal, validation avant modification, `npm run lint` + `npm run build` avant de conclure). Contexte : `docs/PRD.md`, `docs/ARCHITECTURE.md`, `docs/TASKS.md`, `docs/AI-PROMPTS.md`.
+Règles complètes du projet : voir `GEMINI.md` (français, FCFA, contexte Sénégal, aucune information administrative inventée, validation avant modification, `npm run lint` + `npm run validate:fiches` + `npm run build` avant de conclure). Contexte : `docs/PRD.md`, `docs/ARCHITECTURE.md`, `docs/TASKS.md`, `docs/AI-PROMPTS.md`, `docs/FICHES-A-PRODUIRE.md`.

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Jënd-Jaay",
+  title: "Démarche-Bi",
   description:
-    "Sourcing alimentaire par IA : décris ton besoin, compare les offres des fournisseurs.",
+    "Pose ta question sur une démarche administrative au Sénégal. Réponses fondées uniquement sur des fiches vérifiées, avec leurs sources officielles.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

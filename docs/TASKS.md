@@ -1,57 +1,86 @@
-# Tâches — Jënd-Jaay
+# Tâches — Démarche-Bi
 
-Cocher au fur et à mesure. Date limite de soumission : **19 octobre 2026**.
+Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), présélection le 21, finale le 24.
 
-## J1-2 — Fondations (7-8 oct)
+## Fait
 
-- [x] Squelette Next.js + Tailwind + TypeScript
-- [x] Licence MIT
-- [x] Schéma Postgres pour Neon (`db/migrations/0001_init.sql`) et scripts `db:migrate` / `db:seed`
-- [x] Données de démo fictives (`seed.sql`)
-- [x] README initial, `.env.example`
-- [x] Fichiers de contexte agent (`GEMINI.md`, `CLAUDE.md`, `.agent/`, `docs/`)
-- [x] Client IA Groq + secours OpenRouter + Whisper (`src/lib/ai/`), guide `docs/SETUP.md`
-- [ ] Dépôt GitHub public créé et code poussé (`docs/SETUP.md`, étape 3)
-- [ ] Base Neon créée, `npm run db:migrate` et `npm run db:seed` exécutés (étape 4)
-- [ ] Inscription au hackathon (https://tally.so/r/0Qp5rB) (étape 2)
-- [ ] Clés Groq (et OpenRouter en secours) dans `.env.local` (étapes 5 à 7)
-- [ ] Déploiement Vercel (étape 9)
+- [x] Socle : Next.js, TypeScript, Tailwind, licence MIT, client IA (Groq, secours OpenRouter, Whisper), règles Antigravity
+- [x] Pivot vers Démarche-Bi (9 octobre) : PRD, architecture, prompts, planning
+- [x] Format de fiche (Zod), chargeur, validateur `npm run validate:fiches`, modèle de fiche
+- [x] CI GitHub (fiches, lint, build), CONTRIBUTING, modèles d'issue et de pull request
+- [x] Schéma Neon optionnel (journal anonyme, avis) et `npm run db:migrate` rejouable
 
-## J3-5 — IA : comprendre la demande (9-11 oct)
+## Vendredi 9 octobre — à faire par toi
 
-- [ ] Installer Zod ; schémas dans `src/lib/ai/schemas.ts`
-- [ ] `parse-request.ts` : texte -> demande structurée (voir `docs/AI-PROMPTS.md`)
-- [ ] Route `/api/parse` + gestion d'erreur et repli
-- [ ] Page acheteur : saisie texte, affichage de la demande structurée à confirmer
-- [ ] Route `/api/transcribe` (Whisper) et bouton d'enregistrement vocal
+- [ ] Mettre à jour ton inscription au hackathon avec Démarche-Bi, track Civic Tech (`docs/SETUP.md`, étape 2)
+- [ ] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
+- [ ] Clé Groq dans `.env.local` (étapes 4 à 6)
+- [ ] Choisir les 15 démarches (`docs/FICHES-A-PRODUIRE.md`)
 
-## J6-8 — Matching et offres (12-14 oct)
+## Samedi 10 — fiches (lot 1) et recherche
 
-- [ ] `matching.ts` : score par produits couverts, zone et prix
-- [ ] Route `/api/match` et affichage des fournisseurs classés
-- [ ] Création d'une offre par le fournisseur (total FCFA, livraison, note)
-- [ ] `compare-offers.ts` + route `/api/compare` : résumé et recommandation
+- [ ] 5 premières fiches avec sources officielles, relues puis passées en `verifie`
+- [ ] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
+- [ ] Vérifier le seuil de pertinence sur les 5 fiches
 
-## J9-10 — Interfaces (15-16 oct)
+## Dimanche 11 — IA et API
 
-- [ ] Authentification acheteur / fournisseur (Auth.js recommandé, mots de passe hachés ; colonnes `email` et `password_hash` déjà prévues)
-- [ ] Interface acheteur : publier, suivre, comparer, accepter, lien WhatsApp
-- [ ] Interface fournisseur : catalogue, demandes reçues, envoyer une offre
-- [ ] Mobile-first et vérification en connexion lente
+- [ ] 5 fiches de plus (lot 2)
+- [ ] `schemas.ts`, `understand.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/`
+- [ ] Route `/api/ask` : comprendre, retrouver, répondre, vérifier, citer
+- [ ] Tests des garde-fous (slug inconnu, montant inventé, sortie invalide)
 
-## J11 — Démo (17 oct)
+## Lundi 12 — interface
 
-- [ ] Jeu de données de démo réaliste et parcours de bout en bout sans erreur
-- [ ] Polissage de l'UX, messages d'erreur clairs en français
+- [ ] Page d'accueil : zone de question, exemples, réponse avec étapes
+- [ ] Affichage des sources (titre, lien, date de vérification) et de l'avertissement
+- [ ] États « je ne sais pas » et « question de précision »
 
-## J12 — Soumission (18-19 oct)
+## Mardi 13 — évaluation
 
-- [ ] README final : modèles/APIs/outils déclarés, installation vérifiée
-- [ ] Vidéo de démonstration (3 minutes maximum)
+- [ ] `eval/questions.jsonl` : 30 questions (couvertes, hors périmètre, vagues)
+- [ ] `scripts/eval.ts` et `npm run eval` (recherche seule, puis de bout en bout)
+- [ ] Corriger la recherche et les prompts selon les résultats
+- [ ] 5 fiches de plus (lot 3) : 15 au total
+
+## Mercredi 14 — voix et consultation
+
+- [ ] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable
+- [ ] Pages `/demarches` et `/demarches/[slug]`
+- [ ] Page `/contribuer`
+
+## Jeudi 15 — avis et déploiement
+
+- [ ] Avis « utile / pas utile » et `/api/feedback`
+- [ ] Journal anonyme dans Neon (optionnel, l'application marche sans)
+- [ ] Déploiement Vercel avec les variables d'environnement
+
+## Vendredi 16 — essais réels
+
+- [ ] Test sur téléphone et en connexion lente
+- [ ] Faire essayer à 2 ou 3 personnes, noter leurs questions et leurs remarques
+- [ ] Corriger ce qui bloque
+
+## Samedi 17 — open source et chiffres
+
+- [ ] README final avec les chiffres d'évaluation tels que mesurés
+- [ ] Au moins 5 issues « good first issue » (nouvelles fiches à écrire)
 - [ ] Vérification anti-secrets (workflow `preparer-soumission`)
-- [ ] Soumission via le formulaire avant le 19 octobre
 
-## Finale — 24 octobre
+## Dimanche 18 — soumission
 
-- [ ] Pitch de 7 minutes préparé (problème, démo en direct, rôle de l'IA, open source, suite)
-- [ ] Réponses aux questions du jury préparées (3 minutes)
+- [ ] Vidéo de démonstration (3 minutes maximum)
+- [ ] Texte de soumission : problème, solution, rôle de l'IA
+- [ ] Soumettre (avec un jour de marge)
+
+## Lundi 19 — marge
+
+- [ ] Date limite : seulement des corrections mineures
+
+## 20 au 23 octobre — finale
+
+- [ ] Pitch de 7 minutes (problème, démo en direct, rôle de l'IA, open source, chiffres, suite)
+- [ ] Réponses aux questions du jury (3 minutes) : exactitude des fiches, rôle réel de l'IA, mise à jour du contenu
+- [ ] Plan B de démo : vidéo enregistrée si le réseau ou l'API tombe
+
+## Samedi 24 octobre — finale à l'Impact Hub Dakar

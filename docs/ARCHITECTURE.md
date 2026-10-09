@@ -1,71 +1,89 @@
-# Architecture — Jënd-Jaay
+# Architecture — Démarche-Bi
 
 ## Vue d'ensemble
 
 ```
-Acheteur (texte / voix)
-        │
-        ▼
-  Next.js (App Router) ──► /api/transcribe  ──► Whisper
-        │                  /api/parse       ──► LLM open-weight  ──► demande structurée
-        │                  /api/match       ──► classement fournisseurs
-        │                  /api/compare     ──► LLM : synthèse + recommandation
-        ▼
-   Neon (Postgres serverless)
-        ▲
-        │
-Fournisseur (catalogue, offres)
+Question (texte ou voix)
+   │
+   ▼  voix : /api/transcribe ──► Whisper (Groq)
+   │
+   ▼  /api/ask
+ 1. Comprendre   LLM : langue, mots-clés, question claire, besoin de précision
+ 2. Retrouver    recherche lexicale dans les fiches (code, sans IA)
+ 3. Répondre     LLM : réponse rédigée à partir des seules fiches retrouvées
+ 4. Vérifier     garde-fous (code) : fiches utilisées, chiffres, format
+ 5. Citer        sources et date de vérification ajoutées par le code
+   │
+   ▼
+Réponse + sources + avertissement        (journal anonyme Neon : optionnel)
 ```
 
-## Structure du code (cible)
+Source de vérité du contenu : `content/demarches/*.md` (versionné dans Git, validé par la CI).
+
+## Structure du code
 
 ```
+content/demarches/        fiches Markdown (+ _modele.md)
+eval/questions.jsonl      jeu d'évaluation (30 questions)
 src/
   app/
-    page.tsx                  accueil
-    acheteur/                 publier une demande, voir les offres
-    fournisseur/              catalogue, demandes reçues, envoyer une offre
+    page.tsx              accueil et assistant
+    demarches/            liste et pages des fiches
+    contribuer/           comment contribuer
     api/
-      transcribe/route.ts     audio -> texte
-      parse/route.ts          texte -> demande structurée
-      match/route.ts          demande -> fournisseurs classés
-      compare/route.ts        offres -> recommandation
+      ask/route.ts        question -> réponse
+      transcribe/route.ts audio -> texte
+      feedback/route.ts   avis utile / pas utile
   lib/
-    db.ts                     client Neon (serveur uniquement)
+    fiches/
+      schema.ts           schéma Zod d'une fiche
+      load.ts             lecture et validation des fiches
+      search.ts           recherche lexicale (BM25 simplifié)
     ai/
-      config.ts               fournisseurs (Groq, secours OpenRouter) et Whisper
-      client.ts               chat() avec basculement + transcribe()
-      parse-request.ts        extraction + validation Zod
-      compare-offers.ts       synthèse des offres
-      schemas.ts              schémas Zod partagés
-    matching.ts               logique de score (déterministe)
-db/
-  migrations/                 schéma SQL versionné
-  seed.sql                    données de démo fictives
+      config.ts           fournisseurs (Groq, secours OpenRouter) et Whisper
+      client.ts           chat() avec basculement + transcribe()
+      understand.ts       étape 1 : comprendre la question
+      answer.ts           étape 3 : réponse ancrée
+      guardrails.ts       étape 4 : garde-fous
+      schemas.ts          schémas Zod des sorties IA
+    db.ts                 client Neon (optionnel, serveur uniquement)
 scripts/
-  db.mjs                      npm run db:migrate / db:seed
-docs/                         PRD, architecture, tâches, prompts IA
+  validate-fiches.ts      npm run validate:fiches
+  db.mjs                  npm run db:migrate
+  eval.ts                 npm run eval
+db/migrations/            journal anonyme et avis (optionnel)
+.github/                  CI, modèles d'issue et de pull request
 ```
 
-## Modèle de données
+## Format d'une fiche
 
-Tables : `profiles` (role buyer/supplier), `products`, `requests` (`raw_text` + `parsed` jsonb), `offers` (`match_score`, `ai_summary`). Détail dans `db/migrations/0001_init.sql`. Pas de RLS (Neon est du Postgres standard) : les droits sont vérifiés côté serveur dans les routes API. L'authentification reste à brancher (J9).
+En-tête YAML (validé par `src/lib/fiches/schema.ts`) puis texte libre : `slug`, `titre`, `categorie`, `resume`, `mots_cles`, `pieces`, `etapes`, `cout`, `delai`, `lieu`, `sources` (titre, URL https, date de consultation), `statut` (brouillon ou verifie), `verifie_le`, `verifie_par`. Les champs `cout`, `delai` et `lieu` sont obligatoires mais peuvent valoir `null`.
 
-## Flux de données
+Seules les fiches au statut `verifie` répondent en production. Les brouillons ne sont utilisés que si `DEMARCHE_INCLUDE_DRAFTS=true` (développement).
 
-1. **Demande** : `raw_text` saisi ou transcrit, envoyé à `/api/parse`.
-2. **Extraction** : le LLM renvoie du JSON ; validation Zod ; l'acheteur confirme ; stockage dans `requests.parsed`.
-3. **Matching** : score déterministe par fournisseur, calculé en code (produits couverts, zone servie, prix). L'IA ne décide pas du score, elle l'explique ensuite.
-4. **Offres** : le fournisseur envoie un total en FCFA et une date de livraison.
-5. **Comparaison** : `/api/compare` envoie les offres au LLM, qui produit un résumé et une recommandation justifiée, stockés dans `offers.ai_summary`.
+## Recherche (étape 2)
+
+Recherche lexicale écrite en code : normalisation (minuscules, accents retirés, mots vides français), pondération par champ (titre et mots-clés plus forts que le résumé, lui-même plus fort que le corps), score de type BM25. Un seuil de score décide s'il y a une fiche pertinente ; en dessous, la réponse est « je ne sais pas ». Pas d'embeddings : plus simple, reproductible, testable sans clé IA, et facile à comprendre pour un contributeur.
+
+## Garde-fous (étape 4)
+
+1. La sortie du modèle doit respecter le schéma Zod (`trouve`, `reponse`, `fiches_utilisees`) ; sinon une nouvelle tentative, puis message d'erreur propre.
+2. `fiches_utilisees` doit être un sous-ensemble des fiches retrouvées.
+3. Chaque montant (FCFA) et chaque délai chiffré cité dans la réponse doit apparaître dans une fiche utilisée ; sinon la réponse est rejetée.
+4. Si `trouve` vaut faux, ou si aucune fiche ne dépasse le seuil : message standard « je ne sais pas » avec invitation à contribuer.
+5. Les sources affichées sont produites par le code depuis les métadonnées de la fiche.
+
+## Données (optionnel)
+
+Neon sert uniquement à un journal anonyme (`question_logs`) et aux avis (`feedback`) : pas de compte, pas d'adresse IP, question tronquée à 500 caractères, purge conseillée à 90 jours. L'application fonctionne sans `DATABASE_URL`.
 
 ## Principes
 
-- **L'IA est validée** : toute sortie modèle passe par un schéma Zod ; en cas d'échec, repli sur une saisie manuelle.
-- **Le matching est déterministe** : reproductible, testable et rapide ; l'IA sert à comprendre et à expliquer.
-- **Open source** : modèles open-weight via API compatible OpenAI, interchangeable par variables d'environnement.
-- **Faible connexion** : pages légères, polices système, pas de dépendance distante lourde.
+- L'IA comprend et rédige ; le code décide, cite et vérifie.
+- Tout appel modèle passe par `src/lib/ai/` et toute sortie est validée.
+- Modèles open-weight via API compatible OpenAI, interchangeables par variables d'environnement.
+- Pages légères, polices système, mobile-first, utilisables en connexion lente.
 
 ## Variables d'environnement
 
-Voir `.env.example` et `docs/SETUP.md` : Neon (`DATABASE_URL`), IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`).
+Voir `.env.example` et `docs/SETUP.md` : IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`), Neon optionnel (`DATABASE_URL`), `DEMARCHE_INCLUDE_DRAFTS` (développement uniquement).
