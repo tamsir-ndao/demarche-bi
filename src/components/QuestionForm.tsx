@@ -2,8 +2,11 @@ import Form from "next/form";
 import { LONGUEUR_MAX_QUESTION } from "@/lib/texte";
 import { Icon } from "./Icon";
 
-/** Le champ où l'on écrit sa question. Il ouvre /reponse?q=… : l'adresse peut se partager. */
-export function QuestionForm({ id }: { id: string }) {
+/**
+ * Le champ où l'on écrit sa question. Il ouvre /reponse?q=… : l'adresse peut se partager.
+ * `valeurInitiale` remplit le champ (pour reformuler une question qui était trop vague).
+ */
+export function QuestionForm({ id, valeurInitiale }: { id: string; valeurInitiale?: string }) {
   return (
     <Form action="/reponse" className="relative w-full">
       <label htmlFor={id} className="sr-only">
@@ -13,6 +16,7 @@ export function QuestionForm({ id }: { id: string }) {
         id={id}
         name="q"
         type="text"
+        defaultValue={valeurInitiale}
         maxLength={LONGUEUR_MAX_QUESTION}
         autoComplete="off"
         enterKeyHint="search"

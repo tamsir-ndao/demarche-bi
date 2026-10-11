@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 import { BulleQuestion } from "@/components/BulleQuestion";
 import { JeNeSaisPas } from "@/components/JeNeSaisPas";
 import { PageShell } from "@/components/PageShell";
+import { Precision, PrecisionGenerale } from "@/components/Precision";
 import { QuestionForm } from "@/components/QuestionForm";
 import { Recherche } from "@/components/Recherche";
 import { ReponseFiche } from "@/components/ReponseFiche";
-import { brouillonsAutorises, fichePourAffichage, statutAffichage } from "@/lib/fiches/affichage";
+import type { Reponse as ReponseDuSite } from "@/lib/ai/ask";
+import { repondreALaQuestion } from "@/lib/ai/serveur";
+import { visiteurDepuis } from "@/lib/ai/service";
+import { statutAffichage } from "@/lib/fiches/affichage";
 import { maintenant } from "@/lib/fiches/disponibles";
-import { loadFiches } from "@/lib/fiches/load";
-import { searchFiches } from "@/lib/fiches/search";
-import { nettoyerQuestion } from "@/lib/texte";
+import { nettoyerQuestion, nettoyerSlug } from "@/lib/texte";
 
 export const metadata: Metadata = {
   title: "Ta réponse",
@@ -30,26 +33,42 @@ export default function Page({ searchParams }: PageProps<"/reponse">) {
 }
 
 async function Reponse({ searchParams }: Pick<PageProps<"/reponse">, "searchParams">) {
-  const question = nettoyerQuestion((await searchParams).q);
+  const parametres = await searchParams;
+  const question = nettoyerQuestion(parametres.q);
   if (question === "") return <QuestionVide />;
 
-  const resultats = searchFiches(loadFiches().fiches, question, { inclureBrouillons: brouillonsAutorises() });
-  const [meilleur, ...autres] = resultats;
+  const reponse = await repondreALaQuestion(question, {
+    ficheSlug: nettoyerSlug(parametres.fiche),
+    visiteur: visiteurDepuis(await headers()),
+  });
 
   return (
     <>
       <BulleQuestion question={question} />
-      {meilleur ? (
-        <ReponseFiche
-          fiche={fichePourAffichage(meilleur.fiche)}
-          statut={statutAffichage(meilleur.fiche, await maintenant())}
-          autres={autres.map((resultat) => fichePourAffichage(resultat.fiche))}
-        />
-      ) : (
-        <JeNeSaisPas />
-      )}
+      <Resultat question={question} reponse={reponse} />
     </>
   );
+}
+
+async function Resultat({ question, reponse }: { question: string; reponse: ReponseDuSite }) {
+  switch (reponse.type) {
+    case "fiche":
+      return (
+        <ReponseFiche
+          fiche={reponse.fiche}
+          statut={statutAffichage(reponse.fiche, await maintenant())}
+          autres={reponse.autres}
+          intro={reponse.intro}
+          degrade={reponse.degrade}
+        />
+      );
+    case "precision":
+      return <Precision question={reponse.question} questionPosee={question} options={reponse.options} />;
+    case "precision_generale":
+      return <PrecisionGenerale question={reponse.question} questionPosee={question} />;
+    case "inconnue":
+      return <JeNeSaisPas />;
+  }
 }
 
 function QuestionVide() {

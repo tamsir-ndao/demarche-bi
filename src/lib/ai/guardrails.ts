@@ -51,11 +51,34 @@ const MOTS_NOMBRES: Record<string, number> = {
   millions: 1000000,
 };
 
-function motsDeNombres(texte: string): string[] {
-  return simplifier(texte)
-    .split(/[^a-z]+/)
-    .filter((mot) => mot in MOTS_NOMBRES);
+/** Les mots d'un texte, en minuscules et sans accents. */
+function motsDe(texte: string): string[] {
+  return simplifier(texte).split(/[^a-z]+/);
 }
+
+function motsDeNombres(texte: string): string[] {
+  return motsDe(texte).filter((mot) => mot in MOTS_NOMBRES);
+}
+
+// Mots qui affirment plus que la fiche (« la seule pièce », « c'est gratuit », « toujours ») : l'introduction ne les emploie
+// que si la fiche emploie le même mot, à l'accord près (gratuit, gratuite). Écrits sans accent, comme `simplifier` les rend.
+const FAMILLES_ABSOLUES = [
+  ["seul", "seule", "seuls", "seules"],
+  ["seulement"],
+  ["uniquement"],
+  ["exclusivement"],
+  ["toujours"],
+  ["jamais"],
+  ["aucun", "aucune"],
+  ["tous", "toutes"],
+  ["gratuit", "gratuite", "gratuits", "gratuites", "gratuitement"],
+  ["obligatoire", "obligatoires"],
+  ["automatiquement"],
+  ["systematiquement"],
+  ["immediatement"],
+];
+
+const FAMILLE_DU_MOT = new Map(FAMILLES_ABSOLUES.flatMap((famille) => famille.map((mot) => [mot, famille] as const)));
 
 const BALISAGE = /[<>`]|\*\*/;
 const ADRESSE = /https?:\/\/|www\.|[\w.+-]+@[\w-]+\.[\w.]+|\b[a-z0-9-]+\.(?:sn|com|org|net|fr|gouv)\b/i;
@@ -99,11 +122,17 @@ export function verifierIntro(intro: string, fiche: Fiche, { slugs = [] }: { slu
   const inconnu = extraireNombres(texte).find((nombre) => !nombresDeLaFiche.has(nombre));
   if (inconnu !== undefined) return rejet(`Nombre « ${inconnu} » absent de la fiche.`);
 
-  const motsDeLaFiche = new Set(simplifier(source).split(/[^a-z]+/));
+  const motsDeLaFiche = new Set(motsDe(source));
   const motInconnu = motsDeNombres(texte).find(
     (mot) => !motsDeLaFiche.has(mot) && !nombresDeLaFiche.has(String(MOTS_NOMBRES[mot])),
   );
   if (motInconnu !== undefined) return rejet(`Nombre « ${motInconnu} » absent de la fiche.`);
+
+  const absolu = motsDe(texte).find((mot) => {
+    const famille = FAMILLE_DU_MOT.get(mot);
+    return famille !== undefined && !famille.some((forme) => motsDeLaFiche.has(forme));
+  });
+  if (absolu !== undefined) return rejet(`Mot absolu « ${absolu} » absent de la fiche : n'affirme rien de plus qu'elle.`);
 
   return { ok: true, intro: texte };
 }

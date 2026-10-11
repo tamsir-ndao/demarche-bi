@@ -93,6 +93,33 @@ describe("verifierIntro", () => {
     assert.equal(raison("Compte entre trois et cinq jours d'attente."), null);
   });
 
+  it("rejette un mot absolu que la fiche n'emploie pas", () => {
+    assert.match(raison("C'est la seule pièce demandée.") ?? "", /« seule »/);
+    assert.match(raison("Cette démarche est gratuite.") ?? "", /« gratuite »/);
+    assert.match(raison("Tu dois toujours venir avec ton extrait.") ?? "", /« toujours »/);
+    assert.match(raison("Il faut impérativement un timbre, uniquement en espèces.") ?? "", /« uniquement »/);
+  });
+
+  it("accepte un mot absolu quand la fiche l'emploie aussi", () => {
+    const stricte = ficheDeTest({
+      slug: "stricte",
+      titre: "Démarche stricte",
+      resume: "Démarche gratuite, uniquement pour les adultes.",
+    });
+    assert.deepEqual(verifierIntro("C'est gratuit, mais uniquement pour les adultes.", stricte).ok, true);
+  });
+
+  it("explique le refus au modèle", () => {
+    assert.equal(
+      raison("Ton fils peut aller seul au commissariat de police."),
+      "Mot absolu « seul » absent de la fiche : n'affirme rien de plus qu'elle.",
+    );
+  });
+
+  it("ne confond pas un mot absolu avec un mot qui le contient", () => {
+    assert.equal(raison("Compte un jour de plus quand la Toussaint tombe pendant l'attente."), null);
+  });
+
   it("rejette une adresse web ou une adresse e-mail", () => {
     assert.match(raison("Va sur https://exemple.sn pour faire ta demande.") ?? "", /adresse/i);
     assert.match(raison("Va sur www.exemple.sn pour faire ta demande.") ?? "", /adresse/i);

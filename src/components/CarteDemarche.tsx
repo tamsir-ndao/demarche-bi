@@ -7,16 +7,26 @@ type CarteDemarcheProps = {
   /** La ligne sous le titre : le coût et le délai de la fiche. */
   detail: string;
   icone: IconName;
+  /** « autre » : le choix « Autre chose » d'une liste, avec une icône en pointillés. */
+  variante?: "demarche" | "autre";
+};
+
+const ICONES: Record<NonNullable<CarteDemarcheProps["variante"]>, string> = {
+  demarche: "bg-tint",
+  autre: "border-[1.5px] border-dashed border-edge",
 };
 
 /** Une démarche dans une liste : une icône, son titre, son coût et son délai. */
-export function CarteDemarche({ href, titre, detail, icone }: CarteDemarcheProps) {
+export function CarteDemarche({ href, titre, detail, icone, variante = "demarche" }: CarteDemarcheProps) {
   return (
     <Link
       href={href}
       className="press flex min-h-[88px] items-center gap-3.5 rounded-3xl bg-card py-3.5 pr-4 pl-3.5 shadow-soft transition-colors hover:bg-tint"
     >
-      <span aria-hidden="true" className="flex size-12 flex-none items-center justify-center rounded-full bg-tint text-leaf">
+      <span
+        aria-hidden="true"
+        className={`flex size-12 flex-none items-center justify-center rounded-full text-leaf ${ICONES[variante]}`}
+      >
         <Icon name={icone} size={24} strokeWidth={2} />
       </span>
       <span className="min-w-0 flex-1">

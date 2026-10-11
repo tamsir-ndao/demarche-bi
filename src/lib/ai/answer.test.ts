@@ -93,6 +93,24 @@ describe("repondre", () => {
     assert.ok(appel.messages[1].content.endsWith(serialiserFiche(fiche)));
   });
 
+  it("demande une introduction courte qui ne recopie pas les listes affichées juste après", async () => {
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await repondre("Combien ça coûte ?", "", fiche, modele);
+
+    const regles = appels[0].messages[0].content;
+    assert.match(regles, /deux phrases courtes au maximum/);
+    assert.match(regles, /ne les recopie pas/);
+  });
+
+  it("interdit de confirmer ou d'affirmer plus que la fiche", async () => {
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await repondre("Combien ça coûte ?", "", fiche, modele);
+
+    const regles = appels[0].messages[0].content;
+    assert.match(regles, /Réponds « oui » ou « non » seulement si la fiche le dit clairement/);
+    assert.match(regles, /mot absolu comme « seule », « seulement », « uniquement », « toujours », « jamais », « aucun », « tous », « gratuit » ou « obligatoire »/);
+  });
+
   it("n'ajoute pas la reformulation quand elle est vide ou identique à la question", async () => {
     for (const claire of ["", "Combien ça coûte ?"]) {
       const { modele, appels } = modeleDeTest(reponseValide);
