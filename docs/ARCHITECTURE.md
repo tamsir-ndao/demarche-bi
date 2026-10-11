@@ -27,18 +27,26 @@ content/demarches/        fiches Markdown (+ _modele.md)
 eval/questions.jsonl      jeu d'évaluation (40 questions, dont 10 en wolof ou mêlées de wolof)
 src/
   app/
-    page.tsx              accueil et assistant
+    page.tsx              accueil : champ de question et exemples
+    reponse/              réponse à une question, lue dans l'adresse (/reponse?q=…)
     demarches/            liste et pages des fiches
-    contribuer/           comment contribuer
-    api/
+    a-propos/             à propos, questions fréquentes, comment contribuer
+    not-found.tsx         page introuvable
+    globals.css           couleurs, mode sombre, animations (design « doux »)
+    api/                  (à venir)
       ask/route.ts        question -> réponse
       transcribe/route.ts audio -> texte
       feedback/route.ts   avis utile / pas utile
+  components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche
   lib/
+    texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes)
+    liens.ts              liens vers le dépôt GitHub
     fiches/
       schema.ts           schéma Zod d'une fiche
       load.ts             lecture et validation des fiches
       search.ts           recherche lexicale (BM25 simplifié)
+      affichage.ts        mise en forme pour l'écran (dates, statut, pièces, sources), fonctions pures testées
+      disponibles.ts      fiches que le site peut montrer (serveur uniquement)
     eval/
       retrieval.ts        mesure de la recherche sans IA (fiche retrouvée, refus), lue par scripts/eval.ts
     ai/
@@ -62,6 +70,16 @@ db/migrations/            journal anonyme et avis (optionnel)
 En-tête YAML (validé par `src/lib/fiches/schema.ts`) puis texte libre : `slug`, `titre`, `categorie`, `resume`, `mots_cles`, `pieces`, `etapes`, `cout`, `delai`, `lieu`, `sources` (titre, URL https, date de consultation), `statut` (brouillon ou verifie), `verifie_le`, `verifie_par`. Les champs `cout`, `delai` et `lieu` sont obligatoires mais peuvent valoir `null`.
 
 Seules les fiches au statut `verifie` répondent en production. Les brouillons ne sont utilisés que si `DEMARCHE_INCLUDE_DRAFTS=true` (développement).
+
+## Interface
+
+Design « doux » (vert, blanc, noir adouci) : les couleurs sont des variables CSS de `src/app/globals.css` et le mode sombre suit le réglage du téléphone. Polices du système, mobile d'abord : le menu est en bas sur téléphone, en haut sur ordinateur.
+
+- `/` : le champ de question est un formulaire `GET` vers `/reponse?q=…`.
+- `/reponse` : la question est lue dans l'adresse. Le cadre de la page est prérendu, la réponse arrive ensuite (Cache Components). Sans fiche pertinente : « Je ne sais pas encore ». Cette page n'est pas indexée (les questions sont dans l'adresse). La réponse demande JavaScript.
+- `/demarches` et `/demarches/[slug]` : une page statique par fiche, créée à la construction du site. Une fiche non montrable (brouillon en production) répond 404.
+- L'écran n'ajoute aucune information : un `cout`, `delai` ou `lieu` à `null` s'affiche « Non précisé » ; les notes qui contiennent « à confirmer » sont mises en avant ; les apostrophes des fiches deviennent typographiques à l'affichage seulement.
+- `src/lib/fiches/affichage.ts` prépare les textes (fonctions pures, testées) ; `src/components/` contient les composants.
 
 ## Recherche (étape 2)
 

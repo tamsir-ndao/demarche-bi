@@ -33,9 +33,11 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 
 ## Lundi 12 — interface
 
-- [ ] Page d'accueil : zone de question, exemples, réponse avec étapes
-- [ ] Affichage des sources (titre, lien, date de vérification) et de l'avertissement
-- [ ] États « je ne sais pas » et « question de précision »
+- [x] Design « doux » de la maquette porté dans le vrai site (11 octobre) : mode sombre, mobile d'abord, polices du système, accessibilité vérifiée avec axe-core (0 violation)
+- [x] Page d'accueil : zone de question, exemples, réponse avec étapes (sans IA pour l'instant : la réponse est la fiche trouvée par la recherche ; sans micro avant la voix)
+- [x] Affichage des sources (titre, lien, date de consultation), de la date de vérification et de l'avertissement
+- [x] État « je ne sais pas » (11 octobre)
+- [ ] État « question de précision » (demande l'IA : la recherche seule ne détecte pas les questions vagues)
 
 ## Mardi 13 — évaluation
 
@@ -50,8 +52,8 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 
 - [ ] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable
 - [ ] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée
-- [ ] Pages `/demarches` et `/demarches/[slug]`
-- [ ] Page `/contribuer`
+- [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
+- [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
 
 ## Jeudi 15 — avis et déploiement
 

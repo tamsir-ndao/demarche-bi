@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import yaml from "js-yaml";
+import { JSON_SCHEMA, load as loadYaml } from "js-yaml";
 import { FicheSchema, type Fiche } from "./schema";
 
 // Schéma JSON : une date non guillemetée reste un texte. Avec le schéma par défaut, le YAML
 // la convertit en date et corrige silencieusement les erreurs (2026-13-45 devient 2027-02-14).
 const YAML_ENGINE = {
-  parse: (source: string) => (yaml.load(source, { schema: yaml.JSON_SCHEMA }) ?? {}) as object,
+  parse: (source: string) => (loadYaml(source, { schema: JSON_SCHEMA }) ?? {}) as object,
 };
 
 export type LoadResult = { fiches: Fiche[]; errors: string[] };
@@ -23,19 +23,21 @@ export function loadFiches(dir: string = FICHES_DIR): LoadResult {
   const fiches: Fiche[] = [];
   const errors: string[] = [];
 
-  if (!fs.existsSync(dir)) {
+  // Le dossier est un paramètre : Turbopack ne peut pas le deviner et ferait suivre tout le projet au
+  // déploiement. Les marques turbopackIgnore l'en dispensent ; next.config.ts ajoute content/demarches.
+  if (!fs.existsSync(/*turbopackIgnore: true*/ dir)) {
     return { fiches, errors: [`Dossier introuvable : ${dir}`] };
   }
 
   const files = fs
-    .readdirSync(dir)
+    .readdirSync(/*turbopackIgnore: true*/ dir)
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
     .sort();
 
   const seen = new Set<string>();
 
   for (const file of files) {
-    const raw = fs.readFileSync(path.join(dir, file), "utf8");
+    const raw = fs.readFileSync(/*turbopackIgnore: true*/ path.join(/*turbopackIgnore: true*/ dir, file), "utf8");
 
     let parsed: matter.GrayMatterFile<string>;
     try {
