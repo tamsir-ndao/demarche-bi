@@ -19,7 +19,8 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 
 ## Samedi 10 — fiches (lot 1) et recherche
 
-- [ ] 5 premières fiches avec sources officielles, relues puis passées en `verifie`
+- [x] 5 brouillons de fiches avec sources officielles (11 octobre) : CNI, duplicata de CNI, NINEA, casier judiciaire, bonne vie et mœurs
+- [ ] Relire les 5 fiches sur leurs sources puis les passer en `verifie` (`verifie_le`, `verifie_par`)
 - [x] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
 - [ ] Vérifier le seuil de pertinence sur les 5 fiches
 
