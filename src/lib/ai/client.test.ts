@@ -137,7 +137,13 @@ describe("chat", () => {
       appels.push(String(url));
       if (appels.length > 1) return completion("réponse du secours");
       return new Promise<Response>((_, rejeter) => {
-        init?.signal?.addEventListener("abort", () => rejeter(init.signal?.reason));
+        // Le minuteur d'AbortSignal.timeout ne garde pas le processus en vie : sans ce minuteur actif, la boucle
+        // d'événements peut se vider avant l'annulation et le test est annulé (vu en CI avec Node 22).
+        const gardien = setTimeout(() => undefined, 5_000);
+        init?.signal?.addEventListener("abort", () => {
+          clearTimeout(gardien);
+          rejeter(init.signal?.reason);
+        });
       });
     };
     const texte = await chat(messages, { timeoutMs: 20 }, { providers: [principal, secours], fetch: fetchLent });
