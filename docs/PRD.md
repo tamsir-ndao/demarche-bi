@@ -44,7 +44,7 @@ Inclus :
 - Message d'avertissement permanent (information indicative).
 - Pages de consultation des fiches et page « Contribuer ».
 - Avis utilisateur (utile / pas utile).
-- Jeu d'évaluation de 30 questions et commande `npm run eval`.
+- Jeu d'évaluation de 40 questions et commande `npm run eval`.
 - CI GitHub : validation des fiches, lint, build.
 - Journal anonyme dans Neon (optionnel).
 - Déploiement Vercel.
@@ -62,7 +62,7 @@ Ce que l'IA ne fait pas : elle ne fournit aucun fait administratif de sa propre 
 
 ## Qualité et évaluation
 
-Jeu de 30 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue).
+Jeu de 40 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue). Dix d'entre elles sont en wolof ou mêlées de wolof (champ `langue`), pour mesurer la compréhension partielle du wolof sans la mélanger aux chiffres en français.
 
 Mesures : la bonne fiche est-elle retrouvée (premier résultat, trois premiers), le refus est-il correct, combien de réponses sont rejetées par les garde-fous. Les chiffres sont publiés dans le README tels que mesurés, même imparfaits.
 

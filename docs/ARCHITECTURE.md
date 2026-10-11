@@ -24,7 +24,7 @@ Source de vérité du contenu : `content/demarches/*.md` (versionné dans Git, v
 
 ```
 content/demarches/        fiches Markdown (+ _modele.md)
-eval/questions.jsonl      jeu d'évaluation (30 questions)
+eval/questions.jsonl      jeu d'évaluation (40 questions, dont 10 en wolof ou mêlées de wolof)
 src/
   app/
     page.tsx              accueil et assistant
@@ -39,6 +39,8 @@ src/
       schema.ts           schéma Zod d'une fiche
       load.ts             lecture et validation des fiches
       search.ts           recherche lexicale (BM25 simplifié)
+    eval/
+      retrieval.ts        mesure de la recherche sans IA (fiche retrouvée, refus), lue par scripts/eval.ts
     ai/
       config.ts           fournisseurs (Groq, secours OpenRouter) et Whisper
       client.ts           chat() avec basculement + transcribe()

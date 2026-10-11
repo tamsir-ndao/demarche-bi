@@ -46,9 +46,9 @@ L'IA ne fournit aucun fait administratif de sa propre connaissance et n'écrit p
 
 ## Évaluation
 
-Un jeu de 30 questions (`eval/questions.jsonl`) mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient et combien de réponses sont rejetées par les garde-fous. Commande : `npm run eval`.
+Un jeu de 40 questions (`eval/questions.jsonl`), dont 10 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient et combien de réponses sont rejetées par les garde-fous. Commande : `npm run eval` (ajouter `-- --brouillons` tant que des fiches sont en brouillon).
 
-Résultats : à publier ici tels que mesurés, une fois le jeu d'évaluation écrit.
+Résultats : à publier ici tels que mesurés (recherche seule, puis de bout en bout), une fois les fiches vérifiées.
 
 ## Stack
 

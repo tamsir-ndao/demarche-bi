@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:migrate": "node scripts/db.mjs migrate",
     "validate:fiches": "tsx scripts/validate-fiches.ts",
-    "test": "tsx --test \"src/**/*.test.ts\""
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "eval": "tsx scripts/eval.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

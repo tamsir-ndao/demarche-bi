@@ -61,7 +61,7 @@ Whisper (Groq), langue `fr`. La transcription s'affiche et reste modifiable avan
 | Le modèle cite un montant absent des fiches | Réponse rejetée par les garde-fous |
 | Question en wolof ou mélangée | Mots-clés en français ; si rien n'est trouvé, refus propre |
 
-Le fichier `eval/questions.jsonl` contient une ligne par cas : `{ "question": "...", "attendu_slug": "slug" | null, "doit_contenir": ["..."] }`. Les faits attendus se prennent dans les fiches, jamais de mémoire.
+Le fichier `eval/questions.jsonl` contient une ligne par cas : `{ "question": "...", "famille": "couverte" | "hors_perimetre" | "vague", "langue": "fr" | "mixte" | "wo", "attendu_slug": "slug" | null, "doit_contenir": ["..."] }`. `langue` vaut `fr` par défaut (`mixte` : français et wolof mêlés ; `wo` : wolof). `attendu_slug` et `doit_contenir` ne concernent que la famille `couverte`. Les faits attendus se prennent dans les fiches, jamais de mémoire : `npm run eval` vérifie que chacun figure dans la fiche attendue.
 
 ## Modèles déclarés (à garder synchronisés avec le README)
 

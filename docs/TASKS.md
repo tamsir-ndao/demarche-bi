@@ -39,14 +39,17 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 
 ## Mardi 13 — évaluation
 
-- [ ] `eval/questions.jsonl` : 30 questions (couvertes, hors périmètre, vagues)
-- [ ] `scripts/eval.ts` et `npm run eval` (recherche seule, puis de bout en bout)
+- [x] `eval/questions.jsonl` : 40 questions (couvertes, hors périmètre, vagues), dont 10 en wolof ou mêlées de wolof
+- [ ] Faire relire par un locuteur wolof les 10 questions `mixte` et `wo` de `eval/questions.jsonl` (tournures rédigées sans locuteur natif)
+- [x] `scripts/eval.ts` et `npm run eval` : recherche seule (`-- --brouillons` tant que des fiches sont en brouillon)
+- [ ] `npm run eval` de bout en bout (après `/api/ask`) : faits attendus et rejets des garde-fous
 - [ ] Corriger la recherche et les prompts selon les résultats
 - [ ] 5 fiches de plus (lot 3) : 15 au total
 
 ## Mercredi 14 — voix et consultation
 
 - [ ] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable
+- [ ] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée
 - [ ] Pages `/demarches` et `/demarches/[slug]`
 - [ ] Page `/contribuer`
 
@@ -59,7 +62,7 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 ## Vendredi 16 — essais réels
 
 - [ ] Test sur téléphone et en connexion lente
-- [ ] Faire essayer à 2 ou 3 personnes, noter leurs questions et leurs remarques
+- [ ] Faire essayer à 2 ou 3 personnes, noter leurs questions et leurs remarques (les questions réelles s'ajoutent à `eval/questions.jsonl`)
 - [ ] Corriger ce qui bloque
 
 ## Samedi 17 — open source et chiffres

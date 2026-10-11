@@ -1,0 +1,40 @@
+{"question":"Mon fils a 8 ans, est-ce qu'il peut avoir une carte d'identité ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["5 ans"]}
+{"question":"Ma CNI expire bientôt, qu'est-ce que je dois faire pour la renouveler ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["commissariat"]}
+{"question":"Je porte des lunettes, est-ce que ça change quelque chose pour ma carte d'identité ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["ordonnance"]}
+{"question":"Je suis à Paris, je peux faire ma carte d'identité sénégalaise là-bas ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["Paris"]}
+{"question":"J'ai égaré ma carte d'identité, je fais comment ?","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["certificat de perte"]}
+{"question":"Combien je paie pour un duplicata de carte d'identité ?","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["10 000 FCFA"]}
+{"question":"Le certificat de perte pour ma carte d'identité, c'est qui qui le donne ?","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["police"]}
+{"question":"ninea pièces à fournir","famille":"couverte","attendu_slug":"ninea","doit_contenir":["timbre fiscal"]}
+{"question":"Euh bonjour, alors je voudrais savoir euh comment on fait pour avoir un NINEA parce que je veux ouvrir une petite boutique","famille":"couverte","attendu_slug":"ninea","doit_contenir":["centre des services fiscaux"]}
+{"question":"Le NINEA, ça prend combien de jours ?","famille":"couverte","attendu_slug":"ninea","doit_contenir":["3 jours"]}
+{"question":"Je suis né à Thiès, où je demande mon casier judiciaire ?","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["greffe"]}
+{"question":"C'est gratuit le casier judiciaire ?","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["200 FCFA"]}
+{"question":"Je suis né à l'étranger, comment avoir mon casier judiciaire sénégalais ?","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["Cour d'appel de Dakar"]}
+{"question":"Mon employeur me demande un certificat de bonne vie et mœurs, je le prends où ?","famille":"couverte","attendu_slug":"certificat-bonne-vie-et-moeurs","doit_contenir":["commissariat"]}
+{"question":"Le certificat de bonne vie et mœurs, c'est combien ?","famille":"couverte","attendu_slug":"certificat-bonne-vie-et-moeurs"}
+{"question":"Bonjour, alors voilà, je voudrais savoir euh combien de temps ça prend pour avoir le certificat de bonne vie et moeurs","famille":"couverte","attendu_slug":"certificat-bonne-vie-et-moeurs","doit_contenir":["2 jours"]}
+{"question":"Dama bëgg sama carte d'identité, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["commissariat"]}
+{"question":"Lan laa soxla ngir sama carte d'identité ?","famille":"couverte","langue":"mixte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["extrait de naissance"]}
+{"question":"Ñaata la duplicata carte d'identité ?","famille":"couverte","langue":"mixte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["10 000 FCFA"]}
+{"question":"Lan mooy NINEA, ak naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"ninea","doit_contenir":["numéro unique"]}
+{"question":"Fan laa mën a jël casier judiciaire ?","famille":"couverte","langue":"mixte","attendu_slug":"casier-judiciaire","doit_contenir":["greffe"]}
+{"question":"Certificat de bonne vie et mœurs, ñaata bés la mu jël ?","famille":"couverte","langue":"mixte","attendu_slug":"certificat-bonne-vie-et-moeurs","doit_contenir":["2 jours"]}
+{"question":"Quel temps fera-t-il demain à Dakar ?","famille":"hors_perimetre"}
+{"question":"Qui a gagné le match des Lions de la Teranga hier soir ?","famille":"hors_perimetre"}
+{"question":"Comment préparer un bon mafé ?","famille":"hors_perimetre"}
+{"question":"J'ai mal à la tête depuis trois jours, quel médicament je peux prendre ?","famille":"hors_perimetre"}
+{"question":"Quelle est la capitale du Mali ?","famille":"hors_perimetre"}
+{"question":"Comment obtenir la carte d'identité française ?","famille":"hors_perimetre"}
+{"question":"Comment demander un visa pour la France ?","famille":"hors_perimetre"}
+{"question":"Comment faire un titre foncier pour mon terrain à Saly ?","famille":"hors_perimetre"}
+{"question":"Ndax dina taw ci Dakar tay ?","famille":"hors_perimetre","langue":"wo"}
+{"question":"Dama bëgg visa pour la France, naka laa ko defe ?","famille":"hors_perimetre","langue":"mixte"}
+{"question":"Je veux un papier.","famille":"vague"}
+{"question":"J'ai un problème avec l'administration.","famille":"vague"}
+{"question":"Comment faire ma démarche ?","famille":"vague"}
+{"question":"Il me faut un document pour mon dossier.","famille":"vague"}
+{"question":"Où je dois aller pour mes papiers ?","famille":"vague"}
+{"question":"Je veux faire ma carte.","famille":"vague"}
+{"question":"Dama bëgg kayit.","famille":"vague","langue":"wo"}
+{"question":"Dama soxla ndimbal ci administration bi.","famille":"vague","langue":"wo"}
