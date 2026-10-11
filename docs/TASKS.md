@@ -13,14 +13,14 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 ## Vendredi 9 octobre — à faire par toi
 
 - [ ] Mettre à jour ton inscription au hackathon avec Démarche-Bi, track Civic Tech (`docs/SETUP.md`, étape 2)
-- [ ] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
+- [x] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
 - [ ] Clé Groq dans `.env.local` (étapes 4 à 6)
 - [ ] Choisir les 15 démarches (`docs/FICHES-A-PRODUIRE.md`)
 
 ## Samedi 10 — fiches (lot 1) et recherche
 
 - [ ] 5 premières fiches avec sources officielles, relues puis passées en `verifie`
-- [ ] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
+- [x] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
 - [ ] Vérifier le seuil de pertinence sur les 5 fiches
 
 ## Dimanche 11 — IA et API

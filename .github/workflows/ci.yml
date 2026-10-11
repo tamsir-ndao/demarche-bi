@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - name: Valider les fiches
         run: npm run validate:fiches
+      - name: Tests
+        run: npm test
       - name: Lint
         run: npm run lint
       - name: Build
