@@ -3,6 +3,8 @@ export type ChatProvider = {
   baseUrl: string;
   apiKey: string;
   model: string;
+  /** Effort de raisonnement demandé au modèle (gpt-oss : « low » ; Qwen : « none »). Absent : rien n'est envoyé. */
+  reasoningEffort?: string;
 };
 
 export type WhisperConfig = {
@@ -11,46 +13,74 @@ export type WhisperConfig = {
   model: string;
 };
 
+type Env = Record<string, string | undefined>;
+
 const GROQ_URL = "https://api.groq.com/openai/v1";
 const OPENROUTER_URL = "https://openrouter.ai/api/v1";
 
+/** Modèles open-weight de Groq (testés le 11 octobre 2026). Chacun a son propre quota : l'un sert de secours à l'autre. */
+export const MODELE_PRINCIPAL = "openai/gpt-oss-120b";
+export const MODELE_SECOURS = "qwen/qwen3.8-27b";
+
+/** Effort de raisonnement du modèle par défaut de chaque rôle : une réponse courte, vite, sans longue réflexion. */
+const EFFORT_PRINCIPAL = "low";
+const EFFORT_SECOURS = "none";
+
 /**
- * Fournisseurs de chat dans l'ordre d'essai : Groq d'abord, OpenRouter en secours.
- * Un fournisseur sans clé API est ignoré.
+ * Fournisseurs de chat dans l'ordre d'essai. Un fournisseur sans clé API est ignoré.
+ * - principal : AI_API_KEY (Groq par défaut) ;
+ * - secours : un fournisseur explicite (AI_FALLBACK_API_KEY et AI_FALLBACK_MODEL, OpenRouter par défaut) ou,
+ *   quand le principal est Groq, un second modèle de Groq avec la même clé.
  */
-export function getChatProviders(): ChatProvider[] {
+export function getChatProviders(env: Env = process.env): ChatProvider[] {
   const providers: ChatProvider[] = [];
 
-  const primaryKey = process.env.AI_API_KEY;
-  if (primaryKey) {
-    providers.push({
-      name: "principal",
-      baseUrl: process.env.AI_BASE_URL || GROQ_URL,
-      apiKey: primaryKey,
-      model: process.env.AI_MODEL || "llama-3.3-70b-versatile",
-    });
-  }
+  const primaryKey = env.AI_API_KEY;
+  if (!primaryKey) return providers;
 
-  const fallbackKey = process.env.AI_FALLBACK_API_KEY;
+  const baseUrl = env.AI_BASE_URL || GROQ_URL;
+  const model = env.AI_MODEL || MODELE_PRINCIPAL;
+  providers.push({
+    name: "principal",
+    baseUrl,
+    apiKey: primaryKey,
+    model,
+    reasoningEffort: env.AI_REASONING_EFFORT || (model === MODELE_PRINCIPAL ? EFFORT_PRINCIPAL : undefined),
+  });
+
+  const fallbackKey = env.AI_FALLBACK_API_KEY;
+  const fallbackModel = env.AI_FALLBACK_MODEL;
   if (fallbackKey) {
+    // Fournisseur explicite : le modèle est obligatoire (les noms de modèles gratuits changent trop souvent pour un défaut).
+    if (fallbackModel) {
+      providers.push({
+        name: "secours",
+        baseUrl: env.AI_FALLBACK_BASE_URL || OPENROUTER_URL,
+        apiKey: fallbackKey,
+        model: fallbackModel,
+        reasoningEffort: undefined,
+      });
+    }
+  } else if (baseUrl === GROQ_URL) {
+    const modeleSecours = fallbackModel || MODELE_SECOURS;
     providers.push({
       name: "secours",
-      baseUrl: process.env.AI_FALLBACK_BASE_URL || OPENROUTER_URL,
-      apiKey: fallbackKey,
-      model:
-        process.env.AI_FALLBACK_MODEL || "meta-llama/llama-3.3-70b-instruct:free",
+      baseUrl,
+      apiKey: primaryKey,
+      model: modeleSecours,
+      reasoningEffort: modeleSecours === MODELE_SECOURS ? EFFORT_SECOURS : undefined,
     });
   }
 
   return providers;
 }
 
-export function getWhisperConfig(): WhisperConfig | null {
-  const apiKey = process.env.WHISPER_API_KEY;
+export function getWhisperConfig(env: Env = process.env): WhisperConfig | null {
+  const apiKey = env.WHISPER_API_KEY;
   if (!apiKey) return null;
   return {
-    baseUrl: process.env.WHISPER_BASE_URL || GROQ_URL,
+    baseUrl: env.WHISPER_BASE_URL || GROQ_URL,
     apiKey,
-    model: process.env.WHISPER_MODEL || "whisper-large-v3-turbo",
+    model: env.WHISPER_MODEL || "whisper-large-v3-turbo",
   };
 }

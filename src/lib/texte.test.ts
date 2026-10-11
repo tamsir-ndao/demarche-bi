@@ -1,7 +1,15 @@
 // Tests des petits outils de texte. Lancer : npm test
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { LONGUEUR_MAX_QUESTION, motsDeFiltre, nettoyerQuestion, simplifier, typographie } from "./texte";
+import {
+  LONGUEUR_MAX_QUESTION,
+  motsDeFiltre,
+  nettoyerQuestion,
+  nettoyerSlug,
+  simplifier,
+  typographie,
+  urlReponse,
+} from "./texte";
 
 describe("simplifier", () => {
   it("passe en minuscules et retire les accents", () => {
@@ -88,5 +96,38 @@ describe("typographie", () => {
 
   it("laisse intact un texte sans apostrophe", () => {
     assert.equal(typographie("Un jour"), "Un jour");
+  });
+});
+
+describe("urlReponse", () => {
+  it("met la question dans l'adresse, avec ses espaces et ses accents encodés", () => {
+    assert.equal(urlReponse("Carte d'identité ?"), "/reponse?q=Carte+d%27identit%C3%A9+%3F");
+  });
+
+  it("ajoute la démarche choisie", () => {
+    assert.equal(urlReponse("Carte", "duplicata-carte"), "/reponse?q=Carte&fiche=duplicata-carte");
+  });
+
+  it("se relit avec nettoyerQuestion", () => {
+    const adresse = new URL(urlReponse("Ma question   avec des espaces ?", "ninea"), "https://exemple.test");
+    assert.equal(nettoyerQuestion(adresse.searchParams.get("q") ?? undefined), "Ma question avec des espaces ?");
+    assert.equal(nettoyerSlug(adresse.searchParams.get("fiche") ?? undefined), "ninea");
+  });
+});
+
+describe("nettoyerSlug", () => {
+  it("garde une démarche bien écrite", () => {
+    assert.equal(nettoyerSlug("duplicata-carte-nationale-identite"), "duplicata-carte-nationale-identite");
+    assert.equal(nettoyerSlug("ninea"), "ninea");
+  });
+
+  it("prend la première valeur quand le paramètre est répété", () => {
+    assert.equal(nettoyerSlug(["ninea", "autre"]), "ninea");
+  });
+
+  it("ignore une valeur absente, vide ou mal écrite", () => {
+    for (const valeur of [undefined, "", "Ninea", "a b", "../secret", "ninea-", "-ninea", "a--b", "é", "x".repeat(101)]) {
+      assert.equal(nettoyerSlug(valeur), undefined, `« ${valeur} » devrait être ignorée`);
+    }
   });
 });

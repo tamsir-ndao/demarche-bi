@@ -37,3 +37,16 @@ export function motsDeFiltre(texte: string): string[] {
 export function typographie(texte: string): string {
   return texte.replace(/(?<=\p{L})'(?=[\p{L}\p{N}])/gu, "’");
 }
+
+/** L'adresse de la réponse à une question, pour une démarche précise quand la personne l'a choisie. */
+export function urlReponse(question: string, ficheSlug?: string): string {
+  const parametres = new URLSearchParams({ q: question });
+  if (ficheSlug) parametres.set("fiche", ficheSlug);
+  return `/reponse?${parametres}`;
+}
+
+/** Lit la démarche choisie dans l'adresse (?fiche=…) : des minuscules, chiffres et tirets, sinon rien. */
+export function nettoyerSlug(valeur: string | string[] | undefined): string | undefined {
+  const texte = Array.isArray(valeur) ? valeur[0] : valeur;
+  return texte !== undefined && texte.length <= 100 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(texte) ? texte : undefined;
+}
