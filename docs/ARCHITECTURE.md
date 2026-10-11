@@ -83,7 +83,7 @@ Seules les fiches au statut `verifie` répondent en production. Les brouillons n
 
 ## Interface
 
-Design « doux » (vert, blanc, noir adouci) : les couleurs sont des variables CSS de `src/app/globals.css` et le mode sombre suit le réglage du téléphone. Polices du système, mobile d'abord : le menu est en bas sur téléphone, en haut sur ordinateur.
+Design « doux » (vert, blanc, noir adouci) : les couleurs sont des variables CSS de `src/app/globals.css` et le mode sombre suit le réglage du téléphone. Le thème nuit est en gris foncé neutre ; le vert vif ne sert qu'aux accents (logo, boutons, icônes, liens, pastilles). Polices du système, mobile d'abord : le menu est en bas sur téléphone, en haut sur ordinateur.
 
 - `/` : le champ de question est un formulaire `GET` vers `/reponse?q=…`.
 - `/reponse` : la question est lue dans l'adresse (`?q=…`, et `&fiche=…` quand la personne a choisi une démarche sur l'écran de précision). Le cadre de la page est prérendu avec l'écran d'attente, la réponse arrive ensuite (Cache Components) : une fiche avec son introduction, un écran de précision, ou « Je ne sais pas encore ». Cette page n'est pas indexée (les questions sont dans l'adresse). La réponse demande JavaScript.

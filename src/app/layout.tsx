@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f4faf6" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1a14" },
+    { media: "(prefers-color-scheme: dark)", color: "#161718" },
   ],
   // Laisse la barre du bas passer au-dessus de la zone du geste sur les téléphones récents.
   viewportFit: "cover",

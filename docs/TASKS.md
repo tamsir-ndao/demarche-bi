@@ -40,6 +40,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] Page d'accueil : zone de question, exemples, réponse avec étapes (l'IA choisit la fiche et écrit l'introduction ; sans micro avant la voix)
 - [x] Affichage des sources (titre, lien, date de consultation), de la date de vérification et de l'avertissement
 - [x] État « je ne sais pas » (11 octobre)
+- [x] Thème nuit en gris foncé neutre à la place du vert très foncé (demande du 11 octobre) ; le vert vif reste pour les accents
 - [ ] Espaces insécables dans les montants (« 10 000 FCFA » se coupe en fin de ligne sur téléphone)
 - [x] État « question de précision » : écran de choix entre plusieurs démarches, et question à reformuler quand la demande est trop vague
 

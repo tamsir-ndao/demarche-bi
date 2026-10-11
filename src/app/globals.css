@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 /* Design « doux » : vert, blanc, noir adouci (voir la maquette). Le mode sombre suit le réglage
-   du téléphone. Polices : celles du système, rien à télécharger. */
+   du téléphone : gris foncé neutre, le vert vif ne sert qu'aux accents (logo, boutons, icônes, liens).
+   Polices : celles du système, rien à télécharger. */
 :root {
   color-scheme: light dark;
   --bg: #f4faf6;
@@ -25,16 +26,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0e1a14;
-    --card: #14261d;
-    --ink: #eaf5ee;
-    --ink2: #a9c2b3;
-    --ink3: #8faa9b;
-    --line: #25382e;
-    --hair: rgb(234 245 238 / 0.1);
-    --edge: #4b8a67;
-    --tint: #143324;
-    --tint2: #1b4430;
+    --bg: #161718;
+    --card: #1f2021;
+    --ink: #ececec;
+    --ink2: #b4b8bb;
+    --ink3: #9a9fa3;
+    --line: #34373a;
+    --hair: rgb(236 236 236 / 0.1);
+    --edge: #767b80;
+    --tint: #26282a;
+    --tint2: #2f3234;
     --gd: #3ddc91;
     --gdd: #3ddc91;
     --on-g: #0a2016;
