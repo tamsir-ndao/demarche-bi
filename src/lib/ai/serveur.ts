@@ -11,10 +11,10 @@ import { modeleParDefaut } from "./structured";
 
 const SIX_HEURES_MS = 6 * 60 * 60 * 1000;
 
-/** Garde une trace des pannes de l'IA dans les journaux du serveur, sans clé ni question de l'utilisateur. */
+/** Garde une trace des pannes de l'IA dans les journaux du serveur (avertissement : un quota atteint est attendu), sans clé ni question. */
 function journaliser(etape: "comprendre" | "repondre", erreur: unknown): void {
   const detail = erreur instanceof ErreurIA ? `${erreur.nature} (${erreur.details.join(" ; ")})` : "erreur inattendue";
-  console.error(`[ia] ${etape} : ${detail}`);
+  console.warn(`[ia] ${etape} : ${detail}`);
 }
 
 let service: ReturnType<typeof creerService> | undefined;

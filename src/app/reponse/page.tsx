@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { BulleQuestion } from "@/components/BulleQuestion";
 import { JeNeSaisPas } from "@/components/JeNeSaisPas";
@@ -37,6 +38,9 @@ async function Reponse({ searchParams }: Pick<PageProps<"/reponse">, "searchPara
   const question = nettoyerQuestion(parametres.q);
   if (question === "") return <QuestionVide />;
 
+  // La réponse dépend de l'heure (mémoire des questions, limite par visiteur) et d'un service externe :
+  // on la calcule à la vraie demande, jamais pendant un préchargement ou un prérendu.
+  await connection();
   const reponse = await repondreALaQuestion(question, {
     ficheSlug: nettoyerSlug(parametres.fiche),
     visiteur: visiteurDepuis(await headers()),
