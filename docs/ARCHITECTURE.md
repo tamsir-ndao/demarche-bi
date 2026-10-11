@@ -63,7 +63,7 @@ Seules les fiches au statut `verifie` répondent en production. Les brouillons n
 
 ## Recherche (étape 2)
 
-Recherche lexicale écrite en code : normalisation (minuscules, accents retirés, mots vides français), pondération par champ (titre et mots-clés plus forts que le résumé, lui-même plus fort que le corps), score de type BM25. Un seuil de score décide s'il y a une fiche pertinente ; en dessous, la réponse est « je ne sais pas ». Pas d'embeddings : plus simple, reproductible, testable sans clé IA, et facile à comprendre pour un contributeur.
+Recherche lexicale écrite en code : normalisation (minuscules, accents retirés, mots vides français), pondération par champ (titre et mots-clés plus forts que le résumé, lui-même plus fort que le corps), score de type BM25. Un seuil de score décide s'il y a une fiche pertinente ; en dessous, la réponse est « je ne sais pas ». Une fiche n'est retenue que si un mot de la question figure dans son titre ou ses mots-clés : citer « acte de naissance » parmi ses pièces ne suffit pas (les mots-clés d'une fiche doivent donc contenir les mots que les gens emploient, par exemple « perdu » ou « refaire »). Les verbes génériques des questions (obtenir, avoir, faire, demander, savoir) sont ignorés. Pas d'embeddings : plus simple, reproductible, testable sans clé IA, et facile à comprendre pour un contributeur.
 
 ## Garde-fous (étape 4)
 

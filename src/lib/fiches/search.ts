@@ -2,6 +2,8 @@ import type { Fiche } from "./schema";
 
 // Recherche lexicale (étape 2 de /api/ask) : pas d'IA, pas d'embeddings, testable sans clé.
 // Score de type BM25 où chaque champ de la fiche compte plus ou moins (voir POIDS).
+// Une fiche n'est retenue que si un mot de la question figure dans son titre ou ses mots-clés :
+// citer « acte de naissance » parmi ses pièces ne suffit pas pour répondre sur l'acte de naissance.
 
 /**
  * Score minimal pour qu'une fiche soit jugée pertinente ; en dessous, la réponse est « je ne sais pas ».
@@ -27,7 +29,9 @@ const MOTS_VIDES = new Set(
     "je tu il elle on nous vous ils elles me te se lui mon ma mes ton ta tes son sa ses " +
     "notre nos votre vos leur leurs est sont suis es etre ai as avons avez ont a " +
     "comment combien quand pourquoi " +
-    "veux voudrais souhaite besoin peux puis dois faut"
+    "veux voudrais souhaite besoin peux puis dois faut " +
+    // Verbes génériques des questions (« comment obtenir… ») : ils ne désignent aucune démarche.
+    "obtenir avoir faire demander savoir"
   ).split(" "),
 );
 
@@ -53,27 +57,31 @@ type FicheIndexee = {
   frequences: Map<string, number>;
   /** Longueur pondérée de la fiche (somme des mots × poids de leur champ). */
   longueur: number;
+  /** Mots du titre et des mots-clés : la fiche doit en partager un avec la question pour être retenue. */
+  sujet: Set<string>;
 };
 
 function indexer(fiche: Fiche): FicheIndexee {
-  const champs: [string, number][] = [
-    [fiche.titre, POIDS.titre],
-    [fiche.mots_cles.join(" "), POIDS.mots_cles],
-    [fiche.resume, POIDS.resume],
-    [fiche.etapes.join(" "), POIDS.etapes],
-    [fiche.pieces.join(" "), POIDS.pieces],
-    [fiche.corps, POIDS.corps],
+  const titre = normaliser(fiche.titre);
+  const motsCles = normaliser(fiche.mots_cles.join(" "));
+  const champs: [string[], number][] = [
+    [titre, POIDS.titre],
+    [motsCles, POIDS.mots_cles],
+    [normaliser(fiche.resume), POIDS.resume],
+    [normaliser(fiche.etapes.join(" ")), POIDS.etapes],
+    [normaliser(fiche.pieces.join(" ")), POIDS.pieces],
+    [normaliser(fiche.corps), POIDS.corps],
   ];
 
   const frequences = new Map<string, number>();
   let longueur = 0;
-  for (const [texte, poids] of champs) {
-    for (const mot of normaliser(texte)) {
+  for (const [mots, poids] of champs) {
+    for (const mot of mots) {
       frequences.set(mot, (frequences.get(mot) ?? 0) + poids);
       longueur += poids;
     }
   }
-  return { fiche, frequences, longueur };
+  return { fiche, frequences, longueur, sujet: new Set([...titre, ...motsCles]) };
 }
 
 export type ResultatRecherche = { fiche: Fiche; score: number };
@@ -123,7 +131,7 @@ export function searchFiches(
   }
 
   return [...scores]
-    .filter(([, score]) => score > 0 && score >= seuil)
+    .filter(([c, score]) => score > 0 && score >= seuil && mots.some((mot) => c.sujet.has(mot)))
     .sort((a, b) => b[1] - a[1])
     .slice(0, limite)
     .map(([c, score]) => ({ fiche: c.fiche, score }));

@@ -49,6 +49,13 @@ describe("normaliser", () => {
     assert.deepEqual(normaliser("pièces"), normaliser("pièce"));
   });
 
+  it("ignore les verbes génériques des questions", () => {
+    assert.deepEqual(
+      normaliser("Comment obtenir, avoir, faire ou demander un passeport, je voudrais savoir ?"),
+      ["passeport"],
+    );
+  });
+
   it("renvoie une liste vide pour une question sans mot utile", () => {
     assert.deepEqual(normaliser("  ?! le la de  "), []);
   });
@@ -71,29 +78,60 @@ describe("searchFiches", () => {
   });
 
   it("trie les résultats par score décroissant", () => {
-    const a = fiche({ slug: "a", titre: "Démarche A", mots_cles: ["naissance", "acte", "mairie"] });
-    const b = fiche({
-      slug: "b",
-      titre: "Démarche B",
-      corps: "Une naissance est déclarée. La naissance doit être enregistrée.",
-    });
-    const resultats = searchFiches([b, a], "naissance", { seuil: 0 });
+    const complete = fiche({ slug: "complete", titre: "Démarche A", mots_cles: ["naissance", "acte", "mairie"] });
+    const partielle = fiche({ slug: "partielle", titre: "Démarche B", mots_cles: ["naissance", "test", "exemple"] });
+    const resultats = searchFiches([partielle, complete], "acte naissance", { seuil: 0 });
     assert.deepEqual(
       resultats.map((r) => r.fiche.slug),
-      ["a", "b"],
+      ["complete", "partielle"],
     );
     assert.ok(resultats[0].score > resultats[1].score);
   });
 
   it("donne plus de poids au titre qu'au corps", () => {
-    const dansLeTitre = fiche({ slug: "titre", titre: "Légalisation de documents" });
+    // Les deux fiches passent le filtre grâce au mot-clé « visa » : seul « légalisation » les départage.
+    const dansLeTitre = fiche({
+      slug: "titre",
+      titre: "Légalisation de documents",
+      mots_cles: ["visa", "voyage", "ambassade"],
+    });
     const dansLeCorps = fiche({
       slug: "corps",
       titre: "Démarche sans rapport",
+      mots_cles: ["visa", "voyage", "ambassade"],
       corps: "Texte de test : légalisation, légalisation, légalisation.",
     });
-    const resultats = searchFiches([dansLeCorps, dansLeTitre], "légalisation", { seuil: 0 });
+    const resultats = searchFiches([dansLeCorps, dansLeTitre], "visa légalisation", { seuil: 0 });
     assert.equal(resultats[0].fiche.slug, "titre");
+  });
+
+  it("écarte une fiche qui ne cite les mots de la question que dans ses pièces ou son corps", () => {
+    const mention = fiche({
+      slug: "mention",
+      titre: "Démarche de test",
+      pieces: ["Acte de naissance"],
+      corps: "Prévoir l'acte de naissance du demandeur.",
+    });
+    assert.deepEqual(searchFiches([mention], "acte de naissance", { seuil: 0 }), []);
+  });
+
+  it("retient une fiche dont le titre contient un mot de la question", () => {
+    const parTitre = fiche({ slug: "par-titre", titre: "Légalisation de documents" });
+    assert.equal(searchFiches([parTitre], "légalisation", { seuil: 0 }).length, 1);
+  });
+
+  it("retient une fiche dont les mots-clés contiennent un mot de la question", () => {
+    const parMotsCles = fiche({
+      slug: "par-mots-cles",
+      titre: "Démarche de test",
+      mots_cles: ["visa", "voyage", "ambassade"],
+    });
+    assert.equal(searchFiches([parMotsCles], "visa", { seuil: 0 }).length, 1);
+  });
+
+  it("ne retient pas une fiche à cause d'un verbe générique de son titre", () => {
+    const ninea = fiche({ slug: "ninea", titre: "Obtenir un NINEA", mots_cles: ["NINEA", "numéro unique", "DGID"] });
+    assert.deepEqual(searchFiches([ninea], "comment obtenir un passeport", { seuil: 0 }), []);
   });
 
   it("renvoie une liste vide pour une question hors périmètre", () => {
