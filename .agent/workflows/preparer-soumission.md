@@ -1,5 +1,5 @@
 ---
-description: Vérifier que le projet est prêt pour la soumission du hackathon (19 octobre 2026)
+description: Vérifier que le projet est prêt pour le dossier du hackathon (prêt le 18 octobre 2026, soumission MLH le 24)
 ---
 
 1. Vérifier que le dépôt est public, avec la licence MIT et un historique Git visible.
@@ -10,4 +10,4 @@ description: Vérifier que le projet est prêt pour la soumission du hackathon (
 6. Vérifier que chaque fiche utilisée en production est `verifie`, avec sources, date et auteur de vérification.
 7. Vérifier le parcours de démonstration de bout en bout, avec un plan B si le réseau ou l'API tombe.
 8. Préparer la vidéo de 3 minutes maximum (voir `docs/PRD.md`, parcours de démonstration).
-9. Rédiger la description du problème et de la solution, et l'explication de l'usage de l'IA, pour le formulaire de soumission.
+9. Rédiger la description du problème et de la solution, et l'explication de l'usage de l'IA, pour le dossier de présélection et la soumission MLH.

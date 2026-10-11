@@ -1,6 +1,6 @@
 # Tâches — Démarche-Bi
 
-Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), présélection le 21, finale le 24.
+Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne), présélection prévue le 21 (modalités à confirmer par les organisateurs), finale et soumission MLH le **24 octobre**.
 
 ## Fait
 
@@ -13,6 +13,7 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 ## Vendredi 9 octobre — à faire par toi
 
 - [ ] Mettre à jour ton inscription au hackathon avec Démarche-Bi, track Civic Tech (`docs/SETUP.md`, étape 2)
+- [ ] Inscrire chaque membre de l'équipe sur MLH (mail des organisateurs du 11 octobre) : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
 - [x] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
 - [ ] Clé Groq dans `.env.local` (étapes 4 à 6)
 - [ ] Choisir les 15 démarches (`docs/FICHES-A-PRODUIRE.md`)
@@ -30,6 +31,7 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 - [ ] `schemas.ts`, `understand.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/`
 - [ ] Route `/api/ask` : comprendre, retrouver, répondre, vérifier, citer
 - [ ] Tests des garde-fous (slug inconnu, montant inventé, sortie invalide)
+- [ ] Déploiement Vercel avec les variables d'environnement, juste après l'IA : un lien public sera sans doute demandé pour la présélection
 
 ## Lundi 12 — interface
 
@@ -59,7 +61,6 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 
 - [ ] Avis « utile / pas utile » et `/api/feedback`
 - [ ] Journal anonyme dans Neon (optionnel, l'application marche sans)
-- [ ] Déploiement Vercel avec les variables d'environnement
 
 ## Vendredi 16 — essais réels
 
@@ -73,15 +74,15 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 - [ ] Au moins 5 issues « good first issue » (nouvelles fiches à écrire)
 - [ ] Vérification anti-secrets (workflow `preparer-soumission`)
 
-## Dimanche 18 — soumission
+## Dimanche 18 — dossier prêt
 
 - [ ] Vidéo de démonstration (3 minutes maximum)
 - [ ] Texte de soumission : problème, solution, rôle de l'IA
-- [ ] Soumettre (avec un jour de marge)
+- [ ] Envoyer le dossier de présélection selon les modalités des organisateurs (à confirmer)
 
 ## Lundi 19 — marge
 
-- [ ] Date limite : seulement des corrections mineures
+- [ ] Marge : corrections mineures seulement
 
 ## 20 au 23 octobre — finale
 
@@ -90,3 +91,5 @@ Cocher au fur et à mesure. Soumission le **19 octobre 2026** (viser le 18), pr�
 - [ ] Plan B de démo : vidéo enregistrée si le réseau ou l'API tombe
 
 ## Samedi 24 octobre — finale à l'Impact Hub Dakar
+
+- [ ] Check-in sur place, puis soumission sur MLH Organizer HQ (section Challenges) pour les 5 finalistes

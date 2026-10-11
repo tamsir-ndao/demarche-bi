@@ -7,7 +7,7 @@
 
 Démarche-Bi est un assistant open source qui répond aux questions sur les démarches administratives au Sénégal, **uniquement à partir de fiches vérifiées**, en citant toujours ses sources officielles.
 
-Projet de l'**Open Source × AI Hackathon 2026 (Galsen DEV)**, track Civic Tech & services publics. Dates : soumission **19 octobre 2026** (viser le 18), présélection le 21, finale **24 octobre 2026**.
+Projet de l'**Open Source × AI Hackathon 2026 (Galsen DEV)**, track Civic Tech & services publics. Dates : dossier prêt le **18 octobre 2026** (date interne), présélection prévue le 21 (modalités à confirmer par les organisateurs), finale et soumission MLH le **24 octobre 2026** (5 finalistes, après le check-in à l'Impact Hub Dakar).
 
 ## Règle n°1 : aucune information inventée
 

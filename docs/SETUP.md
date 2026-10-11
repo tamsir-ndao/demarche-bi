@@ -25,7 +25,7 @@ Ouvre le dossier `demarche-bi` dans Antigravity. L'agent lit automatiquement `GE
 
 1. Si tu as déjà envoyé le formulaire avec l'ancien projet, préviens les organisateurs ou renvoie-le avec Démarche-Bi : https://tally.so/r/0Qp5rB
 2. Track à choisir : **Civic Tech & services publics**.
-3. Pour assister à l'événement du 24 octobre à l'Impact Hub Dakar, l'inscription MLH est séparée : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
+3. Pour l'événement du 24 octobre à l'Impact Hub Dakar, l'inscription MLH est séparée et demandée à chaque membre de l'équipe, dès maintenant : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
 
 ## Étape 3 — Créer le dépôt GitHub public
 
@@ -96,9 +96,11 @@ L'application fonctionne sans base. Neon sert au journal anonyme des questions e
 
 Dans Antigravity, demande à l'agent de suivre `docs/TASKS.md`, tâche par tâche. Les workflows de `.agent/workflows/` décrivent les boucles : `nouvelle-fonctionnalite` (plan, validation, code, vérifications, commit), `ajouter-une-fiche` et `preparer-soumission`. Coche les tâches terminées.
 
-## Étape 11 — Soumettre (avant le 19 octobre 2026)
+## Étape 11 — Soumettre
 
-Suis le workflow `preparer-soumission` : README final avec les chiffres d'évaluation et les modèles déclarés, vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis formulaire de soumission.
+Le dossier doit être prêt le **18 octobre 2026** (date interne). Les organisateurs communiqueront les modalités de transmission pour la présélection. La soumission sur la plateforme MLH (Organizer HQ, section *Challenges*) se fait uniquement le **24 octobre**, pour les 5 finalistes, après le check-in à l'Impact Hub Dakar.
+
+Suis le workflow `preparer-soumission` : README final avec les chiffres d'évaluation et les modèles déclarés, vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis envoi selon les modalités reçues.
 
 ## Dépannage
 

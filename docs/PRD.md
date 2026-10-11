@@ -88,16 +88,18 @@ Mesures : la bonne fiche est-elle retrouvée (premier résultat, trois premiers)
 | Vie privée | Aucun compte, aucune adresse IP stockée, questions tronquées, journal optionnel et purgeable |
 | Pas assez de fiches fiables à temps | Viser 15 fiches, accepter 10 vérifiées plutôt que 15 douteuses |
 
-## Livrables de soumission (19 octobre 2026)
+## Livrables (dossier prêt le 18 octobre 2026)
 
 - Dépôt public, licence MIT, historique Git visible
 - README : problème, solution, rôle de l'IA, modèles, installation, chiffres d'évaluation
 - Vidéo de démonstration de 3 minutes maximum
 - Description du problème, de la solution et de l'usage de l'IA
 
+Les modalités de transmission pour la présélection ne sont pas encore connues : les organisateurs les communiqueront (mail du 11 octobre). La soumission sur la plateforme MLH (Organizer HQ) se fait uniquement le 24 octobre, pour les 5 finalistes.
+
 ## Calendrier
 
 - 7 octobre : lancement du hackathon
-- 19 octobre : soumission (viser le 18)
-- 21 octobre : présélection des 5 finalistes
-- 24 octobre : finale à l'Impact Hub Dakar (7 min de pitch + 3 min de questions)
+- 18 octobre : dossier prêt (date interne)
+- 21 octobre : présélection des 5 finalistes (modalités de transmission à confirmer)
+- 24 octobre : finale à l'Impact Hub Dakar. Check-in sur place, soumission sur MLH Organizer HQ (section Challenges) pour les 5 finalistes, puis 7 min de pitch + 3 min de questions

@@ -1,6 +1,6 @@
 # Fiches à produire
 
-Objectif : environ 15 fiches vérifiées pour le 19 octobre. Mieux vaut 10 fiches fiables que 15 douteuses.
+Objectif : environ 15 fiches vérifiées pour le 18 octobre (dossier prêt). Mieux vaut 10 fiches fiables que 15 douteuses.
 
 ## Démarches candidates (à confirmer)
 

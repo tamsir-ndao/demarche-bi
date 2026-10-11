@@ -6,7 +6,7 @@ Contexte détaillé :
 
 - `docs/PRD.md` : produit, périmètre du MVP, critères du hackathon, risques
 - `docs/ARCHITECTURE.md` : structure du code, flux, garde-fous
-- `docs/TASKS.md` : planning jusqu'au 19 octobre, à tenir à jour
+- `docs/TASKS.md` : planning jusqu'à la finale du 24 octobre, à tenir à jour
 - `docs/AI-PROMPTS.md` : prompts et schémas des appels IA
 - `docs/FICHES-A-PRODUIRE.md` : démarches à documenter et méthode
 
