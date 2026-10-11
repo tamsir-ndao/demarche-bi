@@ -3,20 +3,22 @@
 ## Vue d'ensemble
 
 ```
-Question (texte ou voix)
+Question (texte ; voix à venir)
    │
-   ▼  voix : /api/transcribe ──► Whisper (Groq)
+   ▼  voix : /api/transcribe ──► Whisper (Groq)                      (étape 3)
    │
-   ▼  /api/ask
- 1. Comprendre   LLM : langue, mots-clés, question claire, besoin de précision
- 2. Retrouver    recherche lexicale dans les fiches (code, sans IA)
- 3. Répondre     LLM : réponse rédigée à partir des seules fiches retrouvées
- 4. Vérifier     garde-fous (code) : fiches utilisées, chiffres, format
- 5. Citer        sources et date de vérification ajoutées par le code
+   ▼  page /reponse  (ou POST /api/ask pour d'autres applications)
+ 1. Comprendre   LLM : choisit la ou les démarches dans la liste fermée des fiches
+ 2. Décider      code : vérifie le choix, puis répond, demande une précision ou dit « je ne sais pas »
+ 3. Répondre     LLM : écrit une introduction courte à partir d'UNE seule fiche
+ 4. Vérifier     garde-fous (code) : nombres, adresses, balisage, mots absolus ; une seconde chance
+ 5. Citer        la page montre pièces, étapes, chiffres et sources de la fiche, mot pour mot
    │
    ▼
-Réponse + sources + avertissement        (journal anonyme Neon : optionnel)
+Réponse + sources + avertissement        (journal anonyme Neon : optionnel, à venir)
 ```
+
+Si l'IA manque (pas de clé, saturée, en panne), la recherche par mots choisit la fiche et la page la montre sans introduction. Voir « Quand l'IA manque » dans `docs/AI-PROMPTS.md`.
 
 Source de vérité du contenu : `content/demarches/*.md` (versionné dans Git, validé par la CI).
 
@@ -24,7 +26,7 @@ Source de vérité du contenu : `content/demarches/*.md` (versionné dans Git, v
 
 ```
 content/demarches/        fiches Markdown (+ _modele.md)
-eval/questions.jsonl      jeu d'évaluation (40 questions, dont 10 en wolof ou mêlées de wolof)
+eval/questions.jsonl      jeu d'évaluation (52 questions, dont 10 en wolof ou mêlées de wolof)
 src/
   app/
     page.tsx              accueil : champ de question et exemples
@@ -33,11 +35,11 @@ src/
     a-propos/             à propos, questions fréquentes, comment contribuer
     not-found.tsx         page introuvable
     globals.css           couleurs, mode sombre, animations (design « doux »)
-    api/                  (à venir)
-      ask/route.ts        question -> réponse
-      transcribe/route.ts audio -> texte
-      feedback/route.ts   avis utile / pas utile
-  components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche
+    api/
+      ask/route.ts        POST : question -> réponse (le site appelle le même service sans passer par là)
+      transcribe/route.ts audio -> texte                                          (à venir)
+      feedback/route.ts   avis utile / pas utile                                  (à venir)
+  components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes)
     liens.ts              liens vers le dépôt GitHub
@@ -49,18 +51,26 @@ src/
       disponibles.ts      fiches que le site peut montrer (serveur uniquement)
     eval/
       retrieval.ts        mesure de la recherche sans IA (fiche retrouvée, refus), lue par scripts/eval.ts
+      bout-en-bout.ts     mesure du parcours complet avec l'IA (npm run eval -- --ia)
     ai/
-      config.ts           fournisseurs (Groq, secours OpenRouter) et Whisper
-      client.ts           chat() avec basculement + transcribe()
-      understand.ts       étape 1 : comprendre la question
-      answer.ts           étape 3 : réponse ancrée
-      guardrails.ts       étape 4 : garde-fous
-      schemas.ts          schémas Zod des sorties IA
+      config.ts           fournisseurs (Groq : deux modèles ; ou un autre fournisseur) et Whisper
+      client.ts           chat() avec basculement, sortie JSON stricte, erreurs typées ; transcribe()
+      structured.ts       un appel au modèle qui renvoie un objet validé par un schéma Zod
+      schemas.ts          schémas Zod des sorties du modèle
+      understand.ts       1. comprendre : choisir dans la liste fermée des fiches
+      decide.ts           2. décider : répondre, préciser ou « je ne sais pas » (code)
+      answer.ts           3. répondre : introduction à partir d'une fiche
+      guardrails.ts       4. vérifier l'introduction (code)
+      ask.ts              le parcours complet, avec ses replis
+      service.ts          ask.ts + mémoire des questions + limite par visiteur
+      cache.ts            mémoire des questions déjà posées et limite par visiteur
+      serveur.ts          branche le service sur l'environnement et les fiches du site
+      api.ts              lecture de la demande de POST /api/ask
     db.ts                 client Neon (optionnel, serveur uniquement)
 scripts/
   validate-fiches.ts      npm run validate:fiches
   db.mjs                  npm run db:migrate
-  eval.ts                 npm run eval
+  eval.ts                 npm run eval (recherche seule) ; npm run eval -- --ia (parcours complet)
 db/migrations/            journal anonyme et avis (optionnel)
 .github/                  CI, modèles d'issue et de pull request
 ```
@@ -76,22 +86,37 @@ Seules les fiches au statut `verifie` répondent en production. Les brouillons n
 Design « doux » (vert, blanc, noir adouci) : les couleurs sont des variables CSS de `src/app/globals.css` et le mode sombre suit le réglage du téléphone. Polices du système, mobile d'abord : le menu est en bas sur téléphone, en haut sur ordinateur.
 
 - `/` : le champ de question est un formulaire `GET` vers `/reponse?q=…`.
-- `/reponse` : la question est lue dans l'adresse. Le cadre de la page est prérendu, la réponse arrive ensuite (Cache Components). Sans fiche pertinente : « Je ne sais pas encore ». Cette page n'est pas indexée (les questions sont dans l'adresse). La réponse demande JavaScript.
+- `/reponse` : la question est lue dans l'adresse (`?q=…`, et `&fiche=…` quand la personne a choisi une démarche sur l'écran de précision). Le cadre de la page est prérendu avec l'écran d'attente, la réponse arrive ensuite (Cache Components) : une fiche avec son introduction, un écran de précision, ou « Je ne sais pas encore ». Cette page n'est pas indexée (les questions sont dans l'adresse). La réponse demande JavaScript.
 - `/demarches` et `/demarches/[slug]` : une page statique par fiche, créée à la construction du site. Une fiche non montrable (brouillon en production) répond 404.
-- L'écran n'ajoute aucune information : un `cout`, `delai` ou `lieu` à `null` s'affiche « Non précisé » ; les notes qui contiennent « à confirmer » sont mises en avant ; les apostrophes des fiches deviennent typographiques à l'affichage seulement.
+- Hors l'introduction écrite par l'IA (signalée à l'écran), l'écran n'ajoute aucune information : un `cout`, `delai` ou `lieu` à `null` s'affiche « Non précisé » ; les notes qui contiennent « à confirmer » sont mises en avant ; les apostrophes des fiches deviennent typographiques à l'affichage seulement.
 - `src/lib/fiches/affichage.ts` prépare les textes (fonctions pures, testées) ; `src/components/` contient les composants.
 
-## Recherche (étape 2)
+## Recherche par mots (repli sans IA)
 
-Recherche lexicale écrite en code : normalisation (minuscules, accents retirés, mots vides français), pondération par champ (titre et mots-clés plus forts que le résumé, lui-même plus fort que le corps), score de type BM25. Un seuil de score décide s'il y a une fiche pertinente ; en dessous, la réponse est « je ne sais pas ». Une fiche n'est retenue que si un mot de la question figure dans son titre ou ses mots-clés : citer « acte de naissance » parmi ses pièces ne suffit pas (les mots-clés d'une fiche doivent donc contenir les mots que les gens emploient, par exemple « perdu » ou « refaire »). Les verbes génériques des questions (obtenir, avoir, faire, demander, savoir) sont ignorés. Pas d'embeddings : plus simple, reproductible, testable sans clé IA, et facile à comprendre pour un contributeur.
+Recherche lexicale écrite en code : normalisation (minuscules, accents retirés, mots vides français), pondération par champ (titre et mots-clés plus forts que le résumé, lui-même plus fort que le corps), score de type BM25. Un seuil de score décide s'il y a une fiche pertinente ; en dessous, la réponse est « je ne sais pas ». Une fiche n'est retenue que si un mot de la question figure dans son titre ou ses mots-clés : citer « acte de naissance » parmi ses pièces ne suffit pas (les mots-clés d'une fiche doivent donc contenir les mots que les gens emploient, par exemple « perdu » ou « refaire »). Les verbes génériques des questions (obtenir, avoir, faire, demander, savoir) sont ignorés. Pas d'embeddings : plus simple, reproductible, testable sans clé IA, et facile à comprendre pour un contributeur. Elle ne sert plus qu'au repli (IA absente, saturée ou en panne) et aux fiches « voir aussi » : quand l'IA répond, c'est elle qui choisit la fiche.
 
-## Garde-fous (étape 4)
+## Garde-fous
 
-1. La sortie du modèle doit respecter le schéma Zod (`trouve`, `reponse`, `fiches_utilisees`) ; sinon une nouvelle tentative, puis message d'erreur propre.
-2. `fiches_utilisees` doit être un sous-ensemble des fiches retrouvées.
-3. Chaque montant (FCFA) et chaque délai chiffré cité dans la réponse doit apparaître dans une fiche utilisée ; sinon la réponse est rejetée.
-4. Si `trouve` vaut faux, ou si aucune fiche ne dépasse le seuil : message standard « je ne sais pas » avec invitation à contribuer.
-5. Les sources affichées sont produites par le code depuis les métadonnées de la fiche.
+1. Le modèle ne reçoit que la liste des fiches puis **une** fiche ; il ne lit jamais le site ni Internet.
+2. Ses sorties suivent un schéma JSON strict puis sont relues par Zod ; un identifiant de fiche qu'il invente est ignoré.
+3. Il n'écrit que l'introduction. Pièces, étapes, coût, délai, lieu et sources viennent de la fiche, mot pour mot.
+4. L'introduction est refusée si elle contient un nombre, une adresse web ou e-mail, un balisage, un identifiant interne ou un mot absolu (« seule », « gratuit », « toujours »…) que la fiche ne contient pas, ou si elle dépasse 450 caractères. Le modèle a une seconde chance avec la raison du refus ; ensuite la fiche est montrée sans introduction.
+5. Si le modèle dit que la fiche ne traite pas la question, ou si aucune démarche ne correspond : « Je ne sais pas encore », avec invitation à proposer la démarche.
+6. Une phrase écrite par l'IA est signalée à l'écran (« Phrase écrite par l'IA, d'après la fiche. »).
+7. Le quota gratuit est protégé : mémoire des questions déjà posées (6 heures, 300 questions) et 10 questions par minute et par visiteur. Ces deux outils vivent dans l'instance du serveur : ils aident sur Vercel sans rien garantir.
+
+## API
+
+`POST /api/ask` avec un corps JSON `{ "question": "…", "fiche": "identifiant" }` (`fiche` est facultatif : il saute l'étape « comprendre »). La question est mise sur une ligne et coupée à 300 caractères. Réponse `200` :
+
+| `type` | Contenu |
+|---|---|
+| `fiche` | `fiche` (tous ses champs), `autres` (fiches voisines), `intro` (texte ou `null`), `degrade` (`saturee`, `indisponible` ou `null`), `rejet` (raison du refus des garde-fous ou `null`) |
+| `precision` | `options` (fiches entre lesquelles choisir), `question` (peut être vide) |
+| `precision_generale` | `question` (peut être vide) |
+| `inconnue` | rien d'autre |
+
+Un corps illisible ou une question vide répondent `400` avec `{ "erreur": "…" }`. La route n'a pas de réglage CORS : seul le site l'appelle depuis un navigateur.
 
 ## Données (optionnel)
 
@@ -99,11 +124,11 @@ Neon sert uniquement à un journal anonyme (`question_logs`) et aux avis (`feedb
 
 ## Principes
 
-- L'IA comprend et rédige ; le code décide, cite et vérifie.
+- L'IA choisit la démarche et écrit une introduction ; le code décide, cite et vérifie.
 - Tout appel modèle passe par `src/lib/ai/` et toute sortie est validée.
 - Modèles open-weight via API compatible OpenAI, interchangeables par variables d'environnement.
 - Pages légères, polices système, mobile-first, utilisables en connexion lente.
 
 ## Variables d'environnement
 
-Voir `.env.example` et `docs/SETUP.md` : IA principale Groq (`AI_*`), secours OpenRouter (`AI_FALLBACK_*`), Whisper (`WHISPER_*`), Neon optionnel (`DATABASE_URL`), `DEMARCHE_INCLUDE_DRAFTS` (développement uniquement).
+Voir `.env.example` et `docs/SETUP.md` : IA principale Groq (`AI_*`) avec, par défaut, un second modèle Groq en secours (autre fournisseur possible avec `AI_FALLBACK_*`), Whisper (`WHISPER_*`), Neon optionnel (`DATABASE_URL`), `DEMARCHE_INCLUDE_DRAFTS` (développement uniquement).

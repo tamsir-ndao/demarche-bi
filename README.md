@@ -14,13 +14,13 @@ Pièces à fournir, lieu, coût, délais : l'information existe, mais elle est d
 
 ## Comment ça marche
 
-1. **Comprendre** : l'IA transforme la question (texte ou voix, français, parfois mêlé de wolof) en mots-clés.
-2. **Retrouver** : le code cherche les fiches pertinentes (recherche lexicale, sans IA).
-3. **Répondre** : l'IA rédige une réponse à partir de ces fiches seulement.
-4. **Vérifier** : des garde-fous contrôlent la réponse (fiches utilisées, chiffres cités).
-5. **Citer** : le code ajoute les sources officielles et la date de vérification.
+1. **Comprendre** : l'IA lit la question (français, parfois mêlé de wolof) et choisit la ou les démarches dans la liste des fiches.
+2. **Décider** : le code vérifie ce choix. Une démarche : il répond. Plusieurs : il demande de choisir. Aucune : « je ne sais pas ».
+3. **Répondre** : l'IA écrit une introduction courte, à partir d'une seule fiche.
+4. **Vérifier** : des garde-fous contrôlent cette introduction (nombres, adresses, mots que la fiche n'emploie pas).
+5. **Citer** : la page montre les pièces, les étapes, les chiffres et les sources de la fiche, mot pour mot, avec la date de vérification.
 
-Si aucune fiche ne convient, la réponse est « je ne sais pas ».
+Si aucune fiche ne convient, la réponse est « je ne sais pas ». Si l'IA est absente ou en panne, une recherche par mots choisit la fiche, sans introduction.
 
 ## Les fiches : le cœur ouvert du projet
 
@@ -28,27 +28,30 @@ Chaque démarche est un fichier Markdown dans `content/demarches/`, avec un en-t
 
 ## Rôle de l'IA
 
-- Comprendre une question informelle et la ramener à une démarche.
-- Rédiger une réponse claire à partir des fiches, sans rien ajouter.
-- Demander une précision quand la question est trop vague.
-- Transcrire la voix (Whisper).
+- Comprendre une question informelle (y compris mêlée de wolof) et la ramener à une démarche de la liste.
+- Écrire une introduction courte qui répond à la question, à partir de la seule fiche choisie.
+- Demander une précision quand la question est trop vague ou peut viser plusieurs démarches.
+- Transcrire la voix (Whisper, à venir).
 
-L'IA ne fournit aucun fait administratif de sa propre connaissance et n'écrit pas les sources.
+L'IA ne fournit aucun fait administratif de sa propre connaissance : les pièces, étapes, coûts, délais, lieux et sources affichés viennent de la fiche, pas du modèle. Sa phrase d'introduction est contrôlée par le code et signalée à l'écran.
 
 ## Modèles, APIs et outils IA utilisés
 
 | Usage | Modèle / outil |
 |---|---|
-| Compréhension et réponse | Llama 3.3 70B (open-weight) via Groq, API compatible OpenAI |
-| Secours | Modèle gratuit open-weight via OpenRouter (optionnel) |
+| Compréhension et introduction | gpt-oss-120b (open-weight, Apache 2.0) via Groq, API compatible OpenAI |
+| Secours | Qwen3.8-27B (open-weight, Apache 2.0) via Groq, avec la même clé ; ou un autre fournisseur compatible OpenAI (optionnel) |
 | Transcription vocale | Whisper large v3 turbo via Groq |
 | Aide au développement | Claude (Anthropic), Antigravity |
 
 ## Évaluation
 
-Un jeu de 40 questions (`eval/questions.jsonl`), dont 10 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient et combien de réponses sont rejetées par les garde-fous. Commande : `npm run eval` (ajouter `-- --brouillons` tant que des fiches sont en brouillon).
+Un jeu de 52 questions (`eval/questions.jsonl`), dont 10 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient, s'il demande une précision quand la question est vague et combien d'introductions sont refusées par les garde-fous. Commandes (ajouter `-- --brouillons` tant que des fiches sont en brouillon) :
 
-Résultats : à publier ici tels que mesurés (recherche seule, puis de bout en bout), une fois les fiches vérifiées.
+- `npm run eval` : la recherche seule, sans IA (c'est le repli quand l'IA manque) ;
+- `npm run eval -- --ia` : le parcours complet comme sur le site, avec la clé de `.env.local`.
+
+Première mesure du 11 octobre 2026, sur les 5 fiches encore en brouillon : voir [`docs/AI-PROMPTS.md`](docs/AI-PROMPTS.md#première-mesure-11-octobre-2026). Les chiffres définitifs seront publiés ici une fois les fiches vérifiées.
 
 ## Stack
 
@@ -67,7 +70,7 @@ Bibliothèques (voir `package.json`) :
 | @neondatabase/serverless, pg | Journal anonyme et migrations (optionnels) |
 | tsx | Exécution des scripts TypeScript (validation, évaluation) |
 
-Services externes (non open source, remplaçables par variables d'environnement) : API Groq (modèles Llama et Whisper), OpenRouter en secours (optionnel), Neon (optionnel), Vercel (hébergement).
+Services externes (non open source, remplaçables par variables d'environnement) : API Groq (modèles gpt-oss et Qwen, Whisper), un autre fournisseur compatible OpenAI en secours (optionnel), Neon (optionnel), Vercel (hébergement).
 
 ## Installation
 
@@ -87,8 +90,9 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 
 - [x] Socle technique, format de fiche, validateur, CI, guide de contribution
 - [ ] 15 fiches vérifiées
-- [ ] Recherche, compréhension, réponse ancrée et garde-fous
-- [ ] Interface web et voix
+- [x] Recherche, compréhension, réponse ancrée et garde-fous
+- [x] Interface web (accueil, réponse, démarches, à propos)
+- [ ] Voix
 - [ ] Jeu d'évaluation et chiffres
 - [ ] Vidéo de démonstration
 

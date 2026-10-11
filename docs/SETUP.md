@@ -43,14 +43,14 @@ La CI GitHub (fiches, lint, build) se lance seule à chaque push et à chaque pu
 ## Étape 4 — Créer la clé Groq
 
 1. Sur console.groq.com, crée un compte et génère une clé API.
-2. Modèle conseillé : `llama-3.3-70b-versatile`. Pour les tests répétés, `llama-3.1-8b-instant` consomme moins de quota.
+2. Modèles : `openai/gpt-oss-120b` en principal et `qwen/qwen3.8-27b` en secours, avec la même clé. Ce sont les valeurs par défaut : rien à régler.
 3. Voix : `whisper-large-v3-turbo`, avec la même clé.
 
-Quotas gratuits indicatifs, à vérifier dans ta console car ils changent : environ 30 requêtes par minute et 1 000 par jour sur Llama 3.3 70B. Le plafond de tokens par minute est souvent la vraie limite : évite les tests en boucle. Le quota est par organisation, créer plusieurs clés ne l'augmente pas.
+Quotas gratuits constatés le 11 octobre 2026, à vérifier dans ta console car ils changent : 8 000 tokens par minute, **200 000 tokens par jour** (chacun par modèle) et 1 000 requêtes par jour. Une question coûte deux appels (comprendre, puis répondre), soit de l'ordre de 2 000 à 3 000 tokens : compte **80 à 100 questions par jour et par modèle**, un peu moins quand il y a plus de fiches (la liste des fiches est envoyée à chaque question). Quand le premier modèle atteint un plafond, le second prend le relais avec la même clé ; quand les deux l'atteignent, la page montre la fiche sans introduction, avec la note « L'assistant est très sollicité ». Évite donc les tests en boucle : `npm run eval -- --ia` (52 questions, une centaine d'appels) peut à lui seul épuiser la journée. Le quota est par organisation, créer plusieurs clés ne l'augmente pas. Pour la démo ou un vrai lancement, passe sur l'offre payante à l'usage de Groq (vérifie les tarifs sur console.groq.com : ils sont très bas pour ce volume) ou ajoute un secours chez un autre fournisseur (étape 5).
 
-## Étape 5 — (Optionnel) Clé OpenRouter de secours
+## Étape 5 — (Optionnel) Un secours chez un autre fournisseur
 
-Le gratuit n'a pas de garantie de disponibilité. Pour la finale, prévois un secours : crée un compte sur openrouter.ai, une clé API, et note le nom exact d'un modèle gratuit dans leur liste. Le client essaie Groq d'abord, puis OpenRouter si Groq échoue.
+Le gratuit n'a pas de garantie de disponibilité. Par défaut, le secours est un second modèle de Groq avec la même clé : rien à faire. Pour la finale, tu peux ajouter un fournisseur indépendant compatible OpenAI, par exemple OpenRouter : crée un compte et une clé API, et note le nom exact d'un modèle gratuit dans leur liste (les noms changent souvent, c'est pourquoi le modèle est obligatoire). Le client essaie Groq d'abord, puis ce fournisseur, qui remplace alors le second modèle de Groq. Si tous échouent, le site montre la fiche sans introduction, avec une note.
 
 ## Étape 6 — Renseigner `.env.local`
 
@@ -62,7 +62,7 @@ cp .env.example .env.local
 |---|---|
 | `AI_API_KEY` | clé Groq (étape 4) |
 | `WHISPER_API_KEY` | la même clé Groq |
-| `AI_FALLBACK_API_KEY` | clé OpenRouter (étape 5), ou laisse vide |
+| `AI_FALLBACK_API_KEY` et `AI_FALLBACK_MODEL` | clé et nom du modèle d'un autre fournisseur (étape 5), ou laisse vide |
 | `DATABASE_URL` | chaîne de connexion Neon (étape 8), ou laisse vide |
 | `DEMARCHE_INCLUDE_DRAFTS` | `true` seulement en développement, pour tester avec des fiches brouillon |
 
@@ -107,7 +107,8 @@ Suis le workflow `preparer-soumission` : README final avec les chiffres d'évalu
 | Problème | Piste |
 |---|---|
 | « Aucun fournisseur IA configuré » | `AI_API_KEY` manquante dans `.env.local` ; relance `npm run dev` après modification |
-| HTTP 429 de Groq | Quota par minute ou par jour atteint : attends, passe sur `llama-3.1-8b-instant` ou active le secours OpenRouter |
+| HTTP 429 de Groq | Quota par minute ou par jour atteint : le second modèle prend le relais ; sinon attends, ou ajoute un secours chez un autre fournisseur (étape 5) |
+| La page dit « L'assistant ne répond pas pour l'instant » | Regarde le terminal du serveur : les lignes `[ia] …` donnent la raison (`HTTP 401` : clé invalide ; `HTTP 429` : quota atteint ; délai dépassé : réseau) |
 | HTTP 401 | Clé invalide ou mal copiée, sans espace ni guillemets |
 | `validate:fiches` échoue | Lis le message : il indique le fichier et le champ. Compare avec `content/demarches/_modele.md` |
 | Le build échoue sur les polices | Le projet utilise des polices système ; ne réintroduis pas `next/font/google` |

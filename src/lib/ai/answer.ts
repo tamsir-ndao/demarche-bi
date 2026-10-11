@@ -1,5 +1,6 @@
 import { notesDeLaFiche } from "../fiches/affichage";
 import type { Fiche } from "../fiches/schema";
+import { motsAbsolusNonPermis } from "./guardrails";
 import { ReponseIASchema, type ReponseIA } from "./schemas";
 import type { Modele } from "./structured";
 
@@ -63,12 +64,23 @@ export async function repondre(
   correction?: string,
 ): Promise<ReponseIA> {
   const reformulation = questionClaire !== "" && questionClaire !== question ? [`Reformulée : ${questionClaire}`] : [];
+  // Le modèle a tendance à reprendre le mot de la question (« n'est pas gratuit ») : on le lui interdit mot par mot.
+  const interdits = motsAbsolusNonPermis(`${question} ${questionClaire}`, fiche);
+  const interdiction =
+    interdits.length === 0
+      ? []
+      : [
+          `Ne reprends pas ces mots de la question (la fiche ne les emploie pas) : ${interdits.map((mot) => `« ${mot} »`).join(", ")}. Dis ce que la fiche indique.`,
+        ];
   return modele({
     nom: "reponse",
     schema: ReponseIASchema,
     messages: [
       { role: "system", content: CONSIGNES },
-      { role: "user", content: [`Question : ${question}`, ...reformulation, "", serialiserFiche(fiche)].join("\n") },
+      {
+        role: "user",
+        content: [`Question : ${question}`, ...interdiction, ...reformulation, "", serialiserFiche(fiche)].join("\n"),
+      },
       ...(correction === undefined
         ? []
         : [

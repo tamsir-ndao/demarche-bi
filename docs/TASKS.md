@@ -15,7 +15,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [ ] Mettre à jour ton inscription au hackathon avec Démarche-Bi, track Civic Tech (`docs/SETUP.md`, étape 2)
 - [ ] Inscrire chaque membre de l'équipe sur MLH (mail des organisateurs du 11 octobre) : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
 - [x] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
-- [ ] Clé Groq dans `.env.local` (étapes 4 à 6)
+- [x] Clé Groq dans `.env.local` (étapes 4 à 6)
 - [ ] Choisir les 15 démarches (`docs/FICHES-A-PRODUIRE.md`)
 
 ## Samedi 10 — fiches (lot 1) et recherche
@@ -28,25 +28,28 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 ## Dimanche 11 — IA et API
 
 - [ ] 5 fiches de plus (lot 2)
-- [ ] `schemas.ts`, `understand.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/`
-- [ ] Route `/api/ask` : comprendre, retrouver, répondre, vérifier, citer
-- [ ] Tests des garde-fous (slug inconnu, montant inventé, sortie invalide)
+- [x] `schemas.ts`, `understand.ts`, `decide.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/` (11 octobre) : le modèle choisit dans la liste fermée des fiches, n'écrit que l'introduction, le code vérifie
+- [x] Route `/api/ask` : comprendre, décider, répondre, vérifier, citer (la page `/reponse` appelle le même service)
+- [x] Tests des garde-fous (identifiant inconnu, nombre inventé, adresse, balisage, mot absolu, sortie invalide)
+- [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; décider entre l'offre payante à l'usage (très bon marché), un troisième modèle à mesurer (`openai/gpt-oss-20b`) ou un secours chez un autre fournisseur
 - [ ] Déploiement Vercel avec les variables d'environnement, juste après l'IA : un lien public sera sans doute demandé pour la présélection
 
 ## Lundi 12 — interface
 
 - [x] Design « doux » de la maquette porté dans le vrai site (11 octobre) : mode sombre, mobile d'abord, polices du système, accessibilité vérifiée avec axe-core (0 violation)
-- [x] Page d'accueil : zone de question, exemples, réponse avec étapes (sans IA pour l'instant : la réponse est la fiche trouvée par la recherche ; sans micro avant la voix)
+- [x] Page d'accueil : zone de question, exemples, réponse avec étapes (l'IA choisit la fiche et écrit l'introduction ; sans micro avant la voix)
 - [x] Affichage des sources (titre, lien, date de consultation), de la date de vérification et de l'avertissement
 - [x] État « je ne sais pas » (11 octobre)
-- [ ] État « question de précision » (demande l'IA : la recherche seule ne détecte pas les questions vagues)
+- [ ] Espaces insécables dans les montants (« 10 000 FCFA » se coupe en fin de ligne sur téléphone)
+- [x] État « question de précision » : écran de choix entre plusieurs démarches, et question à reformuler quand la demande est trop vague
 
 ## Mardi 13 — évaluation
 
-- [x] `eval/questions.jsonl` : 40 questions (couvertes, hors périmètre, vagues), dont 10 en wolof ou mêlées de wolof
+- [x] `eval/questions.jsonl` : 52 questions (couvertes, hors périmètre, vagues), dont 10 en wolof ou mêlées de wolof
+- [ ] Vérifier la licence de Qwen3.8-27B sur la page officielle `Qwen/Qwen3.8-27B` (Apache 2.0 annoncée par la presse et le catalogue NVIDIA) avant le README final
 - [ ] Faire relire par un locuteur wolof les 10 questions `mixte` et `wo` de `eval/questions.jsonl` (tournures rédigées sans locuteur natif)
 - [x] `scripts/eval.ts` et `npm run eval` : recherche seule (`-- --brouillons` tant que des fiches sont en brouillon)
-- [ ] `npm run eval` de bout en bout (après `/api/ask`) : faits attendus et rejets des garde-fous
+- [x] `npm run eval -- --ia` de bout en bout : bonne fiche, refus, précision, introductions refusées par les garde-fous (premiers chiffres le 11 octobre ; à refaire une fois les fiches vérifiées)
 - [ ] Corriger la recherche et les prompts selon les résultats
 - [ ] 5 fiches de plus (lot 3) : 15 au total
 

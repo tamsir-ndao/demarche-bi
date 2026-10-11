@@ -29,7 +29,7 @@ Projet de l'**Open Source × AI Hackathon 2026 (Galsen DEV)**, track Civic Tech 
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Contenu : Markdown + en-tête YAML validé par Zod (`src/lib/fiches/`)
 - Recherche lexicale écrite en code, sans embeddings
-- IA : Groq (Llama 3.3 70B) via API compatible OpenAI, secours OpenRouter ; Whisper (Groq) pour la voix. Client dans `src/lib/ai/client.ts`
+- IA : Groq (gpt-oss-120b, secours Qwen3.8-27B avec la même clé) via API compatible OpenAI, autre fournisseur de secours possible ; Whisper (Groq) pour la voix. Client dans `src/lib/ai/client.ts`
 - Neon (Postgres) **optionnel** : journal anonyme et avis. L'application doit fonctionner sans `DATABASE_URL`
 - Déploiement Vercel. Licence **MIT**. Le dépôt est **public** : jamais de secret ni de donnée personnelle
 - Guide d'installation et de déploiement : `docs/SETUP.md`

@@ -101,6 +101,21 @@ function texteDeLaFiche(fiche: Fiche): string {
 }
 
 /**
+ * Les mots absolus de `texte` (voir plus haut) que la fiche n'emploie pas, à l'accord près : tels qu'écrits, en minuscules,
+ * sans doublon. Appliquée à l'introduction, elle donne ce qui la fait refuser ; appliquée à la question, ce que le modèle
+ * ne doit pas reprendre.
+ */
+export function motsAbsolusNonPermis(texte: string, fiche: Fiche): string[] {
+  const motsDeLaFiche = new Set(motsDe(texteDeLaFiche(fiche)));
+  const trouves = new Set<string>();
+  for (const [mot] of texte.matchAll(/\p{L}+/gu)) {
+    const famille = FAMILLE_DU_MOT.get(simplifier(mot));
+    if (famille !== undefined && !famille.some((forme) => motsDeLaFiche.has(forme))) trouves.add(mot.toLowerCase());
+  }
+  return [...trouves];
+}
+
+/**
  * Vérifie l'introduction écrite par le modèle à partir de `fiche` (le cas « la fiche ne répond pas » se traite avant).
  * `slugs` sont les identifiants internes des fiches du site : ils ne doivent pas apparaître dans le texte.
  * Renvoie le texte nettoyé, ou la raison du rejet (qu'on peut redonner au modèle pour qu'il corrige).
@@ -128,11 +143,10 @@ export function verifierIntro(intro: string, fiche: Fiche, { slugs = [] }: { slu
   );
   if (motInconnu !== undefined) return rejet(`Nombre « ${motInconnu} » absent de la fiche.`);
 
-  const absolu = motsDe(texte).find((mot) => {
-    const famille = FAMILLE_DU_MOT.get(mot);
-    return famille !== undefined && !famille.some((forme) => motsDeLaFiche.has(forme));
-  });
-  if (absolu !== undefined) return rejet(`Mot absolu « ${absolu} » absent de la fiche : n'affirme rien de plus qu'elle.`);
+  const [absolu] = motsAbsolusNonPermis(texte, fiche);
+  if (absolu !== undefined) {
+    return rejet(`Mot absolu « ${absolu} » absent de la fiche : ne le reprends pas, même pour dire le contraire. Dis ce que la fiche indique.`);
+  }
 
   return { ok: true, intro: texte };
 }

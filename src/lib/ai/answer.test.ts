@@ -109,6 +109,28 @@ describe("repondre", () => {
     const regles = appels[0].messages[0].content;
     assert.match(regles, /Réponds « oui » ou « non » seulement si la fiche le dit clairement/);
     assert.match(regles, /mot absolu comme « seule », « seulement », « uniquement », « toujours », « jamais », « aucun », « tous », « gratuit » ou « obligatoire »/);
+
+  });
+
+  it("signale au modèle les mots absolus de la question que la fiche n'emploie pas", async () => {
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await repondre("C'est gratuit ? Toujours ?", "", fiche, modele);
+
+    const message = appels[0].messages[1].content;
+    assert.match(message, /Question : C'est gratuit \? Toujours \?\nNe reprends pas ces mots de la question \(la fiche ne les emploie pas\) : « gratuit », « toujours »\. Dis ce que la fiche indique\./);
+  });
+
+  it("ne signale rien quand la question n'a pas de mot absolu", async () => {
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await repondre("Combien ça coûte ?", "", fiche, modele);
+    assert.doesNotMatch(appels[0].messages[1].content, /Ne reprends pas ces mots/);
+  });
+
+  it("ne signale pas un mot absolu que la fiche emploie", async () => {
+    const gratuite = ficheDeTest({ slug: "gratuite", titre: "Démarche gratuite", resume: "Démarche gratuite." });
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await repondre("C'est gratuit ?", "", gratuite, modele);
+    assert.doesNotMatch(appels[0].messages[1].content, /Ne reprends pas ces mots/);
   });
 
   it("n'ajoute pas la reformulation quand elle est vide ou identique à la question", async () => {

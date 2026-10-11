@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ficheDeTest } from "./fiche-de-test";
-import { extraireNombres, verifierIntro } from "./guardrails";
+import { extraireNombres, motsAbsolusNonPermis, verifierIntro } from "./guardrails";
 
 const fiche = ficheDeTest({
   slug: "carte",
@@ -50,6 +50,29 @@ describe("extraireNombres", () => {
 
   it("renvoie une liste vide sans chiffre", () => {
     assert.deepEqual(extraireNombres("aucun nombre ici"), []);
+  });
+});
+
+describe("motsAbsolusNonPermis", () => {
+  it("donne les mots absolus du texte que la fiche n'emploie pas, tels qu'écrits, une seule fois", () => {
+    assert.deepEqual(motsAbsolusNonPermis("C'est gratuit ? Toujours gratuit ? Seule la carte compte.", fiche), [
+      "gratuit",
+      "toujours",
+      "seule",
+    ]);
+  });
+
+  it("ne donne rien quand le texte n'en contient pas", () => {
+    assert.deepEqual(motsAbsolusNonPermis("Combien coûte la carte ?", fiche), []);
+  });
+
+  it("ne donne pas un mot absolu que la fiche emploie, à l'accord près", () => {
+    const stricte = ficheDeTest({ slug: "stricte", titre: "Démarche stricte", resume: "Démarche gratuite." });
+    assert.deepEqual(motsAbsolusNonPermis("C'est gratuit ?", stricte), []);
+  });
+
+  it("ne confond pas un mot absolu avec un mot qui le contient", () => {
+    assert.deepEqual(motsAbsolusNonPermis("Et à la Toussaint ?", fiche), []);
   });
 });
 
@@ -112,7 +135,7 @@ describe("verifierIntro", () => {
   it("explique le refus au modèle", () => {
     assert.equal(
       raison("Ton fils peut aller seul au commissariat de police."),
-      "Mot absolu « seul » absent de la fiche : n'affirme rien de plus qu'elle.",
+      "Mot absolu « seul » absent de la fiche : ne le reprends pas, même pour dire le contraire. Dis ce que la fiche indique.",
     );
   });
 

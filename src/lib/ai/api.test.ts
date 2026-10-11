@@ -38,7 +38,7 @@ describe("lireDemandeApi", () => {
     for (const corps of [undefined, null, "Combien ça coûte ?", 12, ["Combien ça coûte ?"]]) {
       const demande = lireDemandeApi(corps);
       assert.equal(demande.ok, false);
-      assert.match(demande.ok ? "" : demande.erreur, /question/);
+      assert.match(demande.ok ? "" : demande.erreur, /objet JSON/);
     }
   });
 

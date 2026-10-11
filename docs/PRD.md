@@ -44,7 +44,7 @@ Inclus :
 - Message d'avertissement permanent (information indicative).
 - Pages de consultation des fiches et page « Contribuer ».
 - Avis utilisateur (utile / pas utile).
-- Jeu d'évaluation de 40 questions et commande `npm run eval`.
+- Jeu d'évaluation de 52 questions et commande `npm run eval`.
 - CI GitHub : validation des fiches, lint, build.
 - Journal anonyme dans Neon (optionnel).
 - Déploiement Vercel.
@@ -53,18 +53,18 @@ Exclus (après le hackathon) : comptes utilisateurs, paiement, rendez-vous ou d�
 
 ## Rôle de l'IA
 
-1. **Comprendre** : transformer une question informelle (français, parfois mêlé de wolof ou d'abréviations) en mots-clés et en question claire.
-2. **Répondre de façon ancrée** : rédiger une réponse simple à partir des seules fiches retrouvées.
-3. **Clarifier** : poser une question de précision quand la demande est trop vague.
+1. **Comprendre** : lire une question informelle (français, parfois mêlé de wolof ou d'abréviations) et choisir la ou les démarches concernées dans la liste des fiches.
+2. **Répondre de façon ancrée** : écrire une introduction courte qui répond à la question, à partir de la seule fiche choisie.
+3. **Clarifier** : poser une question de précision quand la demande est trop vague ou peut viser plusieurs démarches.
 4. **Transcrire** : convertir la voix en texte avec Whisper.
 
-Ce que l'IA ne fait pas : elle ne fournit aucun fait administratif de sa propre connaissance, et elle n'écrit pas les sources.
+Ce que l'IA ne fait pas : elle ne fournit aucun fait administratif de sa propre connaissance, elle n'écrit ni les pièces, ni les étapes, ni les chiffres, ni les sources (tout cela vient de la fiche), et le code contrôle son introduction avant de la montrer.
 
 ## Qualité et évaluation
 
-Jeu de 40 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue). Dix d'entre elles sont en wolof ou mêlées de wolof (champ `langue`), pour mesurer la compréhension partielle du wolof sans la mélanger aux chiffres en français.
+Jeu de 52 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue). Dix d'entre elles sont en wolof ou mêlées de wolof (champ `langue`), pour mesurer la compréhension partielle du wolof sans la mélanger aux chiffres en français.
 
-Mesures : la bonne fiche est-elle retrouvée (premier résultat, trois premiers), le refus est-il correct, combien de réponses sont rejetées par les garde-fous. Les chiffres sont publiés dans le README tels que mesurés, même imparfaits.
+Mesures : la bonne fiche répond-elle, le refus est-il correct, la précision est-elle demandée quand la question est vague, combien d'introductions sont refusées par les garde-fous. Les chiffres sont publiés dans le README tels que mesurés, même imparfaits.
 
 ## Critères du hackathon et réponse du projet
 
@@ -84,7 +84,7 @@ Mesures : la bonne fiche est-elle retrouvée (premier résultat, trois premiers)
 | Fiche périmée | Date de vérification affichée, alerte au-delà de 12 mois, modèle d'issue « fiche obsolète » |
 | Le modèle invente | Réponse limitée aux fiches, citations produites par le code, garde-fou sur les chiffres, refus quand rien n'est trouvé |
 | Utilisateur qui se fie à une information fausse | Avertissement permanent, date de vérification, lien vers la source officielle |
-| Quota ou panne Groq | Secours OpenRouter, quota surveillé, pas de test en boucle |
+| Quota ou panne Groq (gratuit : 200 000 tokens par jour et par modèle, soit 80 à 100 questions) | Second modèle Groq (plafonds séparés), offre payante à l'usage ou autre fournisseur pour la démo, mémoire des questions, limite par visiteur, repli sans IA ; pas de test en boucle |
 | Vie privée | Aucun compte, aucune adresse IP stockée, questions tronquées, journal optionnel et purgeable |
 | Pas assez de fiches fiables à temps | Viser 15 fiches, accepter 10 vérifiées plutôt que 15 douteuses |
 

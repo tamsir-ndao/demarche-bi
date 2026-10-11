@@ -38,3 +38,15 @@
 {"question":"Je veux faire ma carte.","famille":"vague"}
 {"question":"Dama bëgg kayit.","famille":"vague","langue":"wo"}
 {"question":"Dama soxla ndimbal ci administration bi.","famille":"vague","langue":"wo"}
+{"question":"Comment obtenir un acte de naissance ?","famille":"hors_perimetre"}
+{"question":"Je veux faire mon passeport","famille":"hors_perimetre"}
+{"question":"Comment obtenir un certificat de décès ?","famille":"hors_perimetre"}
+{"question":"J'ai perdu mon passeport, que faire ?","famille":"hors_perimetre"}
+{"question":"Où faire légaliser un document ?","famille":"hors_perimetre"}
+{"question":"Carte d'identité","famille":"vague"}
+{"question":"Certificat","famille":"vague"}
+{"question":"carte d'identité perdue","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["certificat de perte"]}
+{"question":"Quelles pièces faut-il pour la carte d'identité ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["extrait de naissance"]}
+{"question":"Je veux refaire ma CNI","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["commissariat"]}
+{"question":"Casier judiciaire pour travailler à l'étranger","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["200 FCFA"]}
+{"question":"Ma carte d'identité a été volée","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["certificat de perte"]}
