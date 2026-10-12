@@ -25,7 +25,8 @@ const QUESTIONS = [
   },
   {
     question: "Est-ce que tu gardes mes données ?",
-    reponse: "Non. Je ne te demande aucune donnée personnelle. Évite d’écrire ton nom ou ton numéro dans ta question.",
+    reponse:
+      "Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Pour te répondre, ta question est envoyée à Groq, un service d’IA. Évite d’y mettre ton nom ou ton numéro.",
   },
 ];
 

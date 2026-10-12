@@ -1,4 +1,4 @@
-import { getChatProviders, getWhisperConfig, type ChatProvider } from "./config";
+import { getChatProviders, getWhisperConfig, type ChatProvider, type WhisperConfig } from "./config";
 
 export type ChatMessage = {
   role: "system" | "user" | "assistant";
@@ -134,30 +134,76 @@ export async function chat(
   );
 }
 
-/** Transcrit un enregistrement audio en texte français avec Whisper. */
-export async function transcribe(audio: Blob, filename = "audio.webm") {
-  const config = getWhisperConfig();
+export type TranscribeOptions = {
+  /** Nom du fichier envoyé : son extension indique à Whisper le format de l'audio (audio.webm par défaut). */
+  nomFichier?: string;
+  /** Délai accordé à Whisper (20 secondes par défaut). */
+  timeoutMs?: number;
+};
+
+type DependancesTranscription = {
+  /** Réglages de Whisper (ceux de l'environnement par défaut) ; `null` : transcription non configurée. */
+  config?: WhisperConfig | null;
+  /** Remplace `fetch` (tests). */
+  fetch?: typeof fetch;
+};
+
+const DELAI_TRANSCRIPTION_PAR_DEFAUT_MS = 20_000;
+
+function echecTranscription(motif: string, nature: NatureErreurIA): never {
+  throw new ErreurIA(`La transcription a échoué (${motif}).`, nature, [`transcription : ${motif}`]);
+}
+
+const motifSelonErreur = (err: unknown, motifParDefaut: string) =>
+  err instanceof Error && err.name === "TimeoutError" ? "délai dépassé" : motifParDefaut;
+
+/**
+ * Transcrit un enregistrement audio en texte français avec Whisper. Rend le texte sans espaces autour, vide
+ * quand rien n'est reconnu. Échoue avec une ErreurIA (non configurée, saturée ou indisponible) qui ne
+ * contient ni la clé ni le détail du fournisseur.
+ */
+export async function transcribe(
+  audio: Blob,
+  options: TranscribeOptions = {},
+  deps: DependancesTranscription = {},
+): Promise<string> {
+  const config = deps.config === undefined ? getWhisperConfig() : deps.config;
   if (!config) {
-    throw new Error(
+    throw new ErreurIA(
       "Transcription non configurée. Renseigne WHISPER_API_KEY dans .env.local (voir docs/SETUP.md).",
+      "non_configuree",
     );
   }
+  const appeler = deps.fetch ?? fetch;
 
   const form = new FormData();
-  form.append("file", audio, filename);
+  form.append("file", audio, options.nomFichier ?? "audio.webm");
   form.append("model", config.model);
   form.append("language", "fr");
 
-  const res = await fetch(`${config.baseUrl}/audio/transcriptions`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${config.apiKey}` },
-    body: form,
-  });
-
-  if (!res.ok) {
-    throw new Error(`Échec de la transcription (HTTP ${res.status}).`);
+  let res: Response;
+  try {
+    res = await appeler(`${config.baseUrl}/audio/transcriptions`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${config.apiKey}` },
+      body: form,
+      signal: AbortSignal.timeout(options.timeoutMs ?? DELAI_TRANSCRIPTION_PAR_DEFAUT_MS),
+    });
+  } catch (err) {
+    return echecTranscription(motifSelonErreur(err, "erreur réseau"), "indisponible");
   }
 
-  const data = (await res.json()) as { text?: string };
-  return data.text ?? "";
+  if (!res.ok) {
+    void res.body?.cancel().catch(() => undefined);
+    return echecTranscription(`HTTP ${res.status}`, res.status === 429 ? "saturee" : "indisponible");
+  }
+
+  let data: unknown;
+  try {
+    data = await res.json();
+  } catch (err) {
+    return echecTranscription(motifSelonErreur(err, "réponse illisible"), "indisponible");
+  }
+  const texte = typeof data === "object" && data !== null && "text" in data ? data.text : undefined;
+  return typeof texte === "string" ? texte.trim() : "";
 }

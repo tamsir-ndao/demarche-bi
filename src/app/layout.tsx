@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { MessageInstaller } from "@/components/MessageInstaller";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Démarche-Bi", template: "%s · Démarche-Bi" },
   description:
     "Pose ta question sur une démarche administrative au Sénégal. Réponses fondées uniquement sur des fiches vérifiées, avec leurs sources officielles.",
+  // Une fois ajoutée à l'écran d'accueil de l'iPhone : le nom sous l'icône et l'ouverture en plein écran.
+  appleWebApp: { capable: true, title: "Démarche-Bi" },
 };
 
 export const viewport: Viewport = {
@@ -27,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Aller au contenu
         </a>
         {children}
+        <MessageInstaller />
       </body>
     </html>
   );

@@ -31,8 +31,9 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] `schemas.ts`, `understand.ts`, `decide.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/` (11 octobre) : le modèle choisit dans la liste fermée des fiches, n'écrit que l'introduction, le code vérifie
 - [x] Route `/api/ask` : comprendre, décider, répondre, vérifier, citer (la page `/reponse` appelle le même service)
 - [x] Tests des garde-fous (identifiant inconnu, nombre inventé, adresse, balisage, mot absolu, sortie invalide)
-- [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; décider entre l'offre payante à l'usage (très bon marché), un troisième modèle à mesurer (`openai/gpt-oss-20b`) ou un secours chez un autre fournisseur
-- [ ] Déploiement Vercel avec les variables d'environnement, juste après l'IA : un lien public sera sans doute demandé pour la présélection
+- [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; décider entre l'offre payante à l'usage (très bon marché), un troisième modèle à mesurer (`openai/gpt-oss-20b`) ou un secours chez un autre fournisseur ; la limite par visiteur (10 questions et 6 enregistrements par minute) se compte par adresse réseau : au Wi-Fi du lieu de la finale, tout le monde partage la même adresse, donc prévoir de la relever pour la démo
+- [x] Projet Vercel `demarche-bi` créé, Aperçu avec l'IA, la voix et les brouillons vérifié sur Vercel (11 octobre) : pages, réponse écrite par l'IA, transcription Whisper, parcours dans Chrome en https
+- [ ] Production Vercel : ajouter les clés en Production (le site public répond aujourd'hui « Je ne sais pas encore », sans IA ni voix), laisser les brouillons absents tant que des fiches ne sont pas vérifiées, connecter le dépôt GitHub, mettre l'adresse dans le README (un lien public sera sans doute demandé pour la présélection)
 
 ## Lundi 12 — interface
 
@@ -56,8 +57,11 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 
 ## Mercredi 14 — voix et consultation
 
-- [ ] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable
-- [ ] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée
+- [x] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable (11 octobre)
+- [x] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée (11 octobre)
+- [ ] Essayer la voix sur de vrais téléphones, en https (Safari iPhone, Chrome Android), avec de vrais locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
+- [x] Application installable (manifeste, icônes) et message « Installe Démarche-Bi » : bouton sur Android, explications sur Safari de l'iPhone, silence de 14 jours après « Plus tard » (11 octobre)
+- [ ] Essayer l'installation sur un vrai Android (Chrome) et un vrai iPhone (Safari) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
 
@@ -65,6 +69,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 
 - [ ] Avis « utile / pas utile » et `/api/feedback`
 - [ ] Journal anonyme dans Neon (optionnel, l'application marche sans)
+- [ ] Refaire la réponse « Est-ce que tu gardes mes données ? » de la page À propos quand le journal anonyme existera (aujourd'hui : la voix n'est pas gardée et la question n'est pas enregistrée par le site, mais elles vont à Groq et la question apparaît dans l'adresse /reponse?q=… donc dans les journaux de l'hébergeur)
 
 ## Vendredi 16 — essais réels
 

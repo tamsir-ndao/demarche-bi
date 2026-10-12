@@ -1,9 +1,9 @@
-// Tests de l'appel au modèle de chat, avec un faux `fetch` : aucune requête réseau. Lancer : npm test
+// Tests de l'appel au modèle de chat et à la transcription, avec un faux `fetch` : aucune requête réseau. Lancer : npm test
 // Les clés ci-dessous sont des valeurs FICTIVES de test.
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { chat, ErreurIA } from "./client";
-import type { ChatProvider } from "./config";
+import { chat, ErreurIA, transcribe } from "./client";
+import type { ChatProvider, WhisperConfig } from "./config";
 
 const principal: ChatProvider = {
   name: "principal",
@@ -156,6 +156,115 @@ describe("chat", () => {
     const erreur = await echec(chat(messages, {}, { providers: [principal, secours], fetch }));
     const texte = `${erreur.message} ${erreur.details.join(" ")}`;
     assert.ok(!texte.includes("cle-principale") && !texte.includes("cle-secours"));
+    assert.ok(!texte.includes("détail du fournisseur"));
+  });
+});
+
+describe("transcribe", () => {
+  const whisper: WhisperConfig = {
+    baseUrl: "https://whisper.test/v1",
+    apiKey: "cle-whisper",
+    model: "modele-whisper",
+  };
+  const audio = new Blob([new Uint8Array([1, 2, 3, 4])], { type: "audio/webm" });
+  const transcription = (texte?: string) => Response.json(texte === undefined ? {} : { text: texte });
+
+  it("envoie le fichier, le modèle et le français à Whisper", async () => {
+    const { fetch, appels } = fauxFetch([transcription("Bonjour")]);
+    const texte = await transcribe(audio, { nomFichier: "voix.webm" }, { config: whisper, fetch });
+
+    assert.equal(texte, "Bonjour");
+    assert.equal(appels.length, 1);
+    assert.equal(appels[0].url, "https://whisper.test/v1/audio/transcriptions");
+    assert.equal(appels[0].init.method, "POST");
+    assert.equal((appels[0].init.headers as Record<string, string>).Authorization, "Bearer cle-whisper");
+    const formulaire = appels[0].init.body;
+    assert.ok(formulaire instanceof FormData);
+    const fichier = formulaire.get("file");
+    assert.ok(fichier instanceof File);
+    assert.equal(fichier.name, "voix.webm");
+    assert.equal(fichier.size, 4);
+    assert.equal(formulaire.get("model"), "modele-whisper");
+    assert.equal(formulaire.get("language"), "fr");
+  });
+
+  it("nomme le fichier audio.webm quand rien d'autre n'est demandé", async () => {
+    const { fetch, appels } = fauxFetch([transcription("Bonjour")]);
+    await transcribe(audio, {}, { config: whisper, fetch });
+    const fichier = (appels[0].init.body as FormData).get("file");
+    assert.ok(fichier instanceof File);
+    assert.equal(fichier.name, "audio.webm");
+  });
+
+  it("rend le texte sans les espaces autour", async () => {
+    const { fetch } = fauxFetch([transcription("  Comment faire un passeport ?\n")]);
+    assert.equal(await transcribe(audio, {}, { config: whisper, fetch }), "Comment faire un passeport ?");
+  });
+
+  it("rend un texte vide quand Whisper n'entend rien ou ne rend pas de texte", async () => {
+    for (const reponse of [transcription(""), transcription("   "), transcription(), Response.json(null), Response.json({ text: 42 })]) {
+      const { fetch } = fauxFetch([reponse]);
+      assert.equal(await transcribe(audio, {}, { config: whisper, fetch }), "");
+    }
+  });
+
+  it("signale l'absence de configuration sans appeler le réseau", async () => {
+    const { fetch, appels } = fauxFetch([]);
+    const erreur = await echec(transcribe(audio, {}, { config: null, fetch }));
+    assert.equal(erreur.nature, "non_configuree");
+    assert.equal(appels.length, 0);
+  });
+
+  it("signale un service saturé sur une erreur 429", async () => {
+    const { fetch } = fauxFetch([erreurHttp(429)]);
+    const erreur = await echec(transcribe(audio, {}, { config: whisper, fetch }));
+    assert.equal(erreur.nature, "saturee");
+    assert.deepEqual(erreur.details, ["transcription : HTTP 429"]);
+  });
+
+  it("signale un service indisponible pour les autres erreurs HTTP", async () => {
+    for (const statut of [400, 401, 413, 500, 503]) {
+      const { fetch } = fauxFetch([erreurHttp(statut)]);
+      const erreur = await echec(transcribe(audio, {}, { config: whisper, fetch }));
+      assert.equal(erreur.nature, "indisponible");
+      assert.deepEqual(erreur.details, [`transcription : HTTP ${statut}`]);
+    }
+  });
+
+  it("signale un service indisponible sur une erreur réseau", async () => {
+    const { fetch } = fauxFetch([new Error("réseau coupé")]);
+    const erreur = await echec(transcribe(audio, {}, { config: whisper, fetch }));
+    assert.equal(erreur.nature, "indisponible");
+    assert.deepEqual(erreur.details, ["transcription : erreur réseau"]);
+  });
+
+  it("signale un service indisponible quand la réponse est illisible", async () => {
+    const { fetch } = fauxFetch([new Response("pas du json", { status: 200 })]);
+    const erreur = await echec(transcribe(audio, {}, { config: whisper, fetch }));
+    assert.equal(erreur.nature, "indisponible");
+    assert.deepEqual(erreur.details, ["transcription : réponse illisible"]);
+  });
+
+  it("abandonne quand Whisper ne répond pas dans le délai", async () => {
+    const fetchLent = (_url: string | URL | Request, init?: RequestInit) =>
+      new Promise<Response>((_, rejeter) => {
+        // Même précaution que pour `chat` : le minuteur d'AbortSignal.timeout ne garde pas la boucle en vie.
+        const gardien = setTimeout(() => undefined, 5_000);
+        init?.signal?.addEventListener("abort", () => {
+          clearTimeout(gardien);
+          rejeter(init.signal?.reason);
+        });
+      });
+    const erreur = await echec(transcribe(audio, { timeoutMs: 20 }, { config: whisper, fetch: fetchLent }));
+    assert.equal(erreur.nature, "indisponible");
+    assert.deepEqual(erreur.details, ["transcription : délai dépassé"]);
+  });
+
+  it("n'écrit jamais la clé API ni le détail du fournisseur dans l'erreur", async () => {
+    const { fetch } = fauxFetch([erreurHttp(401)]);
+    const erreur = await echec(transcribe(audio, {}, { config: whisper, fetch }));
+    const texte = `${erreur.message} ${erreur.details.join(" ")}`;
+    assert.ok(!texte.includes("cle-whisper"));
     assert.ok(!texte.includes("détail du fournisseur"));
   });
 });

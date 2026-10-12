@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BoutonVoix } from "@/components/BoutonVoix";
 import { CarteArgument } from "@/components/CarteArgument";
 import { PageShell } from "@/components/PageShell";
 import { QuestionForm } from "@/components/QuestionForm";
@@ -13,10 +14,23 @@ export default function Accueil() {
           Quelle démarche te bloque&nbsp;?
         </h1>
         <p className="mt-2 text-[17px] leading-6 text-ink-2 lg:mt-3 lg:text-[22px] lg:leading-8">
-          Écris ta question, je te réponds.
+          Parle ou écris, je te réponds.
         </p>
 
-        <div className="mt-6 w-full lg:mt-8 lg:max-w-[600px]">
+        <div className="mt-5 lg:mt-8">
+          <BoutonVoix idChampQuestion="question-accueil" />
+        </div>
+
+        <div
+          aria-hidden="true"
+          className="mt-4 flex w-full items-center gap-3 text-sm leading-5 text-ink-3 lg:max-w-[600px]"
+        >
+          <span className="h-px flex-1 bg-line" />
+          ou
+          <span className="h-px flex-1 bg-line" />
+        </div>
+
+        <div className="mt-3 w-full lg:max-w-[600px]">
           <QuestionForm id="question-accueil" />
         </div>
 

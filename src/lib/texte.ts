@@ -38,6 +38,11 @@ export function typographie(texte: string): string {
   return texte.replace(/(?<=\p{L})'(?=[\p{L}\p{N}])/gu, "’");
 }
 
+/** L'espace avant « ? », « ! », « : » et « ; » devient insécable (règle française) : le signe ne reste pas seul en début de ligne. */
+export function collerLaPonctuation(texte: string): string {
+  return texte.replace(/ ([?!:;])/g, "\u00a0$1");
+}
+
 /** L'adresse de la réponse à une question, pour une démarche précise quand la personne l'a choisie. */
 export function urlReponse(question: string, ficheSlug?: string): string {
   const parametres = new URLSearchParams({ q: question });

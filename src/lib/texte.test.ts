@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  collerLaPonctuation,
   LONGUEUR_MAX_QUESTION,
   motsDeFiltre,
   nettoyerQuestion,
@@ -96,6 +97,22 @@ describe("typographie", () => {
 
   it("laisse intact un texte sans apostrophe", () => {
     assert.equal(typographie("Un jour"), "Un jour");
+  });
+});
+
+describe("collerLaPonctuation", () => {
+  it("remplace l'espace avant « ? », « ! », « : » et « ; » par une espace insécable : le signe ne passe pas seul à la ligne", () => {
+    assert.equal(collerLaPonctuation("Comment faire un passeport ?"), "Comment faire un passeport\u00a0?");
+    assert.equal(collerLaPonctuation("Attention ! Voilà : oui ; non"), "Attention\u00a0! Voilà\u00a0: oui\u00a0; non");
+  });
+
+  it("ne touche pas aux espaces ordinaires ni à un signe collé au mot", () => {
+    assert.equal(collerLaPonctuation("Je veux faire ma carte ici"), "Je veux faire ma carte ici");
+    assert.equal(collerLaPonctuation("Passeport?"), "Passeport?");
+  });
+
+  it("se relit avec nettoyerQuestion : l'espace insécable redevient une espace", () => {
+    assert.equal(nettoyerQuestion(collerLaPonctuation("Comment faire un passeport ?")), "Comment faire un passeport ?");
   });
 });
 

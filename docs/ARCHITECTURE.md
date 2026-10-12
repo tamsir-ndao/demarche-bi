@@ -3,9 +3,10 @@
 ## Vue d'ensemble
 
 ```
-Question (texte ; voix à venir)
+Question (texte, ou voix)
    │
-   ▼  voix : /api/transcribe ──► Whisper (Groq)                      (étape 3)
+   ▼  voix : bouton micro ──► spectre en direct ──► POST /api/transcribe ──► Whisper (Groq)
+   │      le texte reconnu s'affiche, la personne le relit et le corrige (« C'est bien ça ? »)
    │
    ▼  page /reponse  (ou POST /api/ask pour d'autres applications)
  1. Comprendre   LLM : choisit la ou les démarches dans la liste fermée des fiches
@@ -29,20 +30,24 @@ content/demarches/        fiches Markdown (+ _modele.md)
 eval/questions.jsonl      jeu d'évaluation (52 questions, dont 10 en wolof ou mêlées de wolof)
 src/
   app/
-    page.tsx              accueil : champ de question et exemples
+    page.tsx              accueil : bouton micro, champ de question et exemples
     reponse/              réponse à une question, lue dans l'adresse (/reponse?q=…)
     demarches/            liste et pages des fiches
     a-propos/             à propos, questions fréquentes, comment contribuer
     not-found.tsx         page introuvable
     globals.css           couleurs, mode sombre, animations (design « doux »)
+    manifest.ts           nom, couleurs et icônes de l'application installable (+ apple-icon.png, favicon.ico, public/icons/)
     api/
       ask/route.ts        POST : question -> réponse (le site appelle le même service sans passer par là)
-      transcribe/route.ts audio -> texte                                          (à venir)
+      transcribe/route.ts POST : enregistrement audio -> texte (le son n'est jamais gardé)
       feedback/route.ts   avis utile / pas utile                                  (à venir)
-  components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision
+  components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision,
+                          voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
+                          message d'installation sur l'écran d'accueil du téléphone (MessageInstaller)
   lib/
-    texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes)
+    texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
     liens.ts              liens vers le dépôt GitHub
+    installation.ts       message « Installe Démarche-Bi » : quand l'afficher (Android, Safari de l'iPhone), silence de 14 jours après « Plus tard » (calcul pur, testé)
     fiches/
       schema.ts           schéma Zod d'une fiche
       load.ts             lecture et validation des fiches
@@ -66,6 +71,15 @@ src/
       cache.ts            mémoire des questions déjà posées et limite par visiteur
       serveur.ts          branche le service sur l'environnement et les fiches du site
       api.ts              lecture de la demande de POST /api/ask
+      transcription.ts    POST /api/transcribe : contrôle du fichier, limite par visiteur, Whisper, texte
+    voix/                 la voix, utilisée par le navigateur et par le serveur
+      audio.ts            formats acceptés (webm, ogg, mp4, wav…), durée et taille maximales, lecture du fichier reçu
+      silence.ts          repère les phrases que Whisper invente sur du silence
+      codes.ts            les erreurs possibles de la voix, partagées par le serveur et le navigateur
+      messages.ts         ce que la personne lit pour chaque erreur
+      spectre.ts          barres du spectre en direct, détection de voix, chronomètre (calcul pur)
+      enregistreur.ts     micro, enregistrement et analyse du son dans le navigateur
+      envoi.ts            envoi de l'enregistrement à /api/transcribe
     db.ts                 client Neon (optionnel, serveur uniquement)
 scripts/
   validate-fiches.ts      npm run validate:fiches
@@ -117,6 +131,29 @@ Recherche lexicale écrite en code : normalisation (minuscules, accents retirés
 | `inconnue` | rien d'autre |
 
 Un corps illisible ou une question vide répondent `400` avec `{ "erreur": "…" }`. La route n'a pas de réglage CORS : seul le site l'appelle depuis un navigateur.
+
+## Voix
+
+Le bouton micro de l'accueil ouvre une fenêtre plein écran (`<dialog>`) : « Je t'écoute… » avec le spectre de la voix en direct et un chronomètre, puis « C'est bien ça ? » avec le texte reconnu, modifiable, avant de chercher la réponse. Le navigateur enregistre en webm/opus à 32 kbit/s (mp4 sur Safari) : 30 secondes pèsent une centaine de ko, utile avec un forfait data limité. L'enregistrement s'arrête seul à 30 secondes.
+
+- `POST /api/transcribe` reçoit un formulaire dont le champ `audio` est le fichier et rend `{ "texte": "…" }` (texte vide quand rien n'a été entendu), ou `{ "erreur": "code" }` avec le statut HTTP qui va avec : 400 (fichier absent ou vide), 413 (plus de 2 Mo), 415 (format inconnu), 429 (trop d'enregistrements : 6 par minute et par visiteur), 503 (Whisper saturé ou en panne).
+- Le son n'est jamais gardé : il reste en mémoire le temps de la requête, puis il est transmis à Whisper (Groq). Les journaux du serveur ne contiennent ni le texte ni le son, seulement la nature d'une panne.
+- Un enregistrement sans voix n'est pas envoyé : le navigateur mesure la puissance du son (au moins 0,3 s au-dessus d'un seuil) et affiche « Je n'ai rien entendu ». Sur du silence, Whisper invente des phrases (« Sous-titrage Société Radio-Canada », « Merci. ») avec une probabilité d'absence de parole à 0 : le serveur écarte les plus courantes (`src/lib/voix/silence.ts`).
+- Le micro n'existe que sur une page sécurisée (https, ou localhost) : sur l'adresse réseau du serveur de développement (http://192.168…), le navigateur le refuse et la fenêtre propose d'écrire la question.
+- Quitter la page, fermer la fenêtre (croix, Échap) ou la voir cachée par la navigation coupe le micro et abandonne l'envoi en cours.
+
+## Installation sur le téléphone
+
+Démarche-Bi peut s'installer sur l'écran d'accueil (application web). `src/app/manifest.ts` donne le nom, les couleurs et les icônes (`public/icons/`, `src/app/apple-icon.png`, `src/app/favicon.ico`). Il n'y a pas de service worker : le site ne marche pas hors connexion, et Chrome propose l'installation sans (vérifié avec Chrome 154 sur ordinateur : aucune erreur d'installabilité, l'événement `beforeinstallprompt` part). Le guide Next.js sur les PWA le dit aussi.
+
+Le message `MessageInstaller` (monté dans `src/app/layout.tsx`) invite à installer l'application, sur téléphone seulement (`lg:hidden`), au-dessus du menu du bas :
+
+- **Android (Chrome)** : l'événement `beforeinstallprompt` est gardé dès le chargement du fichier (il part une fois, juste après le chargement de la page) ; « Installer » ouvre la fenêtre du navigateur. Un navigateur sans cet événement (Firefox) n'affiche rien.
+- **iPhone (Safari)** : aucun bouton n'existe, le message explique « Touche Partager, puis Sur l'écran d'accueil ». Les autres navigateurs de l'iPhone (Chrome, Firefox, Edge…) et ceux des applications (Facebook, Instagram…) n'ont pas « Partager » au même endroit : rien n'est affiché.
+- Le message arrive 8 secondes après l'ouverture du site, jamais plus tôt. « Plus tard », « Compris » ou un refus dans la fenêtre de Chrome le cachent 14 jours : une date dans `localStorage`, rien d'autre. Il n'apparaît pas dans l'application installée (`display-mode: standalone`, `navigator.standalone`).
+- Les règles (quand l'afficher, combien de temps se taire) sont dans `src/lib/installation.ts` : du calcul pur, testé. Le composant ne fait que lire le navigateur.
+
+Limites connues : sur iPhone, rien ne dit si l'icône a vraiment été ajoutée ; le micro dans l'application ajoutée à l'écran d'accueil de l'iPhone est à essayer sur un vrai appareil (des rapports parlent d'une autorisation redemandée à chaque ouverture) ; l'icône garde l'adresse où elle a été ajoutée, donc il faut installer depuis l'adresse publique, pas depuis un aperçu protégé.
 
 ## Données (optionnel)
 

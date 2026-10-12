@@ -17,6 +17,13 @@ const TAILLES: Record<Taille, string> = {
   petit: "min-h-11 px-[18px] text-[15px] leading-5",
 };
 
+/** Les classes d'un bouton, pour un lien (LienBouton) comme pour un vrai bouton : vert plein, contour, ou simple texte souligné. */
+export function classesBouton(variante: Variante = "principal", taille: Taille = "grand", className = ""): string {
+  return `press flex items-center justify-center gap-2.5 rounded-full text-center ${VARIANTES[variante]} ${
+    variante === "lien" ? "" : TAILLES[taille]
+  } ${className}`;
+}
+
 type LienBoutonProps = {
   href: string;
   variante?: Variante;
@@ -38,9 +45,7 @@ export function LienBouton({
   className = "",
   children,
 }: LienBoutonProps) {
-  const classes = `press flex items-center justify-center gap-2.5 rounded-full text-center ${VARIANTES[variante]} ${
-    variante === "lien" ? "" : TAILLES[taille]
-  } ${className}`;
+  const classes = classesBouton(variante, taille, className);
   const contenu = (
     <>
       {icone ? <Icon name={icone} size={taille === "grand" ? 22 : 20} /> : null}

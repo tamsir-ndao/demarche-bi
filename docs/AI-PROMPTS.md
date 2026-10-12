@@ -86,9 +86,16 @@ Si l'introduction est refusée, le modèle reçoit la raison du refus et a une s
 
 La mémoire et la limite par visiteur vivent dans l'instance du serveur : sur Vercel elles aident sans rien garantir. L'adresse du visiteur ne sert qu'à compter, elle n'est jamais enregistrée.
 
-## 6. Voix (`transcribe`)
+## 6. Voix (`transcribe`, `src/lib/ai/transcription.ts`)
 
-Whisper (Groq), langue `fr`. La transcription s'affiche et reste modifiable avant l'envoi. (À venir : étape 3.)
+Whisper large v3 turbo (Groq), langue forcée à `fr`, sans `prompt` ni `temperature` particuliers. La transcription s'affiche dans un champ que la personne relit et corrige avant de chercher la réponse : le texte corrigé suit ensuite le même parcours qu'une question écrite. Whisper comprend peu le wolof : un message en wolof donne du français phonétique, d'où la note « Je comprends surtout le français. Corrige un mot si besoin. »
+
+Comme pour le modèle de chat, le code ne fait pas confiance à la sortie : le texte est mis sur une ligne et coupé à 300 caractères (la limite d'une question), et deux garde-fous évitent d'envoyer n'importe quoi à la recherche.
+
+- **Pas de voix, pas d'envoi.** Le navigateur mesure la puissance du son pendant l'enregistrement ; sans au moins 0,3 s de voix, il affiche « Je n'ai rien entendu » et n'envoie rien (quota ménagé, aucune phrase inventée).
+- **Phrases inventées sur du silence.** Mesure du 11 octobre 2026 (`whisper-large-v3-turbo`, `response_format: verbose_json`) : un silence donne « Sous-titrage Société Radio-Canada » et un bruit faible « Merci. », avec `no_speech_prob` à 0,000 et `avg_logprob` à −0,18 et −0,23, des valeurs de vraie parole (−0,08 à −0,31). Les indices de Whisper ne permettent donc pas de les repérer. Le serveur écarte les textes qui commencent par « Sous-titr… » et les remerciements ou au revoir seuls (« Merci. », « Merci à tous », « Merci d'avoir regardé cette vidéo », « À bientôt ») : le texte est alors vide, comme « rien entendu ». La liste est courte et se complète avec les enregistrements réels.
+
+Mesure de la reconnaissance (11 octobre 2026) : 5 phrases en français, voix de synthèse macOS (Jacques), enregistrées en webm/opus à 32 kbit/s comme le fait Chrome, et 2 d'entre elles en mp4/aac comme Safari : les 5 transcriptions sont exactes, ponctuation comprise, en 0,3 à 1,1 seconde. Le même parcours passe dans Chrome avec un faux micro (voir `docs/SETUP.md`). Ce n'est pas une mesure sur de vrais locuteurs, en environnement bruité ni avec un accent : à refaire avec quelques personnes (tâche « Essais réels »).
 
 ## Cas de comportement attendus (base du jeu d'évaluation)
 

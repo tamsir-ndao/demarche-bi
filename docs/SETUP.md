@@ -44,7 +44,7 @@ La CI GitHub (fiches, lint, build) se lance seule à chaque push et à chaque pu
 
 1. Sur console.groq.com, crée un compte et génère une clé API.
 2. Modèles : `openai/gpt-oss-120b` en principal et `qwen/qwen3.8-27b` en secours, avec la même clé. Ce sont les valeurs par défaut : rien à régler.
-3. Voix : `whisper-large-v3-turbo`, avec la même clé.
+3. Voix : `whisper-large-v3-turbo`, avec la même clé. Ses plafonds sont séparés de ceux du chat (en secondes d'audio, pas en tokens : de l'ordre de 7 200 secondes par heure et 28 800 par jour en gratuit, à vérifier dans ta console) ; une question dite dure quelques secondes.
 
 Quotas gratuits constatés le 11 octobre 2026, à vérifier dans ta console car ils changent : 8 000 tokens par minute, **200 000 tokens par jour** (chacun par modèle) et 1 000 requêtes par jour. Une question coûte deux appels (comprendre, puis répondre), soit de l'ordre de 2 000 à 3 000 tokens : compte **80 à 100 questions par jour et par modèle**, un peu moins quand il y a plus de fiches (la liste des fiches est envoyée à chaque question). Quand le premier modèle atteint un plafond, le second prend le relais avec la même clé ; quand les deux l'atteignent, la page montre la fiche sans introduction, avec la note « L'assistant est très sollicité ». Évite donc les tests en boucle : `npm run eval -- --ia` (52 questions, une centaine d'appels) peut à lui seul épuiser la journée. Le quota est par organisation, créer plusieurs clés ne l'augmente pas. Pour la démo ou un vrai lancement, passe sur l'offre payante à l'usage de Groq (vérifie les tarifs sur console.groq.com : ils sont très bas pour ce volume) ou ajoute un secours chez un autre fournisseur (étape 5).
 
@@ -66,7 +66,9 @@ cp .env.example .env.local
 | `DATABASE_URL` | chaîne de connexion Neon (étape 8), ou laisse vide |
 | `DEMARCHE_INCLUDE_DRAFTS` | `true` seulement en développement, pour tester avec des fiches brouillon |
 
-Les autres variables ont déjà des valeurs par défaut correctes.
+Les autres variables ont déjà des valeurs par défaut correctes. Sans `WHISPER_API_KEY`, le bouton micro reste affiché mais répond « La voix ne marche pas pour l'instant. Écris ta question. ».
+
+**Le micro n'existe que sur une page sécurisée** (https, ou `localhost`). Sur ton ordinateur, `http://localhost:3000` suffit. Depuis un téléphone sur le même Wi-Fi, `http://192.168…` ne marche pas pour la voix (le navigateur cache le micro) : teste avec le déploiement Vercel, en https.
 
 ## Étape 7 — Lancer et vérifier
 
@@ -76,6 +78,8 @@ npm run validate:fiches   # valide les fiches de content/demarches/
 npm run lint
 npm run build
 ```
+
+Pour essayer la voix sans parler, Chrome peut simuler un micro avec un fichier son : `--use-fake-ui-for-media-stream --use-fake-device-for-media-stream --use-file-for-fake-audio-capture=fichier.wav%noloop` (fichier WAV PCM 16 bits, de préférence avec une seconde de silence au début).
 
 ## Étape 8 — (Optionnel) Base Neon
 
@@ -87,10 +91,14 @@ L'application fonctionne sans base. Neon sert au journal anonyme des questions e
 
 ## Étape 9 — (Optionnel) Déployer sur Vercel
 
-1. Sur vercel.com, importe le dépôt GitHub `demarche-bi`.
-2. Ajoute les mêmes variables d'environnement que dans `.env.local` (jamais dans le code). Laisse `DEMARCHE_INCLUDE_DRAFTS` à `false` ou absente.
-3. Déploie. Chaque `git push` sur `main` redéploie.
-4. Mets l'URL publique dans le README, pour le jury.
+Avec la CLI (`npm i -g vercel`, puis `vercel login`) ou depuis vercel.com.
+
+1. Crée et lie le projet : `vercel link --yes --project demarche-bi`. Cette commande ajoute `VERCEL_OIDC_TOKEN` à ton `.env.local` : l'application n'en a pas besoin, tu peux retirer ces deux lignes.
+2. Ajoute les variables d'environnement **avant le premier déploiement**, car le tout premier déploiement d'un projet devient la production. La valeur d'une clé entre par l'entrée standard, jamais dans la commande ni dans un fichier du dépôt : `vercel env add AI_API_KEY production --sensitive`, de même pour `WHISPER_API_KEY`, et les mêmes commandes avec `preview`.
+3. `DEMARCHE_INCLUDE_DRAFTS=true` seulement pour **Preview** (`vercel env add DEMARCHE_INCLUDE_DRAFTS preview --no-sensitive`) : tu peux ainsi essayer les brouillons sans qu'ils répondent au public. En Production, laisse-la absente tant que des fiches ne sont pas vérifiées : le site y répond « Je ne sais pas encore ».
+4. `vercel deploy` crée une adresse d'Aperçu, `vercel deploy --prod` met à jour la production. Les adresses d'Aperçu sont protégées par la connexion Vercel (réglage « Deployment Protection ») : pour les ouvrir sur un téléphone, connecte-toi d'abord à vercel.com avec le même compte. L'adresse de production `demarche-bi.vercel.app` est publique.
+5. Pour redéployer à chaque `git push`, connecte le dépôt (Settings, Git) : l'application GitHub de Vercel doit avoir accès à `tamsir-ndao/demarche-bi`.
+6. Mets l'adresse publique dans le README, pour le jury.
 
 ## Étape 10 — Développer avec l'agent
 
