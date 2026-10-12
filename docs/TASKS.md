@@ -27,7 +27,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 
 ## Dimanche 11 — IA et API
 
-- [ ] 5 fiches de plus (lot 2)
+- [x] 5 fiches de plus (lot 2) : 9 brouillons faits le 12 octobre (14 fiches au total). Les 7 fiches dont la page officielle a été lue (carte d'identité, duplicata, casier judiciaire, bonne vie et mœurs, NINEA, passeport ordinaire, certificat de nationalité par mariage) sont passées en « vérifié » le 12 octobre, après relecture par tamsir-ndao. Repris d'une copie collée du texte des pages du portail (Service public ou Sénégal Services), qui n'ont pas pu être ouvertes depuis notre outil, restent en brouillon tant que leur page officielle n'est pas lisible (servicepublic.gouv.sn et senegalservices.sn ne répondent plus ; le guichet unique e-senegal.sn et cappkarange.sn sont des pistes) : copie littérale d'acte de naissance, 4 fiches carte grise (véhicule neuf, véhicule d'occasion importé, changement de propriétaire, duplicata) et 2 fiches permis de conduire (premier permis, renouvellement et duplicata). Les contradictions du portail sur le permis (délai, lieu de dépôt, pièces) sont notées « à confirmer »
 - [x] `schemas.ts`, `understand.ts`, `decide.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/` (11 octobre) : le modèle choisit dans la liste fermée des fiches, n'écrit que l'introduction, le code vérifie
 - [x] Route `/api/ask` : comprendre, décider, répondre, vérifier, citer (la page `/reponse` appelle le même service)
 - [x] Tests des garde-fous (identifiant inconnu, nombre inventé, adresse, balisage, mot absolu, sortie invalide)

@@ -38,10 +38,10 @@
 {"question":"Je veux faire ma carte.","famille":"vague"}
 {"question":"Dama bëgg kayit.","famille":"vague","langue":"wo"}
 {"question":"Dama soxla ndimbal ci administration bi.","famille":"vague","langue":"wo"}
-{"question":"Comment obtenir un acte de naissance ?","famille":"hors_perimetre"}
-{"question":"Je veux faire mon passeport","famille":"hors_perimetre"}
+{"question":"Comment obtenir un acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["centre d'état civil"]}
+{"question":"Je veux faire mon passeport","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["photos d'identité"]}
 {"question":"Comment obtenir un certificat de décès ?","famille":"hors_perimetre"}
-{"question":"J'ai perdu mon passeport, que faire ?","famille":"hors_perimetre"}
+{"question":"J'ai perdu mon passeport, que faire ?","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["duplicata"]}
 {"question":"Où faire légaliser un document ?","famille":"hors_perimetre"}
 {"question":"Carte d'identité","famille":"vague"}
 {"question":"Certificat","famille":"vague"}
@@ -50,3 +50,16 @@
 {"question":"Je veux refaire ma CNI","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["commissariat"]}
 {"question":"Casier judiciaire pour travailler à l'étranger","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["200 FCFA"]}
 {"question":"Ma carte d'identité a été volée","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["certificat de perte"]}
+{"question":"Combien coûte un passeport ?","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["20 000 FCFA"]}
+{"question":"Quelles pièces pour le passeport d'un enfant ?","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["autorisation parentale"]}
+{"question":"Dama bëgg passeport, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"passeport-ordinaire","doit_contenir":["commissariat"]}
+{"question":"Je suis marié à une Sénégalaise, comment obtenir la nationalité sénégalaise ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["non renonciation"]}
+{"question":"Combien coûte une copie littérale d'acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["vignette"]}
+{"question":"J'ai acheté une voiture d'occasion, comment changer la carte grise à mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["acte de vente"]}
+{"question":"J'ai perdu ma carte grise","famille":"couverte","attendu_slug":"carte-grise-duplicata","doit_contenir":["certificat de perte"]}
+{"question":"Comment immatriculer une voiture neuve ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-neuf","doit_contenir":["certificat de conformité"]}
+{"question":"Je fais venir une voiture d'occasion de l'étranger, quels papiers pour la carte grise ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-occasion-importe","doit_contenir":["déclaration en douane"]}
+{"question":"Comment passer mon permis de conduire ?","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["certificat médical"]}
+{"question":"Quel âge faut-il pour avoir le permis ?","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["18 ans"]}
+{"question":"J'ai perdu mon permis de conduire","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["certificat de perte"]}
+{"question":"Comment renouveler mon permis de conduire périmé ?","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["carte nationale d'identité"]}

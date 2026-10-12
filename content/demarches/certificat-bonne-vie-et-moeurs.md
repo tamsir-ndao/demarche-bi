@@ -25,9 +25,9 @@ sources:
   - titre: "Certificat de bonne vie et mœurs — Police nationale du Sénégal"
     url: https://www.policenationale.gouv.sn/2024/05/19/certificat-de-bonne-vie-et-moeurs/
     consulte_le: 2026-10-11
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-12
+verifie_par: tamsir-ndao
 ---
 
 - Qui peut le demander : le demandeur en personne.

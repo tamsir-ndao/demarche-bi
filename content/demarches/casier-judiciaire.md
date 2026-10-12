@@ -22,9 +22,9 @@ sources:
   - titre: "Casier judiciaire — Ministère de la Justice du Sénégal"
     url: https://justice.sec.gouv.sn/services-aux-usagers/casier-judiciaire/
     consulte_le: 2026-10-11
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-12
+verifie_par: tamsir-ndao
 ---
 
 - Pour obtenir un autre extrait, il faut reprendre la procédure.

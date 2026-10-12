@@ -43,4 +43,17 @@ Ces thèmes sont des pistes. Garde ceux pour lesquels tu trouves une source offi
 
 | Démarche | Brouillon | Vérifiée | Relue par |
 |---|---|---|---|
-| (à compléter au fil de l'eau) | | | |
+| Carte d'identité nationale biométrique | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
+| Duplicata de la carte d'identité | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
+| Casier judiciaire | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
+| Certificat de bonne vie et mœurs | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
+| NINEA | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
+| Passeport ordinaire | oui (12 oct.) | oui (12 oct.) | tamsir-ndao |
+| Certificat de nationalité (par mariage) | oui (12 oct.) | oui (12 oct.) | tamsir-ndao |
+| Copie littérale d'acte de naissance (copie du portail, à relire) | oui (12 oct.) | | |
+| Carte grise : changement de propriétaire (copie du portail, à relire) | oui (12 oct.) | | |
+| Carte grise : véhicule neuf (copie du portail, à relire) | oui (12 oct.) | | |
+| Carte grise : véhicule d'occasion importé (copie du portail, à relire) | oui (12 oct.) | | |
+| Carte grise : duplicata (copie du portail, à relire) | oui (12 oct.) | | |
+| Permis de conduire : premier permis (copie du portail, à relire) | oui (12 oct.) | | |
+| Permis de conduire : renouvellement et duplicata (copie du portail, à relire) | oui (12 oct.) | | |

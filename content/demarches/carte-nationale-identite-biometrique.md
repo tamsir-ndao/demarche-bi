@@ -27,9 +27,9 @@ sources:
   - titre: "Carte nationale d'identité biométrique — Ministère de l'Intérieur et de la Sécurité publique"
     url: https://www.interieur.gouv.sn/services/services-aux-usagers/carte-nationale-d-identite-biometrique
     consulte_le: 2026-10-11
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-12
+verifie_par: tamsir-ndao
 ---
 
 - Qui peut la demander : tout citoyen sénégalais âgé d'au moins 5 ans.

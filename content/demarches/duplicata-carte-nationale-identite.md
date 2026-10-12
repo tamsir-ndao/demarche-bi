@@ -9,6 +9,9 @@ mots_cles:
   - j'ai perdu ma carte d'identité
   - perte de la carte d'identité
   - CNI perdue
+  - carte d'identité volée
+  - carte d'identité égarée
+  - j'ai égaré ma carte d'identité
   - certificat de perte
   - carte nationale d'identité
 pieces:
@@ -31,9 +34,9 @@ sources:
   - titre: "Carte nationale d'identité biométrique (rubrique « En cas de perte ? ») — Ministère de l'Intérieur et de la Sécurité publique"
     url: https://www.interieur.gouv.sn/services/services-aux-usagers/carte-nationale-d-identite-biometrique
     consulte_le: 2026-10-11
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-12
+verifie_par: tamsir-ndao
 ---
 
 - Divergence entre deux pages du même ministère : la page « Duplicata » demande un extrait de naissance de moins d'1 an et un justificatif d'adresse, alors que la rubrique « En cas de perte ? » de la page « Carte nationale d'identité biométrique » demande un extrait de moins de 3 mois et ne mentionne pas de justificatif d'adresse. À confirmer auprès de la DAF (numéro vert 800 00 2012) avant de se déplacer.

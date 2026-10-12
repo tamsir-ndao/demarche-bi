@@ -29,9 +29,9 @@ sources:
   - titre: "NINEA — fiche de démarche, Direction générale des impôts et des domaines (DGID)"
     url: https://www.dgid.sn/fiches/ninea
     consulte_le: 2026-10-11
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-12
+verifie_par: tamsir-ndao
 ---
 
 - Toute personne exerçant une activité au Sénégal doit figurer dans un répertoire des contribuables, des établissements et des associations, ce qui facilite ses démarches administratives. Le NINEA est le numéro unique attribué dans ce répertoire.
