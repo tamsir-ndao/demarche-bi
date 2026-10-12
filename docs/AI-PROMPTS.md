@@ -30,8 +30,10 @@ Deux mesures ont fixé ce choix (11 octobre 2026, `openai/gpt-oss-120b`) :
 | `demarches` | identifiants pris dans la liste : aucun, un, ou plusieurs (3 au plus) quand la question ne permet pas de choisir |
 | `besoin_precision` | vrai si la question est administrative mais trop vague |
 | `question_precision` | une question courte, au tutoiement, quand `besoin_precision` est vrai ; sinon vide |
+| `hors_domaine` | vrai seulement si aucune démarche ne répond et que la question ne concerne pas une démarche administrative sénégalaise (cuisine, sport, discussion, démarche d'un autre pays…) ; faux au moindre doute et pour une démarche sénégalaise absente de la liste |
+| `message` | quand aucune démarche ne répond : une ou deux phrases polies, au tutoiement, qui nomment le sujet précis de la question (« la cuisine, ce n'est pas mon domaine » si `hors_domaine`, sinon « je n'ai pas encore de source officielle pour le renouvellement du permis ») ; sinon vide |
 
-Le code ne fait pas confiance à cette sortie : un identifiant absent de la liste est écarté, les doublons aussi, au plus 3 démarches sont gardées, `question_claire` est coupée à 300 caractères et `question_precision` à 200.
+Le code ne fait pas confiance à cette sortie : un identifiant absent de la liste est écarté, les doublons aussi, au plus 3 démarches sont gardées, `question_claire` est coupée à 300 caractères et `question_precision` à 200. `hors_domaine` et `message` ne comptent que s'il n'y a ni démarche ni demande de précision. Le `message` passe par `verifierMessageSansReponse` (`guardrails.ts`) : 220 caractères au plus, ni balisage, ni adresse, ni identifiant interne, **ni chiffre, ni nombre en lettres, ni montant** (même repris de la question : le site ne dit rien de l'administration dans cette phrase). S'il est refusé, le site dit sa phrase habituelle ; la question reste « hors domaine » ou « inconnue ».
 
 Avec beaucoup de fiches, la liste grossit d'environ 50 tokens par fiche : au-delà d'une cinquantaine, il faudra présélectionner par recherche lexicale avant d'interroger le modèle.
 
@@ -42,7 +44,8 @@ Avec beaucoup de fiches, la liste grossit d'environ 50 tokens par fiche : au-del
 | une seule démarche | la fiche répond |
 | plusieurs démarches | écran « Que veux-tu faire ? » : la personne choisit, la réponse vient de la fiche choisie (`?fiche=`) |
 | trop vague, sans démarche à proposer | « Peux-tu préciser ta question ? », le champ garde la question |
-| aucune démarche | « Je ne sais pas encore », aucune source, invitation à proposer la démarche |
+| aucune démarche, sujet hors domaine | « Ce n'est pas mon domaine », la phrase du modèle (ou « Je réponds aux questions sur les démarches administratives au Sénégal »), aucune invitation à proposer une démarche |
+| aucune démarche, démarche administrative absente | « Je ne sais pas encore », la phrase du modèle (ou « Je n'ai pas de source officielle pour ça »), aucune source, invitation à proposer la démarche |
 
 ## 3. Répondre (`answer.ts`)
 

@@ -159,13 +159,21 @@ export function scriptFiche({ fiche, statut, intro }: { fiche: Fiche; statut: St
   return lignes;
 }
 
-// Les trois écrans suivants répètent les phrases de JeNeSaisPas.tsx et Precision.tsx : si l'un change, l'autre aussi.
+// Les écrans suivants répètent les phrases de JeNeSaisPas.tsx, HorsDomaine.tsx et Precision.tsx : si l'un change, l'autre aussi.
 
-/** « Je ne sais pas encore » : la franchise du site, dite à voix haute. */
-export function scriptInconnue(): string[] {
+/** « Je ne sais pas encore » : la franchise du site, dite à voix haute. `message` : la phrase écrite pour la question. */
+export function scriptInconnue(message?: string): string[] {
   return [
     "Je ne sais pas encore.",
-    "Je n’ai pas de source officielle pour ça. Je préfère te le dire plutôt que d’inventer.",
+    message ?? "Je n’ai pas de source officielle pour ça. Je préfère te le dire plutôt que d’inventer.",
+  ];
+}
+
+/** La question n'a aucun rapport avec les démarches : on le dit poliment. `message` : la phrase écrite pour la question. */
+export function scriptHorsDomaine(message?: string): string[] {
+  return [
+    "Ce n’est pas mon domaine.",
+    message ?? "Je réponds aux questions sur les démarches administratives au Sénégal : papiers, certificats, permis…",
   ];
 }
 

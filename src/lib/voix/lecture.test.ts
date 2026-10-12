@@ -8,6 +8,7 @@ import {
   pourLaVoix,
   preparerLaLecture,
   scriptFiche,
+  scriptHorsDomaine,
   scriptInconnue,
   scriptPrecision,
   scriptPrecisionGenerale,
@@ -275,6 +276,24 @@ describe("autres réponses", () => {
     assert.deepEqual(scriptInconnue(), [
       "Je ne sais pas encore.",
       "Je n’ai pas de source officielle pour ça. Je préfère te le dire plutôt que d’inventer.",
+    ]);
+  });
+  it("dit la phrase écrite pour la question à la place de la phrase habituelle, pour « je ne sais pas »", () => {
+    assert.deepEqual(scriptInconnue("Je n’ai pas encore de source officielle pour le visa."), [
+      "Je ne sais pas encore.",
+      "Je n’ai pas encore de source officielle pour le visa.",
+    ]);
+  });
+  it("dit que le sujet n'est pas son domaine, avec la phrase écrite pour la question", () => {
+    assert.deepEqual(scriptHorsDomaine("Les recettes, ce n’est pas mon domaine."), [
+      "Ce n’est pas mon domaine.",
+      "Les recettes, ce n’est pas mon domaine.",
+    ]);
+  });
+  it("garde une phrase habituelle polie quand il n'y a pas de phrase écrite pour la question", () => {
+    assert.deepEqual(scriptHorsDomaine(), [
+      "Ce n’est pas mon domaine.",
+      "Je réponds aux questions sur les démarches administratives au Sénégal : papiers, certificats, permis…",
     ]);
   });
   it("pose la question de précision et liste les démarches possibles", () => {

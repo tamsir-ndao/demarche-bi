@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { AvisReponse } from "@/components/AvisReponse";
 import { BulleQuestion } from "@/components/BulleQuestion";
+import { HorsDomaine } from "@/components/HorsDomaine";
 import { JeNeSaisPas } from "@/components/JeNeSaisPas";
 import { PageShell } from "@/components/PageShell";
 import { Precision, PrecisionGenerale } from "@/components/Precision";
@@ -74,7 +75,9 @@ async function Resultat({ question, reponse }: { question: string; reponse: Repo
     case "precision_generale":
       return <PrecisionGenerale question={reponse.question} questionPosee={question} />;
     case "inconnue":
-      return <JeNeSaisPas />;
+      return <JeNeSaisPas message={reponse.message} />;
+    case "hors_domaine":
+      return <HorsDomaine message={reponse.message} />;
   }
 }
 

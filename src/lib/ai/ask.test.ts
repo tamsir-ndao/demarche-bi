@@ -38,6 +38,9 @@ const orienter = (surcharges: object) => ({
   demarches: [],
   besoin_precision: false,
   question_precision: "",
+  hors_domaine: false,
+  message_hors_domaine: "",
+  message_absente: "",
   ...surcharges,
 });
 const reponseCarte = { trouve: true, intro: "Tu as besoin d'un timbre de 10 000 FCFA." };
@@ -76,6 +79,21 @@ describe("poserQuestion avec l'IA", () => {
     const { modele, appels } = modeleDeTest(orienter({ demarches: [] }));
     assert.deepEqual(await poserQuestion("Quel temps demain ?", { fiches, modele }), { type: "inconnue" });
     assert.equal(appels.length, 1);
+  });
+
+  it("rend la phrase écrite par le modèle quand une démarche absente de la liste ne reçoit pas de fiche", async () => {
+    const { modele } = modeleDeTest(orienter({ message_absente: "Je n’ai pas encore de source officielle pour le visa." }));
+    assert.deepEqual(await poserQuestion("Comment obtenir un visa ?", { fiches, modele }), {
+      type: "inconnue",
+      message: "Je n’ai pas encore de source officielle pour le visa.",
+    });
+  });
+
+  it("dit « hors domaine » avec sa phrase quand la question n'a aucun rapport avec les démarches", async () => {
+    const message = "Les recettes, ce n’est pas mon domaine. Je t’aide pour les démarches administratives au Sénégal.";
+    const { modele, appels } = modeleDeTest(orienter({ hors_domaine: true, message_hors_domaine: message }));
+    assert.deepEqual(await poserQuestion("Comment faire du thiéboudienne ?", { fiches, modele }), { type: "hors_domaine", message });
+    assert.equal(appels.length, 1, "aucune réponse n'est écrite");
   });
 
   it("demande de préciser entre plusieurs démarches", async () => {

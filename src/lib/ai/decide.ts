@@ -12,8 +12,10 @@ export type Decision =
   | { type: "precision"; options: Fiche[]; question: string }
   /** Question trop vague, sans démarche à proposer. `question` peut être vide. */
   | { type: "precision_generale"; question: string }
-  /** Aucune démarche connue ne répond : « je ne sais pas encore ». */
-  | { type: "inconnue" };
+  /** Une démarche administrative que le site n'a pas : « je ne sais pas encore ». `message` : la phrase du modèle, si elle a passé les garde-fous. */
+  | { type: "inconnue"; message?: string }
+  /** La question n'a aucun rapport avec les démarches administratives. `message` : la phrase du modèle, si elle a passé les garde-fous. */
+  | { type: "hors_domaine"; message?: string };
 
 export function decider(comprise: Comprehension, fiches: Fiche[]): Decision {
   const choisies = comprise.demarches.flatMap((slug) => fiches.find((fiche) => fiche.slug === slug) ?? []);
@@ -23,7 +25,10 @@ export function decider(comprise: Comprehension, fiches: Fiche[]): Decision {
       ? { type: "precision", options: choisies, question: comprise.question_precision }
       : { type: "precision_generale", question: comprise.question_precision };
   }
-  if (choisies.length === 0) return { type: "inconnue" };
+  if (choisies.length === 0) {
+    const type = comprise.hors_domaine ? "hors_domaine" : "inconnue";
+    return comprise.message === "" ? { type } : { type, message: comprise.message };
+  }
   if (choisies.length === 1) return { type: "fiche", fiche: choisies[0] };
   return { type: "precision", options: choisies, question: comprise.question_precision };
 }

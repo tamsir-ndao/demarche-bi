@@ -150,3 +150,52 @@ export function verifierIntro(intro: string, fiche: Fiche, { slugs = [] }: { slu
 
   return { ok: true, intro: texte };
 }
+
+const LONGUEUR_MAX_MESSAGE = 220;
+
+/** « francs », « FCFA » ou « CFA » : un montant, quel que soit le chiffre. */
+const MONTANT = /\b(?:fcfa|cfa|francs?)\b/i;
+
+/**
+ * Vérifie la phrase que le modèle écrit quand aucune fiche ne répond (sujet hors domaine, ou démarche que le site n'a
+ * pas). Elle reprend le sujet de la question avec politesse et n'affirme rien sur l'administration : pas de balisage,
+ * d'adresse, d'identifiant interne, de chiffre ni de montant (même repris de la question, qui pourrait lui en faire
+ * dire). Renvoie le texte nettoyé, ou `null` : le site dit alors sa phrase habituelle.
+ */
+export function verifierMessageSansReponse(message: string, { slugs = [] }: { slugs?: string[] } = {}): string | null {
+  const texte = nettoyer(message);
+  if (texte === "" || texte.length > LONGUEUR_MAX_MESSAGE) return null;
+  if (BALISAGE.test(texte) || ADRESSE.test(texte) || MONTANT.test(texte)) return null;
+
+  const minuscules = texte.toLowerCase();
+  if (slugs.some((slug) => slug.includes("-") && minuscules.includes(slug))) return null;
+  if (/\d/.test(texte) || motsDeNombres(texte).length > 0) return null;
+  return texte;
+}
+
+// Les mots qui annoncent une démarche administrative (écrits sans accent, au singulier), ou le début de ces mots.
+const MOTS_DE_DEMARCHE = new Set(
+  (
+    "permis carte passeport certificat acte extrait casier naissance mariage deces quitus attestation diplome bourse " +
+    "impot taxe fiscal douane ninea rccm nif tva dgid registre mairie commissariat gendarmerie prefecture tribunal greffe " +
+    "consulat ambassade cni duplicata document papier formulaire dossier timbre pension retraite cotisation ipres cmu " +
+    "electeur electoral foncier cadastre entreprise societe apix concours residence sejour domicile identite justice police civil"
+  ).split(" "),
+);
+const DEBUTS_DE_DEMARCHE = ["immatricul", "renouvel", "legalis", "apostill", "administrat", "nationalit", "naturalis", "demarch"];
+
+/**
+ * Vrai quand la question contient un mot de démarche administrative (permis, carte, acte, impôt…). Une telle question
+ * n'est jamais « hors domaine » : au pire, le site n'a pas encore la démarche. Large exprès : dans le doute, on ne dit
+ * pas à quelqu'un que sa démarche n'est pas du domaine du site.
+ */
+export function ressembleAUneDemarche(question: string): boolean {
+  return motsDe(question).some((mot) => {
+    if (mot === "") return false;
+    return (
+      MOTS_DE_DEMARCHE.has(mot) ||
+      MOTS_DE_DEMARCHE.has(mot.replace(/[sx]$/, "")) ||
+      DEBUTS_DE_DEMARCHE.some((debut) => mot.startsWith(debut))
+    );
+  });
+}

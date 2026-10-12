@@ -20,11 +20,20 @@ const reponseValide = {
   demarches: ["passeport"],
   besoin_precision: false,
   question_precision: "",
+  hors_domaine: false,
+  message_hors_domaine: "",
+  message_absente: "",
 };
 
 describe("ComprehensionSchema", () => {
   it("accepte une réponse complète", () => {
     assert.equal(ComprehensionSchema.safeParse(reponseValide).success, true);
+  });
+
+  it("refuse une réponse sans « hors_domaine » ni les deux phrases", () => {
+    assert.equal(ComprehensionSchema.safeParse({ ...reponseValide, hors_domaine: undefined }).success, false);
+    assert.equal(ComprehensionSchema.safeParse({ ...reponseValide, message_hors_domaine: undefined }).success, false);
+    assert.equal(ComprehensionSchema.safeParse({ ...reponseValide, message_absente: undefined }).success, false);
   });
 
   it("refuse un champ manquant ou d'un mauvais type", () => {
@@ -63,7 +72,14 @@ describe("comprendre", () => {
 
   it("renvoie ce que le modèle a compris", async () => {
     const { modele } = modeleDeTest(reponseValide);
-    assert.deepEqual(await comprendre("passeport ?", fiches, modele), reponseValide);
+    assert.deepEqual(await comprendre("passeport ?", fiches, modele), {
+      question_claire: reponseValide.question_claire,
+      demarches: reponseValide.demarches,
+      besoin_precision: false,
+      question_precision: "",
+      hors_domaine: false,
+      message: "",
+    });
   });
 
   it("écarte les identifiants inconnus et les doublons, garde l'ordre et plafonne à 3", async () => {
@@ -91,5 +107,82 @@ describe("comprendre", () => {
   it("laisse passer l'erreur du modèle", async () => {
     const panne = new ErreurIA("Service saturé", "saturee");
     await assert.rejects(comprendre("passeport", fiches, modeleDeTest(panne).modele), panne);
+  });
+});
+
+describe("comprendre : quand aucune démarche ne répond", () => {
+  const sansFiche = { ...reponseValide, demarches: [], question_claire: "Comment faire du thiéboudienne ?" };
+  const HORS = "La cuisine, ce n’est pas mon domaine. Je t’aide pour les démarches administratives au Sénégal.";
+  const ABSENTE = "Je n’ai pas encore de source officielle pour le renouvellement du permis de conduire.";
+  const brute = (surcharges: object) => ({ ...sansFiche, ...surcharges });
+  const comprendreQ = (question: string, surcharges: object) => comprendre(question, fiches, modeleDeTest(brute(surcharges)).modele);
+
+  it("explique au modèle la différence entre un sujet hors domaine et une démarche que le site n'a pas", async () => {
+    const { modele, appels } = modeleDeTest(reponseValide);
+    await comprendre("Quel passeport ?", fiches, modele);
+    const consignes = appels[0].messages[0].content;
+    assert.match(consignes, /"hors_domaine"/);
+    assert.match(consignes, /"message_hors_domaine"/);
+    assert.match(consignes, /"message_absente"/);
+    assert.match(consignes, /aucun chiffre/i);
+  });
+  it("garde la phrase « hors domaine » quand le sujet n'a rien d'une démarche", async () => {
+    const comprise = await comprendreQ("Comment faire du thiéboudienne ?", { hors_domaine: true, message_hors_domaine: HORS, message_absente: ABSENTE });
+    assert.equal(comprise.hors_domaine, true);
+    assert.equal(comprise.message, HORS);
+  });
+  it("garde la phrase « pas encore de source » pour une démarche que le site n'a pas", async () => {
+    const comprise = await comprendreQ("Comment renouveler mon permis ?", { hors_domaine: false, message_hors_domaine: HORS, message_absente: ABSENTE });
+    assert.equal(comprise.hors_domaine, false);
+    assert.equal(comprise.message, ABSENTE);
+  });
+  it("remet la phrase sur une ligne, sans espace en trop", async () => {
+    const comprise = await comprendreQ("q", { hors_domaine: true, message_hors_domaine: "  Ce n’est pas\n mon domaine.  " });
+    assert.equal(comprise.message, "Ce n’est pas mon domaine.");
+  });
+  it("écarte une phrase refusée par les garde-fous (chiffre, adresse, trop longue) : le site dit sa phrase habituelle", async () => {
+    for (const message of ["Le visa coûte 50 000 FCFA.", "Va sur www.exemple.sn.", "mot ".repeat(60)]) {
+      const comprise = await comprendreQ("q", { hors_domaine: true, message_hors_domaine: message });
+      assert.equal(comprise.message, "", message.slice(0, 20));
+      assert.equal(comprise.hors_domaine, true, "le sujet reste hors domaine, seule la phrase est écartée");
+    }
+  });
+  it("écarte un identifiant interne dans la phrase", async () => {
+    const comprise = await comprendreQ("q", { message_absente: "Je n’ai pas encore la fiche carte-identite." });
+    assert.equal(comprise.message, "");
+  });
+  it("ignore « hors domaine » et les phrases quand une démarche répond", async () => {
+    const comprise = await comprendreQ("q", { demarches: ["passeport"], hors_domaine: true, message_hors_domaine: HORS, message_absente: ABSENTE });
+    assert.equal(comprise.hors_domaine, false);
+    assert.equal(comprise.message, "");
+  });
+  it("ignore « hors domaine » et les phrases quand la question demande une précision", async () => {
+    const comprise = await comprendreQ("q", {
+      besoin_precision: true,
+      question_precision: "Que veux-tu faire ?",
+      hors_domaine: true,
+      message_hors_domaine: HORS,
+      message_absente: ABSENTE,
+    });
+    assert.equal(comprise.hors_domaine, false);
+    assert.equal(comprise.message, "");
+  });
+  it("ignore une démarche inventée : sans démarche valable, la phrase reste", async () => {
+    const comprise = await comprendreQ("q", { demarches: ["inventee"], hors_domaine: true, message_hors_domaine: HORS });
+    assert.deepEqual(comprise.demarches, []);
+    assert.equal(comprise.message, HORS);
+  });
+  it("ne dit jamais « hors domaine » pour une question qui parle d'une démarche, et prend alors la phrase « pas encore de source »", async () => {
+    const comprise = await comprendreQ("Comment renouveler mon permis de conduire ?", {
+      hors_domaine: true,
+      message_hors_domaine: "Le permis de conduire n’est pas mon domaine.",
+      message_absente: ABSENTE,
+    });
+    assert.equal(comprise.hors_domaine, false);
+    assert.equal(comprise.message, ABSENTE);
+  });
+  it("écarte une phrase « pas mon domaine » quand la question n'est pas hors domaine", async () => {
+    const comprise = await comprendreQ("Comment obtenir un visa ?", { hors_domaine: false, message_absente: "Ce n’est pas mon domaine." });
+    assert.equal(comprise.message, "");
   });
 });

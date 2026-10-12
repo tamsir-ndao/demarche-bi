@@ -24,7 +24,10 @@ export type Reponse =
   | { type: "fiche"; fiche: Fiche; autres: Fiche[]; intro: string | null; degrade: Degrade; rejet: string | null }
   | { type: "precision"; options: Fiche[]; question: string }
   | { type: "precision_generale"; question: string }
-  | { type: "inconnue" };
+  /** Une démarche que le site n'a pas. `message` : une phrase du modèle qui reprend le sujet, vérifiée par les garde-fous. */
+  | { type: "inconnue"; message?: string }
+  /** Aucun rapport avec les démarches administratives. `message` : comme ci-dessus. */
+  | { type: "hors_domaine"; message?: string };
 
 export type OptionsQuestion = {
   /** Les fiches que le site peut montrer (vérifiées, ou brouillons en développement). */

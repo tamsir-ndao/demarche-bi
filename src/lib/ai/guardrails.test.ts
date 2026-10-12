@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ficheDeTest } from "./fiche-de-test";
-import { extraireNombres, motsAbsolusNonPermis, verifierIntro } from "./guardrails";
+import { extraireNombres, motsAbsolusNonPermis, ressembleAUneDemarche, verifierIntro, verifierMessageSansReponse } from "./guardrails";
 
 const fiche = ficheDeTest({
   slug: "carte",
@@ -162,5 +162,76 @@ describe("verifierIntro", () => {
 
   it("ne prend pas un simple mot pour un identifiant interne", () => {
     assert.equal(raison("Le ninea n'est pas utile ici.", { slugs: ["ninea"] }), null);
+  });
+});
+
+describe("verifierMessageSansReponse", () => {
+  const horsDomaine = "Les recettes de cuisine, ce n’est pas mon domaine. Je t’aide pour les démarches administratives au Sénégal.";
+  const verifier = (message: string, options?: { slugs?: string[] }) => verifierMessageSansReponse(message, options);
+
+  it("accepte une phrase polie qui reprend le sujet, et la rend nettoyée", () => {
+    assert.equal(verifier(horsDomaine), horsDomaine);
+    assert.equal(verifier("  Je n’ai pas encore\n de source pour le visa. "), "Je n’ai pas encore de source pour le visa.");
+  });
+  it("refuse un message vide, ou trop long pour une ou deux phrases", () => {
+    assert.equal(verifier(""), null);
+    assert.equal(verifier("   "), null);
+    assert.equal(verifier("mot ".repeat(60)), null);
+  });
+  it("refuse le balisage, les adresses web et les identifiants internes", () => {
+    assert.equal(verifier("**Ce n’est pas mon domaine.**"), null);
+    assert.equal(verifier("Regarde <b>ici</b>."), null);
+    assert.equal(verifier("Va sur www.exemple.sn pour ça."), null);
+    assert.equal(verifier("Écris à aide@exemple.sn."), null);
+    assert.equal(verifier("Je n’ai pas encore la fiche permis-de-conduire.", { slugs: ["permis-de-conduire"] }), null);
+  });
+  it("refuse tout chiffre, même celui que la question contenait : le message ne donne aucune information administrative", () => {
+    assert.equal(verifier("Le visa coûte 50 000 FCFA."), null);
+    assert.equal(verifier("Ça se fait en 3 jours."), null);
+    assert.equal(verifier("Je n’ai rien sur 5000."), null);
+  });
+  it("refuse un nombre écrit en lettres et un montant en francs", () => {
+    assert.equal(verifier("Ça coûte dix mille francs."), null);
+    assert.equal(verifier("Prévois deux semaines."), null);
+    assert.equal(verifier("Il faut payer en francs CFA."), null);
+    assert.equal(verifier("Le montant est en FCFA."), null);
+  });
+  it("accepte « un » et « une » (articles) et le mot « français »", () => {
+    assert.equal(verifier("Je n’ai pas encore de source pour un visa français."), "Je n’ai pas encore de source pour un visa français.");
+  });
+});
+
+describe("ressembleAUneDemarche", () => {
+  it("reconnaît les mots d'une démarche, avec ou sans accents, au singulier ou au pluriel", () => {
+    for (const question of [
+      "Comment renouveler mon permis de conduire ?",
+      "Comment faire ma carte grise ?",
+      "Quelles pièces pour un acte de naissance ?",
+      "Dama bëgg sama carte d'identité, naka laa ko defe ?",
+      "C'est quoi le NINEA ?",
+      "Où payer mes impôts ?",
+      "Je cherche un certificat de nationalité",
+      "OÙ LÉGALISER DES DOCUMENTS",
+      "Comment créer une entreprise ?",
+      "Où se trouve le commissariat ?",
+    ]) {
+      assert.equal(ressembleAUneDemarche(question), true, question);
+    }
+  });
+  it("ne prend pas pour une démarche un sujet sans rapport", () => {
+    for (const question of [
+      "Comment faire du thiéboudienne ?",
+      "Qui va gagner le match de ce soir ?",
+      "Raconte-moi une blague",
+      "Quel temps fait-il demain ?",
+      "Comment obtenir un visa pour la France ?",
+      "Bonjour, ça va ?",
+    ]) {
+      assert.equal(ressembleAUneDemarche(question), false, question);
+    }
+  });
+  it("ne prend pas un mot pour le début d'un autre (« cartographie » n'est pas une carte)", () => {
+    assert.equal(ressembleAUneDemarche("Montre-moi la cartographie de Dakar"), false);
+    assert.equal(ressembleAUneDemarche("la sacte"), false);
   });
 });

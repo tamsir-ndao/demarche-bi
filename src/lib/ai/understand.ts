@@ -1,4 +1,5 @@
 import type { Fiche } from "../fiches/schema";
+import { ressembleAUneDemarche, verifierMessageSansReponse } from "./guardrails";
 import { ComprehensionSchema, type Comprehension } from "./schemas";
 import type { Modele } from "./structured";
 
@@ -19,6 +20,11 @@ Réponds uniquement avec un objet JSON :
   Aucune quand la question ne concerne aucune démarche de la liste : démarche absente de la liste (même voisine), autre pays, ou sujet sans rapport avec l'administration.
 - "besoin_precision" : vrai seulement si la question concerne des démarches administratives mais est trop vague pour savoir de laquelle il s'agit. Faux pour un sujet sans rapport avec l'administration.
 - "question_precision" : si "besoin_precision" est vrai, une question courte, en français, au tutoiement, qui aide à préciser. Sinon une chaîne vide.
+- "hors_domaine" : vrai seulement quand "demarches" est vide et que la question ne concerne pas une démarche administrative sénégalaise : cuisine, sport, blague, discussion, météo, conseil personnel, ou démarche d'un autre pays. Faux au moindre doute, et faux pour une démarche administrative sénégalaise absente de la liste (même voisine).
+- "message_hors_domaine" et "message_absente" : seulement quand "demarches" est vide et que "besoin_precision" est faux ; sinon des chaînes vides. Deux versions d'une phrase polie, en français, au tutoiement (200 caractères au plus chacune), qui nomment le sujet précis de la question avec tes mots (« la cuisine », « le football », « le renouvellement du permis ») : n'écris jamais « ce sujet » ni « ça ». Le site choisira laquelle montrer.
+  "message_hors_domaine" dit que ce sujet n'est pas ton domaine et que tu aides pour les démarches administratives au Sénégal. Exemple : « La cuisine, ce n'est pas mon domaine. Je t'aide pour les démarches administratives au Sénégal. »
+  "message_absente" dit que tu n'as pas encore de source officielle pour ce sujet. Exemple : « Je n'ai pas encore de source officielle pour le renouvellement du permis de conduire. »
+  Dans ces deux phrases, n'écris aucun chiffre, aucun montant, aucune adresse, aucune consigne administrative et ne réponds pas à la question.
 Ne réponds pas à la question. N'invente aucune information administrative.`;
 
 const MAX_DEMARCHES = 3;
@@ -56,10 +62,19 @@ export async function comprendre(question: string, fiches: Fiche[], modele: Mode
 
   const connus = new Set(fiches.map((fiche) => fiche.slug));
   const demarches = [...new Set(brute.demarches)].filter((slug) => connus.has(slug)).slice(0, MAX_DEMARCHES);
+  // Le sujet hors domaine et la phrase qui l'explique ne comptent que si le site n'a ni fiche ni précision à proposer.
+  const sansReponse = demarches.length === 0 && !brute.besoin_precision;
+  // Garde-fou : une question qui parle d'une démarche n'est jamais « hors domaine », quoi qu'en dise le modèle.
+  const horsDomaine = sansReponse && brute.hors_domaine && !ressembleAUneDemarche(question);
+  const phrase = sansReponse ? (horsDomaine ? brute.message_hors_domaine : brute.message_absente) : "";
+  const message = verifierMessageSansReponse(phrase, { slugs: [...connus] }) ?? "";
   return {
     question_claire: nettoyer(brute.question_claire, LONGUEUR_MAX_QUESTION_CLAIRE),
     demarches,
     besoin_precision: brute.besoin_precision,
     question_precision: brute.besoin_precision ? nettoyer(brute.question_precision, LONGUEUR_MAX_QUESTION_PRECISION) : "",
+    hors_domaine: horsDomaine,
+    // Une phrase « pas mon domaine » n'a pas sa place quand la question n'est pas hors domaine.
+    message: !horsDomaine && /mon domaine/i.test(message) ? "" : message,
   };
 }

@@ -20,7 +20,15 @@ const passeport = ficheDeTest({
 });
 const fiches = [passeport];
 
-const orienter = { question_claire: "Passeport ?", demarches: ["passeport"], besoin_precision: false, question_precision: "" };
+const orienter = {
+  question_claire: "Passeport ?",
+  demarches: ["passeport"],
+  besoin_precision: false,
+  question_precision: "",
+  hors_domaine: false,
+  message_hors_domaine: "",
+  message_absente: "",
+};
 const reponse = { trouve: true, intro: "Prends rendez-vous." };
 
 function installer(modele: ReturnType<typeof modeleDeTest>["modele"] | null, autoriser: (visiteur: string) => boolean = () => true) {

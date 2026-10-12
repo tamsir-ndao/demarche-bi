@@ -32,6 +32,12 @@ describe("entreeDeLaReponse", () => {
     assert.deepEqual(entreeDeLaReponse("une question", { type: "inconnue" }), { question: "une question", repondue: false, fiches: [] });
   });
 
+  it("note aussi une question hors domaine comme non répondue, sans fiche", () => {
+    const reponse: Reponse = { type: "hors_domaine", message: "Ce n’est pas mon domaine." };
+    assert.deepEqual(entreeDeLaReponse("une recette", reponse), { question: "une recette", repondue: false, fiches: [] });
+    assert.deepEqual(entreeDeLaReponse("une recette", { type: "hors_domaine" }), { question: "une recette", repondue: false, fiches: [] });
+  });
+
   it("ne note pas les questions de précision : la réponse viendra après", () => {
     assert.equal(entreeDeLaReponse("carte", { type: "precision", options: [fiche("a"), fiche("b")], question: "Laquelle ?" }), null);
     assert.equal(entreeDeLaReponse("carte", { type: "precision_generale", question: "Peux-tu préciser ?" }), null);

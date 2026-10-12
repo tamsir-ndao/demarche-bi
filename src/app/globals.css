@@ -208,6 +208,11 @@ textarea:focus-visible {
   outline: none;
 }
 
+/* Les titres des écrans de la voix reçoivent le focus à chaque changement d'écran (pour le lecteur d'écran) : pas de cadre. */
+[data-titre-voix]:focus-visible {
+  outline: none;
+}
+
 /* Un appui se sent : léger retour au toucher, comme dans la maquette. */
 @utility press {
   transition:

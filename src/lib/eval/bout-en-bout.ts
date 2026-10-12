@@ -19,6 +19,8 @@ function decrire(reponse: Reponse): string {
       return "précision générale";
     case "inconnue":
       return "je ne sais pas";
+    case "hors_domaine":
+      return "hors domaine";
   }
 }
 
@@ -32,11 +34,12 @@ function statutDe(question: Question, reponse: Reponse): StatutBoutEnBout {
       }
       return "echouee";
     case "hors_perimetre":
-      return reponse.type === "inconnue" ? "reussie" : "echouee";
+      // Qu'une démarche manque ou que le sujet n'ait aucun rapport avec l'administration, le site n'invente rien.
+      return reponse.type === "inconnue" || reponse.type === "hors_domaine" ? "reussie" : "echouee";
     case "vague":
       if (reponse.type === "precision" || reponse.type === "precision_generale") return "reussie";
       // « Je ne sais pas » n'invente rien, mais n'aide pas ; deviner une démarche est le vrai échec.
-      return reponse.type === "inconnue" ? "partielle" : "echouee";
+      return reponse.type === "inconnue" || reponse.type === "hors_domaine" ? "partielle" : "echouee";
   }
 }
 

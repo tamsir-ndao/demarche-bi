@@ -29,6 +29,7 @@ function posee(reponse: Reponse, echecsIA = 0) {
 const precision: Reponse = { type: "precision", options: [carte, duplicata], question: "Que veux-tu faire ?" };
 const precisionGenerale: Reponse = { type: "precision_generale", question: "Lequel ?" };
 const inconnue: Reponse = { type: "inconnue" };
+const horsDomaine: Reponse = { type: "hors_domaine", message: "Ce n’est pas mon domaine." };
 
 describe("jugerReponse : question couverte", () => {
   it("réussit quand la fiche attendue répond", () => {
@@ -54,12 +55,17 @@ describe("jugerReponse : question couverte", () => {
   it("échoue quand le site dit qu'il ne sait pas ou demande de préciser sans proposer de démarche", () => {
     assert.deepEqual(jugerReponse(couverte, inconnue), { statut: "echouee", obtenu: "je ne sais pas" });
     assert.deepEqual(jugerReponse(couverte, precisionGenerale), { statut: "echouee", obtenu: "précision générale" });
+    assert.equal(jugerReponse(couverte, horsDomaine).statut, "echouee");
   });
 });
 
 describe("jugerReponse : question hors périmètre", () => {
   it("réussit quand le site dit qu'il ne sait pas", () => {
     assert.deepEqual(jugerReponse(horsPerimetre, inconnue), { statut: "reussie", obtenu: "je ne sais pas" });
+  });
+
+  it("réussit aussi quand le site dit que la question n'est pas de son domaine", () => {
+    assert.deepEqual(jugerReponse(horsPerimetre, horsDomaine), { statut: "reussie", obtenu: "hors domaine" });
   });
 
   it("échoue dès que le site répond ou demande une précision", () => {
@@ -77,6 +83,7 @@ describe("jugerReponse : question vague", () => {
 
   it("réussit à moitié quand le site dit qu'il ne sait pas : rien d'inventé, mais pas d'aide", () => {
     assert.equal(jugerReponse(vague, inconnue).statut, "partielle");
+    assert.equal(jugerReponse(vague, horsDomaine).statut, "partielle");
   });
 
   it("échoue quand le site devine une démarche", () => {
