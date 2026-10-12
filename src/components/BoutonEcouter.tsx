@@ -1,23 +1,27 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef, useSyncExternalStore } from "react";
+import type { LigneVocale } from "@/lib/voix/lecture";
 import { consommerLaDemande, stockageDeLOnglet } from "@/lib/voix/lectureAuto";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
+import { surligner } from "@/lib/voix/surlignage";
 import { Icon } from "./Icon";
 import { classesBouton } from "./LienBouton";
 
 /**
- * Lire la réponse à voix haute, avec la voix du téléphone (rien n'est envoyé ailleurs). Le texte à lire est préparé
- * par le serveur (lib/voix/lecture) à partir de la même fiche que l'écran. Après une question posée à voix haute,
- * la lecture démarre toute seule ; sinon, elle ne démarre que sur l'appui. Le bouton disparaît si le téléphone
- * n'a aucune voix française.
+ * Lire l'essentiel de la réponse à voix haute, avec la voix du téléphone (rien n'est envoyé ailleurs). Le texte à lire
+ * est préparé par le serveur (lib/voix/lecture) à partir de la même fiche que l'écran, et chaque phrase est liée à un
+ * bloc de la page : pendant qu'elle est dite, ce bloc est surligné (voir lib/voix/surlignage et globals.css). Après une
+ * question posée à voix haute, la lecture démarre toute seule ; sinon, elle ne démarre que sur l'appui. Le bouton
+ * disparaît si le téléphone n'a aucune voix française.
  */
-export function BoutonEcouter({ morceaux, className = "" }: { morceaux: string[]; className?: string }) {
+export function BoutonEcouter({ lignes, className = "" }: { lignes: LigneVocale[]; className?: string }) {
   const parleur = parleurDuNavigateur();
   // Sur le serveur, on montre le bouton : s'il n'y a pas de voix, il disparaît à l'arrivée de la page dans le navigateur.
   const etat = useSyncExternalStore(parleur.abonner, parleur.etat, () => "repos" as const);
+  const cible = useSyncExternalStore(parleur.abonner, parleur.cible, () => null);
 
-  const lireLaReponse = useEffectEvent(() => parleur.lire(morceaux));
+  const lireLaReponse = useEffectEvent(() => parleur.lire(lignes));
   const demarre = useRef(false);
   const monte = useRef(false);
 
@@ -36,17 +40,24 @@ export function BoutonEcouter({ morceaux, className = "" }: { morceaux: string[]
     };
   }, [parleur]);
 
+  // Le bloc lu est surligné ; quand la phrase suivante arrive (ou que la lecture s'arrête), le surlignage est retiré.
+  useEffect(() => {
+    if (cible === null) return;
+    const mouvementReduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return surligner(document, cible, { mouvementReduit, hauteurFenetre: window.innerHeight });
+  }, [cible]);
+
   if (etat === "indisponible") return null;
   const enLecture = etat === "lecture";
 
   return (
     <button
       type="button"
-      onClick={() => (enLecture ? parleur.arreter() : parleur.lire(morceaux))}
+      onClick={() => (enLecture ? parleur.arreter() : parleur.lire(lignes))}
       className={classesBouton("secondaire", "petit", `w-fit ${className}`)}
     >
       <Icon name={enLecture ? "arreter" : "haut-parleur"} size={20} />
-      {enLecture ? "Arrêter" : "Écouter la réponse"}
+      {enLecture ? "Arrêter" : "Écouter l’essentiel"}
     </button>
   );
 }

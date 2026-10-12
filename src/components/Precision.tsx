@@ -17,7 +17,7 @@ export function Precision({ question, questionPosee, options }: { question: stri
       <h1 id="titre-precision" className={TITRE}>
         {typographie(question) || "Que veux-tu faire ?"}
       </h1>
-      <BoutonEcouter morceaux={preparerLaLecture(scriptPrecision({ question, options }))} className="mt-4" />
+      <BoutonEcouter lignes={preparerLaLecture(scriptPrecision({ question, options }))} className="mt-4" />
       <ul className="mt-5 flex flex-col gap-3">
         {options.map((option) => (
           <li key={option.slug}>
@@ -48,7 +48,7 @@ export function PrecisionGenerale({ question, questionPosee }: { question: strin
         {typographie(question) || "Peux-tu préciser ta question ?"}
       </h1>
       <p className="mt-2 px-1 text-[17px] leading-[26px] text-ink-2">Ajoute un détail, et je te réponds.</p>
-      <BoutonEcouter morceaux={preparerLaLecture(scriptPrecisionGenerale({ question }))} className="mt-4" />
+      <BoutonEcouter lignes={preparerLaLecture(scriptPrecisionGenerale({ question }))} className="mt-4" />
       <div className="mt-4">
         <QuestionForm id="question-precise" valeurInitiale={questionPosee} />
       </div>

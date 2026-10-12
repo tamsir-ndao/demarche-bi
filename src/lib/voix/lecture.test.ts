@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Fiche } from "../fiches/schema";
 import {
-  dateParlee,
+  abreger,
   decouperPourLaVoix,
   pourLaVoix,
   preparerLaLecture,
@@ -39,25 +39,6 @@ const FICHE: Fiche = {
 } as Fiche;
 
 const BROUILLON = { type: "brouillon", libelle: "Brouillon, pas encore vérifiée" } as const;
-
-describe("dateParlee", () => {
-  it("écrit le mois en toutes lettres", () => {
-    assert.equal(dateParlee("2026-10-14"), "14 octobre 2026");
-    assert.equal(dateParlee("2026-02-03"), "3 février 2026");
-    assert.equal(dateParlee("2026-12-31"), "31 décembre 2026");
-  });
-  it("connaît les douze mois", () => {
-    const mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-    mois.forEach((nom, i) => assert.equal(dateParlee(`2026-${String(i + 1).padStart(2, "0")}-15`), `15 ${nom} 2026`));
-  });
-  it("dit « premier » pour le 1er du mois", () => {
-    assert.equal(dateParlee("2026-03-01"), "premier mars 2026");
-  });
-  it("rend tel quel un texte qui n'est pas une date", () => {
-    assert.equal(dateParlee("bientôt"), "bientôt");
-    assert.equal(dateParlee("2026-13-01"), "2026-13-01");
-  });
-});
 
 describe("pourLaVoix", () => {
   it("dit « francs CFA » à la place de FCFA", () => {
@@ -161,62 +142,131 @@ describe("decouperPourLaVoix", () => {
   });
 });
 
-describe("scriptFiche", () => {
-  const script = scriptFiche({ fiche: FICHE, statut: BROUILLON, intro: "Pour un duplicata, va à la Section CNI." });
-  const texte = script.join("\n");
+describe("abreger", () => {
+  it("rend un texte court tel quel", () => {
+    assert.deepEqual(abreger("2 semaines", 100), { texte: "2 semaines", coupe: false });
+  });
+  it("coupe un texte long au premier point-virgule et le signale", () => {
+    const long = `2 semaines ; ${"les dossiers des élèves sont traités en priorité ".repeat(3)}`;
+    assert.deepEqual(abreger(long, 100), { texte: "2 semaines", coupe: true });
+  });
+  it("coupe aussi à la première fin de phrase", () => {
+    const long = `Au Sénégal : commissariat de police. À l'étranger : ${"consulats généraux ".repeat(8)}`;
+    assert.deepEqual(abreger(long, 100), { texte: "Au Sénégal : commissariat de police", coupe: true });
+  });
+  it("garde un texte long qui n'a ni point-virgule ni fin de phrase : on ne coupe pas une phrase au milieu", () => {
+    const long = "mot ".repeat(40).trim();
+    assert.deepEqual(abreger(long, 100), { texte: long, coupe: false });
+  });
+  it("ne prend pas le point final pour une fin de phrase", () => {
+    const long = `${"mot ".repeat(40)}fin.`;
+    assert.equal(abreger(long, 100).coupe, false);
+  });
+});
 
-  it("commence par prévenir qu'une fiche n'est pas vérifiée", () => {
-    assert.equal(script[0], "Attention, cette fiche n’est pas encore vérifiée.");
+describe("scriptFiche : l'essentiel, dans l'ordre de l'écran", () => {
+  const INTRO = "Pour un duplicata, va à la Section CNI.";
+  const VERIFIEE = { type: "verifie", libelle: "Vérifié le 14 oct. 2026" } as const;
+  const verifiee = { ...FICHE, statut: "verifie", verifie_le: "2026-10-14" } as Fiche;
+  const script = scriptFiche({ fiche: verifiee, statut: VERIFIEE, intro: INTRO });
+  const textes = script.map((ligne) => ligne.texte);
+
+  it("commence par la phrase qui répond à la question, sans date de vérification ni mention de l'IA", () => {
+    assert.deepEqual(script[0], { texte: INTRO, cible: "intro" });
+    const tout = textes.join("\n");
+    assert.ok(!tout.includes("vérifiée le"));
+    assert.ok(!tout.includes("écrite par l’IA"));
+    assert.ok(!tout.includes("Information indicative"));
   });
-  it("dit ensuite le titre, puis l'introduction écrite par l'IA en le signalant", () => {
-    assert.equal(script[1], "Duplicata de la carte nationale d’identité.");
-    assert.equal(script[2], "Pour un duplicata, va à la Section CNI.");
-    assert.equal(script[3], "Cette phrase est écrite par l’IA, d’après la fiche.");
+  it("dit le titre à la place quand l'IA n'a pas écrit d'introduction", () => {
+    const sans = scriptFiche({ fiche: verifiee, statut: VERIFIEE, intro: null });
+    assert.deepEqual(sans[0], { texte: "Duplicata de la carte nationale d’identité.", cible: "titre" });
+    assert.ok(!sans.map((l) => l.texte).join("\n").includes("Établissement d’un duplicata"));
   });
-  it("lit le résumé de la fiche quand l'IA n'a pas écrit d'introduction, sans la signaler", () => {
-    const sansIntro = scriptFiche({ fiche: FICHE, statut: BROUILLON, intro: null }).join("\n");
-    assert.ok(sansIntro.includes("Établissement d’un duplicata en cas de perte"));
-    assert.ok(!sansIntro.includes("écrite par l’IA"));
+  it("dit le coût, puis le délai et le lieu, chacun lié à son bloc", () => {
+    assert.deepEqual(script.find((l) => l.cible === "cout"), { texte: "Coût : Timbre de 10 000 FCFA.", cible: "cout" });
+    assert.deepEqual(script.find((l) => l.cible === "delai"), { texte: "Délai : non précisé.", cible: "delai" });
+    assert.deepEqual(script.find((l) => l.cible === "lieu"), { texte: "Où : Section CNI du commissariat.", cible: "lieu" });
   });
-  it("dit le coût, le délai et le lieu tels que la fiche les donne, et « non précisé » sinon", () => {
-    assert.ok(script.includes("Coût : Timbre de 10 000 FCFA."));
-    assert.ok(script.includes("Délai : non précisé, la source ne le dit pas."));
-    assert.ok(script.includes("Où : Section CNI du commissariat."));
+  it("ne dit que le début d'un lieu ou d'un délai très long, et renvoie à l'écran pour le reste", () => {
+    const longue = {
+      ...verifiee,
+      delai: `2 semaines ; ${"les dossiers des élèves sont traités en priorité ".repeat(3)}`,
+      lieu: `Commissariat de police dont relève le domicile ; ${"pour les Sénégalais de l'étranger ".repeat(4)}`,
+    } as Fiche;
+    const s = scriptFiche({ fiche: longue, statut: VERIFIEE, intro: INTRO });
+    assert.equal(s.find((l) => l.cible === "delai")?.texte, "Délai : 2 semaines. Le reste est à l’écran.");
+    assert.equal(s.find((l) => l.cible === "lieu")?.texte, "Où : Commissariat de police dont relève le domicile. Le reste est à l’écran.");
   });
-  it("lit chaque note « à confirmer » de la fiche, pas les autres notes", () => {
-    assert.ok(texte.includes("À confirmer. Divergence entre deux pages : à confirmer auprès de la DAF (numéro vert 800 00 2012) avant de se déplacer."));
-    assert.ok(!texte.includes("Le délai de fabrication n’est pas indiqué"));
+  it("ne coupe jamais le coût", () => {
+    const cher = { ...verifiee, cout: `Première étape gratuite ; ${"2 300 FCFA pour l'établissement du certificat ".repeat(3)}` } as Fiche;
+    const s = scriptFiche({ fiche: cher, statut: VERIFIEE, intro: INTRO });
+    assert.ok(s.find((l) => l.cible === "cout")?.texte.includes("2 300 FCFA"));
+    assert.ok(!s.find((l) => l.cible === "cout")?.texte.includes("Le reste"));
   });
-  it("lit chaque pièce telle que la fiche la donne, avec sa précision et son « à confirmer »", () => {
-    assert.ok(script.includes("Ce qu’il faut apporter."));
-    assert.ok(script.includes("Un extrait de naissance (durée de validité à confirmer : moins d’1 an)."));
-    assert.ok(script.includes("Un certificat de perte, délivré par la police."));
-    assert.ok(script.includes("Un timbre de 10 000 FCFA."));
+  it("dit chaque pièce, sans sa précision entre parenthèses, après « Ce qu’il faut apporter »", () => {
+    const i = textes.indexOf("Ce qu’il faut apporter.");
+    assert.ok(i > 0);
+    assert.deepEqual(script.slice(i, i + 4), [
+      { texte: "Ce qu’il faut apporter.", cible: "pieces" },
+      { texte: "Un extrait de naissance.", cible: "piece-0" },
+      { texte: "Un certificat de perte, délivré par la police.", cible: "piece-1" },
+      { texte: "Un timbre de 10 000 FCFA.", cible: "piece-2" },
+    ]);
   });
-  it("numérote les étapes", () => {
-    assert.ok(script.includes("Les étapes."));
-    assert.ok(script.includes("Étape 1. Se procurer un certificat de perte."));
-    assert.ok(script.includes("Étape 2. Déposer la demande à la Section CNI."));
+  it("renvoie à l'écran pour les pièces au-delà de la sixième", () => {
+    const nombreuses = { ...verifiee, pieces: Array.from({ length: 9 }, (_, n) => `Pièce numéro ${n + 1}`) } as Fiche;
+    const s = scriptFiche({ fiche: nombreuses, statut: VERIFIEE, intro: INTRO });
+    const cibles = s.map((l) => l.cible);
+    assert.ok(cibles.includes("piece-5"));
+    assert.ok(!cibles.includes("piece-6"));
+    assert.deepEqual(s.find((l) => l.texte.startsWith("Et 3 autres")), { texte: "Et 3 autres pièces, à l’écran.", cible: "pieces" });
   });
-  it("finit par l'avertissement du site, sans rien ajouter après", () => {
-    assert.equal(script.at(-1), "Information indicative, à vérifier avant de te déplacer.");
+  it("dit au singulier « Et 1 autre pièce »", () => {
+    const sept = { ...verifiee, pieces: Array.from({ length: 7 }, (_, n) => `Pièce numéro ${n + 1}`) } as Fiche;
+    const s = scriptFiche({ fiche: sept, statut: VERIFIEE, intro: INTRO });
+    assert.ok(s.some((l) => l.texte === "Et 1 autre pièce, à l’écran."));
   });
-  it("dit la date d'une fiche vérifiée, avec le mois en toutes lettres", () => {
-    const verifiee = { ...FICHE, statut: "verifie", verifie_le: "2026-10-14" } as Fiche;
-    const s = scriptFiche({ fiche: verifiee, statut: { type: "verifie", libelle: "Vérifié le 14 oct. 2026" }, intro: null });
-    assert.equal(s[0], "Fiche vérifiée le 14 octobre 2026.");
+  it("ne lit ni les notes « à confirmer » ni les étapes : une phrase renvoie à l'écran", () => {
+    const tout = textes.join("\n");
+    assert.ok(!tout.includes("Divergence entre deux pages"));
+    assert.ok(!tout.includes("Se procurer un certificat de perte"));
+    assert.deepEqual(script.find((l) => l.cible === "a-confirmer"), {
+      texte: "Attention, une information est à confirmer : regarde l’écran.",
+      cible: "a-confirmer",
+    });
+    assert.deepEqual(script.at(-1), { texte: "Il y a 2 étapes, juste en dessous.", cible: "etapes" });
   });
-  it("prévient quand la vérification date de plus d'un an", () => {
+  it("signale aussi une pièce « à confirmer » quand la fiche n'a aucune note à confirmer", () => {
+    const sansNote = { ...verifiee, corps: "" } as Fiche;
+    assert.ok(scriptFiche({ fiche: sansNote, statut: VERIFIEE, intro: INTRO }).some((l) => l.cible === "a-confirmer"));
+  });
+  it("ne parle pas de « à confirmer » quand il n'y a rien à confirmer", () => {
+    const net = { ...verifiee, corps: "", pieces: ["Un extrait de naissance", "Un timbre de 10 000 FCFA"] } as Fiche;
+    assert.ok(!scriptFiche({ fiche: net, statut: VERIFIEE, intro: INTRO }).some((l) => l.cible === "a-confirmer"));
+  });
+  it("dit « Il y a 1 étape » au singulier", () => {
+    const une = { ...verifiee, etapes: ["Déposer la demande."] } as Fiche;
+    assert.equal(scriptFiche({ fiche: une, statut: VERIFIEE, intro: INTRO }).at(-1)?.texte, "Il y a 1 étape, juste en dessous.");
+  });
+  it("saute les pièces quand la fiche n'en a pas", () => {
+    const nue = { ...verifiee, pieces: [], corps: "" } as Fiche;
+    const s = scriptFiche({ fiche: nue, statut: VERIFIEE, intro: INTRO });
+    assert.ok(!s.some((l) => l.cible === "pieces" || l.cible?.startsWith("piece-")));
+  });
+  it("garde l'avertissement d'une fiche non vérifiée, en premier", () => {
+    const s = scriptFiche({ fiche: FICHE, statut: BROUILLON, intro: INTRO });
+    assert.deepEqual(s[0], { texte: "Attention, cette fiche n’est pas encore vérifiée.", cible: "statut" });
+    assert.deepEqual(s[1], { texte: INTRO, cible: "intro" });
+  });
+  it("garde l'avertissement quand la vérification date de plus d'un an", () => {
     const vieille = { ...FICHE, statut: "verifie", verifie_le: "2024-01-05" } as Fiche;
-    const s = scriptFiche({ fiche: vieille, statut: { type: "perimee", libelle: "Vérifié il y a plus d’un an" }, intro: null });
-    assert.equal(s[0], "Attention, cette fiche a été vérifiée il y a plus d’un an.");
+    const s = scriptFiche({ fiche: vieille, statut: { type: "perimee", libelle: "Vérifié il y a plus d’un an" }, intro: INTRO });
+    assert.deepEqual(s[0], { texte: "Attention, cette fiche a été vérifiée il y a plus d’un an.", cible: "statut" });
   });
-  it("saute les parties que la fiche n'a pas (aucune pièce, aucune note à confirmer)", () => {
-    const nue = { ...FICHE, pieces: [], corps: "" } as Fiche;
-    const s = scriptFiche({ fiche: nue, statut: BROUILLON, intro: null }).join("\n");
-    assert.ok(!s.includes("Ce qu’il faut apporter"));
-    assert.ok(!s.includes("À confirmer."));
-    assert.ok(s.includes("Les étapes."));
+  it("est bien plus court que l'écran entier", () => {
+    const longueur = textes.join(" ").length;
+    assert.ok(longueur < 400, `trop long : ${longueur} caractères`);
   });
 });
 
@@ -246,12 +296,21 @@ describe("autres réponses", () => {
 });
 
 describe("preparerLaLecture", () => {
-  it("prépare chaque paragraphe pour la voix puis le coupe en morceaux courts", () => {
-    assert.deepEqual(preparerLaLecture(["Coût : Timbre de 10 000 FCFA.", "Étape 1. Aller à Pointe-Noire (Congo)."]), [
-      "Coût : Timbre de 10000 francs CFA.",
-      "Étape 1.",
-      "Aller à Pointe-Noire, Congo.",
-    ]);
+  it("prépare chaque paragraphe pour la voix, le coupe en morceaux courts et garde son bloc d'écran", () => {
+    assert.deepEqual(
+      preparerLaLecture([
+        { texte: "Coût : Timbre de 10 000 FCFA.", cible: "cout" },
+        { texte: "Étape 1. Aller à Pointe-Noire (Congo).", cible: "etapes" },
+      ]),
+      [
+        { texte: "Coût : Timbre de 10000 francs CFA.", cible: "cout" },
+        { texte: "Étape 1.", cible: "etapes" },
+        { texte: "Aller à Pointe-Noire, Congo.", cible: "etapes" },
+      ],
+    );
+  });
+  it("accepte un simple texte, sans bloc d'écran", () => {
+    assert.deepEqual(preparerLaLecture(["Je ne sais pas encore."]), [{ texte: "Je ne sais pas encore.", cible: null }]);
   });
   it("ne rend rien pour une réponse vide", () => {
     assert.deepEqual(preparerLaLecture([]), []);

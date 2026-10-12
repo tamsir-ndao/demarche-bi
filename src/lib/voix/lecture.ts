@@ -1,32 +1,14 @@
-import { estAConfirmer, notesDeLaFiche, type StatutAffichage } from "../fiches/affichage";
+import { decouperPiece, estAConfirmer, notesDeLaFiche, type StatutAffichage } from "../fiches/affichage";
 import type { Fiche } from "../fiches/schema";
 
-// Ce que le téléphone dit à voix haute : le texte de la fiche, dans l'ordre de l'écran, mis en forme pour la voix.
-// Rien n'est ajouté à la fiche : seules quelques phrases du site (avertissements, « je ne sais pas ») s'y glissent.
+// Ce que le téléphone dit à voix haute : l'essentiel de la fiche, dans l'ordre de l'écran, mis en forme pour la voix.
+// Le détail (étapes, notes à confirmer, précisions des pièces) reste à l'écran. Rien n'est ajouté à la fiche :
+// seules quelques phrases du site (renvois à l'écran, avertissements, « je ne sais pas ») s'y glissent.
+// Chaque phrase dite est liée à un bloc de l'écran (`cible`) : pendant qu'elle est dite, ce bloc est surligné.
 // Fonctions pures, testées. Le téléphone parle ensuite (voir parleur.ts).
 
-const MOIS_COMPLETS = [
-  "janvier",
-  "février",
-  "mars",
-  "avril",
-  "mai",
-  "juin",
-  "juillet",
-  "août",
-  "septembre",
-  "octobre",
-  "novembre",
-  "décembre",
-];
-
-/** « 2026-10-14 » devient « 14 octobre 2026 » (et « premier mars 2026 ») : la voix ne sait pas dire « oct. ». */
-export function dateParlee(iso: string): string {
-  const [annee, mois, jour] = iso.split("-").map(Number);
-  const nomMois = MOIS_COMPLETS[mois - 1];
-  if (!annee || !jour || !nomMois) return iso;
-  return `${jour === 1 ? "premier" : jour} ${nomMois} ${annee}`;
-}
+/** Une phrase à dire, et le bloc de l'écran qu'elle concerne (`data-lecture` dans la page), ou `null` s'il n'y en a pas. */
+export type LigneVocale = { texte: string; cible: string | null };
 
 /** « 800 00 2012 » devient « 8 0 0, 0 0, 2 0 1 2 » : un numéro se dit chiffre par chiffre, pas comme un nombre. */
 function epeler(numero: string): string {
@@ -97,9 +79,12 @@ export function decouperPourLaVoix(texte: string, max: number = LONGUEUR_MAX_MOR
     .flatMap((phrase) => couper(phrase, max));
 }
 
-/** Des paragraphes écrits pour l'écran aux morceaux prêts pour la voix. */
-export function preparerLaLecture(paragraphes: string[]): string[] {
-  return paragraphes.flatMap((paragraphe) => decouperPourLaVoix(pourLaVoix(paragraphe)));
+/** Des paragraphes écrits pour l'écran aux morceaux prêts pour la voix ; chaque morceau garde le bloc de son paragraphe. */
+export function preparerLaLecture(paragraphes: (string | LigneVocale)[]): LigneVocale[] {
+  return paragraphes.flatMap((paragraphe) => {
+    const { texte, cible } = typeof paragraphe === "string" ? { texte: paragraphe, cible: null } : paragraphe;
+    return decouperPourLaVoix(pourLaVoix(texte)).map((morceau) => ({ texte: morceau, cible }));
+  });
 }
 
 /** Une phrase finit par un point, même quand le texte de la fiche n'en a pas (un titre, une pièce). */
@@ -108,34 +93,70 @@ function phrase(texte: string): string {
   return /[.!?…]$/.test(net) ? net : `${net}.`;
 }
 
-function phraseStatut(fiche: Pick<Fiche, "verifie_le">, statut: StatutAffichage): string {
+/** L'avertissement d'une fiche pas vérifiée ou vérifiée depuis trop longtemps ; une fiche à jour n'en a pas. */
+function phraseStatut(statut: StatutAffichage): string | null {
   if (statut.type === "brouillon") return "Attention, cette fiche n’est pas encore vérifiée.";
   if (statut.type === "perimee") return "Attention, cette fiche a été vérifiée il y a plus d’un an.";
-  return fiche.verifie_le ? `Fiche vérifiée le ${dateParlee(fiche.verifie_le)}.` : "Fiche vérifiée.";
+  return null;
 }
 
-function fait(libelle: string, valeur: string | null): string {
-  return valeur === null ? `${libelle} : non précisé, la source ne le dit pas.` : `${libelle} : ${phrase(valeur)}`;
+/** Au-delà de cette longueur, un délai ou un lieu n'est dit que jusqu'à son premier point-virgule ou sa première phrase. */
+const LONGUEUR_MAX_FAIT = 100;
+
+/** Le nombre de pièces dites une à une ; les autres restent à lire à l'écran. */
+const PIECES_MAX = 6;
+
+/**
+ * Le début d'un texte trop long, jusqu'à son premier point-virgule ou sa première fin de phrase (`coupe` le dit).
+ * Sans l'un ni l'autre, le texte reste entier : on ne coupe jamais une phrase au milieu.
+ */
+export function abreger(texte: string, max: number): { texte: string; coupe: boolean } {
+  if (texte.length <= max) return { texte, coupe: false };
+  const fin = texte.search(/;|\.\s/);
+  if (fin <= 0) return { texte, coupe: false };
+  return { texte: texte.slice(0, fin).trim(), coupe: true };
+}
+
+function fait(libelle: string, valeur: string | null, cible: string, { court = false } = {}): LigneVocale {
+  if (valeur === null) return { texte: `${libelle} : non précisé.`, cible };
+  const { texte, coupe } = court ? abreger(valeur, LONGUEUR_MAX_FAIT) : { texte: valeur, coupe: false };
+  return { texte: `${libelle} : ${phrase(texte)}${coupe ? " Le reste est à l’écran." : ""}`, cible };
+}
+
+function autresPieces(nombre: number): string {
+  return nombre === 1 ? "Et 1 autre pièce, à l’écran." : `Et ${nombre} autres pièces, à l’écran.`;
 }
 
 /**
- * La réponse d'une fiche, dans l'ordre de l'écran : l'état de la fiche, le titre, la phrase de l'IA (signalée), le coût,
- * le délai et le lieu, ce qui reste à confirmer, les pièces, les étapes, et l'avertissement du site.
- * Chaque élément est repris tel que la fiche le donne ; ce qu'elle ne dit pas reste « non précisé ».
+ * L'essentiel d'une fiche, dans l'ordre de l'écran : l'avertissement d'une fiche pas à jour, la phrase qui répond (ou
+ * le titre), le coût, le délai et le lieu, un renvoi vers ce qui est à confirmer, les pièces à apporter, puis le
+ * nombre d'étapes. Chaque élément est repris tel que la fiche le donne ; ce qu'elle ne dit pas reste « non précisé ».
+ * Les étapes, les notes à confirmer et les précisions entre parenthèses des pièces restent à l'écran.
  */
-export function scriptFiche({ fiche, statut, intro }: { fiche: Fiche; statut: StatutAffichage; intro: string | null }): string[] {
-  const paragraphes = [phraseStatut(fiche, statut), phrase(fiche.titre), phrase(intro ?? fiche.resume)];
-  if (intro) paragraphes.push("Cette phrase est écrite par l’IA, d’après la fiche.");
-  paragraphes.push(fait("Coût", fiche.cout), fait("Délai", fiche.delai), fait("Où", fiche.lieu));
-  for (const note of notesDeLaFiche(fiche.corps).filter(estAConfirmer)) paragraphes.push(`À confirmer. ${phrase(note)}`);
-  if (fiche.pieces.length > 0) {
-    paragraphes.push("Ce qu’il faut apporter.");
-    for (const piece of fiche.pieces) paragraphes.push(phrase(piece));
+export function scriptFiche({ fiche, statut, intro }: { fiche: Fiche; statut: StatutAffichage; intro: string | null }): LigneVocale[] {
+  const lignes: LigneVocale[] = [];
+  const avertissement = phraseStatut(statut);
+  if (avertissement) lignes.push({ texte: avertissement, cible: "statut" });
+  lignes.push(intro ? { texte: phrase(intro), cible: "intro" } : { texte: phrase(fiche.titre), cible: "titre" });
+  lignes.push(
+    fait("Coût", fiche.cout, "cout"),
+    fait("Délai", fiche.delai, "delai", { court: true }),
+    fait("Où", fiche.lieu, "lieu", { court: true }),
+  );
+
+  const pieces = fiche.pieces.map(decouperPiece);
+  const aConfirmer = notesDeLaFiche(fiche.corps).some(estAConfirmer) || pieces.some((piece) => piece.aConfirmer);
+  if (aConfirmer) lignes.push({ texte: "Attention, une information est à confirmer : regarde l’écran.", cible: "a-confirmer" });
+
+  if (pieces.length > 0) {
+    lignes.push({ texte: "Ce qu’il faut apporter.", cible: "pieces" });
+    pieces.slice(0, PIECES_MAX).forEach((piece, index) => lignes.push({ texte: phrase(piece.principal), cible: `piece-${index}` }));
+    if (pieces.length > PIECES_MAX) lignes.push({ texte: autresPieces(pieces.length - PIECES_MAX), cible: "pieces" });
   }
-  paragraphes.push("Les étapes.");
-  fiche.etapes.forEach((etape, index) => paragraphes.push(`Étape ${index + 1}. ${phrase(etape)}`));
-  paragraphes.push("Information indicative, à vérifier avant de te déplacer.");
-  return paragraphes;
+
+  const etapes = fiche.etapes.length;
+  lignes.push({ texte: `Il y a ${etapes} ${etapes === 1 ? "étape" : "étapes"}, juste en dessous.`, cible: "etapes" });
+  return lignes;
 }
 
 // Les trois écrans suivants répètent les phrases de JeNeSaisPas.tsx et Precision.tsx : si l'un change, l'autre aussi.

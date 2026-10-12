@@ -6,11 +6,15 @@ const PASTILLE = "inline-flex items-center gap-1.5 rounded-full py-[5px] pr-3 te
 /** Dit si la démarche a été relue : la date vient de la fiche, jamais d'ailleurs. */
 export function PastilleStatut({ statut }: { statut: StatutAffichage }) {
   if (statut.type === "brouillon") {
-    return <p className={`${PASTILLE} border-[1.5px] border-dashed border-edge pl-3 text-ink`}>{statut.libelle}</p>;
+    return (
+      <p data-lecture="statut" className={`${PASTILLE} border-[1.5px] border-dashed border-edge pl-3 text-ink`}>
+        {statut.libelle}
+      </p>
+    );
   }
   const perimee = statut.type === "perimee";
   return (
-    <p className={`${PASTILLE} pl-2 text-leaf-deep ${perimee ? "bg-tint-2" : "bg-tint"}`}>
+    <p data-lecture="statut" className={`${PASTILLE} pl-2 text-leaf-deep ${perimee ? "bg-tint-2" : "bg-tint"}`}>
       <Icon name={perimee ? "horloge" : "bouclier"} size={16} strokeWidth={2.4} />
       {statut.libelle}
     </p>

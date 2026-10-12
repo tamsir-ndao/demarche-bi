@@ -1,5 +1,8 @@
 // La voix du téléphone : le navigateur lit la réponse à voix haute (« speechSynthesis »). Rien n'est envoyé à un
 // service de Démarche-Bi : c'est le téléphone qui parle, avec ses propres voix. Le texte à lire vient de lecture.ts.
+// Le parleur dit aussi quel bloc de l'écran correspond à la phrase en cours (`cible`), pour le surligner (surlignage.ts).
+
+import type { LigneVocale } from "./lecture";
 
 export type VoixTelephone = { name: string; lang: string; localService?: boolean; default?: boolean };
 
@@ -59,8 +62,10 @@ export type Parleur = {
   etat(): EtatParleur;
   /** Prévient quand l'état change (ou que les voix arrivent) ; rend la fonction qui arrête d'écouter. */
   abonner(rappel: () => void): () => void;
-  /** Lit les morceaux l'un après l'autre, en repartant du début si une lecture est en cours. */
-  lire(morceaux: string[]): void;
+  /** Le bloc de l'écran que la phrase en cours concerne ; `null` au repos ou quand la phrase n'en a pas. */
+  cible(): string | null;
+  /** Lit les phrases l'une après l'autre, en repartant du début si une lecture est en cours. */
+  lire(lignes: LigneVocale[]): void;
   arreter(): void;
   /**
    * À appeler pendant un geste de la personne (un appui) : l'iPhone n'autorise la voix qu'après un appui,
@@ -78,6 +83,7 @@ type Dependances = {
 export function creerParleur({ synthese, creerPhrase }: Dependances): Parleur {
   const abonnes = new Set<() => void>();
   let enLecture = false;
+  let cibleEnCours: string | null = null;
   /** Change à chaque lecture et à chaque arrêt : ce que dit encore l'ancienne lecture ne compte plus. */
   let jeton = 0;
 
@@ -100,25 +106,36 @@ export function creerParleur({ synthese, creerPhrase }: Dependances): Parleur {
     };
   }
 
-  function lire(morceaux: string[]) {
+  function cible() {
+    return cibleEnCours;
+  }
+
+  function lire(lignes: LigneVocale[]) {
     // Sans voix française, un texte français lu par une voix étrangère serait incompréhensible.
-    if (!synthese || morceaux.length === 0 || etat() === "indisponible") return;
+    if (!synthese || lignes.length === 0 || etat() === "indisponible") return;
     // Annuler quand rien ne parle fait perdre la phrase suivante à certains navigateurs : seulement si besoin.
     jeton += 1;
     if (synthese.speaking || synthese.pending) synthese.cancel();
     const monJeton = jeton;
     const voix = choisirVoix(synthese.getVoices()) ?? null;
     enLecture = true;
+    cibleEnCours = lignes[0].cible;
     prevenir();
 
     const dire = (index: number) => {
       if (monJeton !== jeton) return;
-      if (index >= morceaux.length) {
+      if (index >= lignes.length) {
         enLecture = false;
+        cibleEnCours = null;
         prevenir();
         return;
       }
-      const phrase = creerPhrase(morceaux[index]);
+      // Le bloc de l'écran suit la phrase : on ne prévient que quand il change.
+      if (lignes[index].cible !== cibleEnCours) {
+        cibleEnCours = lignes[index].cible;
+        prevenir();
+      }
+      const phrase = creerPhrase(lignes[index].texte);
       phrase.lang = LANGUE;
       phrase.voice = voix;
       phrase.onend = () => dire(index + 1);
@@ -127,6 +144,7 @@ export function creerParleur({ synthese, creerPhrase }: Dependances): Parleur {
         if (monJeton !== jeton) return;
         jeton += 1;
         enLecture = false;
+        cibleEnCours = null;
         synthese.cancel();
         prevenir();
       };
@@ -139,6 +157,7 @@ export function creerParleur({ synthese, creerPhrase }: Dependances): Parleur {
     if (!synthese || !enLecture) return;
     jeton += 1;
     enLecture = false;
+    cibleEnCours = null;
     synthese.cancel();
     prevenir();
   }
@@ -151,7 +170,7 @@ export function creerParleur({ synthese, creerPhrase }: Dependances): Parleur {
     synthese.speak(phrase);
   }
 
-  return { etat, abonner, lire, arreter, debloquer };
+  return { etat, abonner, cible, lire, arreter, debloquer };
 }
 
 let parleurUnique: Parleur | undefined;

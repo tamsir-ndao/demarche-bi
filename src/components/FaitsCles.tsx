@@ -1,15 +1,15 @@
 import type { Fiche } from "@/lib/fiches/schema";
 import { Icon, type IconName } from "./Icon";
 
-type FaitProps = { icone: IconName; libelle: string; valeur: string | null };
+type FaitProps = { icone: IconName; libelle: string; valeur: string | null; repere: string };
 
 /** Au-delà de cette longueur, le texte de la fiche passe en plus petit pour rester lisible. */
 const LONGUEUR_COURTE = 50;
 
-function Fait({ icone, libelle, valeur }: FaitProps) {
+function Fait({ icone, libelle, valeur, repere }: FaitProps) {
   const connu = valeur !== null;
   return (
-    <li className="flex items-center gap-3.5 py-3.5">
+    <li data-lecture={repere} className="flex items-center gap-3.5 py-3.5">
       <span
         className={`flex size-10 flex-none items-center justify-center rounded-full text-leaf ${
           connu ? "bg-card" : "border-[1.5px] border-dashed border-edge"
@@ -38,9 +38,9 @@ function Fait({ icone, libelle, valeur }: FaitProps) {
 export function FaitsCles({ fiche }: { fiche: Pick<Fiche, "cout" | "delai" | "lieu"> }) {
   return (
     <ul className="mt-4 divide-y divide-hair rounded-[20px] bg-tint px-4 py-1">
-      <Fait icone="billet" libelle="Coût" valeur={fiche.cout} />
-      <Fait icone="horloge" libelle="Délai" valeur={fiche.delai} />
-      <Fait icone="lieu" libelle="Où" valeur={fiche.lieu} />
+      <Fait icone="billet" libelle="Coût" valeur={fiche.cout} repere="cout" />
+      <Fait icone="horloge" libelle="Délai" valeur={fiche.delai} repere="delai" />
+      <Fait icone="lieu" libelle="Où" valeur={fiche.lieu} repere="lieu" />
     </ul>
   );
 }

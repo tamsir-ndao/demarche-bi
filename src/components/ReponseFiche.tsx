@@ -56,14 +56,16 @@ export function ReponseFiche({ fiche, statut, autres, intro, degrade }: ReponseF
 
       <Carte aria-labelledby="titre-reponse" className="mt-4">
         <PastilleStatut statut={statut} />
-        <h1 id="titre-reponse" className="mt-3 text-[26px] leading-8 font-bold tracking-[-0.01em]">
+        <h1 id="titre-reponse" data-lecture="titre" className="mt-3 text-[26px] leading-8 font-bold tracking-[-0.01em]">
           {fiche.titre}
         </h1>
-        <p className="mt-2 text-[17px] leading-[26px] text-ink-2">{intro ? typographie(intro) : fiche.resume}</p>
+        <p data-lecture="intro" className="mt-2 text-[17px] leading-[26px] text-ink-2">
+          {intro ? typographie(intro) : fiche.resume}
+        </p>
         {intro ? (
           <p className="mt-1.5 text-[13px] leading-[18px] text-ink-3">Phrase écrite par l’IA, d’après la fiche.</p>
         ) : null}
-        <BoutonEcouter morceaux={preparerLaLecture(scriptFiche({ fiche, statut, intro }))} className="mt-4" />
+        <BoutonEcouter lignes={preparerLaLecture(scriptFiche({ fiche, statut, intro }))} className="mt-4" />
         <FaitsCles fiche={fiche} />
         {notesAConfirmer.map((note) => (
           <NoteAConfirmer key={note} texte={note} />
@@ -73,11 +75,15 @@ export function ReponseFiche({ fiche, statut, autres, intro, degrade }: ReponseF
       <Carte className="mt-4">
         {fiche.pieces.length > 0 ? (
           <>
-            <h2 className="mb-1 text-xl leading-7 font-bold">Ce qu’il faut apporter</h2>
+            <h2 data-lecture="pieces" className="mb-1 text-xl leading-7 font-bold">
+              Ce qu’il faut apporter
+            </h2>
             <Pieces pieces={fiche.pieces} />
           </>
         ) : null}
-        <h2 className={`mb-4 text-xl leading-7 font-bold ${fiche.pieces.length > 0 ? "mt-6" : ""}`}>Les étapes</h2>
+        <h2 data-lecture="etapes" className={`mb-4 text-xl leading-7 font-bold ${fiche.pieces.length > 0 ? "mt-6" : ""}`}>
+          Les étapes
+        </h2>
         <Etapes etapes={fiche.etapes} />
       </Carte>
 

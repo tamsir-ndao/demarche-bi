@@ -22,7 +22,7 @@ export function JeNeSaisPas() {
         <p className="mt-2 text-[17px] leading-[26px] text-ink-2">
           Je n’ai pas de source officielle pour ça. Je préfère te le dire plutôt que d’inventer.
         </p>
-        <BoutonEcouter morceaux={preparerLaLecture(scriptInconnue())} className="mt-4" />
+        <BoutonEcouter lignes={preparerLaLecture(scriptInconnue())} className="mt-4" />
       </Carte>
 
       <LienBouton href="/demarches" icone="livre" className="mt-5">

@@ -5,10 +5,10 @@ import { EtiquetteAConfirmer } from "./Pastilles";
 export function Pieces({ pieces }: { pieces: string[] }) {
   return (
     <ul className="divide-y divide-line">
-      {pieces.map((texte) => {
+      {pieces.map((texte, index) => {
         const piece = decouperPiece(texte);
         return (
-          <li key={texte}>
+          <li key={texte} data-lecture={`piece-${index}${piece.aConfirmer ? " a-confirmer" : ""}`}>
             <label className="group flex min-h-[50px] cursor-pointer items-start gap-3.5 py-[13px]">
               <input type="checkbox" className="case-cocher" />
               <span className="min-w-0 text-base leading-6 font-semibold">
