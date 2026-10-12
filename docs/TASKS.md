@@ -64,6 +64,8 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [ ] Essayer l'installation sur un vrai Android (Chrome) et un vrai iPhone (Safari) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
 - [x] Réponse à voix haute (12 octobre) : bouton « Écouter la réponse » avec la voix du téléphone, lecture automatique après une question posée à voix haute, texte lu construit depuis la fiche
 - [ ] Essayer la réponse à voix haute sur de vrais téléphones (iPhone Safari, Android Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin
+- [x] Écran de démarrage des téléphones (12 octobre) : logo, coche qui se dessine, fondu vers l'accueil, une fois par ouverture ; 26 images de démarrage pour l'iPhone
+- [ ] Voir l'écran de démarrage sur de vrais téléphones : l'enchaînement avec l'écran d'Android et celui de l'iPhone (images claires et sombres), la durée (1,3 s : à raccourcir si c'est long), l'application installée et le navigateur
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
 

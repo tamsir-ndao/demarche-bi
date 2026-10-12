@@ -108,6 +108,94 @@
   }
 }
 
+/* Écran de démarrage (téléphone) : le logo apparaît, la coche se dessine, puis un fondu ouvre l'application.
+   Il est caché par défaut (donc invisible si les animations sont coupées ou si le script ne l'allume pas) et
+   ne gêne jamais les appuis. Le script de lib/demarrage ajoute data-actif une fois par ouverture. */
+.ecran-demarrage {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  place-items: center;
+  background: var(--bg);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.logo-demarrage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 31px;
+  background: var(--g);
+  color: var(--on-g);
+  box-shadow: 0 14px 32px rgb(34 209 131 / 0.35);
+}
+
+.logo-demarrage svg {
+  width: 59%;
+  height: 59%;
+}
+
+.coche-demarrage {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+@media (max-width: 63.99rem) {
+  .ecran-demarrage[data-actif="oui"] {
+    display: grid;
+    animation: demarrage-ecran 1.3s ease-in-out both;
+  }
+  .ecran-demarrage[data-actif="oui"] .logo-demarrage {
+    animation: demarrage-logo 1.3s ease-out both;
+  }
+  .ecran-demarrage[data-actif="oui"] .coche-demarrage {
+    animation: demarrage-coche 1.3s ease-in-out both;
+  }
+}
+
+@keyframes demarrage-ecran {
+  0%,
+  72% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes demarrage-logo {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  26%,
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes demarrage-coche {
+  0%,
+  16% {
+    stroke-dashoffset: 1;
+  }
+  52%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Le clavier doit toujours montrer où l'on est. */
 :focus-visible {
   outline: 3px solid var(--gd);

@@ -44,10 +44,11 @@ src/
   components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision,
                           voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
                           message d'installation sur l'écran d'accueil du téléphone (MessageInstaller),
-                          réponse à voix haute (BoutonEcouter)
+                          réponse à voix haute (BoutonEcouter), écran de démarrage des téléphones (EcranDemarrage)
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
     liens.ts              liens vers le dépôt GitHub
+    demarrage.ts          écran de démarrage : le script « une fois par ouverture » et les 26 images de démarrage de l'iPhone (testé)
     installation.ts       message « Installe Démarche-Bi » : quand l'afficher (Android, Safari de l'iPhone), silence de 14 jours après « Plus tard » (calcul pur, testé)
     fiches/
       schema.ts           schéma Zod d'une fiche
@@ -157,6 +158,18 @@ La page de réponse a un bouton **Écouter la réponse** (et **Arrêter**) : le 
 - Quitter la page coupe la voix.
 
 Limites connues : la qualité dépend des voix installées sur le téléphone (sur Android, voix Google ; certaines passent par le réseau) ; pas de pause, seulement arrêter et reprendre du début ; la voix n'a été essayée que sur un faux moteur et sur celui de Chrome sur Mac (sans son), pas sur un vrai Android ni un vrai iPhone.
+
+## Écran de démarrage (téléphone)
+
+À l'ouverture sur téléphone, l'application ne s'affiche pas d'un coup : le logo apparaît, la coche se dessine, puis un fondu ouvre l'accueil (environ 1,3 s), comme une application.
+
+- **Dans la page** (`EcranDemarrage`, monté en premier dans `layout.tsx`) : tout est en CSS (`globals.css`, classes `ecran-demarrage`), donc l'écran est visible dès le premier dessin, sans attendre le JavaScript. Il est **caché par défaut** et n'est allumé que par un petit script inline (`lib/demarrage.ts`, joué pendant la lecture de la page, avant le premier affichage) qui pose `data-actif="oui"` **une seule fois par ouverture** (note dans `sessionStorage` : pas de rejeu au rechargement ni en changeant de page ; mémoire bloquée : on le montre). Il suit le guide Next.js « Preventing flash before hydration ».
+- **Il ne peut pas rester collé** : sans animations (réglage « réduire les animations » du téléphone) il reste invisible, sans JavaScript il n'est jamais allumé, il ne reçoit aucun appui (`pointer-events: none`), et il est caché sur ordinateur (≥ 1024 px).
+- **Android** : une fois l'application installée, Android affiche déjà son propre écran de démarrage (l'icône sur le `background_color` du manifeste, à partir de l'icône de 512 px). L'écran de la page prend la suite avec le même fond.
+- **iPhone** : sans image dédiée, l'iPhone affiche un écran vide avant la page. `layout.tsx` déclare 26 images (`public/demarrage/`, une claire et une sombre par taille d'iPhone, listées dans `lib/demarrage.ts`) : le logo sur le fond de l'application, à la même taille que dans la page. Safari veut l'image exacte pour chaque écran : un nouvel iPhone demande d'ajouter sa taille à `APPAREILS_IOS` et de régénérer les images. Le test vérifie que chaque fichier existe et a la bonne taille.
+- **Mode développement** : après avoir changé `globals.css`, redémarrer `npm run dev` (le CSS déjà servi n'est pas mis à jour).
+
+Limites connues : le fond de l'écran de démarrage d'Android est celui du manifeste (clair) même quand le téléphone est en mode sombre ; la qualité de l'enchaînement avec l'écran de l'iPhone n'a pas été vue sur un vrai iPhone.
 
 ## Installation sur le téléphone
 

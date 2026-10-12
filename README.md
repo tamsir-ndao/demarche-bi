@@ -93,7 +93,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 - [x] Recherche, compréhension, réponse ancrée et garde-fous
 - [x] Interface web (accueil, réponse, démarches, à propos)
 - [x] Voix (question parlée, réponse lue à voix haute)
-- [x] Installable sur l'écran d'accueil du téléphone
+- [x] Installable sur l'écran d'accueil du téléphone, avec un écran de démarrage
 - [ ] Jeu d'évaluation et chiffres
 - [ ] Vidéo de démonstration
 
