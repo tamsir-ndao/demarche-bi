@@ -21,6 +21,8 @@ describe("erreurDeVoix", () => {
     }
     assert.match(erreurDeVoix("voix_indisponible").message, /écris ta question/i);
     assert.match(erreurDeVoix("micro_refuse").message, /autorise/i);
+    // L'application installée n'a pas de « navigateur » visible : on renvoie aux réglages de l'appareil.
+    assert.match(erreurDeVoix("micro_refuse").message, /réglages de ton appareil/);
     assert.match(erreurDeVoix("trop_de_demandes").message, /minute/i);
   });
 });

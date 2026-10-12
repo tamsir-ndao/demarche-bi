@@ -11,7 +11,7 @@ export type ErreurAffichee = {
 
 const ERREURS: Record<CodeErreurVoix, ErreurAffichee> = {
   micro_refuse: {
-    message: "Je n’ai pas accès à ton micro. Autorise-le dans ton navigateur, puis réessaie.",
+    message: "Je n’ai pas accès à ton micro. Autorise-le dans les réglages de ton appareil, puis réessaie.",
     peutReessayer: true,
   },
   micro_introuvable: { message: "Je ne trouve pas de micro sur ton appareil. Écris ta question.", peutReessayer: false },
