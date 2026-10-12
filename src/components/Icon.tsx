@@ -155,6 +155,14 @@ const TRACES = {
       <path d="M18 6 6 18" />
     </>
   ),
+  "haut-parleur": (
+    <>
+      <path d="M11 5 6 9H3v6h3l5 4z" />
+      <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+      <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+    </>
+  ),
+  arreter: <rect x="6" y="6" width="12" height="12" rx="2.5" />,
   // Le bouton « Partager » de Safari sur iPhone : une boîte ouverte avec une flèche qui monte.
   partager: (
     <>

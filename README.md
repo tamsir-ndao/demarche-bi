@@ -31,7 +31,7 @@ Chaque démarche est un fichier Markdown dans `content/demarches/`, avec un en-t
 - Comprendre une question informelle (y compris mêlée de wolof) et la ramener à une démarche de la liste.
 - Écrire une introduction courte qui répond à la question, à partir de la seule fiche choisie.
 - Demander une précision quand la question est trop vague ou peut viser plusieurs démarches.
-- Transcrire la voix (Whisper) : la personne relit et corrige le texte avant de chercher la réponse.
+- Transcrire la voix (Whisper) : la personne relit et corrige le texte avant de chercher la réponse. (La réponse peut ensuite être lue à voix haute, avec la voix du téléphone : l'IA n'y participe pas.)
 
 L'IA ne fournit aucun fait administratif de sa propre connaissance : les pièces, étapes, coûts, délais, lieux et sources affichés viennent de la fiche, pas du modèle. Sa phrase d'introduction est contrôlée par le code et signalée à l'écran.
 
@@ -92,7 +92,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 - [ ] 15 fiches vérifiées
 - [x] Recherche, compréhension, réponse ancrée et garde-fous
 - [x] Interface web (accueil, réponse, démarches, à propos)
-- [x] Voix
+- [x] Voix (question parlée, réponse lue à voix haute)
 - [x] Installable sur l'écran d'accueil du téléphone
 - [ ] Jeu d'évaluation et chiffres
 - [ ] Vidéo de démonstration

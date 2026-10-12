@@ -62,6 +62,8 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [ ] Essayer la voix sur de vrais téléphones, en https (Safari iPhone, Chrome Android), avec de vrais locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
 - [x] Application installable (manifeste, icônes) et message « Installe Démarche-Bi » : bouton sur Android, explications sur Safari de l'iPhone, silence de 14 jours après « Plus tard » (11 octobre)
 - [ ] Essayer l'installation sur un vrai Android (Chrome) et un vrai iPhone (Safari) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
+- [x] Réponse à voix haute (12 octobre) : bouton « Écouter la réponse » avec la voix du téléphone, lecture automatique après une question posée à voix haute, texte lu construit depuis la fiche
+- [ ] Essayer la réponse à voix haute sur de vrais téléphones (iPhone Safari, Android Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
 

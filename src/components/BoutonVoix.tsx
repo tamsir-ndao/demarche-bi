@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { CodeErreurVoix } from "@/lib/voix/codes";
 import { demarrerEnregistrement, ErreurMicro, type Enregistreur } from "@/lib/voix/enregistreur";
 import { envoyerLaVoix } from "@/lib/voix/envoi";
+import { demanderLaLecture, stockageDeLOnglet } from "@/lib/voix/lectureAuto";
+import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import {
   HAUTEUR_BARRE_MAX,
   HAUTEUR_BARRE_MIN,
@@ -54,6 +56,14 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
     oublier();
     setEtape({ nom: "inactif" });
     if (dialogue.current?.open) dialogue.current.close();
+  }
+
+  /** La question posée à voix haute part : sa réponse se lira toute seule (voir BoutonEcouter), puis la fenêtre se ferme. */
+  function envoyerLaQuestion() {
+    // Pendant l'appui : l'iPhone n'autorise la voix qu'à ce moment-là.
+    parleurDuNavigateur().debloquer();
+    demanderLaLecture(stockageDeLOnglet(), Date.now());
+    fermer();
   }
 
   function ecrire() {
@@ -192,7 +202,7 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
           <VoixVerification
             texteInitial={etape.texte}
             onRecommencer={() => void demarrer()}
-            onEnvoi={fermer}
+            onEnvoi={envoyerLaQuestion}
             onFermer={fermer}
           />
         )}

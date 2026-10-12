@@ -43,7 +43,8 @@ src/
       feedback/route.ts   avis utile / pas utile                                  (à venir)
   components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision,
                           voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
-                          message d'installation sur l'écran d'accueil du téléphone (MessageInstaller)
+                          message d'installation sur l'écran d'accueil du téléphone (MessageInstaller),
+                          réponse à voix haute (BoutonEcouter)
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
     liens.ts              liens vers le dépôt GitHub
@@ -80,6 +81,9 @@ src/
       spectre.ts          barres du spectre en direct, détection de voix, chronomètre (calcul pur)
       enregistreur.ts     micro, enregistrement et analyse du son dans le navigateur
       envoi.ts            envoi de l'enregistrement à /api/transcribe
+      lecture.ts          le texte lu à voix haute, construit depuis la fiche (calcul pur, testé)
+      parleur.ts          la voix du téléphone (speechSynthesis) : choix de la voix française, lecture morceau par morceau
+      lectureAuto.ts      la note « question posée à voix haute » qui déclenche la lecture automatique
     db.ts                 client Neon (optionnel, serveur uniquement)
 scripts/
   validate-fiches.ts      npm run validate:fiches
@@ -141,6 +145,18 @@ Le bouton micro de l'accueil ouvre une fenêtre plein écran (`<dialog>`) : « J
 - Un enregistrement sans voix n'est pas envoyé : le navigateur mesure la puissance du son (au moins 0,3 s au-dessus d'un seuil) et affiche « Je n'ai rien entendu ». Sur du silence, Whisper invente des phrases (« Sous-titrage Société Radio-Canada », « Merci. ») avec une probabilité d'absence de parole à 0 : le serveur écarte les plus courantes (`src/lib/voix/silence.ts`).
 - Le micro n'existe que sur une page sécurisée (https, ou localhost) : sur l'adresse réseau du serveur de développement (http://192.168…), le navigateur le refuse et la fenêtre propose d'écrire la question.
 - Quitter la page, fermer la fenêtre (croix, Échap) ou la voir cachée par la navigation coupe le micro et abandonne l'envoi en cours.
+
+## Réponse à voix haute
+
+La page de réponse a un bouton **Écouter la réponse** (et **Arrêter**) : le téléphone lit la réponse avec sa propre voix (`speechSynthesis`). Aucune clé, aucun quota, rien n'est envoyé par Démarche-Bi ; Groq n'a d'ailleurs aucune voix française (seulement l'anglais et l'arabe). Pas de wolof parlé : aucune voix gratuite n'en a.
+
+- **Le texte lu vient de la fiche, pas de l'IA.** `src/lib/voix/lecture.ts` le construit dans l'ordre de l'écran : l'état de la fiche (« Attention, cette fiche n'est pas encore vérifiée »), le titre, la phrase de l'IA (signalée comme telle), le coût, le délai et le lieu (« non précisé » quand la fiche ne le dit pas), les notes « à confirmer », les pièces, les étapes numérotées et l'avertissement du site. Les autres écrans (précision, « Je ne sais pas encore ») ont leur version.
+- **Mis en forme pour la voix** : « FCFA » devient « francs CFA », « 10 000 » est collé en « 10000 » (chaque téléphone dit « dix mille »), un numéro vert est épelé chiffre par chiffre, les guillemets et parenthèses deviennent des pauses. Le texte est coupé en phrases de 200 caractères au plus : Chrome coupe la voix d'un texte trop long au bout d'une quinzaine de secondes.
+- **Voix** : la meilleure voix française du téléphone (le français de France d'abord, puis une voix « améliorée »). Si les voix sont chargées et qu'aucune n'est française, le bouton disparaît (une voix étrangère lirait n'importe quoi). Chrome charge ses voix après coup : une liste vide ne cache pas le bouton.
+- **Lecture automatique après une question posée à voix haute.** « Chercher la réponse » laisse dans la mémoire de l'onglet une note datée (`sessionStorage`, valable 90 secondes) ; la page de réponse la prend, une seule fois, et lit. Une question écrite, une page rechargée ou un lien partagé ne lisent rien tout seuls. Sur iPhone, la voix n'est autorisée qu'après un appui : au toucher de « Chercher la réponse », une phrase vide et muette débloque la voix pour la réponse qui arrive plus tard. Si le téléphone refuse quand même, le bouton « Écouter la réponse » reste là.
+- Quitter la page coupe la voix.
+
+Limites connues : la qualité dépend des voix installées sur le téléphone (sur Android, voix Google ; certaines passent par le réseau) ; pas de pause, seulement arrêter et reprendre du début ; la voix n'a été essayée que sur un faux moteur et sur celui de Chrome sur Mac (sans son), pas sur un vrai Android ni un vrai iPhone.
 
 ## Installation sur le téléphone
 

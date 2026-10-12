@@ -7,6 +7,8 @@ import {
 } from "@/lib/fiches/affichage";
 import type { Fiche } from "@/lib/fiches/schema";
 import { typographie } from "@/lib/texte";
+import { preparerLaLecture, scriptFiche } from "@/lib/voix/lecture";
+import { BoutonEcouter } from "./BoutonEcouter";
 import { Carte } from "./Carte";
 import { CarteDemarche } from "./CarteDemarche";
 import { Etapes } from "./Etapes";
@@ -61,6 +63,7 @@ export function ReponseFiche({ fiche, statut, autres, intro, degrade }: ReponseF
         {intro ? (
           <p className="mt-1.5 text-[13px] leading-[18px] text-ink-3">Phrase écrite par l’IA, d’après la fiche.</p>
         ) : null}
+        <BoutonEcouter morceaux={preparerLaLecture(scriptFiche({ fiche, statut, intro }))} className="mt-4" />
         <FaitsCles fiche={fiche} />
         {notesAConfirmer.map((note) => (
           <NoteAConfirmer key={note} texte={note} />

@@ -1,6 +1,8 @@
 import { resumeCoutDelai } from "@/lib/fiches/affichage";
 import type { Fiche } from "@/lib/fiches/schema";
 import { typographie, urlReponse } from "@/lib/texte";
+import { preparerLaLecture, scriptPrecision, scriptPrecisionGenerale } from "@/lib/voix/lecture";
+import { BoutonEcouter } from "./BoutonEcouter";
 import { CarteDemarche } from "./CarteDemarche";
 import { iconeCategorie } from "./Icon";
 import { LienBouton } from "./LienBouton";
@@ -8,13 +10,14 @@ import { QuestionForm } from "./QuestionForm";
 
 const TITRE = "mt-5 px-1 text-[28px] leading-[34px] font-bold tracking-[-0.01em]";
 
-/** Plusieurs démarches pourraient répondre : la personne choisit, et la réponse vient de la fiche choisie. */
+/** Plusieurs démarches pourraient répondre : la personne choisit, et la réponse vient de la fiche choisie. (Les mêmes phrases sont dans lib/voix/lecture.) */
 export function Precision({ question, questionPosee, options }: { question: string; questionPosee: string; options: Fiche[] }) {
   return (
     <section aria-labelledby="titre-precision">
       <h1 id="titre-precision" className={TITRE}>
         {typographie(question) || "Que veux-tu faire ?"}
       </h1>
+      <BoutonEcouter morceaux={preparerLaLecture(scriptPrecision({ question, options }))} className="mt-4" />
       <ul className="mt-5 flex flex-col gap-3">
         {options.map((option) => (
           <li key={option.slug}>
@@ -45,6 +48,7 @@ export function PrecisionGenerale({ question, questionPosee }: { question: strin
         {typographie(question) || "Peux-tu préciser ta question ?"}
       </h1>
       <p className="mt-2 px-1 text-[17px] leading-[26px] text-ink-2">Ajoute un détail, et je te réponds.</p>
+      <BoutonEcouter morceaux={preparerLaLecture(scriptPrecisionGenerale({ question }))} className="mt-4" />
       <div className="mt-4">
         <QuestionForm id="question-precise" valeurInitiale={questionPosee} />
       </div>

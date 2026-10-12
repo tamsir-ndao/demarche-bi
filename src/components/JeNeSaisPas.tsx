@@ -1,9 +1,11 @@
+import { preparerLaLecture, scriptInconnue } from "@/lib/voix/lecture";
+import { BoutonEcouter } from "./BoutonEcouter";
 import { Carte } from "./Carte";
 import { Icon } from "./Icon";
 import { LienBouton } from "./LienBouton";
 import { ProposerUneDemarche } from "./ProposerUneDemarche";
 
-/** Quand aucune fiche ne répond à la question : on le dit franchement, sans rien inventer. */
+/** Quand aucune fiche ne répond à la question : on le dit franchement, sans rien inventer. (Les mêmes phrases sont dans lib/voix/lecture.) */
 export function JeNeSaisPas() {
   return (
     <>
@@ -20,6 +22,7 @@ export function JeNeSaisPas() {
         <p className="mt-2 text-[17px] leading-[26px] text-ink-2">
           Je n’ai pas de source officielle pour ça. Je préfère te le dire plutôt que d’inventer.
         </p>
+        <BoutonEcouter morceaux={preparerLaLecture(scriptInconnue())} className="mt-4" />
       </Carte>
 
       <LienBouton href="/demarches" icone="livre" className="mt-5">
