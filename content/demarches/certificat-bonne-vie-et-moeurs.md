@@ -14,7 +14,7 @@ pieces:
   - "Un extrait du casier judiciaire datant de moins de 3 mois"
   - "Une copie de la carte nationale d'identité"
 etapes:
-  - "Se procurer un extrait du casier judiciaire datant de moins de 3 mois (voir la fiche casier-judiciaire)."
+  - "Se procurer un extrait du casier judiciaire datant de moins de 3 mois (voir la démarche « Extrait du casier judiciaire »)."
   - "Rédiger une demande manuscrite précisant la destination du certificat."
   - "Déposer en personne la demande, l'extrait du casier judiciaire et la copie de la carte nationale d'identité au commissariat de police ou à la brigade de gendarmerie dont relève le lieu de résidence."
   - "Le certificat est délivré dans un délai de 2 jours."

@@ -202,8 +202,9 @@
   outline-offset: 3px;
 }
 
-/* Les champs montrent le focus avec un halo vert plutôt qu'un contour. */
-input:focus-visible {
+/* Les champs (ligne ou zone de texte) montrent le focus avec un halo vert plutôt qu'un contour carré. */
+input:focus-visible,
+textarea:focus-visible {
   outline: none;
 }
 

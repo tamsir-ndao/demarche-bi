@@ -33,7 +33,8 @@ src/
     page.tsx              accueil : bouton micro, champ de question et exemples
     reponse/              réponse à une question, lue dans l'adresse (/reponse?q=…)
     demarches/            liste et pages des fiches
-    a-propos/             à propos, questions fréquentes, comment contribuer
+    a-propos/             à propos pour les utilisateurs : sources, « je ne devine pas », ouvert à tous, tes données
+    projet/               pour le jury et les contributeurs : questions fréquentes, liens GitHub ; hors menu, lien discret au bas d'« À propos »
     not-found.tsx         page introuvable
     globals.css           couleurs, mode sombre, animations (design « doux »)
     manifest.ts           nom, couleurs et icônes de l'application installable (+ apple-icon.png, favicon.ico, public/icons/)

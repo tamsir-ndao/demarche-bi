@@ -68,6 +68,9 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [ ] Voir l'écran de démarrage sur de vrais téléphones : l'enchaînement avec l'écran d'Android et celui de l'iPhone (images claires et sombres), la durée (1,3 s : à raccourcir si c'est long), l'application installée et le navigateur
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
+- [x] Produit fini (12 octobre) : `/a-propos` ne garde que ce qui sert à l'utilisateur (sources, « je ne devine pas », ouvert à tous, tes données) ; la FAQ, « Tu veux aider ? » et les liens GitHub passent sur `/projet` (pour le jury, hors menu, lien discret au bas d'« À propos »)
+- [x] Même logique pour le pied de page ordinateur : « Voir le code sur GitHub » et « Signaler une erreur » retirés (12 octobre)
+- [ ] Blocs « Proposer une démarche » (« Je ne sais pas encore » et liste des démarches) : à décider
 
 ## Jeudi 15 — avis et déploiement
 

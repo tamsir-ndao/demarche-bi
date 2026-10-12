@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { REPO_URL, URL_SIGNALER } from "@/lib/liens";
 import { Icon, type IconName } from "./Icon";
 
 export type Onglet = "question" | "demarches" | "a-propos";
@@ -120,12 +119,6 @@ export function PageShell({ actif, retour, large = false, children }: PageShellP
           <Link href="/a-propos" className={LIEN_PIED}>
             À propos
           </Link>
-          <a href={REPO_URL} className={LIEN_PIED}>
-            Voir le code sur GitHub
-          </a>
-          <a href={URL_SIGNALER} className={LIEN_PIED}>
-            Signaler une erreur
-          </a>
         </nav>
       </footer>
 
