@@ -71,9 +71,12 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 
 ## Jeudi 15 — avis et déploiement
 
-- [ ] Avis « utile / pas utile » et `/api/feedback`
-- [ ] Journal anonyme dans Neon (optionnel, l'application marche sans)
-- [ ] Refaire la réponse « Est-ce que tu gardes mes données ? » de la page À propos quand le journal anonyme existera (aujourd'hui : la voix n'est pas gardée et la question n'est pas enregistrée par le site, mais elles vont à Groq et la question apparaît dans l'adresse /reponse?q=… donc dans les journaux de l'hébergeur)
+- [x] Avis « utile / pas utile » : barre « Cette réponse t'a aidé ? » et `POST /api/feedback` (12 octobre)
+- [x] Journal anonyme dans Neon (optionnel, l'application marche sans) : une ligne par réponse finale, écrite après l'envoi de la page (12 octobre)
+- [x] Réponse « Est-ce que tu gardes mes données ? » de la page À propos refaite (12 octobre)
+- [x] Base Neon créée, `npm run db:migrate` lancée, `DATABASE_URL` dans `.env.local` et dans Vercel (Production et Preview, secret), barre d'avis essayée avec la vraie base (12 octobre) ; reste à redéployer la production
+- [ ] Purge du journal à 90 jours : aujourd'hui à lancer à la main (voir `docs/ARCHITECTURE.md`, « Données ») ; une tâche planifiée Vercel ou un script, avant la finale
+- [ ] Essayer la barre d'avis sur de vrais téléphones (clavier, zone du bas, thème sombre) et relire les premiers avis
 
 ## Vendredi 16 — essais réels
 

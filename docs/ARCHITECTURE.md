@@ -16,7 +16,7 @@ Question (texte, ou voix)
  5. Citer        la page montre pièces, étapes, chiffres et sources de la fiche, mot pour mot
    │
    ▼
-Réponse + sources + avertissement        (journal anonyme Neon : optionnel, à venir)
+Réponse + sources + avertissement        (journal anonyme et avis, Neon : optionnel)
 ```
 
 Si l'IA manque (pas de clé, saturée, en panne), la recherche par mots choisit la fiche et la page la montre sans introduction. Voir « Quand l'IA manque » dans `docs/AI-PROMPTS.md`.
@@ -40,11 +40,12 @@ src/
     api/
       ask/route.ts        POST : question -> réponse (le site appelle le même service sans passer par là)
       transcribe/route.ts POST : enregistrement audio -> texte (le son n'est jamais gardé)
-      feedback/route.ts   avis utile / pas utile                                  (à venir)
+      feedback/route.ts   POST : avis « utile / pas utile » + commentaire facultatif (anonyme, répond 204)
   components/             interface : cadre de page et menu, boutons, pastilles, cartes, blocs d'une fiche, écrans de précision,
                           voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
                           message d'installation sur l'écran d'accueil du téléphone (MessageInstaller),
-                          réponse à voix haute (BoutonEcouter), écran de démarrage des téléphones (EcranDemarrage)
+                          réponse à voix haute (BoutonEcouter), écran de démarrage des téléphones (EcranDemarrage),
+                          avis « Cette réponse t'a aidé ? » (AvisReponse)
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
     liens.ts              liens vers le dépôt GitHub
@@ -85,6 +86,12 @@ src/
       lecture.ts          le texte lu à voix haute, construit depuis la fiche (calcul pur, testé)
       parleur.ts          la voix du téléphone (speechSynthesis) : choix de la voix française, lecture morceau par morceau
       lectureAuto.ts      la note « question posée à voix haute » qui déclenche la lecture automatique
+    avis/                 le journal anonyme et les avis (voir « Données »)
+      avis.ts             lecture d'un avis (corps de POST /api/feedback, validé par Zod), commentaire nettoyé
+      journal.ts          les deux écritures SQL (question_logs, feedback) et ce qui est noté d'une réponse ; ne lève jamais d'erreur
+      service.ts          noter la réponse après l'envoi de la page ; recevoir un avis, avec ses limites par visiteur
+      serveur.ts          branche le service sur DATABASE_URL (sans elle : rien n'est noté)
+      envoi.ts            envoi de l'avis à /api/feedback, messages d'erreur
     db.ts                 client Neon (optionnel, serveur uniquement)
 scripts/
   validate-fiches.ts      npm run validate:fiches
@@ -186,7 +193,13 @@ Limites connues : sur iPhone, rien ne dit si l'icône a vraiment été ajoutée 
 
 ## Données (optionnel)
 
-Neon sert uniquement à un journal anonyme (`question_logs`) et aux avis (`feedback`) : pas de compte, pas d'adresse IP, question tronquée à 500 caractères, purge conseillée à 90 jours. L'application fonctionne sans `DATABASE_URL`.
+Neon sert uniquement à un journal anonyme (`question_logs`) et aux avis (`feedback`) : pas de compte, pas d'adresse IP, pas d'identifiant de visiteur, question tronquée à 500 caractères, purge conseillée à 90 jours (à lancer à la main pour l'instant : `delete from question_logs where created_at < now() - interval '90 days'`, les avis rattachés partent avec). **L'application fonctionne sans `DATABASE_URL`** : rien n'est noté et la barre d'avis n'apparaît pas.
+
+- **Le journal** : une ligne par réponse **finale** montrée sur `/reponse` (une fiche, ou « Je ne sais pas encore ») : la question (sur une ligne, 500 caractères au plus), `answered`, les fiches montrées (`fiche_slugs`). Une question de précision n'est pas notée : la réponse choisie ensuite l'est, avec la même question. L'écriture se fait **après l'envoi de la page** (`after` de Next.js) : elle ne ralentit jamais la réponse, et si la base est en panne la personne ne le voit pas (la panne est signalée dans les journaux du serveur par son seul nom, jamais avec la question). Un visiteur qui recharge sans cesse est limité à 30 réponses notées par minute (mémoire de l'instance, comme les autres limites). Les colonnes `language` et `channel` ne sont pas remplies : `channel` garde sa valeur par défaut `text`, le site ne sait pas si la question a été dite à voix haute.
+- **L'identifiant** : le serveur tire un UUID pour chaque réponse notée et le donne à la barre d'avis (`AvisReponse`, dans la page). L'avis (`POST /api/feedback`, `{ journalId, utile, commentaire? }`) s'y rattache ; si la ligne du journal n'a pas pu être écrite, l'avis est gardé sans rattachement plutôt que perdu.
+- **La barre d'avis** : « Cette réponse t'a aidé ? », « Oui » (un appui, un envoi) ou « Pas vraiment » (champ facultatif « Dis-moi ce qui manque », 500 caractères). Messages d'erreur clairs (trop de demandes, pas de réseau, base en panne) avec possibilité de réessayer.
+- **L'API** : corps limité à 4 Ko, 10 avis par minute et par visiteur (comptés avant la lecture du corps, donc aussi pour les corps invalides), réponses `204`, `400 avis_invalide`, `429 trop_de_demandes`, `503 indisponible` (sans base, ou base en panne). Le visiteur est connu par ses en-têtes, seulement pour limiter, jamais gardé.
+- **Rien d'autre n'est gardé** : ni la voix, ni l'adresse, ni un identifiant de visiteur. La question reste dans l'adresse `/reponse?q=…` et donc dans les journaux de l'hébergeur : c'est dit dans la page « À propos ».
 
 ## Principes
 

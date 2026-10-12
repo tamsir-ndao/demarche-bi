@@ -83,11 +83,13 @@ Pour essayer la voix sans parler, Chrome peut simuler un micro avec un fichier s
 
 ## Étape 8 — (Optionnel) Base Neon
 
-L'application fonctionne sans base. Neon sert au journal anonyme des questions et aux avis des utilisateurs.
+L'application fonctionne sans base. Neon sert au journal anonyme des questions et aux avis des utilisateurs : sans base, rien n'est noté et la page de réponse n'affiche pas « Cette réponse t'a aidé ? ».
 
 1. Sur neon.com, crée un projet. Dans la fenêtre de connexion (bouton « Connect »), copie la chaîne de connexion (elle commence par `postgresql://`).
 2. Mets-la dans `.env.local` : `DATABASE_URL=...`. Elle contient ton mot de passe : ne la partage pas et ne la committe jamais.
 3. Crée les tables : `npm run db:migrate`. La commande peut être relancée sans risque, les migrations déjà appliquées sont ignorées.
+4. Relance `npm run dev`, pose une question : la barre « Cette réponse t'a aidé ? » apparaît sous la réponse. Donne un avis, puis vérifie dans la console de Neon (Tables) : `select * from question_logs;` et `select * from feedback;`.
+5. Pour le site en ligne, ajoute la même chaîne dans Vercel (voir l'étape 9) : `vercel env add DATABASE_URL production --sensitive`, et de même pour `preview`.
 
 ## Étape 9 — (Optionnel) Déployer sur Vercel
 

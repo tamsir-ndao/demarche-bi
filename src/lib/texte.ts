@@ -9,6 +9,9 @@ export function simplifier(texte: string): string {
 /** Longueur maximale d'une question : le champ de saisie et le serveur appliquent la même limite. */
 export const LONGUEUR_MAX_QUESTION = 300;
 
+/** Longueur maximale du commentaire d'un avis : le champ, le serveur et la base (db/migrations/0001_init.sql) la partagent. */
+export const LONGUEUR_MAX_COMMENTAIRE = 500;
+
 /**
  * Lit la question dans l'adresse (?q=…), qui peut être absente, répétée ou très longue :
  * une seule valeur, sur une ligne, coupée à 300 caractères sans casser un emoji.

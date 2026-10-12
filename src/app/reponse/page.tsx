@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { AvisReponse } from "@/components/AvisReponse";
 import { BulleQuestion } from "@/components/BulleQuestion";
 import { JeNeSaisPas } from "@/components/JeNeSaisPas";
 import { PageShell } from "@/components/PageShell";
@@ -12,6 +13,7 @@ import { ReponseFiche } from "@/components/ReponseFiche";
 import type { Reponse as ReponseDuSite } from "@/lib/ai/ask";
 import { repondreALaQuestion } from "@/lib/ai/serveur";
 import { visiteurDepuis } from "@/lib/ai/service";
+import { noterLaReponse } from "@/lib/avis/serveur";
 import { statutAffichage } from "@/lib/fiches/affichage";
 import { maintenant } from "@/lib/fiches/disponibles";
 import { nettoyerQuestion, nettoyerSlug } from "@/lib/texte";
@@ -41,15 +43,16 @@ async function Reponse({ searchParams }: Pick<PageProps<"/reponse">, "searchPara
   // La réponse dépend de l'heure (mémoire des questions, limite par visiteur) et d'un service externe :
   // on la calcule à la vraie demande, jamais pendant un préchargement ou un prérendu.
   await connection();
-  const reponse = await repondreALaQuestion(question, {
-    ficheSlug: nettoyerSlug(parametres.fiche),
-    visiteur: visiteurDepuis(await headers()),
-  });
+  const visiteur = visiteurDepuis(await headers());
+  const reponse = await repondreALaQuestion(question, { ficheSlug: nettoyerSlug(parametres.fiche), visiteur });
+  // Sans base de données (ou pour une question de précision), il n'y a pas d'identifiant et pas de barre d'avis.
+  const journalId = noterLaReponse(question, reponse, visiteur);
 
   return (
     <>
       <BulleQuestion question={question} />
       <Resultat question={question} reponse={reponse} />
+      {journalId ? <AvisReponse journalId={journalId} /> : null}
     </>
   );
 }
