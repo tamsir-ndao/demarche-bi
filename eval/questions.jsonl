@@ -38,7 +38,7 @@
 {"question":"Je veux faire ma carte.","famille":"vague"}
 {"question":"Dama bëgg kayit.","famille":"vague","langue":"wo"}
 {"question":"Dama soxla ndimbal ci administration bi.","famille":"vague","langue":"wo"}
-{"question":"Comment obtenir un acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["centre d'état civil"]}
+{"question":"Je voudrais la copie intégrale de mon acte de naissance, comment faire ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["centre d'état civil"]}
 {"question":"Je veux faire mon passeport","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["photos d'identité"]}
 {"question":"Comment obtenir un certificat de décès ?","famille":"hors_perimetre"}
 {"question":"J'ai perdu mon passeport, que faire ?","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["duplicata"]}
@@ -55,7 +55,7 @@
 {"question":"Dama bëgg passeport, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"passeport-ordinaire","doit_contenir":["commissariat"]}
 {"question":"Je suis marié à une Sénégalaise, comment obtenir la nationalité sénégalaise ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["non renonciation"]}
 {"question":"Combien coûte une copie littérale d'acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["vignette"]}
-{"question":"J'ai acheté une voiture d'occasion, comment changer la carte grise à mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["acte de vente"]}
+{"question":"J'ai acheté une voiture d'occasion, comment changer la carte grise à mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["attestation de vente légalisée"]}
 {"question":"J'ai perdu ma carte grise","famille":"couverte","attendu_slug":"carte-grise-duplicata","doit_contenir":["certificat de perte"]}
 {"question":"Comment immatriculer une voiture neuve ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-neuf","doit_contenir":["certificat de conformité"]}
 {"question":"Je fais venir une voiture d'occasion de l'étranger, quels papiers pour la carte grise ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-occasion-importe","doit_contenir":["déclaration en douane"]}
@@ -63,3 +63,33 @@
 {"question":"Quel âge faut-il pour avoir le permis ?","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["18 ans"]}
 {"question":"J'ai perdu mon permis de conduire","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["certificat de perte"]}
 {"question":"Comment renouveler mon permis de conduire périmé ?","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["carte nationale d'identité"]}
+{"question":"Je veux changer la source d'énergie de mon véhicule, quels papiers faut-il pour la carte grise ?","famille":"couverte","attendu_slug":"carte-grise-transformation-vehicule","doit_contenir":["ticket de pesage"]}
+{"question":"La transformation de mon véhicule, ça prend combien de temps ?","famille":"couverte","attendu_slug":"carte-grise-transformation-vehicule","doit_contenir":["2 jours"]}
+{"question":"Quel âge faut-il pour passer le permis poids lourd ?","famille":"couverte","attendu_slug":"permis-de-conduire-poids-lourd","doit_contenir":["22 ans"]}
+{"question":"Comment se passe l'examen du permis camion ?","famille":"couverte","attendu_slug":"permis-de-conduire-poids-lourd","doit_contenir":["épreuve théorique"]}
+{"question":"Je voyage à l'étranger, comment avoir un permis de conduire international ?","famille":"couverte","attendu_slug":"permis-de-conduire-international","doit_contenir":["25 000 FCFA"]}
+{"question":"Le permis international est valable combien de temps ?","famille":"couverte","attendu_slug":"permis-de-conduire-international","doit_contenir":["un an"]}
+{"question":"Comment obtenir une attestation d'authenticité de mon permis de conduire ?","famille":"couverte","attendu_slug":"permis-de-conduire-attestation-authenticite","doit_contenir":["demande manuscrite"]}
+{"question":"L'attestation d'authenticité du permis, c'est payant ?","famille":"couverte","attendu_slug":"permis-de-conduire-attestation-authenticite","doit_contenir":["Gratuit"]}
+{"question":"Je suis militaire, comment convertir mon brevet militaire de conduite en permis civil ?","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-brevet-militaire","doit_contenir":["copie légalisée de la carte nationale d'identité"]}
+{"question":"Combien coûte la conversion d'un brevet militaire en permis de conduire ?","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-brevet-militaire","doit_contenir":["10 000 FCFA"]}
+{"question":"Je suis diplomate en poste au Sénégal, comment convertir mon permis étranger ?","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-diplomate","doit_contenir":["ministère des Affaires étrangères"]}
+{"question":"Un diplomate peut-il avoir un permis sénégalais sans passer l'examen ?","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-diplomate","doit_contenir":["sans passer par l'examen classique"]}
+{"question":"Mon permis a été volé","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["certificat de perte"]}
+{"question":"Quelles pièces faut-il pour une copie littérale d'acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["volet n° 1"]}
+{"question":"Ñaata la copie littérale d'acte de naissance ?","famille":"couverte","langue":"mixte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["vignette"]}
+{"question":"J'ai perdu mon acte de naissance","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["renouveler la demande"]}
+{"question":"Combien coûte un bulletin de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-bulletin","doit_contenir":["vignette"]}
+{"question":"Quelles pièces faut-il pour un bulletin de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-bulletin","doit_contenir":["livret de famille"]}
+{"question":"Fan laa mën a jël bulletin de naissance ?","famille":"couverte","langue":"mixte","attendu_slug":"acte-naissance-bulletin","doit_contenir":["centre d'état civil"]}
+{"question":"Combien coûte un extrait de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-extrait-registre","doit_contenir":["200 FCFA"]}
+{"question":"Dama bëgg extrait de naissance, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"acte-naissance-extrait-registre","doit_contenir":["centre d'état civil"]}
+{"question":"Quelles pièces pour un extrait du registre des actes de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-extrait-registre","doit_contenir":["livret de famille"]}
+{"question":"Comment déclarer une naissance ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["certificat d'accouchement"]}
+{"question":"Combien coûte la déclaration de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["gratuit"]}
+{"question":"Dama bëgg déclarer naissance sama doom, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"acte-naissance-declaration","doit_contenir":["certificat d'accouchement"]}
+{"question":"Ma femme vient d'accoucher, que dois-je faire ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["centre d'état civil"]}
+{"question":"Mon bébé n'a pas été déclaré à la naissance, que faire ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["un an"]}
+{"question":"Comment dédouaner une voiture importée ?","famille":"couverte","attendu_slug":"dedouanement-vehicule-importe","doit_contenir":["Guichet unique des véhicules"]}
+{"question":"Quel est l'âge maximum pour importer une voiture d'occasion ?","famille":"couverte","attendu_slug":"dedouanement-vehicule-importe","doit_contenir":["8 ans"]}
+{"question":"Quels documents pour dédouaner un véhicule importé ?","famille":"couverte","attendu_slug":"dedouanement-vehicule-importe","doit_contenir":["connaissement"]}

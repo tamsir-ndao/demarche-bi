@@ -27,7 +27,7 @@ Source de vérité du contenu : `content/demarches/*.md` (versionné dans Git, v
 
 ```
 content/demarches/        fiches Markdown (+ _modele.md)
-eval/questions.jsonl      jeu d'évaluation (52 questions, dont 10 en wolof ou mêlées de wolof)
+eval/questions.jsonl      jeu d'évaluation (95 questions, dont 15 en wolof ou mêlées de wolof)
 src/
   app/
     page.tsx              accueil : bouton micro, champ de question et exemples

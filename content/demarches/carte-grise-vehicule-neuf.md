@@ -45,6 +45,6 @@ verifie_par: null
 - Provenance : contenu repris du texte de la page du portail Sénégal Services, collé le 12 octobre 2026, car la page n'a pas pu être ouverte depuis notre outil. À relire sur la page officielle avant de passer en « vérifié ».
 - Qui peut le demander : l'acquéreur du véhicule, ou son représentant dûment mandaté. La carte grise est le document qui permet d'identifier un véhicule et son propriétaire.
 - À confirmer : barème de la taxe indiqué sur la page pour les récépissés de déclaration de mise en circulation : 2 000 FCFA par cheval pour un véhicule de tourisme ou utilitaire ; 1 000 FCFA par cheval pour un véhicule de transport public ; 3 000 FCFA (forfait) pour un deux ou trois roues de 125 cm³ ou moins ; 3 000 FCFA (forfait) pour un tracteur agricole ; 6 000 FCFA (forfait) pour une remorque. Le texte reçu ne donne pas de date de mise à jour : confirmer le montant auprès du bureau régional des transports routiers avant de payer.
-- Perte ou vol de la carte grise : voir la démarche « Carte grise : duplicata après perte ou vol ».
+- Perte ou vol de la carte grise : voir la démarche « Carte grise : renouvellement ou duplicata (carte endommagée ou perdue) ».
 - Pour en savoir plus : Direction des transports routiers, avenue André Peytavin x Corniche, téléphone 33 826 45 61.
 - Texte de référence indiqué par la page : décret n° 2004-13 du 19 janvier 2004.

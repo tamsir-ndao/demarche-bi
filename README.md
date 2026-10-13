@@ -48,7 +48,7 @@ L'IA ne fournit aucun fait administratif de sa propre connaissance : les pièces
 
 ## Évaluation
 
-Un jeu de 52 questions (`eval/questions.jsonl`), dont 10 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient, s'il demande une précision quand la question est vague et combien d'introductions sont refusées par les garde-fous. Commandes (ajouter `-- --brouillons` tant que des fiches sont en brouillon) :
+Un jeu de 95 questions (`eval/questions.jsonl`), dont 15 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient, s'il demande une précision quand la question est vague et combien d'introductions sont refusées par les garde-fous. Commandes (ajouter `-- --brouillons` tant que des fiches sont en brouillon) :
 
 - `npm run eval` : la recherche seule, sans IA (c'est le repli quand l'IA manque) ;
 - `npm run eval -- --ia` : le parcours complet comme sur le site, avec la clé de `.env.local`.

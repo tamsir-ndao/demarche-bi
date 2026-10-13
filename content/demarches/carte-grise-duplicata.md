@@ -1,41 +1,46 @@
 ---
 slug: carte-grise-duplicata
-titre: "Carte grise : duplicata après perte ou vol"
+titre: "Carte grise : renouvellement ou duplicata (carte endommagée ou perdue)"
 categorie: transport
-resume: "En cas de perte ou de vol de la carte grise, il faut faire une nouvelle demande au bureau régional des transports routiers, en se présentant avec le véhicule et un certificat de perte."
+resume: "Pour renouveler la carte grise ou en obtenir un duplicata (carte endommagée ou certificat de perte), il faut s'adresser aux bureaux régionaux des transports routiers. Délai : 2 jours."
 mots_cles:
+  - renouvellement de la carte grise
+  - renouveler la carte grise
+  - duplicata carte grise
   - j'ai perdu ma carte grise
   - carte grise perdue
-  - carte grise volée
-  - duplicata carte grise
-  - perte de la carte grise
+  - carte grise endommagée
+  - carte grise abîmée
   - certificat de perte
-  - certificat d'immatriculation
+  - taxe de duplicata
+  - déclaration de mise en circulation
+  - agent vérificateur
   - transports routiers
 pieces:
-  - "Un certificat de perte"
-  - "Une demande de mise en circulation adressée au bureau régional des transports routiers de la région concernée, avec le cachet et le visa du service des Impôts et Domaines (DGID), obtenus après paiement d'une taxe qui varie selon la puissance du véhicule et sa destination (transport ou particulier)"
-  - "La pièce d'identité du titulaire"
-  - "L'attestation de paiement de la taxe de duplicata"
-  - "Une attestation d'assurance en cours de validité"
-  - "Une copie de l'agrément, si le titulaire est un transporteur"
+  - "La déclaration de mise en circulation visée par l'agent vérificateur"
+  - "La carte grise endommagée, ou le certificat de perte"
+  - "La quittance de la taxe de duplicata, selon qu'il s'agit de vélomoteurs, de voitures ou de véhicules de transport"
 etapes:
-  - "Obtenir un certificat de perte."
-  - "Faire apposer le cachet et le visa des Impôts et Domaines (DGID) sur la demande de mise en circulation, après paiement de la taxe, et payer la taxe de duplicata."
-  - "Faire une nouvelle demande au bureau régional des transports routiers, en se présentant avec le véhicule pour la vérification du numéro de châssis et avec les documents demandés."
-cout: null
-delai: "2 à 3 jours"
-lieu: "Bureau régional des transports routiers de la région concernée."
+  - "Réunir les trois pièces demandées. Pour un renouvellement, la page dit : renouveler avec les mêmes pièces."
+  - "Payer la taxe de duplicata, dont le montant dépend du type de véhicule et de sa puissance : la quittance fait partie des pièces à fournir."
+  - "S'adresser aux bureaux régionaux des transports routiers. La pièce délivrée est une nouvelle carte grise (en duplicata ou en renouvellement), en 2 jours."
+cout: "3 000 FCFA pour les vélomoteurs et scooters ; 4 500 FCFA pour les véhicules de 2 à 9 CV ; 7 500 FCFA pour les véhicules de 10 à 13 CV ; 10 500 FCFA pour les véhicules de plus de 13 CV ; 1 000 FCFA pour les véhicules de transport public de moins de 12 CV ; 2 000 FCFA pour les véhicules de transport public de plus de 12 CV"
+delai: "2 jours"
+lieu: "Bureaux régionaux des transports routiers."
 sources:
-  - titre: "Demander un certificat d'immatriculation et d'aptitude technique (carte grise) — Sénégal Services"
-    url: https://www.senegalservices.sn/demarche/demander-un-certificat-dimmatriculation-et-daptitude-technique-carte-grise
-    consulte_le: 2026-10-12
+  - titre: "Demander le renouvellement de la carte grise ou le certificat d'immatriculation et d'aptitude technique — e-Sénégal"
+    url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-le-renouvellement-de-la-carte-grise-ou-le-certificat-dimmatriculation-et-daptitude-techni"
+    consulte_le: 2026-10-13
 statut: brouillon
 verifie_le: null
 verifie_par: null
 ---
 
-- Provenance : contenu repris du texte de la page du portail Sénégal Services, collé le 12 octobre 2026, car la page n'a pas pu être ouverte depuis notre outil. À relire sur la page officielle avant de passer en « vérifié ».
-- Le montant de la taxe de duplicata n'est pas indiqué sur la page : à confirmer auprès du bureau régional des transports routiers avant de payer. Le barème de la taxe de mise en circulation, selon la puissance et la destination du véhicule, est donné dans les démarches « Carte grise : changement de propriétaire » et « Carte grise : première immatriculation d'un véhicule neuf ».
-- Le texte reçu ne donne pas de date de mise à jour : à confirmer auprès du bureau régional des transports routiers avant de déposer le dossier.
-- Pour en savoir plus : Direction des transports routiers, avenue André Peytavin x Corniche, téléphone 33 826 45 61.
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Qui peut faire la demande : le propriétaire du véhicule ou l'agent vérificateur.
+- Pièce délivrée : une nouvelle carte grise (en duplicata ou en renouvellement).
+- À confirmer : la page donne un montant pour les véhicules de transport public de puissance inférieure à 12 CV et un autre pour ceux de puissance supérieure à 12 CV. Elle ne dit pas quel montant s'applique à un véhicule de transport public d'exactement 12 CV.
+- À confirmer : la page parle de « l'agent vérificateur » (il vise la déclaration de mise en circulation, et il peut aussi faire la demande) sans dire qui il est ni où le trouver.
+- Textes de référence : décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
+- Pour en savoir plus : Direction des Transports terrestres (routiers), ministère des Infrastructures, des Transports terrestres et du Désenclavement (MITTD), avenue André Peytavin X Corniche, téléphone 33 826 45 61, site www.mittd.gouv.sn.
+- Assistance en ligne du portail e-Sénégal : contact@e-senegal.sn, téléphone +221 33 879 34 34.

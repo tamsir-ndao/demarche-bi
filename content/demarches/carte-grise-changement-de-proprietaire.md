@@ -1,45 +1,58 @@
 ---
 slug: carte-grise-changement-de-proprietaire
-titre: "Carte grise : changement de propriétaire d'un véhicule"
+titre: "Carte grise : mutation du véhicule (changement de propriétaire ou de région)"
 categorie: transport
-resume: "Quand un véhicule est vendu, l'acquéreur ou son représentant mandaté dépose le dossier de changement de propriétaire au bureau régional des transports routiers, qui délivre une nouvelle carte grise."
+resume: "La mutation d'un véhicule déjà immatriculé au Sénégal est un changement de nom, de région ou de département. Elle se fait à la division régionale des transports, avec le véhicule. Délai : 5 jours."
 mots_cles:
-  - carte grise
+  - mutation de véhicule
   - changement de propriétaire
-  - véhicule d'occasion
-  - acheter une voiture
+  - changer la carte grise à mon nom
+  - changement de nom carte grise
+  - changement de région carte grise
+  - acheter une voiture d'occasion
   - vendre une voiture
-  - certificat d'immatriculation
+  - je vends ma voiture
+  - j'ai vendu ma voiture
+  - j'ai acheté une voiture
+  - vente de véhicule
+  - attestation de vente
   - acte de vente
-  - certificat de non-gage
+  - non inscription de gage
 pieces:
-  - "La carte grise (certificat d'immatriculation) barrée, avec la mention « vendu »"
-  - "Un acte de vente rempli par le vendeur (formulaire disponible au bureau régional de la région concernée), légalisé auprès de la police ou de la gendarmerie"
-  - "Une demande de mise en circulation adressée au bureau régional des transports de la région concernée, avec le cachet et le visa du service des Impôts et Domaines (DGID), obtenus après paiement d'une taxe qui varie selon la puissance du véhicule et sa destination (transport ou particulier)"
-  - "Une copie certifiée conforme de la carte nationale d'identité du vendeur et de l'acheteur"
-  - "Une police d'assurance en cours de validité"
-  - "Un certificat de non-gage, délivré par le service des Transports qui a émis la carte grise précédente (en cas de changement de région)"
-  - "Une copie certifiée conforme du passeport (pour les résidents étrangers)"
+  - "Certificat de vente (si changement de nom)"
+  - "CNI de l'acheteur et du vendeur, légalisée (si changement de nom)"
+  - "Attestation de vente légalisée exclusivement à la police centrale de Dakar, et dans les régions aux commissariats centraux (si changement de nom)"
+  - "RCCM et NINEA (pour une personne morale)"
+  - "Certificat de résidence"
+  - "Attestation de non inscription de gage (en cas de transfert de région)"
+  - "Certificat d'immatriculation et d'aptitude technique (à confirmer : la page écrit « à changer » sans préciser)"
+  - "Attestation d'assurance"
+  - "Quittance et timbre, payés aux impôts"
 etapes:
-  - "Faire légaliser l'acte de vente, rempli par le vendeur, auprès de la police ou de la gendarmerie."
-  - "Payer la taxe de mise en circulation et faire apposer le cachet et le visa du service des Impôts et Domaines (DGID) sur la demande de mise en circulation."
-  - "Présenter le véhicule au bureau régional des transports routiers pour la vérification du numéro de châssis et la visite technique préalable, qui sont obligatoires."
-  - "Déposer le dossier au bureau régional des transports routiers de la région concernée. Le propriétaire doit être présent en personne."
-cout: "Une taxe de mise en circulation qui dépend de la puissance et de la destination du véhicule (barème dans la remarque ci-dessous)"
-delai: "2 à 3 jours"
-lieu: "Bureau régional des transports routiers de la région concernée."
+  - "Réunir les pièces demandées selon le cas : changement de nom, changement de région ou de série, personne morale."
+  - "Si le nom change, faire légaliser l'attestation de vente à la police centrale de Dakar, ou au commissariat central dans les régions."
+  - "Payer la quittance et le timbre aux impôts."
+  - "Se présenter à la division régionale des transports compétente, avec le véhicule."
+cout: null
+delai: "5 jours"
+lieu: "Division régionale des transports compétente, avec le véhicule."
 sources:
-  - titre: "Demander un certificat d'immatriculation et d'aptitude technique (carte grise) — Sénégal Services"
-    url: https://www.senegalservices.sn/demarche/demander-un-certificat-dimmatriculation-et-daptitude-technique-carte-grise
-    consulte_le: 2026-10-12
+  - titre: "Effectuer la mutation d'un véhicule (prendre en compte tous les cas) — e-Sénégal"
+    url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-la-mutation-dun-vehicule-ou-motocycle-immatricule-au-senegal"
+    consulte_le: 2026-10-13
 statut: brouillon
 verifie_le: null
 verifie_par: null
 ---
 
-- Provenance : contenu repris du texte de la page du portail Sénégal Services, collé le 12 octobre 2026, car la page n'a pas pu être ouverte depuis notre outil. À relire sur la page officielle avant de passer en « vérifié ».
-- Qui peut le demander : l'acquéreur du véhicule, ou son représentant dûment mandaté. La carte grise est le document qui permet d'identifier un véhicule et son propriétaire.
-- À confirmer : barème de la taxe indiqué sur la page pour les récépissés de déclaration de mise en circulation : 2 000 FCFA par cheval pour un véhicule de tourisme ou utilitaire ; 1 000 FCFA par cheval pour un véhicule de transport public ; 3 000 FCFA (forfait) pour un deux ou trois roues de 125 cm³ ou moins ; 3 000 FCFA (forfait) pour un tracteur agricole ; 6 000 FCFA (forfait) pour une remorque. Le texte reçu ne donne pas de date de mise à jour : confirmer le montant auprès du bureau régional des transports routiers avant de payer.
-- Perte ou vol de la carte grise : voir la démarche « Carte grise : duplicata après perte ou vol ».
-- Pour en savoir plus : Direction des transports routiers, avenue André Peytavin x Corniche, téléphone 33 826 45 61.
-- Texte de référence indiqué par la page : décret n° 2004-13 du 19 janvier 2004.
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Qui peut faire cette démarche : l'usager qui achète un véhicule déjà immatriculé au Sénégal, ou qui possède un véhicule immatriculé dans une région et veut changer de région ou de série.
+- La page dit que la mutation peut être considérée comme un changement de nom, de région ou de département.
+- Pièce délivrée : certificat d'immatriculation et d'aptitude technique. Délai de délivrance : 5 jours.
+- Texte réglementaire indiqué par la page : article L10, 46 et 47 du code de la route.
+- À confirmer : coût. La rubrique « Quel est le coût ? » de la page est vide. La page demande une quittance et un timbre payés aux impôts, sans donner de montant.
+- À confirmer : la page demande à la fois un « certificat de vente » et une « attestation de vente légalisée » (si changement de nom), sans expliquer la différence ni qui les établit.
+- À confirmer : après « certificat d'immatriculation et d'aptitude technique », la page écrit « (à changer) » sans dire ce que cela veut dire. Elle écrit aussi « certification » à la place de « certificat », dans cette liste et pour la pièce délivrée.
+- À confirmer : la page ne met une condition (« si changement de nom », « personne morale », « transfert de région ») que sur certaines pièces. Le certificat de résidence, le certificat d'immatriculation et d'aptitude technique, l'attestation d'assurance, la quittance et le timbre sont listés sans condition.
+- La page renvoie à la démarche associée « Certificat d'immatriculation et d'aptitude technique (Carte grise) avec les mentions ».
+- Assistance en ligne indiquée par la page : courriel contact@e-senegal.sn ; téléphone +221 33 879 34 34.
