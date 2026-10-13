@@ -21,7 +21,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 ## Samedi 10 — fiches (lot 1) et recherche
 
 - [x] 5 brouillons de fiches avec sources officielles (11 octobre) : CNI, duplicata de CNI, NINEA, casier judiciaire, bonne vie et mœurs
-- [ ] Relire les 5 fiches sur leurs sources puis les passer en `verifie` (`verifie_le`, `verifie_par`)
+- [x] Relire les 5 fiches sur leurs sources puis les passer en `verifie` (`verifie_le`, `verifie_par`) : fait le 12 octobre, avec 2 fiches de plus (7 vérifiées)
 - [x] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
 - [ ] Vérifier le seuil de pertinence sur les 5 fiches
 
@@ -31,7 +31,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] `schemas.ts`, `understand.ts`, `decide.ts`, `answer.ts`, `guardrails.ts` dans `src/lib/ai/` (11 octobre) : le modèle choisit dans la liste fermée des fiches, n'écrit que l'introduction, le code vérifie
 - [x] Route `/api/ask` : comprendre, décider, répondre, vérifier, citer (la page `/reponse` appelle le même service)
 - [x] Tests des garde-fous (identifiant inconnu, nombre inventé, adresse, balisage, mot absolu, sortie invalide)
-- [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; décider entre l'offre payante à l'usage (très bon marché), un troisième modèle à mesurer (`openai/gpt-oss-20b`) ou un secours chez un autre fournisseur ; la limite par visiteur (10 questions et 6 enregistrements par minute) se compte par adresse réseau : au Wi-Fi du lieu de la finale, tout le monde partage la même adresse, donc prévoir de la relever pour la démo
+- [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; troisième modèle `openai/gpt-oss-20b` ajouté le 13 octobre (mesuré : 19 questions sur 21, échecs sans danger), soit environ 240 à 300 questions par jour au total ; reste à décider si on prend en plus l'offre payante à l'usage (très bon marché) ; la limite par visiteur (10 questions et 6 enregistrements par minute) se compte par adresse réseau : au Wi-Fi du lieu de la finale, tout le monde partage la même adresse, donc prévoir de la relever pour la démo
 - [x] Projet Vercel `demarche-bi` créé, Aperçu avec l'IA, la voix et les brouillons vérifié sur Vercel (11 octobre) : pages, réponse écrite par l'IA, transcription Whisper, parcours dans Chrome en https
 - [ ] Production Vercel : ajouter les clés en Production (le site public répond aujourd'hui « Je ne sais pas encore », sans IA ni voix), laisser les brouillons absents tant que des fiches ne sont pas vérifiées, connecter le dépôt GitHub, mettre l'adresse dans le README (un lien public sera sans doute demandé pour la présélection)
 
@@ -59,21 +59,24 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 
 - [x] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable (11 octobre)
 - [x] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée (11 octobre)
-- [ ] Essayer la voix sur de vrais téléphones, en https (Safari iPhone, Chrome Android), avec de vrais locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
+- [x] Voix essayée sur un vrai iPhone, application installée (12 octobre) : le micro marche (une première panne venait d'une autorisation refusée par l'iPhone, voir `docs/ARCHITECTURE.md`)
+- [ ] Essayer la voix sur un vrai Android (Chrome) et avec d'autres locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
 - [x] Application installable (manifeste, icônes) et message « Installe Démarche-Bi » : bouton sur Android, explications sur Safari de l'iPhone, silence de 14 jours après « Plus tard » (11 octobre)
-- [ ] Essayer l'installation sur un vrai Android (Chrome) et un vrai iPhone (Safari) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
+- [x] Installation essayée sur un vrai iPhone (12 octobre) : installation, ouverture, micro dans l'application installée
+- [ ] Essayer l'installation sur un vrai Android (Chrome) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
 - [x] Réponse à voix haute (12 octobre) : bouton « Écouter la réponse » avec la voix du téléphone, lecture automatique après une question posée à voix haute, texte lu construit depuis la fiche
 - [x] Voix plus courte et qui suit le texte (12 octobre) : la voix dit l'essentiel (phrase de réponse, coût, délai, lieu, pièces, nombre d'étapes) au lieu de tout l'écran, et le bloc lu est surligné et amené à l'écran ; bouton « Écouter l'essentiel »
 - [x] Réponse personnalisée aux questions sans fiche (12 octobre) : « Ce n'est pas mon domaine » pour un sujet sans rapport avec l'administration, « Je ne sais pas encore » pour une démarche absente, chacun avec une phrase écrite par le modèle pour la question et vérifiée par le code (pas de chiffre, de montant ni d'adresse) ; une question qui parle d'une démarche n'est jamais « hors domaine »
 - [x] Cadre autour du titre des écrans de la voix retiré (12 octobre)
-- [ ] Essayer la réponse à voix haute sur de vrais téléphones (iPhone Safari, Android Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin
+- [x] Réponse à voix haute et surlignage essayés sur un vrai iPhone (12 octobre) : « c'est bon »
+- [ ] Essayer la réponse à voix haute sur un vrai Android (Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin
 - [x] Écran de démarrage des téléphones (12 octobre) : logo, coche qui se dessine, fondu vers l'accueil, une fois par ouverture ; 26 images de démarrage pour l'iPhone
 - [ ] Voir l'écran de démarrage sur de vrais téléphones : l'enchaînement avec l'écran d'Android et celui de l'iPhone (images claires et sombres), la durée (1,3 s : à raccourcir si c'est long), l'application installée et le navigateur
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur
 - [x] Produit fini (12 octobre) : `/a-propos` ne garde que ce qui sert à l'utilisateur (sources, « je ne devine pas », ouvert à tous, tes données) ; la FAQ, « Tu veux aider ? » et les liens GitHub passent sur `/projet` (pour le jury, hors menu, lien discret au bas d'« À propos »)
 - [x] Même logique pour le pied de page ordinateur : « Voir le code sur GitHub » et « Signaler une erreur » retirés (12 octobre)
-- [ ] Blocs « Proposer une démarche » (« Je ne sais pas encore » et liste des démarches) : à décider
+- [x] Blocs « Proposer une démarche » retirés de « Je ne sais pas encore » et de la liste des démarches (12 octobre) ; la page `/projet` garde le lien pour le jury
 
 ## Jeudi 15 — avis et déploiement
 
@@ -81,7 +84,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] Journal anonyme dans Neon (optionnel, l'application marche sans) : une ligne par réponse finale, écrite après l'envoi de la page (12 octobre)
 - [x] Réponse « Est-ce que tu gardes mes données ? » de la page À propos refaite (12 octobre)
 - [x] Base Neon créée, `npm run db:migrate` lancée, `DATABASE_URL` dans `.env.local` et dans Vercel (Production et Preview, secret), barre d'avis essayée avec la vraie base (12 octobre) ; reste à redéployer la production
-- [ ] Purge du journal à 90 jours : aujourd'hui à lancer à la main (voir `docs/ARCHITECTURE.md`, « Données ») ; une tâche planifiée Vercel ou un script, avant la finale
+- [x] Purge du journal à 90 jours automatique (12 octobre) : tâche planifiée Vercel chaque nuit (`vercel.json`, `/api/cron/purge`, secret `CRON_SECRET`), requête vérifiée sur un vrai Postgres
 - [ ] Essayer la barre d'avis sur de vrais téléphones (clavier, zone du bas, thème sombre) et relire les premiers avis
 
 ## Vendredi 16 — essais réels

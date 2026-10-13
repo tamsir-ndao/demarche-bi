@@ -42,7 +42,7 @@ L'IA ne fournit aucun fait administratif de sa propre connaissance : les pièces
 | Usage | Modèle / outil |
 |---|---|
 | Compréhension et introduction | gpt-oss-120b (open-weight, Apache 2.0) via Groq, API compatible OpenAI |
-| Secours | Qwen3.8-27B (open-weight, Apache 2.0) via Groq, avec la même clé ; ou un autre fournisseur compatible OpenAI (optionnel) |
+| Secours | Qwen3.8-27B puis gpt-oss-20b (open-weight, Apache 2.0) via Groq, avec la même clé, chacun avec son propre quota ; ou un autre fournisseur compatible OpenAI (optionnel) |
 | Transcription vocale | Whisper large v3 turbo via Groq |
 | Aide au développement | Claude (Anthropic), Antigravity |
 

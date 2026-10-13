@@ -43,7 +43,7 @@ La CI GitHub (fiches, lint, build) se lance seule à chaque push et à chaque pu
 ## Étape 4 — Créer la clé Groq
 
 1. Sur console.groq.com, crée un compte et génère une clé API.
-2. Modèles : `openai/gpt-oss-120b` en principal et `qwen/qwen3.8-27b` en secours, avec la même clé. Ce sont les valeurs par défaut : rien à régler.
+2. Modèles : `openai/gpt-oss-120b` en principal, puis `qwen/qwen3.8-27b` et `openai/gpt-oss-20b` en secours, avec la même clé. Chacun a son propre quota journalier : quand l'un est épuisé, le suivant prend le relais. Ce sont les valeurs par défaut : rien à régler.
 3. Voix : `whisper-large-v3-turbo`, avec la même clé. Ses plafonds sont séparés de ceux du chat (en secondes d'audio, pas en tokens : de l'ordre de 7 200 secondes par heure et 28 800 par jour en gratuit, à vérifier dans ta console) ; une question dite dure quelques secondes.
 
 Quotas gratuits constatés le 11 octobre 2026, à vérifier dans ta console car ils changent : 8 000 tokens par minute, **200 000 tokens par jour** (chacun par modèle) et 1 000 requêtes par jour. Une question coûte deux appels (comprendre, puis répondre), soit de l'ordre de 2 000 à 3 000 tokens : compte **80 à 100 questions par jour et par modèle**, un peu moins quand il y a plus de fiches (la liste des fiches est envoyée à chaque question). Quand le premier modèle atteint un plafond, le second prend le relais avec la même clé ; quand les deux l'atteignent, la page montre la fiche sans introduction, avec la note « L'assistant est très sollicité ». Évite donc les tests en boucle : `npm run eval -- --ia` (52 questions, une centaine d'appels) peut à lui seul épuiser la journée. Le quota est par organisation, créer plusieurs clés ne l'augmente pas. Pour la démo ou un vrai lancement, passe sur l'offre payante à l'usage de Groq (vérifie les tarifs sur console.groq.com : ils sont très bas pour ce volume) ou ajoute un secours chez un autre fournisseur (étape 5).
@@ -64,6 +64,7 @@ cp .env.example .env.local
 | `WHISPER_API_KEY` | la même clé Groq |
 | `AI_FALLBACK_API_KEY` et `AI_FALLBACK_MODEL` | clé et nom du modèle d'un autre fournisseur (étape 5), ou laisse vide |
 | `DATABASE_URL` | chaîne de connexion Neon (étape 8), ou laisse vide |
+| `CRON_SECRET` | une longue valeur au hasard, seulement en production avec une base : elle protège la purge automatique du journal (étape 8, point 6) |
 | `DEMARCHE_INCLUDE_DRAFTS` | `true` seulement en développement, pour tester avec des fiches brouillon |
 
 Les autres variables ont déjà des valeurs par défaut correctes. Sans `WHISPER_API_KEY`, le bouton micro reste affiché mais répond « La voix ne marche pas pour l'instant. Écris ta question. ».
@@ -90,6 +91,7 @@ L'application fonctionne sans base. Neon sert au journal anonyme des questions e
 3. Crée les tables : `npm run db:migrate`. La commande peut être relancée sans risque, les migrations déjà appliquées sont ignorées.
 4. Relance `npm run dev`, pose une question : la barre « Cette réponse t'a aidé ? » apparaît sous la réponse. Donne un avis, puis vérifie dans la console de Neon (Tables) : `select * from question_logs;` et `select * from feedback;`.
 5. Pour le site en ligne, ajoute la même chaîne dans Vercel (voir l'étape 9) : `vercel env add DATABASE_URL production --sensitive`, et de même pour `preview`.
+6. Purge automatique : le journal ne garde que 90 jours. Vercel lance chaque nuit (03 h, heure universelle) la tâche déclarée dans `vercel.json`, qui appelle `/api/cron/purge`. Pour que la route accepte l'appel, crée un secret (une longue valeur au hasard, par exemple `openssl rand -hex 32`) et ajoute-le à Vercel : `vercel env add CRON_SECRET production --sensitive`, puis redéploie. Vercel l'envoie lui-même dans l'en-tête de la tâche ; sans lui, la route répond `401`. Ne le mets jamais dans un fichier du dépôt.
 
 ## Étape 9 — (Optionnel) Déployer sur Vercel
 

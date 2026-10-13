@@ -4,7 +4,6 @@ import { BoutonEcouter } from "./BoutonEcouter";
 import { Carte } from "./Carte";
 import { Icon } from "./Icon";
 import { LienBouton } from "./LienBouton";
-import { ProposerUneDemarche } from "./ProposerUneDemarche";
 
 /**
  * Quand aucune fiche ne répond à la question : on le dit franchement, sans rien inventer. `message` : une phrase écrite
@@ -35,8 +34,6 @@ export function JeNeSaisPas({ message }: { message?: string }) {
       <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-3">
         Poser une autre question
       </LienBouton>
-
-      <ProposerUneDemarche disposition="ligne" />
     </>
   );
 }

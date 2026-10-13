@@ -44,8 +44,8 @@ Avec beaucoup de fiches, la liste grossit d'environ 50 tokens par fiche : au-del
 | une seule démarche | la fiche répond |
 | plusieurs démarches | écran « Que veux-tu faire ? » : la personne choisit, la réponse vient de la fiche choisie (`?fiche=`) |
 | trop vague, sans démarche à proposer | « Peux-tu préciser ta question ? », le champ garde la question |
-| aucune démarche, sujet hors domaine | « Ce n'est pas mon domaine », la phrase du modèle (ou « Je réponds aux questions sur les démarches administratives au Sénégal »), aucune invitation à proposer une démarche |
-| aucune démarche, démarche administrative absente | « Je ne sais pas encore », la phrase du modèle (ou « Je n'ai pas de source officielle pour ça »), aucune source, invitation à proposer la démarche |
+| aucune démarche, sujet hors domaine | « Ce n'est pas mon domaine », la phrase du modèle (ou « Je réponds aux questions sur les démarches administratives au Sénégal ») |
+| aucune démarche, démarche administrative absente | « Je ne sais pas encore », la phrase du modèle (ou « Je n'ai pas de source officielle pour ça »), aucune source |
 
 ## 3. Répondre (`answer.ts`)
 
@@ -107,7 +107,7 @@ Mesure de la reconnaissance (11 octobre 2026) : 5 phrases en français, voix de 
 | Question couverte par une fiche | La fiche répond : introduction vérifiée, pièces, étapes et sources de la fiche |
 | Question qui peut viser deux fiches (« carte d'identité ») | Écran de précision, la personne choisit |
 | Question vague (« je veux un papier ») | Question pour préciser |
-| Question hors périmètre, ou démarche absente des fiches | « Je ne sais pas encore », aucune source, invitation à contribuer |
+| Question hors périmètre, ou démarche absente des fiches | « Je ne sais pas encore » ou « Ce n'est pas mon domaine », aucune source |
 | Le modèle propose un identifiant de fiche qui n'existe pas | Ignoré par le code |
 | Le modèle écrit un nombre, une adresse, un balisage ou un mot absolu absents de la fiche | Introduction refusée, seconde chance, sinon fiche sans introduction |
 | Question en wolof ou mélangée | Reformulée en français par le modèle ; si rien n'est trouvé, refus propre |
@@ -146,5 +146,6 @@ L'IA n'a échoué pour aucune des 52 questions. L'introduction refusée venait d
 |---|---|
 | Comprendre la question et écrire l'introduction | `openai/gpt-oss-120b` via Groq (open-weight, Apache 2.0), effort de raisonnement `low` |
 | Secours | `qwen/qwen3.8-27b` via Groq, même clé, plafonds de tokens séparés (open-weight, Apache 2.0), effort de raisonnement `none` ; ou un autre fournisseur via `AI_FALLBACK_*` |
+| Dernier recours | `openai/gpt-oss-20b` via Groq, même clé, plafonds de tokens séparés (open-weight, Apache 2.0), effort de raisonnement `low` ; seulement avec Groq et sans fournisseur de secours explicite. Mesuré le 13 octobre 2026 seul, sur 21 questions : 19 réussies (9 fiches justes avec introduction acceptée, 6 refus « hors domaine » ou « pas encore de source », 4 demandes de précision) ; les 2 échecs sont sans danger (« je ne sais pas » et une demande de précision, jamais une mauvaise fiche) ; 1 à 3 secondes par question. Un peu moins fiable que le modèle principal (50 sur 52 le 11 octobre) : c'est le dernier essayé |
 | Transcription | Whisper large v3 turbo via Groq |
 | Aide au développement | Claude (Anthropic), Antigravity |

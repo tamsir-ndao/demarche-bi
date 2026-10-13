@@ -3,7 +3,6 @@ import { Carte } from "@/components/Carte";
 import { iconeCategorie } from "@/components/Icon";
 import { ListeDemarches, type DemarcheListee } from "@/components/ListeDemarches";
 import { PageShell } from "@/components/PageShell";
-import { ProposerUneDemarche } from "@/components/ProposerUneDemarche";
 import { libelleCategorie, resumeCoutDelai } from "@/lib/fiches/affichage";
 import { fichesAffichables } from "@/lib/fiches/disponibles";
 import { CATEGORIES } from "@/lib/fiches/schema";
@@ -38,7 +37,6 @@ export default function Page() {
         </Carte>
       )}
 
-      <ProposerUneDemarche disposition="bloc" />
       <div className="min-h-3 flex-1" />
     </PageShell>
   );

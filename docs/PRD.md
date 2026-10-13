@@ -30,7 +30,7 @@ Qu'un citoyen puisse poser sa question sur une démarche administrative, en fran
 
 1. L'utilisateur pose une question à la voix (« Qu'est-ce qu'il faut pour faire un passeport ? »). La transcription s'affiche et reste modifiable.
 2. La réponse donne étapes, pièces, coût, délai et lieu, avec les sources cliquables et la date de vérification.
-3. Une question hors fiches reçoit « Je ne sais pas » et une invitation à contribuer.
+3. Une question hors fiches reçoit « Je ne sais pas » (ou « Ce n'est pas mon domaine » si le sujet n'a rien d'administratif), sans rien inventer ; la contribution se propose sur la page « Le projet ».
 4. Une question vague (« Je veux un papier ») déclenche une question de précision.
 5. On montre la fiche Markdown, la validation automatique (CI) et la pull request : le contenu est ouvert.
 6. On affiche les chiffres du jeu d'évaluation, tels que mesurés.
