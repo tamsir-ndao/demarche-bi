@@ -21,7 +21,7 @@ const ERREURS: Record<CodeErreurVoix, ErreurAffichee> = {
   },
   voix_indisponible: { message: "Ton navigateur ne peut pas enregistrer ta voix. Écris ta question.", peutReessayer: false },
   rien_entendu: { message: "Je n’ai rien entendu. Parle plus près du micro, puis réessaie.", peutReessayer: true },
-  reseau: { message: "Pas de connexion. Vérifie ton réseau, puis réessaie.", peutReessayer: true },
+  reseau: { message: "Pas de connexion. Écris ta question, ou réessaie quand le réseau revient.", peutReessayer: true },
   audio_manquant: { message: "Ta voix n’est pas arrivée jusqu’à moi. Réessaie.", peutReessayer: true },
   audio_vide: { message: "Ta voix n’est pas arrivée jusqu’à moi. Réessaie.", peutReessayer: true },
   audio_trop_gros: { message: "Ton message est trop long. Dis ta question en une phrase.", peutReessayer: true },

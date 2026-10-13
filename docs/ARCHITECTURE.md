@@ -38,6 +38,7 @@ src/
     not-found.tsx         page introuvable
     globals.css           couleurs, mode sombre, animations (design « doux »)
     manifest.ts           nom, couleurs et icônes de l'application installable (+ apple-icon.png, favicon.ico, public/icons/)
+    hors-connexion/       page de secours quand une question ne peut pas partir (recherche par mots dans les fiches du téléphone) et donnees.json (pages à copier + fiches) ; le programme est public/sw.js
     api/
       ask/route.ts        POST : question -> réponse (le site appelle le même service sans passer par là)
       transcribe/route.ts POST : enregistrement audio -> texte (le son n'est jamais gardé)
@@ -46,12 +47,14 @@ src/
                           voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
                           message d'installation sur l'écran d'accueil du téléphone (MessageInstaller),
                           réponse à voix haute (BoutonEcouter), écran de démarrage des téléphones (EcranDemarrage),
-                          avis « Cette réponse t'a aidé ? » (AvisReponse)
+                          avis « Cette réponse t'a aidé ? » (AvisReponse),
+                          mode sans connexion (HorsConnexion : enregistre le service worker et affiche le bandeau ; ResultatsHorsConnexion : la page de secours)
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
     liens.ts              liens vers le dépôt GitHub
     demarrage.ts          écran de démarrage : le script « une fois par ouverture » et les 26 images de démarrage de l'iPhone (testé)
     installation.ts       message « Installe Démarche-Bi » : quand l'afficher (Android, Safari de l'iPhone), silence de 14 jours après « Plus tard » (calcul pur, testé)
+    hors-connexion/       mode sans connexion : pages à copier, lecture des données, rythme des mises à jour, tests du service worker (sw.test.ts)
     fiches/
       schema.ts           schéma Zod d'une fiche
       load.ts             lecture et validation des fiches
@@ -185,7 +188,7 @@ Limites connues : le fond de l'écran de démarrage d'Android est celui du manif
 
 ## Installation sur le téléphone
 
-Démarche-Bi peut s'installer sur l'écran d'accueil (application web). `src/app/manifest.ts` donne le nom, les couleurs et les icônes (`public/icons/`, `src/app/apple-icon.png`, `src/app/favicon.ico`). Il n'y a pas de service worker : le site ne marche pas hors connexion, et Chrome propose l'installation sans (vérifié avec Chrome 154 sur ordinateur : aucune erreur d'installabilité, l'événement `beforeinstallprompt` part). Le guide Next.js sur les PWA le dit aussi.
+Démarche-Bi peut s'installer sur l'écran d'accueil (application web). `src/app/manifest.ts` donne le nom, les couleurs et les icônes (`public/icons/`, `src/app/apple-icon.png`, `src/app/favicon.ico`). Le service worker (`public/sw.js`, voir « Sans connexion » plus bas) rend le site utilisable sans réseau. Chrome propose l'installation avec ou sans lui (vérifié avec Chrome 154 sur ordinateur : aucune erreur d'installabilité, l'événement `beforeinstallprompt` part).
 
 Le message `MessageInstaller` (monté dans `src/app/layout.tsx`) invite à installer l'application, sur téléphone seulement (`lg:hidden`), au-dessus du menu du bas :
 
@@ -195,6 +198,20 @@ Le message `MessageInstaller` (monté dans `src/app/layout.tsx`) invite à insta
 - Les règles (quand l'afficher, combien de temps se taire) sont dans `src/lib/installation.ts` : du calcul pur, testé. Le composant ne fait que lire le navigateur.
 
 Limites connues : sur iPhone, rien ne dit si l'icône a vraiment été ajoutée ; le micro dans l'application ajoutée à l'écran d'accueil de l'iPhone est à essayer sur un vrai appareil (des rapports parlent d'une autorisation redemandée à chaque ouverture) ; l'icône garde l'adresse où elle a été ajoutée, donc il faut installer depuis l'adresse publique, pas depuis un aperçu protégé.
+
+## Sans connexion
+
+Le site marche sans réseau, une fois ouvert **une fois avec internet**. Le programme `public/sw.js` (service worker, écrit à la main, aucune dépendance) tourne dans le navigateur du téléphone. Il est enregistré par `HorsConnexion` (monté dans `layout.tsx`, **en production seulement**) ; `next.config.ts` lui donne `Cache-Control: no-cache` pour qu'une mise à jour arrive toujours.
+
+- **Ce qui marche** : ouvrir l'application à froid ; lire la liste des démarches et chaque fiche visible, « À propos » et « Le projet » ; écouter une fiche (voix du téléphone) ; poser une question **écrite** : `/reponse` renvoie alors vers `/hors-connexion?q=…`, qui cherche les mots dans les fiches gardées (`searchFiches`, la même recherche que le repli sans IA) et propose les démarches qui ressemblent.
+- **Ce qui ne marche pas** : la phrase rédigée par l'IA, la question dite à voix haute (le micro dit « Pas de connexion » tout de suite : `BoutonVoix` regarde `navigator.onLine`), l'envoi d'un avis. Un bandeau « Tu es hors connexion. Les fiches restent lisibles. » s'affiche.
+- **Ce qui est copié** : à l'installation, le programme lit `/hors-connexion/donnees.json` (préparé à la construction : la liste des pages et les fiches visibles, donc jamais un brouillon en production), copie ces pages (accueil, démarches, 7 fiches, projet, à propos, page de secours) puis les fichiers qu'elles citent (`/_next/static/…`, icônes, manifeste). Environ 1,5 Mo en tout. Si la liste manque, l'installation échoue et sera retentée : on ne garde jamais une copie vide.
+- **Jamais copié** : `/reponse` (les questions et les réponses ne restent pas sur le téléphone), `/api/*`, les envois (POST), les données de page de Next (`_rsc`) : sans réseau, Next passe alors par une navigation complète, que le programme sait servir.
+- **Les pages passent par le réseau d'abord** (4 s au plus) : avec du réseau on voit la version à jour, et la copie est renouvelée ; sans réseau (ou s'il tarde trop) on voit la copie ; sans copie, la page de secours. Les fichiers au nom unique sont pris dans la copie ; les icônes sont rafraîchies en arrière-plan.
+- **Mises à jour** : à chaque ouverture avec réseau, la page demande au programme de rafraîchir ses copies, **au plus une fois par demi-journée** (`lib/hors-connexion/rafraichir.ts`, date dans `localStorage`) ; les fichiers que plus aucune page ne cite sont supprimés. Pour repartir de zéro : changer `VERSION` dans `public/sw.js` (les anciennes copies sont supprimées à l'activation).
+- **Tests** : `src/lib/hors-connexion/*.test.ts` (règles du programme chargé dans un faux navigateur, données, rythme) ; et un essai réel dans Chrome avec le réseau coupé (installation, accueil à froid, lecture des fiches, question écrite, micro, axe, retour du réseau).
+
+Limites connues : il faut une première visite avec internet ; sur iPhone, installer l'application sur l'écran d'accueil (dans Safari, l'iPhone peut effacer les copies d'un site resté une semaine sans visite) ; certaines voix Android pour la lecture à voix haute ont besoin d'internet ; une page sans copie (fiche ajoutée depuis la dernière mise à jour) montre la page de secours ; le bandeau lit `navigator.onLine`, qui reste vrai avec un Wi-Fi sans internet : il ne s'affiche pas alors, mais la question qui échoue mène quand même à la page de secours, et le délai de 4 s gère le réseau lent.
 
 ## Données (optionnel)
 

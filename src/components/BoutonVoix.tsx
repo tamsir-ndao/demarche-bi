@@ -114,6 +114,11 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
   async function demarrer() {
     oublier();
     const monJeton = jeton.current;
+    // Sans réseau, la voix ne pourrait pas être comprise : on le dit avant de demander le micro.
+    if (!navigator.onLine) {
+      setEtape({ nom: "erreur", code: "reseau" });
+      return;
+    }
     setEtape({ nom: "demande" });
 
     let nouveau: Enregistreur;

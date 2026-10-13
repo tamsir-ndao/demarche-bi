@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { EcranDemarrage } from "@/components/EcranDemarrage";
+import { HorsConnexion } from "@/components/HorsConnexion";
 import { MessageInstaller } from "@/components/MessageInstaller";
 import { imagesDeDemarrage } from "@/lib/demarrage";
 import "./globals.css";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Aller au contenu
         </a>
+        <HorsConnexion />
         {children}
         <MessageInstaller />
       </body>

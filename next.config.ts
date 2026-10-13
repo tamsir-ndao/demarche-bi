@@ -8,6 +8,18 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["content/demarches/*.md"],
   },
+  // Le programme du mode sans connexion (public/sw.js) n'est jamais gardé en cache : une mise à jour arrive toujours.
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+          { key: "Content-Type", value: "application/javascript; charset=utf-8" },
+        ],
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {
