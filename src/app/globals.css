@@ -108,9 +108,10 @@
   }
 }
 
-/* Écran de démarrage (téléphone) : le logo apparaît, la coche se dessine, puis un fondu ouvre l'application.
-   Il est caché par défaut (donc invisible si les animations sont coupées ou si le script ne l'allume pas) et
-   ne gêne jamais les appuis. Le script de lib/demarrage ajoute data-actif une fois par ouverture. */
+/* Écran de démarrage (téléphone) : le fond et le logo, immobiles et tels que sur l'image de démarrage de l'iPhone
+   (même logo, même taille, coche déjà dessinée), puis un fondu ouvre l'application. Le fond suit le mode du téléphone
+   (clair ou sombre). Il est caché par défaut (donc invisible si les animations sont coupées ou si le script ne
+   l'allume pas) et ne gêne jamais les appuis. Le script de lib/demarrage ajoute data-actif une fois par ouverture. */
 .ecran-demarrage {
   position: fixed;
   inset: 0;
@@ -131,7 +132,6 @@
   border-radius: 31px;
   background: var(--g);
   color: var(--on-g);
-  box-shadow: 0 14px 32px rgb(34 209 131 / 0.35);
 }
 
 .logo-demarrage svg {
@@ -139,60 +139,23 @@
   height: 59%;
 }
 
-.coche-demarrage {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
+/* 1,7 s en tout : fixe pendant 70 % du temps (1,2 s), puis le fondu (0,5 s). */
 @media (max-width: 63.99rem) {
   .ecran-demarrage[data-actif="oui"] {
     display: grid;
-    animation: demarrage-ecran 1.3s ease-in-out both;
-  }
-  .ecran-demarrage[data-actif="oui"] .logo-demarrage {
-    animation: demarrage-logo 1.3s ease-out both;
-  }
-  .ecran-demarrage[data-actif="oui"] .coche-demarrage {
-    animation: demarrage-coche 1.3s ease-in-out both;
+    animation: demarrage-ecran 1.7s ease-in-out both;
   }
 }
 
 @keyframes demarrage-ecran {
   0%,
-  72% {
+  70% {
     opacity: 1;
     visibility: visible;
   }
   100% {
     opacity: 0;
     visibility: hidden;
-  }
-}
-
-@keyframes demarrage-logo {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  26%,
-  72% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.18);
-  }
-}
-
-@keyframes demarrage-coche {
-  0%,
-  16% {
-    stroke-dashoffset: 1;
-  }
-  52%,
-  100% {
-    stroke-dashoffset: 0;
   }
 }
 
