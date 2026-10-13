@@ -60,16 +60,17 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] Route `/api/transcribe` et bouton d'enregistrement, transcription modifiable (11 octobre)
 - [x] Spectre vocal en direct pendant l'enregistrement (barres animées par le niveau du micro), pour que l'utilisateur voie que sa voix est captée (11 octobre)
 - [x] Voix essayée sur un vrai iPhone, application installée (12 octobre) : le micro marche (une première panne venait d'une autorisation refusée par l'iPhone, voir `docs/ARCHITECTURE.md`)
-- [ ] Essayer la voix sur un vrai Android (Chrome) et avec d'autres locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
+- [x] Essayer la voix sur un vrai Android (Chrome) : micro et transcription (essayé par Tamsir, 13 octobre)
+- [ ] Essayer la voix avec d'autres locuteurs : seuil de détection de voix, phrases inventées sur du silence, accent ; compléter `src/lib/voix/silence.ts` avec ce que Whisper invente réellement
 - [x] Application installable (manifeste, icônes) et message « Installe Démarche-Bi » : bouton sur Android, explications sur Safari de l'iPhone, silence de 14 jours après « Plus tard » (11 octobre)
 - [x] Installation essayée sur un vrai iPhone (12 octobre) : installation, ouverture, micro dans l'application installée
-- [ ] Essayer l'installation sur un vrai Android (Chrome) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé
+- [x] Essayer l'installation sur un vrai Android (Chrome) : le message, l'icône, le nom sous l'icône, l'ouverture en plein écran, et le micro dans l'application installée (iPhone : l'autorisation peut être redemandée) ; installer depuis l'adresse publique, pas depuis un aperçu protégé (essayé par Tamsir, 13 octobre)
 - [x] Réponse à voix haute (12 octobre) : bouton « Écouter la réponse » avec la voix du téléphone, lecture automatique après une question posée à voix haute, texte lu construit depuis la fiche
 - [x] Voix plus courte et qui suit le texte (12 octobre) : la voix dit l'essentiel (phrase de réponse, coût, délai, lieu, pièces, nombre d'étapes) au lieu de tout l'écran, et le bloc lu est surligné et amené à l'écran ; bouton « Écouter l'essentiel »
 - [x] Réponse personnalisée aux questions sans fiche (12 octobre) : « Ce n'est pas mon domaine » pour un sujet sans rapport avec l'administration, « Je ne sais pas encore » pour une démarche absente, chacun avec une phrase écrite par le modèle pour la question et vérifiée par le code (pas de chiffre, de montant ni d'adresse) ; une question qui parle d'une démarche n'est jamais « hors domaine »
 - [x] Cadre autour du titre des écrans de la voix retiré (12 octobre)
 - [x] Réponse à voix haute et surlignage essayés sur un vrai iPhone (12 octobre) : « c'est bon »
-- [ ] Essayer la réponse à voix haute sur un vrai Android (Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin
+- [x] Essayer la réponse à voix haute sur un vrai Android (Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin (essayé par Tamsir, 13 octobre)
 - [x] Écran de démarrage des téléphones (12 octobre) : logo, coche qui se dessine, fondu vers l'accueil, une fois par ouverture ; 26 images de démarrage pour l'iPhone
 - [ ] Voir l'écran de démarrage sur de vrais téléphones : l'enchaînement avec l'écran d'Android et celui de l'iPhone (images claires et sombres), la durée (1,3 s : à raccourcir si c'est long), l'application installée et le navigateur
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
