@@ -27,7 +27,7 @@ const MOTS_VIDES = new Set(
     "le la les un une des du de au aux et ou ou en dans sur sous par pour avec sans " +
     "ce cet cette ces ca que qui quoi quel quelle quels quelles si ne pas " +
     "je tu il elle on nous vous ils elles me te se lui mon ma mes ton ta tes son sa ses " +
-    "notre nos votre vos leur leurs est sont suis es etre ai as avons avez ont a " +
+    "notre nos votre vos leur leurs est sont suis es etre ete ai as avons avez ont a " +
     "comment combien quand pourquoi " +
     "veux voudrais souhaite besoin peux puis dois faut " +
     // Verbes génériques des questions (« comment obtenir… ») : ils ne désignent aucune démarche.

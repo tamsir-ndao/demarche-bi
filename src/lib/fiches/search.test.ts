@@ -56,6 +56,11 @@ describe("normaliser", () => {
     );
   });
 
+  it("ignore « été » (« mon permis a été volé ») : ce n'est pas un mot de démarche", () => {
+    assert.deepEqual(normaliser("Mon permis a été volé"), normaliser("Mon permis a volé").filter((m) => m !== "ete"));
+    assert.ok(!normaliser("Mon permis a été volé").includes("ete"));
+  });
+
   it("renvoie une liste vide pour une question sans mot utile", () => {
     assert.deepEqual(normaliser("  ?! le la de  "), []);
   });

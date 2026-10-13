@@ -23,7 +23,7 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] 5 brouillons de fiches avec sources officielles (11 octobre) : CNI, duplicata de CNI, NINEA, casier judiciaire, bonne vie et mœurs
 - [x] Relire les 5 fiches sur leurs sources puis les passer en `verifie` (`verifie_le`, `verifie_par`) : fait le 12 octobre, avec 2 fiches de plus (7 vérifiées)
 - [x] `src/lib/fiches/search.ts` : recherche lexicale, avec tests
-- [ ] Vérifier le seuil de pertinence sur les 5 fiches
+- [x] Vérifier le seuil de pertinence : mesuré le 13 octobre (`npm run eval -- --seuil=…`), sur les 7 fiches vérifiées puis sur les 20 avec brouillons. **1 reste le bon choix** : jusqu'à 1,5 rien ne change en production ; à 1,7 un refus (« carte d'identité française ») est corrigé avec les brouillons mais 2 à 3 questions couvertes sont perdues (même score de 1,59 sur le seul mot « identité »). « été » ajouté aux mots vides (« mon permis a été volé »)
 
 ## Dimanche 11 — IA et API
 
