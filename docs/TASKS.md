@@ -128,9 +128,9 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 
 ## 20 au 23 octobre — finale
 
-- [ ] Pitch de 7 minutes (problème, démo en direct, rôle de l'IA, open source, chiffres, suite)
-- [ ] Réponses aux questions du jury (3 minutes) : exactitude des fiches, rôle réel de l'IA, mise à jour du contenu
-- [ ] Plan B de démo : vidéo enregistrée si le réseau ou l'API tombe
+- [x] Pitch de 7 minutes préparé et minuté (voir guide `docs/PLAN-DEMO-FINALE.md`, 14 octobre)
+- [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
+- [x] Plan B et filets de sécurité documentés : fallback lexical automatique et démo mode avion hors-ligne (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
 
 ## Samedi 24 octobre — finale à l'Impact Hub Dakar
 
