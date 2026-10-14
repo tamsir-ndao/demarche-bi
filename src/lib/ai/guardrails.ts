@@ -199,3 +199,35 @@ export function ressembleAUneDemarche(question: string): boolean {
     );
   });
 }
+
+/**
+ * Expressions régulières détectant les demandes frauduleuses, falsifiées ou illégales :
+ * fabrication de faux documents, falsification, corruption, pot-de-vin, fraude fiscale ou douanière, etc.
+ */
+const MOTIFS_FRAUDE: RegExp[] = [
+  /\b(?:fabriquer|faire|avoir|acheter|obtenir|creer|produire|procurer|trouver|vendre)\s+(?:un|une|des)?\s*faux\b/i,
+  /\b(?:faux|fausse|fausses)\s+(?:papier|papiers|passeport|passeports|carte|cartes|cni|permis|acte|actes|extrait|extraits|certificat|certificats|diplome|diplomes|plaque|plaques|timbre|timbres|quittance|quittances|document|documents|signature|signatures|immatriculation)\b/i,
+  /\bfalsifi/i,
+  /\btruqu/i,
+  /\bcorromp/i,
+  /\bcorruption\b/i,
+  /\bpot[s]?-de-vin\b/i,
+  /\bdessous[- ]de[- ]table\b/i,
+  /\bbakchich\b/i,
+  /\btchoko\b/i,
+  /\b(?:en\s+)?fraude(?:r|ur|use|s)?\b/i,
+  /\busurp/i,
+  /\bcontourner\s+la\s+(?:douane|loi)\b/i,
+  /\bsans\s+(?:passer|faire)\s+(?:l['’]?examen|le\s+permis)\b/i,
+  /\bacheter\s+(?:le|un)\s+permis\b/i,
+  /\billegal/i,
+];
+
+/**
+ * Vrai quand la question concerne une pratique frauduleuse, falsifiée, corrompue ou illégale.
+ * Permet au système de refuser poliment et fermement sans chercher de fiche ni halluciner.
+ */
+export function estDemandeFrauduleuse(question: string): boolean {
+  const texte = simplifier(question);
+  return MOTIFS_FRAUDE.some((motif) => motif.test(texte));
+}

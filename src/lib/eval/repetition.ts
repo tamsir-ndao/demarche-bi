@@ -26,6 +26,7 @@ function slugsDe(reponse: Reponse): string[] {
     case "precision_generale":
     case "inconnue":
     case "hors_domaine":
+    case "interdit":
       return [];
   }
 }

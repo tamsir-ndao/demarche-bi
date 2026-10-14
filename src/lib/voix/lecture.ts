@@ -187,3 +187,11 @@ export function scriptPrecision({ question, options }: { question: string; optio
 export function scriptPrecisionGenerale({ question }: { question: string }): string[] {
   return [phrase(question || "Peux-tu préciser ta question ?"), "Ajoute un détail, et je te réponds."];
 }
+
+/** Demande frauduleuse ou illégale : on rappelle poliment l'interdiction par la loi. */
+export function scriptInterdit(message?: string): string[] {
+  return [
+    "Interdit par la loi.",
+    message ?? "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
+  ];
+}

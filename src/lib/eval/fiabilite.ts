@@ -177,6 +177,8 @@ function decrire(reponse: Reponse): string {
       return "je ne sais pas";
     case "hors_domaine":
       return "hors domaine";
+    case "interdit":
+      return "interdit par la loi";
   }
 }
 

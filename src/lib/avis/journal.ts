@@ -32,6 +32,7 @@ export function entreeDeLaReponse(question: string, reponse: Reponse): EntreeJou
       return { question, repondue: true, fiches: [reponse.fiche.slug] };
     case "inconnue":
     case "hors_domaine":
+    case "interdit":
       return { question, repondue: false, fiches: [] };
     case "precision":
     case "precision_generale":

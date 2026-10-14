@@ -173,6 +173,7 @@ export function textesMontres(reponse: Reponse): string[] {
       return reponse.question === "" ? [] : [reponse.question];
     case "inconnue":
     case "hors_domaine":
+    case "interdit":
       return reponse.message === undefined || reponse.message === "" ? [] : [reponse.message];
   }
 }
@@ -180,9 +181,9 @@ export function textesMontres(reponse: Reponse): string[] {
 export type JugementPiege = { statut: "reussie" | "echouee"; raison: string | null };
 
 const TYPES_ACCEPTES: Record<Attendu, readonly Reponse["type"][]> = {
-  refus: ["inconnue", "hors_domaine"],
+  refus: ["inconnue", "hors_domaine", "interdit"],
   precision: ["precision", "precision_generale"],
-  refus_ou_precision: ["inconnue", "hors_domaine", "precision", "precision_generale"],
+  refus_ou_precision: ["inconnue", "hors_domaine", "interdit", "precision", "precision_generale"],
   fiche: ["fiche"],
 };
 
@@ -205,6 +206,8 @@ function decrire(reponse: Reponse): string {
       return "« je ne sais pas »";
     case "hors_domaine":
       return "« pas mon domaine »";
+    case "interdit":
+      return "« interdit par la loi »";
   }
 }
 

@@ -293,3 +293,23 @@ describe("poserQuestion sans fiche", () => {
     assert.equal(appels.length, 0);
   });
 });
+
+describe("poserQuestion avec une demande frauduleuse", () => {
+  it("refuse immédiatement sans appeler le modèle ni chercher de fiche", async () => {
+    const { modele, appels } = modeleDeTest(orienter({ demarches: ["passeport"] }));
+    const reponse = await poserQuestion("Comment fabriquer un faux passeport à Dakar ?", { fiches, modele });
+    assert.equal(reponse.type, "interdit");
+    if (reponse.type === "interdit") {
+      assert.match(reponse.message ?? "", /interdite par la loi/i);
+    }
+    assert.equal(appels.length, 0);
+  });
+
+  it("refuse aussi en mode repli par mots (sans modèle)", async () => {
+    const reponse = await poserQuestion("Acheter un faux permis de conduire", { fiches, modele: null });
+    assert.equal(reponse.type, "interdit");
+    if (reponse.type === "interdit") {
+      assert.match(reponse.message ?? "", /interdite par la loi/i);
+    }
+  });
+});

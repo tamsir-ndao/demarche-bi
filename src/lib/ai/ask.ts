@@ -3,7 +3,7 @@ import { searchFiches } from "../fiches/search";
 import { repondre } from "./answer";
 import { ErreurIA } from "./client";
 import { decider } from "./decide";
-import { verifierIntro } from "./guardrails";
+import { estDemandeFrauduleuse, verifierIntro } from "./guardrails";
 import type { Comprehension } from "./schemas";
 import type { Modele } from "./structured";
 import { comprendre } from "./understand";
@@ -27,7 +27,9 @@ export type Reponse =
   /** Une démarche que le site n'a pas. `message` : une phrase du modèle qui reprend le sujet, vérifiée par les garde-fous. */
   | { type: "inconnue"; message?: string }
   /** Aucun rapport avec les démarches administratives. `message` : comme ci-dessus. */
-  | { type: "hors_domaine"; message?: string };
+  | { type: "hors_domaine"; message?: string }
+  /** Pratique frauduleuse, corrompue ou illégale : refus poli et ferme conforme à la loi. */
+  | { type: "interdit"; message?: string };
 
 export type OptionsQuestion = {
   /** Les fiches que le site peut montrer (vérifiées, ou brouillons en développement). */
@@ -58,6 +60,12 @@ function fichesVoisines(question: string, fiches: Fiche[], sauf: Fiche): Fiche[]
 
 /** Sans IA : la meilleure fiche trouvée par la recherche par mots, ou « je ne sais pas ». */
 function repliParMots(question: string, fiches: Fiche[], degrade: Degrade): Reponse {
+  if (estDemandeFrauduleuse(question)) {
+    return {
+      type: "interdit",
+      message: "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
+    };
+  }
   const [meilleur, ...voisines] = searchFiches(fiches, question, { inclureBrouillons: true });
   if (!meilleur) return { type: "inconnue" };
   return {
@@ -100,6 +108,12 @@ async function repondreAvecLaFiche(
 
 /** Répond à une question de l'utilisateur à partir des seules `fiches`. Ne lève jamais d'erreur à cause de l'IA. */
 export async function poserQuestion(question: string, options: OptionsQuestion): Promise<Reponse> {
+  if (estDemandeFrauduleuse(question)) {
+    return {
+      type: "interdit",
+      message: "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
+    };
+  }
   const { fiches, modele, signaler } = options;
   if (fiches.length === 0) return { type: "inconnue" };
   if (modele === null) return repliParMots(question, fiches, null);
