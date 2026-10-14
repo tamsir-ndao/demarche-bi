@@ -98,7 +98,20 @@ describe("typographie", () => {
   it("laisse intact un texte sans apostrophe", () => {
     assert.equal(typographie("Un jour"), "Un jour");
   });
-});
+
+  it("rend insécable l'espace avant FCFA : « 200 FCFA » ne se coupe pas en fin de ligne", () => {
+    assert.equal(typographie("200 FCFA"), "200\u00a0FCFA");
+  });
+
+  it("rend insécables les séparateurs de milliers des montants FCFA", () => {
+    assert.equal(typographie("10 000 FCFA"), "10\u00a0000\u00a0FCFA");
+    assert.equal(typographie("1 200 000 FCFA"), "1\u00a0200\u00a0000\u00a0FCFA");
+  });
+
+  it("ne touche pas aux espaces ordinaires hors montant FCFA", () => {
+    assert.equal(typographie("numéro vert 800 00 2012"), "numéro vert 800 00 2012");
+    assert.equal(typographie("Gratuit"), "Gratuit");
+  });});
 
 describe("collerLaPonctuation", () => {
   it("remplace l'espace avant « ? », « ! », « : » et « ; » par une espace insécable : le signe ne passe pas seul à la ligne", () => {

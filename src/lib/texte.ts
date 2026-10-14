@@ -36,9 +36,16 @@ export function motsDeFiltre(texte: string): string[] {
 /**
  * Apostrophe droite des fiches (« d'identité ») en apostrophe typographique (« d’identité »), comme
  * dans le reste de l'interface. Seules les apostrophes collées à des lettres ou des chiffres changent.
+ * Les espaces dans les montants FCFA deviennent insécables : « 10 000 FCFA » ne se coupe plus en fin
+ * de ligne sur téléphone (ex. « 10 000 FCFA »).
  */
 export function typographie(texte: string): string {
-  return texte.replace(/(?<=\p{L})'(?=[\p{L}\p{N}])/gu, "’");
+  // 1. Apostrophe typographique
+  let resultat = texte.replace(/(?<=\p{L})'(?=[\p{L}\p{N}])/gu, "’");
+  // 2. Espaces insécables dans les montants FCFA : toutes les espaces d'un montant suivi de FCFA
+  //    deviennent insécables, y compris les séparateurs de milliers (« 10 000 FCFA » → « 10 000 FCFA »).
+  resultat = resultat.replace(/\d[\d ]* FCFA\b/g, (m) => m.replace(/ /g, "\u00a0"));
+  return resultat;
 }
 
 /** L'espace avant « ? », « ! », « : » et « ; » devient insécable (règle française) : le signe ne reste pas seul en début de ligne. */
