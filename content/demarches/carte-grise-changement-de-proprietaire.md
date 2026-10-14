@@ -40,12 +40,12 @@ sources:
   - titre: "Effectuer la mutation d'un véhicule (prendre en compte tous les cas) — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-la-mutation-dun-vehicule-ou-motocycle-immatricule-au-senegal"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire cette démarche : l'usager qui achète un véhicule déjà immatriculé au Sénégal, ou qui possède un véhicule immatriculé dans une région et veut changer de région ou de série.
 - La page dit que la mutation peut être considérée comme un changement de nom, de région ou de département.
 - Pièce délivrée : certificat d'immatriculation et d'aptitude technique. Délai de délivrance : 5 jours.

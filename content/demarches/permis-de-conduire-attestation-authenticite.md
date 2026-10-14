@@ -24,12 +24,12 @@ sources:
   - titre: "Demander une attestation d'authenticité du permis de conduire — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-une-attestation-dauthenticite-du-permis-de-conduire"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : le conducteur de véhicule automobile.
 - L'attestation d'authenticité est un document qui certifie que le permis de conduire présenté est bien authentique et valide. Elle confirme que le permis n'est ni falsifié ni frauduleux.
 - La démarche « Permis de conduire international » demande une attestation d'authenticité du permis de conduire parmi ses documents.

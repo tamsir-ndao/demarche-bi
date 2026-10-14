@@ -33,12 +33,12 @@ sources:
   - titre: "Déclarer une naissance — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/declarer-une-naissance"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Cette démarche est l'enregistrement de la naissance d'un enfant dans les registres de l'état civil.
 - Qui peut déclarer : le père ou la mère ; les ascendants ou les proches parents ; le médecin, l'infirmier, la sage-femme ou la matrone ; le chef de village ou le délégué de quartier ; le procureur de la république.
 - Quand déclarer : du jour de la naissance et pendant un an après la naissance. Lorsque la déclaration est faite au-delà du 45e jour, elle est appelée déclaration tardive. Au-delà d'un an, il faut demander un jugement d'autorisation d'inscription auprès du tribunal.

@@ -22,12 +22,12 @@ sources:
   - titre: "Demander un extrait du registre des actes de naissance — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-un-extrait-du-registre-des-actes-de-naissance"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la demande : la personne elle-même ou toute personne intéressée ; les autorités administratives et judiciaires.
 - Quand le demander : à tout moment, afin de compléter un dossier administratif.
 - Pour obtenir une copie littérale, voir la fiche « Copie littérale d'acte de naissance ». La page cite une copie littérale d'acte de naissance parmi les pièces acceptées.

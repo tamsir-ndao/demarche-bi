@@ -31,12 +31,12 @@ sources:
   - titre: "Demander le renouvellement de la carte grise ou le certificat d'immatriculation et d'aptitude technique — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-le-renouvellement-de-la-carte-grise-ou-le-certificat-dimmatriculation-et-daptitude-techni"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la demande : le propriétaire du véhicule ou l'agent vérificateur.
 - Pièce délivrée : une nouvelle carte grise (en duplicata ou en renouvellement).
 - À confirmer : la page donne un montant pour les véhicules de transport public de puissance inférieure à 12 CV et un autre pour ceux de puissance supérieure à 12 CV. Elle ne dit pas quel montant s'applique à un véhicule de transport public d'exactement 12 CV.

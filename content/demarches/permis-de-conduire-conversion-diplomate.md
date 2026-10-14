@@ -30,12 +30,12 @@ sources:
   - titre: "Convertir un permis de conduire de diplomate — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/convertir-un-permis-de-conduire-etranger"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : un diplomate en poste au Sénégal, qui veut transformer son permis de conduire étranger en permis sénégalais reconnu officiellement. La page ne cite que les diplomates.
 - Cette fiche ne parle pas des autres titulaires d'un permis étranger : la page ne dit rien pour eux.
 - L'adresse de la page parle d'un « permis de conduire étranger », mais son texte ne vise que le diplomate.

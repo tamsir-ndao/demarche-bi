@@ -22,12 +22,12 @@ sources:
   - titre: "Demander une copie littérale d'acte de naissance — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-une-copie-litterale-dacte-de-naissance"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : l'intéressé, ses ayants cause ou toute personne autorisée par le tribunal ; toute personne ayant comparu lors de l'établissement de l'acte (les parents, les témoins, le médecin, etc.) ; les autorités administratives ou judiciaires.
 - En cas de perte ou de vol : renouveler la demande.
 - Pour les naissances à l'étranger, la page dit de s'adresser au ministère des Affaires étrangères ou à la représentation diplomatique du Sénégal dans le pays de naissance.

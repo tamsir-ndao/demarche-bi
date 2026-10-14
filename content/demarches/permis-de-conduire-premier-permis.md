@@ -34,12 +34,12 @@ sources:
   - titre: "Passer son permis de conduire pour véhicule léger — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/passer-son-permis-de-conduire-pour-vehicule-leger"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : toute personne résidant sur le territoire sénégalais et âgée d'au moins 18 ans peut demander un permis de conduire pour véhicule léger.
 - Le permis de catégorie B autorise son titulaire à conduire un véhicule automobile léger (voiture).
 - Selon la page, les permis de conduire des véhicules automobiles ne peuvent être accordés qu'au vu d'un certificat d'aptitude médicale, délivré après un examen médical passé devant un médecin désigné par arrêté du ministre de la Santé.

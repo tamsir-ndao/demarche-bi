@@ -8,7 +8,7 @@ Projet de l'**Open Source × AI Hackathon 2026** (Galsen DEV, Hacktoberfest Daka
 
 **Statut : en développement.** Voir la feuille de route plus bas.
 
-**Site en ligne : https://demarche-bi.vercel.app** (le projet, pour le jury et les contributeurs : https://demarche-bi.vercel.app/projet). Les fiches sont encore en cours de relecture : le site ne répond qu'avec des fiches vérifiées, et dit « Je ne sais pas encore » tant qu'aucune ne l'est.
+**Site en ligne : https://demarche-bi.vercel.app** (le projet, pour le jury et les contributeurs : https://demarche-bi.vercel.app/projet). Les fiches sont relues une par une : le site ne répond qu'avec des fiches vérifiées (21 le 14 octobre 2026) et dit « Je ne sais pas encore » quand aucune ne correspond.
 
 ## Le problème
 
@@ -91,7 +91,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 ## Feuille de route
 
 - [x] Socle technique, format de fiche, validateur, CI, guide de contribution
-- [ ] 15 fiches vérifiées
+- [x] 15 fiches vérifiées (21 le 14 octobre 2026)
 - [x] Recherche, compréhension, réponse ancrée et garde-fous
 - [x] Interface web (accueil, réponse, démarches, à propos)
 - [x] Voix (question parlée, réponse lue à voix haute)

@@ -38,12 +38,12 @@ sources:
   - titre: "Passer son permis de conduire pour véhicule léger — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/passer-son-permis-de-conduire-pour-vehicule-leger"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de deux pages officielles e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur les pages avant « vérifié ».
+- Provenance : texte de deux pages officielles e-senegal.sn copié le 13 octobre 2026, puis relu sur les pages par tamsir-ndao le 14 octobre 2026.
 - Les pièces et le coût viennent de la page « Demander un renouvellement ou un duplicata du permis de conduire ». De la page « Passer son permis de conduire pour véhicule léger », cette fiche reprend seulement les rubriques sur le renouvellement et sur la perte ou le vol.
 - Qui peut faire la démarche : tout titulaire ayant perdu son permis, ou après péremption du permis.
 - Selon la page « Passer son permis de conduire pour véhicule léger », le permis de catégorie B a une durée de validité qui dépend de l'âge : tous les 10 ans pour les conducteurs de moins de 45 ans ; tous les 3 ans pour les conducteurs de 45 à 55 ans ; tous les 2 ans pour les conducteurs qui ont dépassé 55 ans.

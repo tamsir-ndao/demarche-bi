@@ -34,12 +34,12 @@ sources:
   - titre: "Certificat d'immatriculation et d'aptitude technique (Carte grise) avec les mentions — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-un-certificat-dimmatriculation-et-daptitude-technique-carte-grise"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Cette fiche ne traite que la transformation du véhicule et le changement de source d'énergie ou de catégorie. Elle ne couvre ni la première immatriculation, ni le changement de propriétaire.
 - Qui peut faire la démarche : la page indique « Usager ».
 - Base réglementaire : article K12 du décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.

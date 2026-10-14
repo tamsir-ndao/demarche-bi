@@ -29,12 +29,12 @@ sources:
   - titre: "Demander un permis de conduire international — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-un-permis-de-conduire-international"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut le demander : tout titulaire d'un permis de conduire sénégalais.
 - Le permis de conduire international donne la possibilité de conduire un véhicule en dehors du pays dans lequel a été délivré le permis de conduire.
 - À confirmer : le résumé en bas de la page annonce « Coût : 25 000 FCFA ; délai : 7 jours ». Le détail de la page donne autre chose : des timbres fiscaux de 25 000 FCFA, des frais de service de 15 000 FCFA, une participation de 5 000 FCFA en cas de dépôt à la CCIAD, et un délai de 1 jour (Automobile Club) ou de 3 à 7 jours (CCIAD). La page ne dit pas lequel des deux est le bon.

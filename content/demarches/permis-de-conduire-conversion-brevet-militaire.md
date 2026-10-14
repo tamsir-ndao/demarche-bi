@@ -29,12 +29,12 @@ sources:
   - titre: "Convertir le brevet militaire en permis de conduire — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-la-conversion-dun-brevet-militaire-de-conduite-des-vehicules-automobiles"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : le titulaire d'un brevet militaire de conduite des véhicules automobiles, délivré par l'armée. La page dit que cette conversion permet aux militaires ou anciens militaires de conduire légalement sur le réseau routier civil.
 - Pièce délivrée : un permis numérisé. La page dit que c'est un permis civil, valable pour la circulation publique.
 - Texte de référence donné par la page : annexe M15 de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.

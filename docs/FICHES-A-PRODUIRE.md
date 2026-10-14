@@ -52,20 +52,20 @@ Ces thèmes sont des pistes. Garde ceux pour lesquels tu trouves une source offi
 | NINEA | oui (11 oct.) | oui (12 oct.) | tamsir-ndao |
 | Passeport ordinaire | oui (12 oct.) | oui (12 oct.) | tamsir-ndao |
 | Certificat de nationalité (par mariage) | oui (12 oct.) | oui (12 oct.) | tamsir-ndao |
-| Copie littérale d'acte de naissance (page officielle e-senegal.sn, brouillon, à relire par Tamsir ; réécrite le 13 oct., elle venait d'une copie du portail Service public) | oui (13 oct.) | | |
-| Carte grise : mutation du véhicule (changement de propriétaire ou de région) (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
+| Copie littérale d'acte de naissance (page officielle e-senegal.sn, réécrite le 13 oct., elle venait d'une copie du portail Service public) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Carte grise : mutation du véhicule (changement de propriétaire ou de région) (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
 | Carte grise : véhicule neuf (copie du portail, à relire) | oui (12 oct.) | | |
 | Carte grise : véhicule d'occasion importé (copie du portail, à relire) | oui (12 oct.) | | |
-| Carte grise : renouvellement ou duplicata (carte endommagée ou perdue) (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : premier permis pour véhicule léger (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : renouvellement et duplicata (2 pages officielles e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Carte grise : transformation du véhicule, changement de source d'énergie ou de catégorie (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : véhicules lourds, catégories C et C1 (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire international (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : attestation d'authenticité (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : convertir un brevet militaire de conduite (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Permis de conduire : convertir le permis d'un diplomate (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Bulletin de naissance (page officielle e-senegal.sn, brouillon, à relire par Tamsir) | oui (13 oct.) | | |
-| Extrait du registre des actes de naissance, ou extrait de naissance (page officielle e-senegal.sn, brouillon, à relire par Tamsir ; le bas de la page annonce 500 FCFA et 1 jour, le détail donne une vignette variable et « dans la journée » : noté « à confirmer ») | oui (13 oct.) | | |
-| Déclarer une naissance (page officielle e-senegal.sn, brouillon, à relire par Tamsir) ; la démarche associée « Demander un jugement d'autorisation d'inscription de naissance » (au-delà d'un an) n'a pas encore sa fiche : sa page n'a pas été lue | oui (13 oct.) | | |
+| Carte grise : renouvellement ou duplicata (carte endommagée ou perdue) (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : premier permis pour véhicule léger (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : renouvellement et duplicata (2 pages officielles e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Carte grise : transformation du véhicule, changement de source d'énergie ou de catégorie (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : véhicules lourds, catégories C et C1 (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire international (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : attestation d'authenticité (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : convertir un brevet militaire de conduite (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Permis de conduire : convertir le permis d'un diplomate (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Bulletin de naissance (page officielle e-senegal.sn) | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Extrait du registre des actes de naissance, ou extrait de naissance (page officielle e-senegal.sn, relue le 14 oct. ; le bas de la page annonce 500 FCFA et 1 jour, le détail donne une vignette variable et « dans la journée » : noté « à confirmer ») | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
+| Déclarer une naissance (page officielle e-senegal.sn) ; la démarche associée « Demander un jugement d'autorisation d'inscription de naissance » (au-delà d'un an) n'a pas encore sa fiche : sa page n'a pas été lue | oui (13 oct.) | oui (14 oct.) | tamsir-ndao |
 | Dédouaner un véhicule importé (document PDF des Douanes lu sur douanes.sn le 13 oct., brouillon ; les tableaux de taux ne sont pas repris ; la limite d'âge est à vérifier auprès des Douanes avant de valider) | oui (13 oct.) | | |

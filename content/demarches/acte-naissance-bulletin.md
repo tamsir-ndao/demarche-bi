@@ -23,12 +23,12 @@ sources:
   - titre: "Demander un bulletin de naissance — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/demander-un-bulletin-de-naissance"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Le bulletin de naissance est la reproduction succincte de l'acte de naissance. Il renseigne sur le centre d'enregistrement de l'acte, la date et le lieu de la naissance et la filiation.
 - Qui peut le demander : la personne elle-même ou toute personne intéressée ; les autorités administratives ou judiciaires.
 - Quand le demander : dès la déclaration de naissance et à tout moment, afin de compléter un dossier administratif.

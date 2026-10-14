@@ -34,12 +34,12 @@ sources:
   - titre: "Passer le permis de conduire pour véhicules lourds (type C) — e-Sénégal"
     url: "https://e-senegal.sn/#/comprendre-ma-demarche/demarche/passer-le-permis-de-conduire-pour-vehicules-lourds-type-c"
     consulte_le: 2026-10-13
-statut: brouillon
-verifie_le: null
-verifie_par: null
+statut: verifie
+verifie_le: 2026-10-14
+verifie_par: tamsir-ndao
 ---
 
-- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026 ; brouillon, à relire sur la page avant « vérifié ».
+- Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : toute personne qui réside sur le territoire sénégalais et remplit la condition d'âge, soit 22 ans ou plus.
 - Le permis de catégorie C autorise son titulaire à conduire un véhicule automobile dit poids lourd. La page indique deux permis délivrés : un permis de catégorie C et un permis de catégorie C1.
 - À confirmer : la page ne dit pas ce que permet la catégorie C1, ni dans quel cas on obtient la catégorie C ou la catégorie C1.
