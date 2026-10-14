@@ -6,12 +6,21 @@ export const ID_ECRAN_DEMARRAGE = "ecran-demarrage";
 /** Note laissée dans la mémoire de l'onglet : l'écran a déjà été montré, il ne revient ni au rechargement ni sur une autre page. */
 export const CLE_DEMARRAGE = "demarche-bi:demarrage";
 
+/** Le réglage CSS qui remonte le logo (voir SCRIPT_DEMARRAGE et globals.css). */
+export const VARIABLE_DECALAGE = "--decalage-demarrage";
+
 /**
  * Le script qui allume l'écran de démarrage, joué par le navigateur pendant la lecture de la page, avant le premier
  * affichage (l'écran est caché tant qu'il n'est pas allumé, donc la page ne clignote pas). Il ne dépend que de
- * `document` et `sessionStorage`. Quand la mémoire de l'onglet est bloquée, on ne peut pas savoir : on montre l'écran.
+ * `document`, `sessionStorage` et des mesures du navigateur (`navigator`, `screen`, `innerHeight`, `innerWidth`).
+ * Quand la mémoire de l'onglet est bloquée, on ne peut pas savoir : on montre l'écran.
+ *
+ * Application installée sur l'iPhone (`navigator.standalone`) : la page est affichée SOUS la barre d'état, donc elle est
+ * plus courte que l'écran, alors que l'image de démarrage de l'iPhone est centrée sur TOUT l'écran. Sans correction,
+ * le logo « saute » quand la page prend le relais. On le remonte de la moitié de la différence (portrait seulement ;
+ * une différence qui n'a rien d'une barre d'état, plus de 80 points, est une mesure fausse : on ne touche à rien).
  */
-export const SCRIPT_DEMARRAGE = `(function(){try{var e=document.getElementById("${ID_ECRAN_DEMARRAGE}");if(!e)return;var vu=false;try{vu=!!sessionStorage.getItem("${CLE_DEMARRAGE}");sessionStorage.setItem("${CLE_DEMARRAGE}","1")}catch(_){}if(!vu)e.setAttribute("data-actif","oui")}catch(_){}})()`;
+export const SCRIPT_DEMARRAGE = `(function(){try{var e=document.getElementById("${ID_ECRAN_DEMARRAGE}");if(!e)return;var vu=false;try{vu=!!sessionStorage.getItem("${CLE_DEMARRAGE}");sessionStorage.setItem("${CLE_DEMARRAGE}","1")}catch(_){}if(vu)return;try{if(navigator.standalone===true&&innerHeight>innerWidth){var d=(screen.height-innerHeight)/2;if(d>0&&d<=40)e.style.setProperty("${VARIABLE_DECALAGE}",d+"px")}}catch(_){}e.setAttribute("data-actif","oui")}catch(_){}})()`;
 
 /** Les tailles d'écran des iPhone (en points, avec leur ratio de pixels) : Safari veut une image à la taille exacte. */
 export const APPAREILS_IOS = [

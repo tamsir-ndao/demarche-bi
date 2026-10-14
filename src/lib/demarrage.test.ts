@@ -6,10 +6,18 @@ import { describe, it } from "node:test";
 import { APPAREILS_IOS, CLE_DEMARRAGE, ID_ECRAN_DEMARRAGE, imagesDeDemarrage, SCRIPT_DEMARRAGE } from "./demarrage";
 
 /** Joue le script comme le navigateur : avec un faux document et une fausse mémoire d'onglet. */
-function jouer({ ecran = true, memoire = new Map<string, string>(), memoireBloquee = false } = {}) {
+type Mesures = { standalone?: boolean; hauteurEcran?: number; hauteurPage?: number; largeurPage?: number };
+
+function jouer({ ecran = true, memoire = new Map<string, string>(), memoireBloquee = false, mesures }: { ecran?: boolean; memoire?: Map<string, string>; memoireBloquee?: boolean; mesures?: Mesures | "sans navigateur" } = {}) {
   const attributs = new Map<string, string>();
-  const elements = new Map<string, { setAttribute(nom: string, valeur: string): void }>();
-  if (ecran) elements.set(ID_ECRAN_DEMARRAGE, { setAttribute: (nom, valeur) => void attributs.set(nom, valeur) });
+  const styles = new Map<string, string>();
+  const elements = new Map<string, { setAttribute(nom: string, valeur: string): void; style: { setProperty(nom: string, valeur: string): void } }>();
+  if (ecran) {
+    elements.set(ID_ECRAN_DEMARRAGE, {
+      setAttribute: (nom, valeur) => void attributs.set(nom, valeur),
+      style: { setProperty: (nom, valeur) => void styles.set(nom, valeur) },
+    });
+  }
   const document = { getElementById: (id: string) => elements.get(id) ?? null };
   const sessionStorage = memoireBloquee
     ? {
@@ -21,8 +29,19 @@ function jouer({ ecran = true, memoire = new Map<string, string>(), memoireBloqu
         },
       }
     : { getItem: (cle: string) => memoire.get(cle) ?? null, setItem: (cle: string, valeur: string) => void memoire.set(cle, valeur) };
-  new Function("document", "sessionStorage", SCRIPT_DEMARRAGE)(document, sessionStorage);
-  return { attributs, memoire };
+  // Par défaut : un navigateur ordinaire (pas une application installée), page en portrait.
+  const m = mesures === "sans navigateur" ? undefined : { standalone: false, hauteurEcran: 852, hauteurPage: 852, largeurPage: 393, ...mesures };
+  const navigator = m ? { standalone: m.standalone } : undefined;
+  const screen = m ? { height: m.hauteurEcran } : undefined;
+  new Function("document", "sessionStorage", "navigator", "screen", "innerHeight", "innerWidth", SCRIPT_DEMARRAGE)(
+    document,
+    sessionStorage,
+    navigator,
+    screen,
+    m?.hauteurPage,
+    m?.largeurPage,
+  );
+  return { attributs, memoire, styles };
 }
 
 describe("script de l'écran de démarrage", () => {
@@ -43,9 +62,45 @@ describe("script de l'écran de démarrage", () => {
     const { attributs } = jouer({ ecran: false });
     assert.equal(attributs.size, 0);
   });
-  it("ne dépend de rien d'autre que document et sessionStorage", () => {
-    assert.doesNotThrow(() => new Function("document", "sessionStorage", SCRIPT_DEMARRAGE));
+  it("ne dépend de rien d'autre que le navigateur (document, sessionStorage, navigator, screen, innerHeight, innerWidth)", () => {
+    assert.doesNotThrow(() => new Function("document", "sessionStorage", "navigator", "screen", "innerHeight", "innerWidth", SCRIPT_DEMARRAGE));
     assert.ok(!SCRIPT_DEMARRAGE.includes("</script"));
+  });
+});
+
+// Sur l'iPhone, l'application installée affiche la page SOUS la barre d'état (réglage « default ») : la page est plus
+// courte que l'écran, et le logo centré dans la page n'est plus au même endroit que sur l'image de démarrage (centrée
+// sur tout l'écran) : il « saute ». Le script décale donc le logo vers le haut de la moitié de la différence.
+describe("script de l'écran de démarrage : logo à la même place que sur l'image de l'iPhone", () => {
+  const VARIABLE = "--decalage-demarrage";
+  it("décale le logo de la moitié de la barre d'état dans l'application installée de l'iPhone", () => {
+    const { styles, attributs } = jouer({ mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 805 } });
+    assert.equal(styles.get(VARIABLE), "23.5px");
+    assert.equal(attributs.get("data-actif"), "oui");
+  });
+  it("ne décale rien dans un navigateur ordinaire (onglet Safari ou Chrome : pas d'image de démarrage)", () => {
+    assert.equal(jouer({ mesures: { standalone: false, hauteurEcran: 852, hauteurPage: 750 } }).styles.has(VARIABLE), false);
+  });
+  it("ne décale rien quand la page occupe tout l'écran", () => {
+    assert.equal(jouer({ mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 852 } }).styles.has(VARIABLE), false);
+  });
+  it("ne décale rien en mode paysage (les images de démarrage sont en portrait)", () => {
+    assert.equal(jouer({ mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 393, largeurPage: 805 } }).styles.has(VARIABLE), false);
+  });
+  it("ne décale rien quand la différence n'a rien d'une barre d'état (mesure fausse)", () => {
+    assert.equal(jouer({ mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 500 } }).styles.has(VARIABLE), false);
+  });
+  it("ne décale rien quand la page est plus haute que l'écran", () => {
+    assert.equal(jouer({ mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 900 } }).styles.has(VARIABLE), false);
+  });
+  it("allume quand même l'écran si le navigateur ne donne pas ces mesures", () => {
+    const { attributs, styles } = jouer({ mesures: "sans navigateur" });
+    assert.equal(attributs.get("data-actif"), "oui");
+    assert.equal(styles.size, 0);
+  });
+  it("ne décale pas un écran qui ne doit pas être montré (déjà vu dans cet onglet)", () => {
+    const { styles } = jouer({ memoire: new Map([[CLE_DEMARRAGE, "1"]]), mesures: { standalone: true, hauteurEcran: 852, hauteurPage: 805 } });
+    assert.equal(styles.has(VARIABLE), false);
   });
 });
 

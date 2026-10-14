@@ -77,6 +77,8 @@ Cocher au fur et à mesure. Dossier prêt le **18 octobre 2026** (date interne),
 - [x] Essayer la réponse à voix haute sur un vrai Android (Chrome) : qualité de la voix française, lecture automatique après une question parlée (iPhone), voix manquante, temps de lecture ; ajuster la vitesse si besoin (essayé par Tamsir, 13 octobre)
 - [x] Écran de démarrage des téléphones (12 octobre) : fond et logo, puis fondu vers l'accueil, une fois par ouverture ; 26 images de démarrage pour l'iPhone
 - [x] Écran de démarrage : fond et logo immobiles (comme l'image de l'iPhone), 1,2 s puis fondu de 0,5 s, au lieu du logo qui grossit et de la coche qui se redessine (13 octobre, demande de Tamsir)
+- [x] Écran de démarrage : sur l'iPhone installé, le logo sautait entre l'image de démarrage et la page (la page est sous la barre d'état) : décalage calculé par le script (14 octobre, vérifié en simulation)
+- [ ] Confirmer sur un vrai iPhone que le logo ne saute plus ; sinon, ne plus montrer l'écran de la page dans l'application installée de l'iPhone
 - [ ] Voir l'écran de démarrage sur de vrais téléphones : l'enchaînement avec l'écran d'Android et celui de l'iPhone (images claires et sombres), la nouvelle version (1,7 s : fixe puis fondu ; réinstaller l'application sur l'iPhone pour qu'il prenne les images), l'application installée et le navigateur
 - [x] Pages `/demarches` et `/demarches/[slug]` (11 octobre)
 - [x] Page `/a-propos` à la place de `/contribuer` (11 octobre) : sources, « je ne devine pas », questions fréquentes, liens pour proposer une démarche ou signaler une erreur

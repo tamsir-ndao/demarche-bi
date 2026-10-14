@@ -132,6 +132,9 @@
   border-radius: 31px;
   background: var(--g);
   color: var(--on-g);
+  /* Application installée sur l'iPhone : le script remonte le logo pour qu'il reste à la place qu'il a sur l'image de
+     démarrage (voir lib/demarrage.ts). Ailleurs, la variable n'existe pas : aucun décalage. */
+  transform: translateY(calc(var(--decalage-demarrage, 0px) * -1));
 }
 
 .logo-demarrage svg {
