@@ -123,6 +123,7 @@ Quand une démarche citée ici comme hors périmètre (passeport, acte de naissa
 |---|---|
 | `npm run eval -- --brouillons` | La recherche seule, sans IA : c'est le repli quand l'IA manque. Gratuit, instantané. |
 | `npm run eval -- --ia --brouillons` | Le parcours complet comme sur le site, avec la clé de `.env.local`. Une pause de 15 secondes entre deux questions (`--pause=30` pour l'allonger) ménage le plafond par minute ; compte une quinzaine de minutes et plus de la moitié du plafond gratuit du jour d'un modèle (200 000 tokens) : ne la lance pas plusieurs fois par jour. |
+| `npm run fiabilite` | Les tests de fiabilité : rien d'inventé ni de deviné par rapport aux fiches, refus, pièges, saisie, répétition. Sans `--ia` : jeux validés et nombre d'appels, gratuit. Voir [`FIABILITE.md`](FIABILITE.md). |
 
 Le verdict de chaque question en mode `--ia` : une question couverte réussit quand la bonne fiche répond, et « réussit à moitié » quand l'écran de précision propose la bonne fiche ; une question hors périmètre réussit quand le site dit « je ne sais pas » ; une question vague réussit quand le site demande de préciser, « réussit à moitié » avec « je ne sais pas » (rien d'inventé, mais pas d'aide), et échoue quand il devine une démarche. Le rapport donne aussi le nombre d'introductions montrées, refusées par les garde-fous ou absentes, et prévient quand l'IA a échoué pour certaines questions (leur résultat est alors celui du repli). Les chiffres dépendent du modèle et varient d'un jour à l'autre.
 

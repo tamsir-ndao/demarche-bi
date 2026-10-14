@@ -44,7 +44,7 @@ Inclus :
 - Message d'avertissement permanent (information indicative).
 - Pages de consultation des fiches et page « Contribuer ».
 - Avis utilisateur (utile / pas utile).
-- Jeu d'évaluation de 52 questions et commande `npm run eval`.
+- Jeu d'évaluation de 95 questions et commande `npm run eval`.
 - CI GitHub : validation des fiches, lint, build.
 - Journal anonyme dans Neon (optionnel).
 - Déploiement Vercel.
@@ -62,7 +62,7 @@ Ce que l'IA ne fait pas : elle ne fournit aucun fait administratif de sa propre 
 
 ## Qualité et évaluation
 
-Jeu de 52 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue). Dix d'entre elles sont en wolof ou mêlées de wolof (champ `langue`), pour mesurer la compréhension partielle du wolof sans la mélanger aux chiffres en français.
+Jeu de 95 questions (`eval/questions.jsonl`) répartis en trois familles : questions couvertes par une fiche, questions hors périmètre (refus attendu) et questions vagues (précision attendue). Quinze d'entre elles sont en wolof ou mêlées de wolof (champ `langue`), pour mesurer la compréhension partielle du wolof sans la mélanger aux chiffres en français.
 
 Mesures : la bonne fiche répond-elle, le refus est-il correct, la précision est-elle demandée quand la question est vague, combien d'introductions sont refusées par les garde-fous. Les chiffres sont publiés dans le README tels que mesurés, même imparfaits.
 
@@ -95,11 +95,12 @@ Mesures : la bonne fiche répond-elle, le refus est-il correct, la précision es
 - Vidéo de démonstration de 3 minutes maximum
 - Description du problème, de la solution et de l'usage de l'IA
 
-Les modalités de transmission pour la présélection ne sont pas encore connues : les organisateurs les communiqueront (mail du 11 octobre). La soumission sur la plateforme MLH (Organizer HQ) se fait uniquement le 24 octobre, pour les 5 finalistes.
+La soumission se fait par un formulaire des organisateurs, **au plus tard le lundi 19 octobre 2026** (message du 14 octobre). Les 5 finalistes déposent en plus leur projet sur la plateforme MLH le 24 octobre, après le check-in.
 
 ## Calendrier
 
 - 7 octobre : lancement du hackathon
 - 18 octobre : dossier prêt (date interne)
-- 21 octobre : présélection des 5 finalistes (modalités de transmission à confirmer)
-- 24 octobre : finale à l'Impact Hub Dakar. Check-in sur place, soumission sur MLH Organizer HQ (section Challenges) pour les 5 finalistes, puis 7 min de pitch + 3 min de questions
+- 19 octobre : date limite de soumission (formulaire des organisateurs)
+- 21 octobre : annonce des 5 finalistes par e-mail
+- 24 octobre : finale à l'Impact Hub Dakar. Check-in sur place, soumission sur MLH Organizer HQ (section Challenges) pour les 5 finalistes, puis 10 min de présentation et démonstration + 3 min de questions du jury (15 h)

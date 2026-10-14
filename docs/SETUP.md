@@ -110,9 +110,9 @@ Dans Antigravity, demande à l'agent de suivre `docs/TASKS.md`, tâche par tâch
 
 ## Étape 11 — Soumettre
 
-Le dossier doit être prêt le **18 octobre 2026** (date interne). Les organisateurs communiqueront les modalités de transmission pour la présélection. La soumission sur la plateforme MLH (Organizer HQ, section *Challenges*) se fait uniquement le **24 octobre**, pour les 5 finalistes, après le check-in à l'Impact Hub Dakar.
+Le dossier doit être prêt le **18 octobre 2026** (date interne). La soumission se fait par un formulaire des organisateurs, **au plus tard le 19 octobre** : présentation (problème, solution, usage de l'IA), lien du dépôt public et sa documentation, technologies, modèles et outils d'IA, vidéo de 3 minutes au plus (facultative, recommandée). Les 5 finalistes déposent en plus leur projet sur la plateforme MLH (Organizer HQ, section *Challenges*) le **24 octobre**, après le check-in à l'Impact Hub Dakar.
 
-Suis le workflow `preparer-soumission` : README final avec les chiffres d'évaluation et les modèles déclarés, vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis envoi selon les modalités reçues.
+Suis le workflow `preparer-soumission` : README final avec les chiffres d'évaluation et les modèles déclarés, vérification qu'aucun secret n'est dans l'historique, vidéo de démonstration de 3 minutes maximum, puis envoi par le formulaire avant le 19 octobre.
 
 ## Dépannage
 

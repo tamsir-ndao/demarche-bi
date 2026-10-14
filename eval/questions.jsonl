@@ -57,8 +57,8 @@
 {"question":"Combien coûte une copie littérale d'acte de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-copie-litterale","doit_contenir":["vignette"]}
 {"question":"J'ai acheté une voiture d'occasion, comment changer la carte grise à mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["attestation de vente légalisée"]}
 {"question":"J'ai perdu ma carte grise","famille":"couverte","attendu_slug":"carte-grise-duplicata","doit_contenir":["certificat de perte"]}
-{"question":"Comment immatriculer une voiture neuve ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-neuf","doit_contenir":["certificat de conformité"]}
-{"question":"Je fais venir une voiture d'occasion de l'étranger, quels papiers pour la carte grise ?","famille":"couverte","attendu_slug":"carte-grise-vehicule-occasion-importe","doit_contenir":["déclaration en douane"]}
+{"question":"Comment immatriculer une voiture neuve ?","famille":"hors_perimetre"}
+{"question":"Je fais venir une voiture d'occasion de l'étranger, quels papiers pour la carte grise ?","famille":"hors_perimetre"}
 {"question":"Comment passer mon permis de conduire ?","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["certificat médical"]}
 {"question":"Quel âge faut-il pour avoir le permis ?","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["18 ans"]}
 {"question":"J'ai perdu mon permis de conduire","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["certificat de perte"]}

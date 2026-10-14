@@ -1,0 +1,45 @@
+{"question":"Combien sa coute un pasport ordinaire ?","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["20 000 FCFA"]}
+{"question":"Je veu renouvelé ma carte d'identitée, qu'est ce qu'il faut ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["moins de 3 mois"]}
+{"question":"Ma carte d'identité a été voler, quelle papier il me faut pour la refaire ?","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["justifier l'adresse"]}
+{"question":"Cobien de temp pour avoir mon casié judiciaire ?","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["Un jour"]}
+{"question":"Je voudrai faire mon NINEA mai je sait pas quel papié apporter","famille":"couverte","attendu_slug":"ninea","doit_contenir":["photocopie de la carte nationale d'identité"]}
+{"question":"Je suis marier a une senegalaise, au bout de combien d'année je peut demander la nationalité ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["cinq (5) ans"]}
+{"question":"Comment déclaré la naissence de mon bébé ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["centre d'état civil du lieu de naissance"]}
+{"question":"J'ai acheter une voiture, il me fau quoi comme papier pour mettre la carte grise a mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["Attestation d'assurance"]}
+{"question":"Combiens coute le duplicata de la carte grise pour ma voiture de 5 cv ?","famille":"couverte","attendu_slug":"carte-grise-duplicata","doit_contenir":["4 500 FCFA pour les véhicules de 2 à 9 CV"]}
+{"question":"Je suis un ancien militère, comen je convertie mon brevé de conduite ?","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-brevet-militaire","doit_contenir":["certificat médical datant de moins de 4 mois"]}
+{"question":"slt cmb ça coute le passeport","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["20 000 FCFA"]}
+{"question":"kel age il fo pr passer le permis","famille":"couverte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["18 ans"]}
+{"question":"jai perdu ma cni jfé koi","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["certificat de perte"]}
+{"question":"ou je fé mon casier jud stp","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["greffe"]}
+{"question":"cmb de tps pr avoir le ninea","famille":"couverte","attendu_slug":"ninea","doit_contenir":["Environ 3 jours"]}
+{"question":"ke fo pr declarer 1 naissance","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["certificat d'accouchement"]}
+{"question":"permis intern c cmb","famille":"couverte","attendu_slug":"permis-de-conduire-international","doit_contenir":["25 000 FCFA"]}
+{"question":"jvoudré 1 papié pr mon dossier stp","famille":"vague"}
+{"question":"Je suis ne a Thies, ou dois-je aller pour avoir un extrait de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-extrait-registre","doit_contenir":["centre d'état civil du lieu de déclaration de la naissance"]}
+{"question":"Quel est le delai pour avoir un bulletin de naissance ?","famille":"couverte","attendu_slug":"acte-naissance-bulletin","doit_contenir":["Dans la journée"]}
+{"question":"J'ai plus de 55 ans, tous les combien d'annees dois-je renouveler mon permis de conduire ?","famille":"couverte","attendu_slug":"permis-de-conduire-renouvellement-duplicata","doit_contenir":["tous les 2 ans"]}
+{"question":"Quelle est la duree de validite de la carte d'identite ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["10 ans"]}
+{"question":"Ou faire la demande du certificat de nationalite quand on est marie a une Senegalaise ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["Tribunal d'instance du lieu de résidence"]}
+{"question":"Quelles pieces faut-il pour le permis de conduire international ?","famille":"couverte","attendu_slug":"permis-de-conduire-international","doit_contenir":["2 photos d'identité en couleur"]}
+{"question":"Quel certificat medical faut-il pour le permis poids lourd ?","famille":"couverte","attendu_slug":"permis-de-conduire-poids-lourd","doit_contenir":["médecin agréé par le ministère de la Santé"]}
+{"question":"Combien coute la carte d'identite pour une premiere demande ?","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique"}
+{"question":"euh bonjour je voudrais savoir si pour le duplicata de la carte d'identité c'est bien dix mille francs","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["10 000 FCFA"]}
+{"question":"euh ma fille elle a quatre ans est-ce qu'elle peut avoir une carte d'identité","famille":"couverte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["5 ans"]}
+{"question":"euh pour le passeport c'est vingt mille francs c'est ça","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["20 000 FCFA"]}
+{"question":"bonjour euh j'ai besoin de savoir combien de temps ça prend pour avoir un passeport","famille":"couverte","attendu_slug":"passeport-ordinaire","doit_contenir":["2 semaines"]}
+{"question":"euh le casier judiciaire ça coûte deux cents francs ou c'est gratuit","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["200 FCFA"]}
+{"question":"euh je voudrais passer le permis poids lourd il faut avoir vingt-deux ans c'est bien ça","famille":"couverte","attendu_slug":"permis-de-conduire-poids-lourd","doit_contenir":["22 ans"]}
+{"question":"euh je suis diplomate et je veux changer mon permis étranger ça prend combien de jours","famille":"couverte","attendu_slug":"permis-de-conduire-conversion-diplomate","doit_contenir":["1 jour"]}
+{"question":"euh j'ai vendu ma voiture comment je fais pour le changement de nom sur la carte grise","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["division régionale des transports"]}
+{"question":"euh le ninea c'est gratuit ou il faut payer un timbre de deux mille francs","famille":"couverte","attendu_slug":"ninea","doit_contenir":["2 000 FCFA"]}
+{"question":"bonjour euh je voudrais savoir ce qu'il faut faire pour mon dossier euh c'est pour un papier","famille":"vague"}
+{"question":"Sama passeport réer na, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"passeport-ordinaire","doit_contenir":["déclaration de perte"]}
+{"question":"Lan laa soxla ngir sama premier permis ?","famille":"couverte","langue":"mixte","attendu_slug":"permis-de-conduire-premier-permis","doit_contenir":["certificat médical d'aptitude à la conduite automobile"]}
+{"question":"Fan laa mën a jël extrait de naissance ?","famille":"couverte","langue":"mixte","attendu_slug":"acte-naissance-extrait-registre","doit_contenir":["centre d'état civil"]}
+{"question":"Sama doom am na juroom at, ndax mën naa ko defal carte d'identité ?","famille":"couverte","langue":"mixte","attendu_slug":"carte-nationale-identite-biometrique","doit_contenir":["5 ans"]}
+{"question":"Sama jabar Senegaal la, naka laa mën a am nationalité sénégalaise ?","famille":"couverte","langue":"mixte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["attestation de non renonciation"]}
+{"question":"Dama bëgg changer carte grise bu oto bi ma jënd, naka laa ko defe ?","famille":"couverte","langue":"mixte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["division régionale des transports"]}
+{"question":"Dama soxla kayit ngir sama liggéey, ban la ?","famille":"vague","langue":"mixte"}
+{"question":"Ñaata la paspoor bi ?","famille":"couverte","langue":"wo","attendu_slug":"passeport-ordinaire","doit_contenir":["20 000 FCFA"]}
+{"question":"Ñaata bés la mu jël ngir am NINEA ?","famille":"couverte","langue":"wo","attendu_slug":"ninea","doit_contenir":["Environ 3 jours"]}

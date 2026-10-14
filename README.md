@@ -55,6 +55,8 @@ Un jeu de 95 questions (`eval/questions.jsonl`), dont 15 en wolof ou mêlées de
 
 Première mesure du 11 octobre 2026, sur les 5 fiches encore en brouillon : voir [`docs/AI-PROMPTS.md`](docs/AI-PROMPTS.md#première-mesure-11-octobre-2026). Les chiffres définitifs seront publiés ici une fois les fiches vérifiées.
 
+Des tests de fiabilité (rien d'inventé ni de deviné par rapport aux fiches, refus, pièges, fautes de saisie, répétition) se lancent avec `npm run fiabilite` : voir [`docs/FIABILITE.md`](docs/FIABILITE.md).
+
 ## Stack
 
 Next.js (App Router) · TypeScript · Tailwind CSS · Zod · Markdown + YAML pour le contenu · Neon (Postgres, optionnel) · Vercel
