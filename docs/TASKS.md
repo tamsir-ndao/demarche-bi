@@ -45,13 +45,13 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Affichage des sources (titre, lien, date de consultation), de la date de vérification et de l'avertissement
 - [x] État « je ne sais pas » (11 octobre)
 - [x] Thème nuit en gris foncé neutre à la place du vert très foncé (demande du 11 octobre) ; le vert vif reste pour les accents
-- [ ] Espaces insécables dans les montants (« 10 000 FCFA » se coupe en fin de ligne sur téléphone)
+- [x] Espaces insécables dans les montants (« 10 000 FCFA » ne se coupe plus en fin de ligne, 14 octobre)
 - [x] État « question de précision » : écran de choix entre plusieurs démarches, et question à reformuler quand la demande est trop vague
 
 ## Mardi 13 — évaluation
 
 - [x] `eval/questions.jsonl` : 95 questions (couvertes, hors périmètre, vagues), dont 15 en wolof ou mêlées de wolof (13 questions ajoutées le 13 octobre : 12 pour les 6 fiches nouvelles, 1 pour « Mon permis a été volé » ; puis 17 pour les 5 fiches du second lot : naissance et dédouanement, dont 2 de la vie réelle pour la déclaration de naissance et 4 mêlées de wolof ; « Comment obtenir un acte de naissance ? » reformulée en « Je voudrais la copie intégrale de mon acte de naissance, comment faire ? », car les trois documents de naissance sont à égalité sur la question générale)
-- [ ] Vérifier la licence de Qwen3.8-27B sur la page officielle `Qwen/Qwen3.8-27B` (Apache 2.0 annoncée par la presse et le catalogue NVIDIA) avant le README final
+- [x] Vérifier la licence de Qwen3.8-27B : confirmée sous licence Apache 2.0 (Hugging Face / Groq, 14 octobre)
 - [ ] Faire relire par un locuteur wolof les 15 questions `mixte` et `wo` de `eval/questions.jsonl` (tournures rédigées sans locuteur natif)
 - [x] `scripts/eval.ts` et `npm run eval` : recherche seule (`-- --brouillons` tant que des fiches sont en brouillon)
 - [x] `npm run eval -- --ia` de bout en bout : bonne fiche, refus, précision, introductions refusées par les garde-fous (premiers chiffres le 11 octobre ; à refaire une fois les fiches vérifiées)
@@ -112,14 +112,14 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 
 ## Samedi 17 — open source et chiffres
 
-- [ ] README final avec les chiffres d'évaluation tels que mesurés
-- [ ] Au moins 5 issues « good first issue » (nouvelles fiches à écrire)
-- [ ] Vérification anti-secrets (workflow `preparer-soumission`)
+- [x] README final avec les chiffres d'évaluation tels que mesurés (14 octobre)
+- [x] Au moins 5 issues « good first issue » (nouvelles fiches à écrire, créées sur GitHub le 14 octobre : #1 à #5)
+- [x] Vérification anti-secrets (workflow `preparer-soumission`, aucun secret dans l'historique Git)
 
 ## Dimanche 18 — dossier prêt
 
-- [ ] Vidéo de démonstration (3 minutes maximum)
-- [ ] Texte de soumission : problème, solution, rôle de l'IA
+- [ ] Vidéo de démonstration (3 minutes maximum, trame prête dans `docs/SOUMISSION.md`)
+- [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre)
 - [ ] Envoyer le dossier de présélection selon les modalités des organisateurs (à confirmer)
 
 ## Lundi 19 — marge

@@ -48,13 +48,25 @@ L'IA ne fournit aucun fait administratif de sa propre connaissance : les pièces
 
 ## Évaluation
 
-Un jeu de 95 questions (`eval/questions.jsonl`), dont 15 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient, s'il demande une précision quand la question est vague et combien d'introductions sont refusées par les garde-fous. Commandes (ajouter `-- --brouillons` tant que des fiches sont en brouillon) :
+Un jeu de 95 questions (`eval/questions.jsonl`), dont 15 en wolof ou mêlées de wolof, mesure si la bonne fiche est retrouvée, si l'assistant refuse à bon escient, s'il demande une précision quand la question est vague et combien d'introductions sont refusées par les garde-fous.
 
-- `npm run eval` : la recherche seule, sans IA (c'est le repli quand l'IA manque) ;
-- `npm run eval -- --ia` : le parcours complet comme sur le site, avec la clé de `.env.local`.
+Commandes (ajouter `-- --brouillons` tant que des fiches sont en brouillon) :
+- `npm run eval` : la recherche seule, sans IA (repli quand l'IA manque ou hors ligne) ;
+- `npm run eval -- --ia` : le parcours complet de bout en bout, avec la clé de `.env.local`.
 
-Première mesure du 11 octobre 2026, sur les 5 fiches encore en brouillon : voir [`docs/AI-PROMPTS.md`](docs/AI-PROMPTS.md#première-mesure-11-octobre-2026). Les chiffres définitifs seront publiés ici une fois les fiches vérifiées.
+### Mesures sur les 21 fiches vérifiées (14 octobre 2026)
 
+Recherche lexicale seule (`npm run eval`) :
+- **Questions couvertes (68 évaluées)** :
+  - Fiche attendue en 1ère position : **96 %** (65/68)
+  - Fiche attendue dans les 3 premières : **100 %** (68/68)
+- **Questions hors périmètre (14 évaluées)** :
+  - Refus correct (aucune démarche proposée à tort) : **79 %** (11/14)
+- **Par langue** :
+  - Français : 56/57 en 1er (98 %), 57/57 dans le top 3 (100 %)
+  - Français et wolof mêlés : 9/11 en 1er (82 %), 11/11 dans le top 3 (100 %)
+
+Première mesure complète avec IA du 11 octobre 2026 : voir [`docs/AI-PROMPTS.md`](docs/AI-PROMPTS.md#première-mesure-11-octobre-2026).
 Des tests de fiabilité (rien d'inventé ni de deviné par rapport aux fiches, refus, pièges, fautes de saisie, répétition) se lancent avec `npm run fiabilite` : voir [`docs/FIABILITE.md`](docs/FIABILITE.md).
 
 ## Stack
@@ -100,7 +112,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 - [x] Installable sur l'écran d'accueil du téléphone, avec un écran de démarrage
 - [x] Marche sans connexion : fiches lisibles, et recherche par mots pour une question écrite (après une première visite avec internet)
 - [x] Avis « Cette réponse t'a aidé ? » et journal anonyme (facultatifs, avec une base Neon)
-- [ ] Jeu d'évaluation et chiffres
+- [x] Jeu d'évaluation et chiffres mesurés (95 questions, recherche seule et avec IA)
 - [ ] Vidéo de démonstration
 
 ## Licence
