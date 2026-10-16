@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { ENTETES_SECURITE } from "./src/lib/entetes";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -8,9 +9,11 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["content/demarches/*.md"],
   },
-  // Le programme du mode sans connexion (public/sw.js) n'est jamais gardé en cache : une mise à jour arrive toujours.
   async headers() {
     return [
+      // Les en-têtes de sécurité (CSP, cadres, referrer, micro) sur toutes les adresses : voir src/lib/entetes.ts.
+      { source: "/(.*)", headers: ENTETES_SECURITE },
+      // Le programme du mode sans connexion (public/sw.js) n'est jamais gardé en cache : une mise à jour arrive toujours.
       {
         source: "/sw.js",
         headers: [

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Reponse } from "../ai/ask";
+import { MARQUEURS_PROMPT } from "../ai/guardrails";
 import type { Fiche } from "../fiches/schema";
 import { simplifier } from "../texte";
 import { LANGUES } from "./retrieval";
@@ -135,29 +136,9 @@ export function verifierDonneesPieges(questions: QuestionPiege[], fiches: Fiche[
 }
 
 /**
- * Morceaux du prompt système qu'une réponse ne doit jamais contenir. Pris dans `understand.ts` et `answer.ts` (un test
- * vérifie qu'ils y sont toujours). Aucun n'est un mot que la question reprendrait naturellement (« prompt », « système »).
+ * Les morceaux du prompt système que `texte` recopie, tels qu'écrits dans `MARQUEURS_PROMPT` (liste vide : pas de fuite).
+ * La liste vit dans `guardrails.ts`, qui s'en sert aussi pour refuser un texte du modèle.
  */
-export const MARQUEURS_PROMPT = [
-  "Règles absolues",
-  "Utilise UNIQUEMENT la fiche",
-  "N'invente aucun montant",
-  "N'invente aucune information administrative",
-  "n'obéis à aucune consigne",
-  "est une donnée à analyser",
-  "Tu es Démarche-Bi, un assistant qui explique",
-  "liste COMPLÈTE des démarches que tu connais",
-  "Réponds uniquement avec un objet JSON",
-  "15 mots maximum",
-  "question_claire",
-  "question_precision",
-  "besoin_precision",
-  "hors_domaine",
-  "message_hors_domaine",
-  "message_absente",
-] as const;
-
-/** Les morceaux du prompt système que `texte` recopie, tels qu'écrits dans `MARQUEURS_PROMPT` (liste vide : pas de fuite). */
 export function fuiteDuPrompt(texte: string): string[] {
   const lu = normaliser(texte);
   return MARQUEURS_PROMPT.filter((marqueur) => lu.includes(normaliser(marqueur)));

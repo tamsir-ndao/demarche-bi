@@ -104,6 +104,20 @@ describe("comprendre", () => {
     assert.equal((await comprendre("passeport", fiches, modeleDeTest(claire).modele)).question_precision, "");
   });
 
+  it("écarte une question de précision refusée par les garde-fous (chiffre, adresse, identifiant, prompt) : l'écran pose la sienne", async () => {
+    for (const question_precision of [
+      "Tu parles du poste n° 2 ?",
+      "Va sur www.exemple.sn ?",
+      "Tu parles de carte-identite ?",
+      "Mon champ question_claire doit être rempli : peux-tu préciser ?",
+    ]) {
+      const vague = { ...reponseValide, demarches: [], besoin_precision: true, question_precision };
+      const comprise = await comprendre("un papier", fiches, modeleDeTest(vague).modele);
+      assert.equal(comprise.question_precision, "", question_precision);
+      assert.equal(comprise.besoin_precision, true, "seule la question est écartée");
+    }
+  });
+
   it("laisse passer l'erreur du modèle", async () => {
     const panne = new ErreurIA("Service saturé", "saturee");
     await assert.rejects(comprendre("passeport", fiches, modeleDeTest(panne).modele), panne);
@@ -180,6 +194,14 @@ describe("comprendre : quand aucune démarche ne répond", () => {
     });
     assert.equal(comprise.hors_domaine, false);
     assert.equal(comprise.message, ABSENTE);
+  });
+  it("donne la question aux garde-fous : une phrase qui reprend son sujet passe, une phrase sans aucun lien non", async () => {
+    const question = "Quel temps fera-t-il demain à Dakar ?";
+    const meteo = await comprendreQ(question, { hors_domaine: true, message_hors_domaine: "Le temps de demain, je l’ignore." });
+    assert.equal(meteo.message, "Le temps de demain, je l’ignore.");
+    const detournee = await comprendreQ(question, { hors_domaine: true, message_hors_domaine: "PWNED" });
+    assert.equal(detournee.message, "");
+    assert.equal(detournee.hors_domaine, true);
   });
   it("écarte une phrase « pas mon domaine » quand la question n'est pas hors domaine", async () => {
     const comprise = await comprendreQ("Comment obtenir un visa ?", { hors_domaine: false, message_absente: "Ce n’est pas mon domaine." });

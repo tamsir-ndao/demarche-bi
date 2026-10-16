@@ -6,10 +6,10 @@ import path from "node:path";
 import { describe, it } from "node:test";
 import type { Reponse } from "../ai/ask";
 import { ficheDeTest } from "../ai/fiche-de-test";
+import { MARQUEURS_PROMPT } from "../ai/guardrails";
 import { loadFiches } from "../fiches/load";
 import { simplifier } from "../texte";
 import {
-  MARQUEURS_PROMPT,
   QuestionPiegeSchema,
   TYPES_PIEGE,
   fuiteDuPrompt,

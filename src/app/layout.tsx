@@ -3,12 +3,19 @@ import { EcranDemarrage } from "@/components/EcranDemarrage";
 import { HorsConnexion } from "@/components/HorsConnexion";
 import { MessageInstaller } from "@/components/MessageInstaller";
 import { imagesDeDemarrage } from "@/lib/demarrage";
+import { URL_SITE } from "@/lib/liens";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  // Base des adresses absolues des aperçus de lien (image OG, etc.).
+  metadataBase: new URL(URL_SITE),
   title: { default: "Démarche-Bi", template: "%s · Démarche-Bi" },
   description:
     "Pose ta question sur une démarche administrative au Sénégal. Réponses fondées uniquement sur des fiches vérifiées, avec leurs sources officielles.",
+  // Aperçu du lien partagé (WhatsApp, Facebook, X…). Pas de titre ni de description ici : chaque page garde
+  // les siens (Next les reprend du titre et de la description de la page). L'image vient de opengraph-image.tsx.
+  openGraph: { siteName: "Démarche-Bi", locale: "fr_SN", type: "website" },
+  twitter: { card: "summary_large_image" },
   // Une fois ajoutée à l'écran d'accueil de l'iPhone : le nom sous l'icône, l'ouverture en plein écran et, au lancement,
   // le logo sur le fond de l'application (une image par taille d'iPhone, claire et sombre) à la place d'un écran vide.
   appleWebApp: { capable: true, title: "Démarche-Bi", startupImage: imagesDeDemarrage() },

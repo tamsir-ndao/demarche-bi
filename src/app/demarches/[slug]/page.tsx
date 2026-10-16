@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { BoutonPartager } from "@/components/BoutonPartager";
 import { Carte } from "@/components/Carte";
 import { Etapes } from "@/components/Etapes";
 import { FaitsCles } from "@/components/FaitsCles";
@@ -121,6 +122,7 @@ async function Demarche({ params }: Pick<PageProps<"/demarches/[slug]">, "params
       <LienBouton href="/" icone="bulle" className="mt-5">
         Poser une question
       </LienBouton>
+      <BoutonPartager fiche={fiche} className="mt-2" />
     </>
   );
 }

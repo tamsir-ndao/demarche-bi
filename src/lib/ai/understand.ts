@@ -1,5 +1,5 @@
 import type { Fiche } from "../fiches/schema";
-import { ressembleAUneDemarche, verifierMessageSansReponse } from "./guardrails";
+import { ressembleAUneDemarche, verifierMessageSansReponse, verifierQuestionPrecision } from "./guardrails";
 import { ComprehensionSchema, type Comprehension } from "./schemas";
 import type { Modele } from "./structured";
 
@@ -67,12 +67,17 @@ export async function comprendre(question: string, fiches: Fiche[], modele: Mode
   // Garde-fou : une question qui parle d'une démarche n'est jamais « hors domaine », quoi qu'en dise le modèle.
   const horsDomaine = sansReponse && brute.hors_domaine && !ressembleAUneDemarche(question);
   const phrase = sansReponse ? (horsDomaine ? brute.message_hors_domaine : brute.message_absente) : "";
-  const message = verifierMessageSansReponse(phrase, { slugs: [...connus] }) ?? "";
+  const slugs = [...connus];
+  const message = verifierMessageSansReponse(phrase, { slugs, question }) ?? "";
+  // La question de précision passe par les garde-fous comme les autres textes du modèle ; refusée, l'écran pose la sienne.
+  const questionPrecision = brute.besoin_precision
+    ? (verifierQuestionPrecision(nettoyer(brute.question_precision, LONGUEUR_MAX_QUESTION_PRECISION), { slugs }) ?? "")
+    : "";
   return {
     question_claire: nettoyer(brute.question_claire, LONGUEUR_MAX_QUESTION_CLAIRE),
     demarches,
     besoin_precision: brute.besoin_precision,
-    question_precision: brute.besoin_precision ? nettoyer(brute.question_precision, LONGUEUR_MAX_QUESTION_PRECISION) : "",
+    question_precision: questionPrecision,
     hors_domaine: horsDomaine,
     // Une phrase « pas mon domaine » n'a pas sa place quand la question n'est pas hors domaine.
     message: !horsDomaine && /mon domaine/i.test(message) ? "" : message,

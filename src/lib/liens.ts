@@ -1,3 +1,6 @@
+/** Adresse publique du site, sans barre finale : sert aux liens absolus (aperçus de lien, sitemap, robots). */
+export const URL_SITE = "https://demarche-bi.vercel.app";
+
 // Liens vers le dépôt public : c'est là qu'on propose une démarche ou qu'on corrige une fiche.
 export const REPO_URL = "https://github.com/tamsir-ndao/demarche-bi";
 

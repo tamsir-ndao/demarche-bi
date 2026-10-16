@@ -114,6 +114,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 - [x] Installable sur l'écran d'accueil du téléphone, avec un écran de démarrage
 - [x] Marche sans connexion : fiches lisibles, et recherche par mots pour une question écrite (après une première visite avec internet)
 - [x] Avis « Cette réponse t'a aidé ? » et journal anonyme (facultatifs, avec une base Neon)
+- [x] Partager une fiche sur WhatsApp (ou avec la feuille de partage du téléphone)
 - [x] Jeu d'évaluation et chiffres mesurés (95 questions, recherche seule et avec IA)
 - [ ] Vidéo de démonstration
 

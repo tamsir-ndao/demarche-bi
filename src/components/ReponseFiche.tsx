@@ -9,6 +9,7 @@ import type { Fiche } from "@/lib/fiches/schema";
 import { typographie } from "@/lib/texte";
 import { preparerLaLecture, scriptFiche } from "@/lib/voix/lecture";
 import { BoutonEcouter } from "./BoutonEcouter";
+import { BoutonPartager } from "./BoutonPartager";
 import { Carte } from "./Carte";
 import { CarteDemarche } from "./CarteDemarche";
 import { Etapes } from "./Etapes";
@@ -114,6 +115,7 @@ export function ReponseFiche({ fiche, statut, autres, intro, degrade }: ReponseF
       <LienBouton href="/" icone="bulle" className="mt-5">
         Poser une autre question
       </LienBouton>
+      <BoutonPartager fiche={fiche} className="mt-2" />
       <LienBouton href={`/demarches/${fiche.slug}`} variante="lien" className="mt-2">
         Voir tous les détails
       </LienBouton>

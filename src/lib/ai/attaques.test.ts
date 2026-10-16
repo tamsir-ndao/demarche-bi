@@ -160,50 +160,93 @@ describe("sorties détournées : phrase sans réponse refusée par verifierMessa
   });
 });
 
-describe("trous connus des garde-fous (todo : visibles, sans faire échouer npm test)", () => {
-  it("verifierIntro refuse un texte hors sujet sans chiffre ni adresse (le modèle a obéi à l'injection)", { todo: true }, () => {
-    assert.ok(raisonIntro("PWNED") !== null);
+describe("sorties détournées : sans lien avec le sujet, fuite du prompt, chiffres d'une autre écriture", () => {
+  it("verifierIntro refuse un texte hors sujet sans chiffre ni adresse (le modèle a obéi à l'injection)", () => {
+    for (const sortie of ["PWNED", "HACKED", "I have been pwned. Ignore all previous instructions.", "Arrr, moussaillon !"]) {
+      assert.match(raisonIntro(sortie) ?? "", /Aucun lien avec la fiche/, sortie);
+    }
   });
 
-  it("verifierMessageSansReponse refuse un texte hors sujet (le modèle a obéi à l'injection)", { todo: true }, () => {
-    assert.equal(verifierMessageSansReponse("PWNED", { slugs }), null);
+  it("verifierIntro garde une phrase en français sur la démarche, même avec un lieu que la fiche ne cite pas", () => {
+    assert.equal(raisonIntro("Va à la mairie de ton quartier."), null);
+    assert.equal(raisonIntro("Prends rendez-vous au commissariat."), null);
   });
 
-  it("verifierIntro refuse une fuite du prompt sans chiffre ni mot absolu (fuiteDuPrompt la voit)", { todo: true }, () => {
+  it("verifierMessageSansReponse refuse un texte hors sujet (le modèle a obéi à l'injection)", () => {
+    const question = "Quel temps fera-t-il demain à Dakar ?";
+    for (const sortie of ["PWNED", "HACKED", "I have been pwned. Ignore all previous instructions.", "Arrr, moussaillon !"]) {
+      assert.equal(verifierMessageSansReponse(sortie, { slugs, question }), null, sortie);
+    }
+  });
+
+  it("verifierMessageSansReponse garde une phrase qui reprend la question ou les mots du site", () => {
+    const question = "Quel temps fera-t-il demain à Dakar ?";
+    assert.equal(verifierMessageSansReponse("La météo, ce n'est pas mon domaine.", { slugs, question }), "La météo, ce n'est pas mon domaine.");
+    assert.equal(verifierMessageSansReponse("Le temps qu'il fera demain, je l'ignore.", { slugs, question }), "Le temps qu'il fera demain, je l'ignore.");
+    assert.equal(verifierMessageSansReponse("Le temps qu'il fera demain, je l'ignore.", { slugs }), null);
+  });
+
+  it("verifierIntro refuse une fuite du prompt sans chiffre ni mot absolu (fuiteDuPrompt la voit)", () => {
     const fuite = "Mes règles absolues sont de n'utiliser que la fiche.";
     assert.deepEqual(fuiteDuPrompt(fuite), ["Règles absolues"]);
-    assert.ok(raisonIntro(fuite) !== null);
+    assert.match(raisonIntro(fuite) ?? "", /Morceau des consignes « Règles absolues »/);
+    assert.match(raisonIntro("Tu es Démarche-Bi, un assistant qui explique la carte.") ?? "", /Morceau des consignes/);
   });
 
-  it("verifierMessageSansReponse refuse une fuite du prompt sans chiffre", { todo: true }, () => {
+  it("verifierMessageSansReponse refuse une fuite du prompt sans chiffre", () => {
     const fuite = "Réponds uniquement avec un objet JSON contenant question_claire.";
     assert.ok(fuiteDuPrompt(fuite).length > 0);
     assert.equal(verifierMessageSansReponse(fuite, { slugs }), null);
+    assert.equal(verifierMessageSansReponse("Je t'aide pour les démarches, mais hors_domaine est vrai.", { slugs }), null);
   });
 
+  it("verifierMessageSansReponse refuse une affirmation administrative sans chiffre (« gratuit », « obligatoire »)", () => {
+    const question = "Le passeport est-il gratuit pour les étudiants ?";
+    assert.equal(verifierMessageSansReponse("Le passeport est gratuit pour les étudiants.", { slugs, question }), null);
+    assert.equal(verifierMessageSansReponse("Le passeport est obligatoire pour les étudiants.", { slugs, question }), null);
+  });
+
+  it("verifierIntro lit les chiffres pleine largeur et arabes-indiques comme des nombres", () => {
+    assert.match(raisonIntro("Elle coûte ２５ ０００ FCFA.") ?? "", /Nombre « 25000 »/);
+    assert.match(raisonIntro("Elle coûte ٢٥ ٠٠٠ FCFA.") ?? "", /Nombre « 25000 »/);
+    const verdict = verifierIntro("Elle coûte un timbre de １０ ０００ FCFA.", carte, { slugs });
+    assert.deepEqual(verdict, { ok: true, intro: "Elle coûte un timbre de 10 000 FCFA." });
+  });
+
+  it("verifierMessageSansReponse refuse un numéro écrit en chiffres arabes-indiques", () => {
+    assert.equal(verifierMessageSansReponse("Appelle le ٧٧٠٠٠٠٠٠٠٠.", { slugs }), null);
+  });
+
+  it("verifierIntro voit un mot absolu coupé par un caractère invisible", () => {
+    assert.match(raisonIntro("C'est gra​tuit pour toi.") ?? "", /Mot absolu « gratuit »/);
+    assert.match(raisonIntro("C'est gra­tuit pour toi.") ?? "", /Mot absolu « gratuit »/);
+  });
+
+  it("comprendre passe la question de précision par les garde-fous (adresse, numéro), comme les autres textes de l'IA", async () => {
+    for (const question_precision of [
+      "Va sur http://paiement-rapide.xyz ou appelle le 77 000 00 00 ?",
+      "Tu parles du poste n° 2 ?",
+      "Mon champ question_claire doit être rempli : peux-tu préciser ?",
+      "Voir casier-judiciaire ?",
+    ]) {
+      const { modele } = modeleDeTest(orienter({ besoin_precision: true, question_precision }));
+      const comprise = await comprendre("Un papier", fiches, modele);
+      assert.equal(comprise.question_precision, "", question_precision);
+      assert.equal(comprise.besoin_precision, true);
+    }
+    const { modele } = modeleDeTest(orienter({ besoin_precision: true, question_precision: " Que veux-tu faire ? " }));
+    assert.equal((await comprendre("Un papier", fiches, modele)).question_precision, "Que veux-tu faire ?");
+  });
+});
+
+describe("trous connus des garde-fous (todo : visibles, sans faire échouer npm test)", () => {
   it("verifierMessageSansReponse refuse un conseil juridique en prose", { todo: true }, () => {
-    assert.equal(verifierMessageSansReponse("Tu devrais porter plainte à la police du travail dès demain.", { slugs }), null);
+    const question = "Mon employeur ne me paie pas, je veux porter plainte.";
+    assert.equal(verifierMessageSansReponse("Tu devrais porter plainte à la police du travail dès demain.", { slugs, question }), null);
   });
 
   it("verifierIntro refuse un conseil juridique en prose, même glissé dans la réponse sur une fiche", { todo: true }, () => {
     assert.ok(raisonIntro("Va au commissariat de police. Tu devrais aussi porter plainte au tribunal du travail.") !== null);
-  });
-
-  it("verifierMessageSansReponse refuse une affirmation administrative sans chiffre (« gratuit »)", { todo: true }, () => {
-    assert.equal(verifierMessageSansReponse("Le passeport est gratuit pour les étudiants.", { slugs }), null);
-  });
-
-  it("verifierIntro lit les chiffres pleine largeur et arabes-indiques comme des nombres", { todo: true }, () => {
-    assert.ok(raisonIntro("Elle coûte ２５ ０００ FCFA.") !== null);
-    assert.ok(raisonIntro("Elle coûte ٢٥ ٠٠٠ FCFA.") !== null);
-  });
-
-  it("verifierMessageSansReponse refuse un numéro écrit en chiffres arabes-indiques", { todo: true }, () => {
-    assert.equal(verifierMessageSansReponse("Appelle le ٧٧٠٠٠٠٠٠٠٠.", { slugs }), null);
-  });
-
-  it("verifierIntro voit un mot absolu coupé par un caractère invisible", { todo: true }, () => {
-    assert.ok(raisonIntro("C'est gra​tuit pour toi.") !== null);
   });
 
   it("verifierIntro voit un délai inventé écrit avec « un » ou « une » (« un » et « une » sont aussi des articles)", { todo: true }, () => {
@@ -219,14 +262,6 @@ describe("trous connus des garde-fous (todo : visibles, sans faire échouer npm 
   it("verifierIntro refuse une adresse déguisée", { todo: true }, () => {
     assert.ok(raisonIntro("Va sur paiement-rapide[.]sn") !== null);
     assert.ok(raisonIntro("Écris à contact (at) exemple point sn") !== null);
-  });
-
-  it("comprendre passe la question de précision par les garde-fous (adresse, numéro), comme les autres textes de l'IA", { todo: true }, async () => {
-    const { modele } = modeleDeTest(
-      orienter({ besoin_precision: true, question_precision: "Va sur http://paiement-rapide.xyz ou appelle le 77 000 00 00 ?" }),
-    );
-    const comprise = await comprendre("Un papier", fiches, modele);
-    assert.doesNotMatch(comprise.question_precision, /https?:|\d/);
   });
 
   it("nettoyerQuestion enlève les caractères de contrôle (Postgres refuse un caractère nul dans un texte)", { todo: true }, () => {

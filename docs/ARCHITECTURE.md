@@ -36,6 +36,8 @@ src/
     a-propos/             à propos pour les utilisateurs : sources, « je ne devine pas », ouvert à tous, tes données
     projet/               pour le jury et les contributeurs : questions fréquentes, liens GitHub ; hors menu, lien discret au bas d'« À propos »
     not-found.tsx         page introuvable
+    error.tsx             page d'erreur en français (« Quelque chose a cassé. », bouton « Réessayer ») ; global-error.tsx : la même, autonome, si le cadre lui-même casse
+    robots.ts             robots.txt (tout sauf /api, /reponse et /hors-connexion) ; sitemap.ts : pages fixes et fiches visibles (testé) ; opengraph-image.tsx : l'image d'aperçu de lien (1200×630, prérendue)
     globals.css           couleurs, mode sombre, animations (design « doux »)
     manifest.ts           nom, couleurs et icônes de l'application installable (+ apple-icon.png, favicon.ico, public/icons/)
     hors-connexion/       page de secours quand une question ne peut pas partir (recherche par mots dans les fiches du téléphone) et donnees.json (pages à copier + fiches) ; le programme est public/sw.js
@@ -47,11 +49,13 @@ src/
                           voix (BoutonVoix : fenêtre et état ; VoixEcrans : les écrans d'enregistrement, de transcription, de vérification et d'erreur),
                           message d'installation sur l'écran d'accueil du téléphone (MessageInstaller),
                           réponse à voix haute (BoutonEcouter), écran de démarrage des téléphones (EcranDemarrage),
-                          avis « Cette réponse t'a aidé ? » (AvisReponse),
+                          avis « Cette réponse t'a aidé ? » (AvisReponse), partage d'une fiche (BoutonPartager),
                           mode sans connexion (HorsConnexion : enregistre le service worker et affiche le bandeau ; ResultatsHorsConnexion : la page de secours)
   lib/
     texte.ts              petits outils de texte (accents, question de l'adresse, apostrophes, ponctuation française)
-    liens.ts              liens vers le dépôt GitHub
+    liens.ts              liens vers le dépôt GitHub et adresse publique du site (URL_SITE)
+    partage.ts            texte et lien WhatsApp du partage d'une fiche (calcul pur, testé)
+    entetes.ts            les en-têtes de sécurité (CSP, cadres, referrer, micro), envoyés par next.config.ts (testé)
     demarrage.ts          écran de démarrage : le script « une fois par ouverture » et les 26 images de démarrage de l'iPhone (testé)
     installation.ts       message « Installe Démarche-Bi » : quand l'afficher (Android, Safari de l'iPhone), silence de 14 jours après « Plus tard » (calcul pur, testé)
     hors-connexion/       mode sans connexion : pages à copier, lecture des données, rythme des mises à jour, tests du service worker (sw.test.ts)
@@ -121,6 +125,9 @@ Design « doux » (vert, blanc, noir adouci) : les couleurs sont des variables C
 - `/demarches` et `/demarches/[slug]` : une page statique par fiche, créée à la construction du site. Une fiche non montrable (brouillon en production) répond 404.
 - Hors l'introduction écrite par l'IA (signalée à l'écran), l'écran n'ajoute aucune information : un `cout`, `delai` ou `lieu` à `null` s'affiche « Non précisé » ; les notes qui contiennent « à confirmer » sont mises en avant ; les apostrophes des fiches deviennent typographiques à l'affichage seulement.
 - `src/lib/fiches/affichage.ts` prépare les textes (fonctions pures, testées) ; `src/components/` contient les composants.
+- Partager : sur une fiche (`/demarches/[slug]`, et sous la fiche répondue sur `/reponse`), le bouton « Partager » (`BoutonPartager`) ouvre la feuille de partage du téléphone (`navigator.share`) ; sans elle, il ouvre WhatsApp (`wa.me`) dans un nouvel onglet et copie l'adresse (« Lien copié » pendant 2 secondes). Le texte (titre, résumé coupé à 160 caractères, adresse absolue lue au clic) vient de `src/lib/partage.ts`. Aucun script tiers, aucun suivi.
+- Aperçu de lien et moteurs de recherche : `layout.tsx` donne `metadataBase` (`URL_SITE`), `openGraph` (`siteName`, `locale: "fr_SN"`) et `twitter` (`summary_large_image`) par défaut ; chaque page hérite `og:title` et `og:description` de son `generateMetadata` et l'image vient de `src/app/opengraph-image.tsx` (fond vert du site, polices du système, prérendue). `robots.ts` exclut `/api/`, `/reponse` (la question est dans l'adresse) et `/hors-connexion` ; `sitemap.ts` liste l'accueil, les pages fixes et les fiches visibles (`lastModified` = `verifie_le`, jamais un brouillon en production).
+- Erreur : `error.tsx` (dans le cadre de page, même carte que « Interdit ») et `global-error.tsx` (autonome, avec son propre `<html lang="fr">` et des styles en ligne, si le cadre lui-même casse) : « Quelque chose a cassé. », bouton « Réessayer », liens vers l'accueil et les démarches. Seul `error.digest` part en console, jamais le message : il pourrait citer une question.
 
 ## Recherche par mots (repli sans IA)
 
@@ -131,8 +138,8 @@ Recherche lexicale écrite en code : normalisation (minuscules, accents retirés
 1. Le modèle ne reçoit que la liste des fiches puis **une** fiche ; il ne lit jamais le site ni Internet.
 2. Ses sorties suivent un schéma JSON strict puis sont relues par Zod ; un identifiant de fiche qu'il invente est ignoré.
 3. Il n'écrit que l'introduction. Pièces, étapes, coût, délai, lieu et sources viennent de la fiche, mot pour mot.
-4. L'introduction est refusée si elle contient un nombre, une adresse web ou e-mail, un balisage, un identifiant interne ou un mot absolu (« seule », « gratuit », « toujours »…) que la fiche ne contient pas, ou si elle dépasse 450 caractères. Le modèle a une seconde chance avec la raison du refus ; ensuite la fiche est montrée sans introduction.
-5. Si la question concerne une pratique frauduleuse, falsifiée, corrompue ou illégale (faux papiers, falsification, corruption, pot-de-vin, fraude…) : « Interdit par la loi » (refus déterministe immédiat en code pur). Si la question n'est qu'une salutation (« Bonjour », « Salam aleykoum », « Nanga def »…) : « Salam aleykoum ! » et une invitation à poser sa question, sans appel au modèle (code pur aussi). Si le modèle dit que la fiche ne traite pas la question, ou si aucune démarche ne correspond : « Je ne sais pas encore » ; si le modèle juge que la question n'a aucun rapport avec les démarches administratives : « Ce n'est pas mon domaine ». Dans ces deux derniers cas, une phrase écrite pour la question remplace la phrase habituelle quand elle passe `verifierMessageSansReponse`.
+4. L'introduction est refusée si elle contient un nombre, une adresse web ou e-mail, un balisage, un identifiant interne ou un mot absolu (« seule », « gratuit », « toujours »…) que la fiche ne contient pas, un morceau du prompt (`MARQUEURS_PROMPT` : « Règles absolues », « question_claire »…), si aucun de ses mots n'a de lien avec la fiche (même racine qu'un mot de la fiche ou de ses mots-clés, ou un mot-outil du français : un modèle qui obéit à une injection écrit « PWNED » ou de l'anglais), ou si elle dépasse 450 caractères. Avant tout contrôle, les caractères invisibles sont retirés et les chiffres pleine largeur ou arabes-indiques ramenés en chiffres ordinaires. Le modèle a une seconde chance avec la raison du refus ; ensuite la fiche est montrée sans introduction.
+5. Si la question concerne une pratique frauduleuse, falsifiée, corrompue ou illégale (faux papiers, falsification, corruption, pot-de-vin, fraude…) : « Interdit par la loi » (refus déterministe immédiat en code pur). Si la question n'est qu'une salutation (« Bonjour », « Salam aleykoum », « Nanga def »…) : « Salam aleykoum ! » et une invitation à poser sa question, sans appel au modèle (code pur aussi). Si le modèle dit que la fiche ne traite pas la question, ou si aucune démarche ne correspond : « Je ne sais pas encore » ; si le modèle juge que la question n'a aucun rapport avec les démarches administratives : « Ce n'est pas mon domaine ». Dans ces deux derniers cas, une phrase écrite pour la question remplace la phrase habituelle quand elle passe `verifierMessageSansReponse` : ni chiffre, ni montant, ni adresse, ni balisage, ni « gratuit » ou « obligatoire » (une affirmation sans fiche), ni morceau du prompt, et au moins un mot pris dans la question ou dans le vocabulaire du site (« domaine », « source », « fiche »…). La question de précision écrite à l'étape « comprendre » passe de même par `verifierQuestionPrecision` (ni nombre, ni adresse, ni balisage, ni morceau du prompt) ; refusée, l'écran pose sa question habituelle.
 6. Une phrase écrite par l'IA est signalée à l'écran (« Phrase écrite par l'IA, d'après la fiche. »).
 7. Le quota gratuit est protégé : mémoire des questions déjà posées (6 heures, 300 questions) et 10 questions par minute et par visiteur. Ces deux outils vivent dans l'instance du serveur : ils aident sur Vercel sans rien garantir.
 
@@ -215,6 +222,10 @@ Le site marche sans réseau, une fois ouvert **une fois avec internet**. Le prog
 - **Tests** : `src/lib/hors-connexion/*.test.ts` (règles du programme chargé dans un faux navigateur, données, rythme) ; et un essai réel dans Chrome avec le réseau coupé (installation, accueil à froid, lecture des fiches, question écrite, micro, axe, retour du réseau).
 
 Limites connues : il faut une première visite avec internet ; sur iPhone, installer l'application sur l'écran d'accueil (dans Safari, l'iPhone peut effacer les copies d'un site resté une semaine sans visite) ; certaines voix Android pour la lecture à voix haute ont besoin d'internet ; une page sans copie (fiche ajoutée depuis la dernière mise à jour) montre la page de secours ; le bandeau lit `navigator.onLine`, qui reste vrai avec un Wi-Fi sans internet : il ne s'affiche pas alors, mais la question qui échoue mène quand même à la page de secours, et le délai de 4 s gère le réseau lent.
+
+## En-têtes de sécurité
+
+`src/lib/entetes.ts` (testé) donne la liste, `next.config.ts` l'envoie sur toutes les adresses. La CSP n'autorise que notre origine pour chaque ressource (`default-src 'self'`, puis une directive par type ; `img-src` accepte aussi `data:` pour les petites images en ligne, dont celle que l'afficheur XML de Chrome dessine sur `/sitemap.xml`), interdit les cadres (`frame-ancestors 'none'`), les objets (`object-src 'none'`), un `<base>` détourné et un formulaire envoyé ailleurs. Pas de nonce (pages prérendues, pas de proxy) : Next a besoin de `'unsafe-inline'` pour ses scripts et styles en ligne (dont le script de l'écran de démarrage), et `'unsafe-eval'` n'est ajouté qu'en développement. La CSP sert donc surtout à bloquer les cadres, les objets et tout script, image, police ou connexion tiers. Avec elle : `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` (en partant vers une source officielle, la question de `/reponse?q=` ne quitte jamais le site) et `Permissions-Policy` (micro pour nous seulement ; caméra, position et paiement interdits). Vérifié dans Chrome le 16 octobre (accueil, liste, fiche, question, micro, service worker, image OG, robots, sitemap) : aucune violation.
 
 ## Données (optionnel)
 

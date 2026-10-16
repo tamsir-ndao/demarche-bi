@@ -62,7 +62,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Masque de vie privée du journal (`src/lib/avis/anonymiser.ts`) : e-mails, téléphones et numéros longs masqués avant l'écriture de la question et du commentaire
 - [x] `npm run fiabilite` (`scripts/fiabilite.ts`) : sans IA (jeux validés, nombre d'appels, recherche seule) ou avec `--ia` (fidélité, refus, pièges, saisie, répétition), sans écriture dans le journal ; documenté dans `docs/FIABILITE.md`
 - [x] Première mesure de fiabilité avec l'IA : l'échantillon fait le 14 octobre (69 questions : 0 inventé, 0 deviné, refus 9/10, pièges 8/10, stabilité 3/3 ; chiffres dans `docs/FIABILITE.md` et le README). Reste : les blocs complets (`--bloc=…`, ≈ 299 appels, à étaler sur deux jours à cause du quota) si le temps le permet avant le 19
-- [ ] Décider quoi faire des trous connus de `docs/FIABILITE.md` (les `todo` de `src/lib/ai/attaques.test.ts`, la vie privée, la robustesse)
+- [x] Décider quoi faire des trous connus de `docs/FIABILITE.md` (les `todo` de `src/lib/ai/attaques.test.ts`, la vie privée, la robustesse) : 10 fermés, 7 restent (16 octobre, audit)
 - [ ] Faire relire par un locuteur wolof les questions `mixte` et `wo` des jeux de fiabilité (`eval/fiabilite-*.jsonl`)
 - [x] Corriger `docs/PRD.md` : « 52 questions » devenu 95, dont 15 en wolof, et dates de soumission (14 octobre)
 - [x] Salutation seule (« Bonjour », « Salam aleykoum », « Nanga def ») : réponse chaleureuse et invitation à poser sa question, en code pur sans appel au modèle (écran `Salutation`, voix, journal, mesures) ; testée (16 octobre)
@@ -110,6 +110,11 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [ ] Test sur téléphone et en connexion lente
 - [ ] Faire essayer à 2 ou 3 personnes, noter leurs questions et leurs remarques (les questions réelles s'ajoutent à `eval/questions.jsonl`)
 - [ ] Corriger ce qui bloque
+- [x] Audit du 16 octobre : bouton « Partager » sur une fiche (feuille de partage du téléphone, sinon WhatsApp et lien copié ; `src/lib/partage.ts` testé)
+- [x] Audit du 16 octobre : aperçu de lien (image OG prérendue, `metadataBase`, `openGraph` et `twitter` par défaut), `robots.txt` et `sitemap.xml` (fiches visibles seulement, testé)
+- [x] Audit du 16 octobre : en-têtes de sécurité (CSP sans hôte tiers, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` ; `src/lib/entetes.ts` testé, vérifié dans Chrome : aucune violation)
+- [x] Audit du 16 octobre : page d'erreur en français (`error.tsx` et `global-error.tsx`, « Quelque chose a cassé. », bouton « Réessayer »)
+- [x] Audit du 16 octobre : garde-fous (texte sans lien avec la fiche ou la question, morceaux du prompt, chiffres Unicode et caractères invisibles, question de précision contrôlée) : 10 `todo` d'`attaques.test.ts` devenus de vrais tests, 7 restent
 
 ## Samedi 17 — open source et chiffres
 
