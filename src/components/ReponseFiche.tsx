@@ -8,6 +8,7 @@ import {
 import type { Fiche } from "@/lib/fiches/schema";
 import { typographie } from "@/lib/texte";
 import { preparerLaLecture, scriptFiche } from "@/lib/voix/lecture";
+import { Apparition } from "./Apparition";
 import { BoutonEcouter } from "./BoutonEcouter";
 import { BoutonPartager } from "./BoutonPartager";
 import { Carte } from "./Carte";
@@ -19,6 +20,7 @@ import { LienBouton } from "./LienBouton";
 import { NoteAConfirmer } from "./NoteAConfirmer";
 import { PastilleStatut } from "./Pastilles";
 import { Pieces } from "./Pieces";
+import { SectionRepliable } from "./SectionRepliable";
 import { SourcesRepliables } from "./Sources";
 
 type ReponseFicheProps = {
@@ -37,6 +39,9 @@ const MESSAGES_DEGRADE = {
   indisponible: "L’assistant ne répond pas pour l’instant. Voici la fiche, sans phrase de réponse.",
 } satisfies Record<NonNullable<Degrade>, string>;
 
+/** « Voir aussi » ne propose que les deux démarches les plus proches : le reste est dans la liste des démarches. */
+const VOIR_AUSSI_MAX = 2;
+
 /** Dit pourquoi la réponse arrive sans phrase d'introduction : la fiche, elle, reste complète. */
 function NoteAssistant({ degrade }: { degrade: NonNullable<Degrade> }) {
   return (
@@ -47,78 +52,124 @@ function NoteAssistant({ degrade }: { degrade: NonNullable<Degrade> }) {
   );
 }
 
-/** La réponse : tout vient de la fiche, avec ses sources. Seule la phrase d'introduction est écrite par l'IA, et vérifiée. */
+function pluriel(nombre: number, mot: string): string {
+  return `${nombre} ${mot}${nombre > 1 ? "s" : ""}`;
+}
+
+/**
+ * La réponse, en couches : d'abord ce qui répond (titre, phrase, coût, délai, lieu), puis ce qu'il faut apporter, puis
+ * les étapes et les sources repliées, puis la suite. Tout vient de la fiche, avec ses sources ; seule la phrase
+ * d'introduction est écrite par l'IA, et vérifiée. Les blocs apparaissent l'un après l'autre (voir Apparition) et
+ * chaque groupe porte `data-apparition`.
+ */
 export function ReponseFiche({ fiche, statut, autres, intro, degrade }: ReponseFicheProps) {
   const notesAConfirmer = notesDeLaFiche(fiche.corps).filter(estAConfirmer);
+  const nbEtapes = fiche.etapes.length;
 
   return (
-    <>
-      {degrade ? <NoteAssistant degrade={degrade} /> : null}
+    <Apparition>
+      {degrade ? (
+        <div data-apparition="entete">
+          <NoteAssistant degrade={degrade} />
+        </div>
+      ) : null}
 
       <Carte aria-labelledby="titre-reponse" className="mt-4">
-        <PastilleStatut statut={statut} />
-        <h1 id="titre-reponse" data-lecture="titre" className="mt-3 text-[26px] leading-8 font-bold tracking-[-0.01em]">
-          {fiche.titre}
-        </h1>
-        <p data-lecture="intro" className="mt-2 text-[17px] leading-[26px] text-ink-2">
-          {intro ? typographie(intro) : fiche.resume}
-        </p>
-        {intro ? (
-          <p className="mt-1.5 text-[13px] leading-[18px] text-ink-3">Phrase écrite par l’IA, d’après la fiche.</p>
+        <div data-apparition="entete">
+          <PastilleStatut statut={statut} />
+          <h1 id="titre-reponse" data-lecture="titre" className="mt-3 text-[26px] leading-8 font-bold tracking-[-0.01em]">
+            {fiche.titre}
+          </h1>
+        </div>
+        <div data-apparition="intro">
+          <p data-lecture="intro" className="mt-2 text-[17px] leading-[26px] text-ink-2">
+            {intro ? typographie(intro) : fiche.resume}
+          </p>
+          {intro ? (
+            <p className="mt-1.5 text-[13px] leading-[18px] text-ink-3">Phrase écrite par l’IA, d’après la fiche.</p>
+          ) : null}
+          <BoutonEcouter lignes={preparerLaLecture(scriptFiche({ fiche, statut, intro }))} className="mt-4" />
+        </div>
+        <div data-apparition="faits">
+          <FaitsCles fiche={fiche} variante="compacte" />
+        </div>
+        {notesAConfirmer.length === 1 ? (
+          <div data-apparition="a-confirmer">
+            <NoteAConfirmer texte={notesAConfirmer[0]} />
+          </div>
+        ) : notesAConfirmer.length > 1 ? (
+          <div data-apparition="a-confirmer" className="mt-4">
+            <SectionRepliable
+              icone="info"
+              titre="À confirmer"
+              detail={`${pluriel(notesAConfirmer.length, "point")} à vérifier avant de te déplacer`}
+              repere="a-confirmer"
+              fond="teinte"
+            >
+              {notesAConfirmer.map((note) => (
+                <NoteAConfirmer key={note} texte={note} />
+              ))}
+            </SectionRepliable>
+          </div>
         ) : null}
-        <BoutonEcouter lignes={preparerLaLecture(scriptFiche({ fiche, statut, intro }))} className="mt-4" />
-        <FaitsCles fiche={fiche} />
-        {notesAConfirmer.map((note) => (
-          <NoteAConfirmer key={note} texte={note} />
-        ))}
       </Carte>
 
-      <Carte className="mt-4">
-        {fiche.pieces.length > 0 ? (
-          <>
-            <h2 data-lecture="pieces" className="mb-1 text-xl leading-7 font-bold">
-              Ce qu’il faut apporter
-            </h2>
-            <Pieces pieces={fiche.pieces} />
-          </>
-        ) : null}
-        <h2 data-lecture="etapes" className={`mb-4 text-xl leading-7 font-bold ${fiche.pieces.length > 0 ? "mt-6" : ""}`}>
-          Les étapes
-        </h2>
-        <Etapes etapes={fiche.etapes} />
-      </Carte>
+      {fiche.pieces.length > 0 ? (
+        <Carte data-apparition="pieces" className="mt-4">
+          <h2 data-lecture="pieces" className="mb-1 text-xl leading-7 font-bold">
+            {"Ce qu’il faut apporter"}
+            <span className="ml-2 text-base font-normal text-ink-2">{pluriel(fiche.pieces.length, "pièce")}</span>
+          </h2>
+          <Pieces pieces={fiche.pieces} />
+        </Carte>
+      ) : null}
 
-      <div className="mt-4">
+      <div data-apparition="etapes" className="mt-4">
+        <SectionRepliable
+          icone="fleche-droite"
+          titre="Les étapes"
+          detail={nbEtapes === 1 ? "1 étape" : `${nbEtapes} étapes, dans l’ordre`}
+          repere="etapes"
+        >
+          <div className="pt-1 pl-1.5">
+            <Etapes etapes={fiche.etapes} />
+          </div>
+        </SectionRepliable>
+      </div>
+
+      <div data-apparition="sources" className="mt-4">
         <SourcesRepliables sources={fiche.sources} />
       </div>
 
-      {autres.length > 0 ? (
-        <section aria-labelledby="titre-voir-aussi" className="mt-6">
-          <h2 id="titre-voir-aussi" className="mb-3 px-1 text-base leading-[22px] font-bold">
-            Voir aussi
-          </h2>
-          <ul className="flex flex-col gap-3">
-            {autres.map((autre) => (
-              <li key={autre.slug}>
-                <CarteDemarche
-                  href={`/demarches/${autre.slug}`}
-                  titre={autre.titre}
-                  detail={resumeCoutDelai(autre)}
-                  icone={iconeCategorie(autre.categorie)}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <div data-apparition="suite">
+        {autres.length > 0 ? (
+          <section aria-labelledby="titre-voir-aussi" className="mt-6">
+            <h2 id="titre-voir-aussi" className="mb-3 px-1 text-base leading-[22px] font-bold">
+              Voir aussi
+            </h2>
+            <ul className="flex flex-col gap-3">
+              {autres.slice(0, VOIR_AUSSI_MAX).map((autre) => (
+                <li key={autre.slug}>
+                  <CarteDemarche
+                    href={`/demarches/${autre.slug}`}
+                    titre={autre.titre}
+                    detail={resumeCoutDelai(autre)}
+                    icone={iconeCategorie(autre.categorie)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
-      <LienBouton href="/" icone="bulle" className="mt-5">
-        Poser une autre question
-      </LienBouton>
-      <BoutonPartager fiche={fiche} className="mt-2" />
-      <LienBouton href={`/demarches/${fiche.slug}`} variante="lien" className="mt-2">
-        Voir tous les détails
-      </LienBouton>
-    </>
+        <LienBouton href="/" icone="bulle" className="mt-5">
+          Poser une autre question
+        </LienBouton>
+        <BoutonPartager fiche={fiche} className="mt-2" />
+        <LienBouton href={`/demarches/${fiche.slug}`} variante="lien" className="mt-2">
+          Voir tous les détails
+        </LienBouton>
+      </div>
+    </Apparition>
   );
 }

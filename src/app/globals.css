@@ -292,3 +292,37 @@ textarea:focus-visible {
     animation: none;
   }
 }
+
+/* Apparition progressive de la réponse (voir components/Apparition.tsx et lib/voix/apparition.ts) : un bloc caché
+   garde sa place (la page ne saute pas) mais n'est ni lisible par un lecteur d'écran ni focalisable, d'où
+   `visibility: hidden`. Une fois montré, il arrive en fondu et finit sans `transform` : pas de contexte
+   d'empilement qui gênerait le surlignage (`[data-lecture]::before`). Sans JavaScript ou animations coupées, tout
+   est visible d'emblée. */
+[data-apparition-racine] [data-apparition]:not([data-visible]) {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+}
+[data-apparition-racine] [data-apparition][data-visible] {
+  animation: apparition 260ms ease-out both;
+}
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  /* Aussi précis que les règles du dessus (trois attributs), sinon elles l'emporteraient. */
+  [data-apparition-racine] [data-apparition]:not([data-visible]),
+  [data-apparition-racine] [data-apparition][data-visible] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
