@@ -162,10 +162,11 @@
   outline-offset: 3px;
 }
 
-/* Les champs ont déjà leur bord qui passe au vert ; le contour suit le bord arrondi, sans décalage. */
+/* Les champs : un seul trait fin, posé sur leur bord (qui passe au vert), plutôt que le contour épais des boutons. */
 input:focus-visible,
 textarea:focus-visible {
-  outline-offset: 0;
+  outline-width: 2px;
+  outline-offset: -1.5px;
 }
 
 /* Les titres des écrans de la voix reçoivent le focus à chaque changement d'écran (pour le lecteur d'écran) : pas de cadre. */
