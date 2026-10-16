@@ -32,7 +32,9 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
 
   return (
     <>
-      <div className="relative mt-4">
+      {/* Ordinateur : la recherche et les catégories sur une même ligne, puis les cartes sur deux colonnes. */}
+      <div className="lg:mt-5 lg:flex lg:flex-wrap lg:items-center lg:gap-x-5 lg:gap-y-3">
+      <div className="relative mt-4 lg:mt-0 lg:w-[380px] lg:flex-none">
         <label htmlFor="filtre-demarches" className="sr-only">
           Chercher une démarche
         </label>
@@ -49,7 +51,7 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
       </div>
 
       {categories.length > 1 ? (
-        <div role="group" aria-label="Catégories" className="mt-4 flex flex-wrap gap-2">
+        <div role="group" aria-label="Catégories" className="mt-4 flex flex-wrap gap-2 lg:mt-0 lg:min-w-0 lg:flex-1">
           <button
             type="button"
             aria-pressed={categorie === null}
@@ -71,13 +73,14 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
           ))}
         </div>
       ) : null}
+      </div>
 
-      <p aria-live="polite" className="mx-1 mt-4 text-sm leading-5 text-ink-2">
+      <p aria-live="polite" className="mx-1 mt-4 text-sm leading-5 text-ink-2 lg:mt-6">
         {visibles.length === 0 ? "Aucune démarche" : `${visibles.length} ${visibles.length > 1 ? "démarches" : "démarche"}`}
       </p>
 
       {visibles.length > 0 ? (
-        <ul className="mt-3 flex flex-col gap-3">
+        <ul className="mt-3 flex flex-col gap-3 lg:grid lg:grid-cols-2 lg:gap-4">
           {visibles.map((demarche) => (
             <li key={demarche.slug}>
               <CarteDemarche

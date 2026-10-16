@@ -25,8 +25,8 @@ export default function Page() {
   );
 
   return (
-    <PageShell actif="demarches">
-      <h1 className="mx-1 mt-3 text-[32px] leading-[38px] font-bold tracking-[-0.01em]">Les démarches</h1>
+    <PageShell actif="demarches" large>
+      <h1 className="mx-1 mt-3 text-[32px] leading-[38px] font-bold tracking-[-0.01em] lg:mt-6 lg:text-[40px] lg:leading-[46px]">Les démarches</h1>
 
       {fiches.length > 0 ? (
         <ListeDemarches demarches={demarches} categories={categories} />

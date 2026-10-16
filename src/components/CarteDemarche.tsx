@@ -21,7 +21,7 @@ export function CarteDemarche({ href, titre, detail, icone, variante = "demarche
   return (
     <Link
       href={href}
-      className="press flex min-h-[88px] items-center gap-3.5 rounded-3xl bg-card py-3.5 pr-4 pl-3.5 transition-colors hover:bg-tint"
+      className="press flex h-full min-h-[88px] items-center gap-3.5 rounded-3xl bg-card py-3.5 pr-4 pl-3.5 transition-colors hover:bg-tint"
     >
       <span
         aria-hidden="true"
@@ -31,7 +31,8 @@ export function CarteDemarche({ href, titre, detail, icone, variante = "demarche
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-[17px] leading-6 font-bold">{titre}</span>
-        <span className="mt-0.5 block text-sm leading-5 text-ink-2">{detail}</span>
+        {/* Sur ordinateur, deux lignes au plus : le détail complet est sur la fiche. */}
+        <span className="mt-0.5 block text-sm leading-5 text-ink-2 lg:line-clamp-2">{detail}</span>
       </span>
       <Icon name="chevron-droite" className="flex-none text-ink-2" />
     </Link>
