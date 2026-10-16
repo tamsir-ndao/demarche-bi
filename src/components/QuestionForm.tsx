@@ -21,7 +21,7 @@ export function QuestionForm({ id, valeurInitiale }: { id: string; valeurInitial
         autoComplete="off"
         enterKeyHint="search"
         placeholder="Écris ta question"
-        className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-16 pl-[22px] text-[17px] leading-6 text-ink shadow-soft placeholder:text-ink-3 focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow),var(--sh)] lg:h-16 lg:pr-[76px] lg:pl-[26px] lg:text-lg"
+        className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-16 pl-[22px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow)] lg:h-16 lg:pr-[76px] lg:pl-[26px] lg:text-lg"
       />
       <button
         type="submit"

@@ -41,7 +41,7 @@ export default function Page() {
         </h2>
         <div className="flex flex-col gap-2">
           {QUESTIONS.map(({ question, reponse }) => (
-            <details key={question} className="group rounded-3xl bg-card shadow-soft">
+            <details key={question} className="group rounded-3xl bg-card">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 rounded-3xl px-[18px] py-3 text-base leading-[22px] font-bold [&::-webkit-details-marker]:hidden">
                 {question}
                 <Icon name="chevron-bas" className="flex-none transition-transform group-open:rotate-180" />

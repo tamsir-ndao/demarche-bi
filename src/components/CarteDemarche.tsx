@@ -21,7 +21,7 @@ export function CarteDemarche({ href, titre, detail, icone, variante = "demarche
   return (
     <Link
       href={href}
-      className="press flex min-h-[88px] items-center gap-3.5 rounded-3xl bg-card py-3.5 pr-4 pl-3.5 shadow-soft transition-colors hover:bg-tint"
+      className="press flex min-h-[88px] items-center gap-3.5 rounded-3xl bg-card py-3.5 pr-4 pl-3.5 transition-colors hover:bg-tint"
     >
       <span
         aria-hidden="true"

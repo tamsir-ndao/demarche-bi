@@ -33,7 +33,7 @@ function EnTete({ onFermer, children }: { onFermer: () => void; children?: React
         type="button"
         onClick={onFermer}
         aria-label="Annuler"
-        className="press flex size-11 items-center justify-center rounded-full bg-card shadow-soft"
+        className="press flex size-11 items-center justify-center rounded-full bg-card"
       >
         <Icon name="croix" size={20} />
       </button>
@@ -112,7 +112,7 @@ export function VoixEnregistrement({
         <p
           role="timer"
           aria-label="Durée de l’enregistrement"
-          className="flex h-9 items-center gap-2 rounded-full bg-card px-3.5 text-[15px] leading-5 font-semibold tabular-nums shadow-soft"
+          className="flex h-9 items-center gap-2 rounded-full bg-card px-3.5 text-[15px] leading-5 font-semibold tabular-nums"
         >
           <span aria-hidden="true" className="size-2 animate-pulse-dot rounded-full bg-brand" />
           {formaterDuree(ecouleMs)}
@@ -180,7 +180,7 @@ export function VoixVerification({
           C’est bien ça&nbsp;?
         </h2>
 
-        <div className="mt-5 rounded-[28px] border-2 border-edge bg-card px-5 pt-[18px] pb-4 shadow-soft transition-shadow focus-within:border-leaf focus-within:shadow-[0_0_0_4px_var(--glow),var(--sh)]">
+        <div className="mt-5 rounded-[28px] border-2 border-edge bg-card px-5 pt-[18px] pb-4 transition-shadow focus-within:border-leaf focus-within:shadow-[0_0_0_4px_var(--glow)]">
           <label htmlFor="question-voix" className="block text-[13px] leading-[18px] font-bold text-ink-2">
             Ta question
           </label>

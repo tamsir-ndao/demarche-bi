@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 type Fond = "blanc" | "teinte";
 
 const FONDS: Record<Fond, string> = {
-  blanc: "bg-card p-5 shadow-soft",
+  blanc: "bg-card p-5",
   teinte: "bg-tint p-5",
 };
 

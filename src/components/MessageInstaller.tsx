@@ -123,7 +123,7 @@ export function MessageInstaller() {
       aria-labelledby="titre-installation"
       // Sur téléphone seulement, 8 px au-dessus du menu du bas : le menu (PageShell) mesure 60 px plus sa marge du bas
       // (au moins 12 px, ou la zone du geste de l'iPhone), d'où 4,25 rem (68 px) plus cette marge.
-      className="fixed inset-x-3 bottom-[calc(4.25rem+max(0.75rem,env(safe-area-inset-bottom)))] z-20 mx-auto max-w-[480px] rounded-3xl border border-line bg-card p-4 shadow-soft transition-[opacity,translate] duration-300 starting:translate-y-4 starting:opacity-0 lg:hidden"
+      className="fixed inset-x-3 bottom-[calc(4.25rem+max(0.75rem,env(safe-area-inset-bottom)))] z-20 mx-auto max-w-[480px] rounded-3xl border border-line bg-card p-4 transition-[opacity,translate] duration-300 starting:translate-y-4 starting:opacity-0 lg:hidden"
     >
       <div className="flex items-start gap-3.5">
         <span

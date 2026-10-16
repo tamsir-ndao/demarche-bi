@@ -24,13 +24,11 @@ export default function ErreurGlobale({ error, retry }: { error: Error & { diges
             color-scheme: light dark;
             --bg: #f4faf6; --card: #ffffff; --ink: #0f2a1e; --ink2: #3e5a4b; --edge: #4f9068;
             --g: #22d183; --gd: #0e7c46; --on-g: #0f2a1e;
-            --sh: 0 1px 2px rgb(15 42 30 / 0.06), 0 10px 30px rgb(15 42 30 / 0.08);
           }
           @media (prefers-color-scheme: dark) {
             :root {
               --bg: #161718; --card: #1f2021; --ink: #ececec; --ink2: #b4b8bb; --edge: #767b80;
               --gd: #3ddc91; --on-g: #0a2016;
-              --sh: 0 1px 2px rgb(0 0 0 / 0.35), 0 10px 30px rgb(0 0 0 / 0.35);
             }
           }
           body {
@@ -38,7 +36,7 @@ export default function ErreurGlobale({ error, retry }: { error: Error & { diges
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased;
           }
           main { max-width: 720px; margin: 0 auto; padding: 16px; }
-          section { background: var(--card); border-radius: 28px; padding: 24px 20px; box-shadow: var(--sh); }
+          section { background: var(--card); border-radius: 28px; padding: 24px 20px; }
           h1 { margin: 16px 0 0; font-size: 28px; line-height: 34px; letter-spacing: -0.01em; }
           p { margin: 8px 0 0; font-size: 17px; line-height: 26px; color: var(--ink2); }
           .bouton {

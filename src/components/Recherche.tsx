@@ -26,7 +26,7 @@ export function Recherche() {
       <h1 id="titre-recherche" className="mt-4 text-[30px] leading-9 font-bold tracking-[-0.01em]">
         Je cherche…
       </h1>
-      <ol className="mt-6 w-full rounded-3xl bg-card px-[18px] py-1.5 text-left shadow-soft">
+      <ol className="mt-6 w-full rounded-3xl bg-card px-[18px] py-1.5 text-left">
         {ETAPES.map(({ libelle, decalage }) => (
           <li key={libelle} className="flex min-h-14 items-center gap-3.5 border-b border-line last:border-b-0">
             <span aria-hidden="true" className="relative flex size-7 flex-none items-center justify-center">

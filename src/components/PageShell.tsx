@@ -95,7 +95,7 @@ export function PageShell({ actif, retour, large = false, children }: PageShellP
           <Link
             href={retour.href}
             aria-label={retour.libelle}
-            className="press flex size-11 items-center justify-center rounded-full bg-card shadow-soft lg:hidden"
+            className="press flex size-11 items-center justify-center rounded-full bg-card lg:hidden"
           >
             <Icon name="fleche-gauche" />
           </Link>

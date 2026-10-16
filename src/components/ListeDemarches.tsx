@@ -44,7 +44,7 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
           onChange={(evenement) => setTexte(evenement.target.value)}
           autoComplete="off"
           placeholder="Chercher une démarche"
-          className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-5 pl-[52px] text-[17px] leading-6 text-ink shadow-soft placeholder:text-ink-3 focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow),var(--sh)]"
+          className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-5 pl-[52px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow)]"
         />
       </div>
 
@@ -90,7 +90,7 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
           ))}
         </ul>
       ) : (
-        <p className="mt-3 rounded-3xl bg-card p-5 text-base leading-6 text-ink-2 shadow-soft">
+        <p className="mt-3 rounded-3xl bg-card p-5 text-base leading-6 text-ink-2">
           Aucune démarche ne correspond. Essaie avec d’autres mots.
         </p>
       )}

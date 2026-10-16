@@ -32,7 +32,7 @@ export function ListeSources({ sources }: { sources: Source[] }) {
 export function SourcesRepliables({ sources }: { sources: Source[] }) {
   const { titre, detail } = resumeSources(sources);
   return (
-    <details className="group rounded-3xl bg-card shadow-soft">
+    <details className="group rounded-3xl bg-card">
       <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 rounded-3xl py-3 pr-[18px] pl-3.5 [&::-webkit-details-marker]:hidden">
         <span className="flex size-10 flex-none items-center justify-center rounded-full bg-tint text-leaf">
           <Icon name="institution" />
