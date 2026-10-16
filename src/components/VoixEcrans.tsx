@@ -186,6 +186,7 @@ export function VoixVerification({
           </label>
           <textarea
             id="question-voix"
+            data-sans-contour
             name="q"
             rows={3}
             maxLength={LONGUEUR_MAX_QUESTION}
@@ -198,7 +199,7 @@ export function VoixVerification({
                 if (!vide) evenement.currentTarget.form?.requestSubmit();
               }
             }}
-            className="mt-1.5 block min-h-24 w-full resize-none bg-transparent text-2xl leading-8 font-semibold text-ink focus:outline-none"
+            className="mt-1.5 block min-h-24 w-full resize-none bg-transparent text-2xl leading-8 font-semibold text-ink"
           />
         </div>
 

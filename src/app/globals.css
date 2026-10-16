@@ -174,6 +174,11 @@ textarea:focus-visible {
   outline: none;
 }
 
+/* Un champ dont le cadre autour montre déjà le focus (le bord passe au vert) : pas de second trait à l'intérieur. */
+[data-sans-contour]:focus-visible {
+  outline: none;
+}
+
 /* Un appui se sent : léger retour au toucher, comme dans la maquette. */
 @utility press {
   transition:
