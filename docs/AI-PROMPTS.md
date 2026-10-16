@@ -27,7 +27,7 @@ Deux mesures ont fixé ce choix (11 octobre 2026, `openai/gpt-oss-120b`) :
 | Champ | Contenu |
 |---|---|
 | `question_claire` | la question reformulée en français standard (le wolof et les abréviations y sont rendus) |
-| `demarches` | identifiants pris dans la liste : aucun, un, ou plusieurs (3 au plus) quand la question ne permet pas de choisir |
+| `demarches` | identifiants pris dans la liste : aucun, un, ou plusieurs (3 au plus) quand la question ne permet pas de choisir. Une question sur un détail (coût, délai, pièces, lieu, âge…) désigne la démarche, même si le résumé ne donne pas ce détail (règle ajoutée le 16 octobre : gpt-oss-120b répondait « pas de source » à « Combien coûte le passeport ? ») |
 | `besoin_precision` | vrai si la question est administrative mais trop vague |
 | `question_precision` | une question courte, au tutoiement, quand `besoin_precision` est vrai ; sinon vide |
 | `hors_domaine` | vrai seulement si aucune démarche ne répond et que la question ne concerne pas une démarche administrative sénégalaise (cuisine, sport, discussion, démarche d'un autre pays…) ; faux au moindre doute et pour une démarche sénégalaise absente de la liste |

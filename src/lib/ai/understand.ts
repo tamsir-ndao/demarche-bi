@@ -16,6 +16,7 @@ Réponds uniquement avec un objet JSON :
 - "question_claire" : la question reformulée en une phrase de français standard, sans changer son sens.
 - "demarches" : les identifiants (pris dans la liste ci-dessus, jamais d'autres) des démarches qui répondent à la question.
   Une seule quand la question suffit à choisir.
+  Une question sur un détail d'une démarche (coût, délai, pièces, lieu, âge, validité, étapes) désigne cette démarche : mets son identifiant, même si le résumé ne donne pas ce détail. La fiche complète le contient, ou dira qu'il n'est pas précisé.
   Plusieurs (3 au plus) quand la question ne permet pas de choisir entre elles, par exemple quand elle ne donne que le nom d'un document sans dire ce que la personne veut en faire (obtenir, renouveler, remplacer…).
   Aucune quand la question ne concerne aucune démarche de la liste : démarche absente de la liste (même voisine), autre pays, ou sujet sans rapport avec l'administration.
 - "besoin_precision" : vrai seulement si la question concerne des démarches administratives mais est trop vague pour savoir de laquelle il s'agit. Faux pour un sujet sans rapport avec l'administration.

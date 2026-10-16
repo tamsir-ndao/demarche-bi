@@ -65,6 +65,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Décider quoi faire des trous connus de `docs/FIABILITE.md` (les `todo` de `src/lib/ai/attaques.test.ts`, la vie privée, la robustesse) : 10 fermés, 7 restent (16 octobre, audit)
 - [ ] Faire relire par un locuteur wolof les questions `mixte` et `wo` des jeux de fiabilité (`eval/fiabilite-*.jsonl`)
 - [x] Corriger `docs/PRD.md` : « 52 questions » devenu 95, dont 15 en wolof, et dates de soumission (14 octobre)
+- [x] Comprendre : une question sur un détail (coût, délai, pièces, lieu) désigne la démarche (16 octobre) : gpt-oss-120b répondait « Je n'ai pas encore de source officielle pour le coût du passeport » à « Combien coûte le passeport ? » (les modèles de secours, eux, trouvaient la fiche) ; vérifié modèle par modèle avant et après. Attention : une quarantaine de questions d'essai suffisent à épuiser le quota gratuit quotidien de gpt-oss-120b, le site passe alors sur les modèles de secours
 - [x] Salutation seule (« Bonjour », « Salam aleykoum », « Nanga def ») : réponse chaleureuse et invitation à poser sa question, en code pur sans appel au modèle (écran `Salutation`, voix, journal, mesures) ; testée (16 octobre)
 
 ## Mercredi 14 — voix et consultation
