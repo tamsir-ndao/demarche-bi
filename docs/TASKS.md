@@ -146,7 +146,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## 20 au 23 octobre — finale
 
 - [x] Pitch de 7 minutes préparé et minuté (voir guide `docs/PLAN-DEMO-FINALE.md`, 14 octobre)
-- [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre) ; deux de plus le 16 octobre (commits « Jënd-Jaay », pas de voix wolof)
+- [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre) ; une de plus le 16 octobre (pas de voix wolof)
 - [x] Plan B et filets de sécurité documentés : fallback lexical automatique et démo mode avion hors-ligne (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
 
 ## Samedi 24 octobre — finale à l'Impact Hub Dakar
