@@ -313,14 +313,15 @@ describe("autres réponses", () => {
       "Ajoute un détail, et je te réponds.",
     ]);
   });
-  it("salue en retour et invite à poser sa question, sans dire deux fois « Salam aleykoum »", () => {
-    const lignes = scriptSalutation("Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.");
-    assert.deepEqual(lignes, [
-      "Salam aleykoum !",
-      "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
+  it("salue en retour dans la langue reçue, puis invite à poser sa question", () => {
+    assert.deepEqual(
+      scriptSalutation("Bonsoir !", "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal."),
+      ["Bonsoir !", "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal."],
+    );
+    assert.deepEqual(scriptSalutation("Maalekum salam !", "Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ?"), [
+      "Maalekum salam !",
+      "Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ?",
     ]);
-    assert.equal(lignes.join(" ").match(/Salam aleykoum/g)?.length, 1);
-    assert.equal(scriptSalutation()[0], "Salam aleykoum !");
   });
 });
 

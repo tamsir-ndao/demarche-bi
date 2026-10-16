@@ -3,7 +3,7 @@ import { searchFiches } from "../fiches/search";
 import { repondre } from "./answer";
 import { ErreurIA } from "./client";
 import { decider } from "./decide";
-import { estDemandeFrauduleuse, estSalutationSeule, verifierIntro } from "./guardrails";
+import { estDemandeFrauduleuse, estSalutationSeule, salutationEnRetour, verifierIntro } from "./guardrails";
 import type { Comprehension } from "./schemas";
 import type { Modele } from "./structured";
 import { comprendre } from "./understand";
@@ -30,8 +30,8 @@ export type Reponse =
   | { type: "hors_domaine"; message?: string }
   /** Pratique frauduleuse, corrompue ou illégale : refus poli et ferme conforme à la loi. */
   | { type: "interdit"; message?: string }
-  /** Salutation ou formule de politesse seule : réponse chaleureuse et invitation à poser sa question. */
-  | { type: "salutation"; message?: string };
+  /** Salutation seule : `titre` salue en retour dans la langue reçue, `message` invite à poser sa question. */
+  | { type: "salutation"; titre: string; message: string };
 
 export type OptionsQuestion = {
   /** Les fiches que le site peut montrer (vérifiées, ou brouillons en développement). */
@@ -116,13 +116,11 @@ export async function poserQuestion(question: string, options: OptionsQuestion):
       message: "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
     };
   }
-  // Un simple « bonjour » n'est pas une question : on salue en retour, sans appeler le modèle ni chercher de fiche.
-  // L'écran et la voix disent d'abord « Salam aleykoum ! » : le message ne contient que l'invitation.
+  // Un simple « bonjour » n'est pas une question : on salue en retour, dans la même langue (français ou wolof),
+  // sans appeler le modèle ni chercher de fiche. L'écran et la voix disent le titre puis le message.
   if (estSalutationSeule(question)) {
-    return {
-      type: "salutation",
-      message: "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
-    };
+    const { titre, message } = salutationEnRetour(question);
+    return { type: "salutation", titre, message };
   }
   const { fiches, modele, signaler } = options;
   if (fiches.length === 0) return { type: "inconnue" };

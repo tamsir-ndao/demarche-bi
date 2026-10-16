@@ -83,7 +83,7 @@ async function Resultat({ question, reponse }: { question: string; reponse: Repo
     case "interdit":
       return <Interdit message={reponse.message} />;
     case "salutation":
-      return <Salutation message={reponse.message} />;
+      return <Salutation titre={reponse.titre} message={reponse.message} />;
   }
 }
 

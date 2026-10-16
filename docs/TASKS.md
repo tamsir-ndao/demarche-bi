@@ -68,6 +68,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Accueil allégé (16 octobre, demande de Tamsir) : les trois cartes « sources officielles / date de vérification / je ne devine pas » de l'accueil sur ordinateur remplacées par une ligne discrète avec un lien « En savoir plus » vers « À propos », où les cartes restent
 - [x] Comprendre : une question sur un détail (coût, délai, pièces, lieu) désigne la démarche (16 octobre) : gpt-oss-120b répondait « Je n'ai pas encore de source officielle pour le coût du passeport » à « Combien coûte le passeport ? » (les modèles de secours, eux, trouvaient la fiche) ; vérifié modèle par modèle avant et après. Attention : une quarantaine de questions d'essai suffisent à épuiser le quota gratuit quotidien de gpt-oss-120b, le site passe alors sur les modèles de secours
 - [x] Salutation seule (« Bonjour », « Salam aleykoum », « Nanga def ») : réponse chaleureuse et invitation à poser sa question, en code pur sans appel au modèle (écran `Salutation`, voix, journal, mesures) ; testée (16 octobre)
+- [x] Salutation dans la langue reçue (16 octobre, demande de Tamsir : « Bonjour » recevait « Salam aleykoum ») : le premier mot de salut décide, « Bonjour ! » / « Bonsoir ! » / « Salut ! » en français, « Maalekum salam ! » / « Maa ngi fi rekk ! » / « Kassoumay ! » en wolof, avec l'invitation dans la même langue ; testée (`salutationEnRetour`)
+- [ ] Relire la phrase wolof d'invitation « Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ? » et les saluts wolof avec un locuteur
 
 ## Mercredi 14 — voix et consultation
 

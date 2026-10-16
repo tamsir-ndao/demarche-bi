@@ -11,6 +11,7 @@ import {
   extraireNombres,
   motsAbsolusNonPermis,
   ressembleAUneDemarche,
+  salutationEnRetour,
   verifierIntro,
   verifierMessageSansReponse,
   verifierQuestionPrecision,
@@ -392,5 +393,43 @@ describe("estSalutationSeule", () => {
     ]) {
       assert.equal(estSalutationSeule(question), false, question);
     }
+  });
+});
+
+describe("salutationEnRetour", () => {
+  const INVITATION_FR = "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.";
+  const INVITATION_WO = "Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ?";
+
+  it("répond en français à une salutation en français, avec le même mot", () => {
+    for (const [question, titre] of [
+      ["Bonjour", "Bonjour !"],
+      ["bonsoir !", "Bonsoir !"],
+      ["Salut, ça va ?", "Salut !"],
+      ["Coucou", "Bonjour !"],
+      ["Bonjour, comment allez-vous ?", "Bonjour !"],
+    ] as const) {
+      assert.deepEqual(salutationEnRetour(question), { langue: "francais", titre, message: INVITATION_FR }, question);
+    }
+  });
+
+  it("répond en wolof à une salutation en wolof ou en arabe", () => {
+    for (const [question, titre] of [
+      ["Salam aleykoum", "Maalekum salam !"],
+      ["Assalamu alaykum, nanga def ?", "Maalekum salam !"],
+      ["Nanga def", "Maa ngi fi rekk !"],
+      ["Naka nga def ?", "Maa ngi fi rekk !"],
+      ["Kassoumay", "Kassoumay !"],
+    ] as const) {
+      assert.deepEqual(salutationEnRetour(question), { langue: "wolof", titre, message: INVITATION_WO }, question);
+    }
+  });
+
+  it("suit la langue du premier mot de salut quand les deux se mêlent", () => {
+    assert.equal(salutationEnRetour("Bonjour, nanga def ?").langue, "francais");
+    assert.equal(salutationEnRetour("Salam, bonjour").langue, "wolof");
+  });
+
+  it("répond en français quand aucun mot de salut n'est reconnu", () => {
+    assert.equal(salutationEnRetour("Merci").titre, "Bonjour !");
   });
 });

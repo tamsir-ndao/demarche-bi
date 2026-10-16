@@ -196,10 +196,7 @@ export function scriptInterdit(message?: string): string[] {
   ];
 }
 
-/** Salutations seules : on répond chaleureusement en demandant comment aider. */
-export function scriptSalutation(message?: string): string[] {
-  return [
-    "Salam aleykoum !",
-    message ?? "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
-  ];
+/** Salutation seule : le salut en retour (dans la langue reçue), puis l'invitation à poser sa question. */
+export function scriptSalutation(titre: string, message: string): string[] {
+  return [titre, message];
 }

@@ -320,15 +320,21 @@ describe("poserQuestion avec une simple salutation", () => {
     const reponse = await poserQuestion("Salam aleykoum, nanga def ?", { fiches, modele });
     assert.equal(reponse.type, "salutation");
     if (reponse.type === "salutation") {
-      assert.match(reponse.message ?? "", /Pose-moi ta question/);
-      assert.doesNotMatch(reponse.message ?? "", /Salam aleykoum/, "l'écran et la voix disent déjà « Salam aleykoum ! »");
+      // Salué en wolof, on répond en wolof : le titre salue, le message n'invite qu'à poser sa question.
+      assert.equal(reponse.titre, "Maalekum salam !");
+      assert.match(reponse.message, /^Lan nga bëgg/);
+      assert.doesNotMatch(reponse.message, /salam/i, "l'écran et la voix disent déjà le titre");
     }
     assert.equal(appels.length, 0);
   });
 
-  it("salue aussi en mode repli par mots (sans modèle)", async () => {
-    const reponse = await poserQuestion("Bonjour", { fiches, modele: null });
+  it("salue aussi en mode repli par mots (sans modèle), dans la langue reçue", async () => {
+    const reponse = await poserQuestion("Bonsoir", { fiches, modele: null });
     assert.equal(reponse.type, "salutation");
+    if (reponse.type === "salutation") {
+      assert.equal(reponse.titre, "Bonsoir !");
+      assert.match(reponse.message, /Pose-moi ta question/);
+    }
   });
 
   it("ne confond pas une question qui commence par bonjour avec une salutation", async () => {

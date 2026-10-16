@@ -8,9 +8,9 @@ import { QuestionForm } from "./QuestionForm";
 
 /**
  * Quand l'utilisateur envoie une simple salutation (bonjour, salam aleykoum, nanga def...) :
- * on lui répond chaleureusement et on l'invite à poser sa question administrative.
+ * on le salue en retour dans sa langue (`titre`) et on l'invite à poser sa question administrative (`message`).
  */
-export function Salutation({ message }: { message?: string }) {
+export function Salutation({ titre, message }: { titre: string; message: string }) {
   return (
     <>
       <Carte aria-labelledby="titre-salutation" className="mt-4 px-5 py-6">
@@ -21,14 +21,11 @@ export function Salutation({ message }: { message?: string }) {
           <Icon name="personnes" size={30} strokeWidth={2} />
         </span>
         <h1 id="titre-salutation" className="mt-4 text-[28px] leading-[34px] font-bold tracking-[-0.01em]">
-          Salam aleykoum&nbsp;!
+          {/* Espace insécable avant le « ! » : le point d'exclamation ne passe jamais seul à la ligne. */}
+          {typographie(titre).replace(" !", " !")}
         </h1>
-        <p className="mt-2 text-[17px] leading-[26px] text-ink-2">
-          {message
-            ? typographie(message)
-            : "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal."}
-        </p>
-        <BoutonEcouter lignes={preparerLaLecture(scriptSalutation(message))} className="mt-4" />
+        <p className="mt-2 text-[17px] leading-[26px] text-ink-2">{typographie(message)}</p>
+        <BoutonEcouter lignes={preparerLaLecture(scriptSalutation(titre, message))} className="mt-4" />
 
         <div className="mt-6">
           <QuestionForm id="question-salutation" />

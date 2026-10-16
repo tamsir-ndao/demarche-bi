@@ -391,3 +391,50 @@ export function estSalutationSeule(question: string): boolean {
   if (!aUnMotCle) return false;
   return mots.every((mot) => MOTS_SALUTATIONS.has(mot));
 }
+
+export type LangueSalutation = "francais" | "wolof";
+
+/** Ce que l'écran et la voix disent en retour d'une salutation : le salut (titre) puis l'invitation (message). */
+export type SalutationEnRetour = { langue: LangueSalutation; titre: string; message: string };
+
+/** Le salut rendu pour chaque mot de salut reconnu, dans sa langue : on répond comme on a été salué. */
+const SALUTS_EN_RETOUR: Record<string, { langue: LangueSalutation; titre: string }> = {
+  bonjour: { langue: "francais", titre: "Bonjour !" },
+  bonsoir: { langue: "francais", titre: "Bonsoir !" },
+  salut: { langue: "francais", titre: "Salut !" },
+  coucou: { langue: "francais", titre: "Bonjour !" },
+  allo: { langue: "francais", titre: "Bonjour !" },
+  salam: { langue: "wolof", titre: "Maalekum salam !" },
+  assalam: { langue: "wolof", titre: "Maalekum salam !" },
+  assalamu: { langue: "wolof", titre: "Maalekum salam !" },
+  aleykoum: { langue: "wolof", titre: "Maalekum salam !" },
+  alaykum: { langue: "wolof", titre: "Maalekum salam !" },
+  malaikoum: { langue: "wolof", titre: "Maalekum salam !" },
+  malekoum: { langue: "wolof", titre: "Maalekum salam !" },
+  nanga: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  naka: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  def: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  jamm: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  diamm: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  yaangi: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  yangi: { langue: "wolof", titre: "Maa ngi fi rekk !" },
+  kassoumay: { langue: "wolof", titre: "Kassoumay !" },
+  kasumay: { langue: "wolof", titre: "Kassoumay !" },
+};
+
+const INVITATIONS: Record<LangueSalutation, string> = {
+  francais: "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
+  wolof: "Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ?",
+};
+
+/**
+ * La réponse à une salutation seule, dans la langue où elle a été dite : le premier mot de salut reconnu décide
+ * (« Bonjour, nanga def ? » → français ; « Salam, bonjour » → wolof). Sans mot reconnu, on répond en français.
+ * À appeler après `estSalutationSeule`.
+ */
+export function salutationEnRetour(question: string): SalutationEnRetour {
+  const mots = simplifier(question).replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/);
+  const premier = mots.map((mot) => SALUTS_EN_RETOUR[mot]).find((salut) => salut !== undefined);
+  const { langue, titre } = premier ?? SALUTS_EN_RETOUR.bonjour;
+  return { langue, titre, message: INVITATIONS[langue] };
+}

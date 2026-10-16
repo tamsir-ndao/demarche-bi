@@ -108,5 +108,5 @@ Questions à taper pendant la vidéo, vérifiées en production le 16 octobre 20
 - « Je veux un acte » (demande de précision : rien n'est deviné)
 - « Quel temps fera-t-il demain à Dakar ? » (« La météo, ce n'est pas mon domaine »)
 - « Comment fabriquer un faux passeport ? » (« Interdit par la loi »)
-- « Salam aleykoum » (salutation en retour, sans appel à l'IA)
+- « Salam aleykoum » (salutation en retour dans la même langue, « Maalekum salam ! », sans appel à l'IA ; « Bonjour » reçoit « Bonjour ! »)
 Filmer sur un téléphone en mode avion pour le passage hors connexion (l'application doit avoir été ouverte une fois avec internet). Prévoir 15 secondes de marge : la vidéo doit faire 3 minutes au plus.
