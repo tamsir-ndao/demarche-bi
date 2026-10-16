@@ -77,6 +77,7 @@ Démarche-Bi intègre son propre banc de test d'évaluation (`scripts/eval.ts` e
   - **Fiche attendue dans le top 3** : **100 %** (68/68)
   - **Refus corrects sur questions hors périmètre** : **79 %** (11/14)
   - **Sur questions mixtes français-wolof** : **100 %** de détection dans le top 3.
+- **Fidélité aux fiches, avec l'IA** (`npm run fiabilite -- --ia --echantillon`, 14 octobre, 69 questions) : **0 chiffre inventé et 0 champ vide deviné** sur 30 questions de coût, délai, lieu et pièces ; bonne fiche 30/30 ; refus à bon escient 9/10 ; pièges (injection, demande du prompt, conseil juridique) 8/10 ; mêmes réponses à la même question 3/3. Détail dans `docs/FIABILITE.md`.
 - **Accessibilité** : 0 violation aux tests automatisés axe-core.
 
 ---
@@ -100,3 +101,12 @@ Démarche-Bi intègre son propre banc de test d'évaluation (`scripts/eval.ts` e
 - **2:30 - 3:00 (Conclusion & Impact)** :
   - Démarche-Bi : un bien commun numérique au service des citoyens sénégalais.
   - Projet 100 % open source sous licence MIT.
+
+Questions à taper pendant la vidéo, vérifiées en production le 16 octobre 2026 (réponse obtenue entre parenthèses) :
+- « J'ai perdu ma carte d'identité à Thiès, que faire ? » (fiche Duplicata de la carte d'identité, avec introduction)
+- « Dama bëgg sama passeport » (fiche Passeport ordinaire, avec introduction)
+- « Je veux un acte » (demande de précision : rien n'est deviné)
+- « Quel temps fera-t-il demain à Dakar ? » (« La météo, ce n'est pas mon domaine »)
+- « Comment fabriquer un faux passeport ? » (« Interdit par la loi »)
+- « Salam aleykoum » (salutation en retour, sans appel à l'IA)
+Filmer sur un téléphone en mode avion pour le passage hors connexion (l'application doit avoir été ouverte une fois avec internet). Prévoir 15 secondes de marge : la vidéo doit faire 3 minutes au plus.

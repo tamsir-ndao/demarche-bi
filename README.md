@@ -66,6 +66,8 @@ Recherche lexicale seule (`npm run eval`) :
   - Français : 56/57 en 1er (98 %), 57/57 dans le top 3 (100 %)
   - Français et wolof mêlés : 9/11 en 1er (82 %), 11/11 dans le top 3 (100 %)
 
+Fiabilité avec l'IA (`npm run fiabilite -- --ia --echantillon`, 14 octobre 2026, 69 questions) : **0 chiffre inventé et 0 champ vide deviné sur 30 questions de fidélité**, bonne fiche 30/30, refus à bon escient 9/10, pièges 8/10, réponses stables 3/3 (détail et échecs dans [`docs/FIABILITE.md`](docs/FIABILITE.md)).
+
 Première mesure complète avec IA du 11 octobre 2026 : voir [`docs/AI-PROMPTS.md`](docs/AI-PROMPTS.md#première-mesure-11-octobre-2026).
 Des tests de fiabilité (rien d'inventé ni de deviné par rapport aux fiches, refus, pièges, fautes de saisie, répétition) se lancent avec `npm run fiabilite` : voir [`docs/FIABILITE.md`](docs/FIABILITE.md).
 

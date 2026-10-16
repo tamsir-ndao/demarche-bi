@@ -61,7 +61,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Contrôleur de fidélité (`src/lib/eval/fidelite.ts`, `questions-fidelite.ts`) : `invente` et `devine` doivent valoir 0 (seuils décidés par le propriétaire)
 - [x] Masque de vie privée du journal (`src/lib/avis/anonymiser.ts`) : e-mails, téléphones et numéros longs masqués avant l'écriture de la question et du commentaire
 - [x] `npm run fiabilite` (`scripts/fiabilite.ts`) : sans IA (jeux validés, nombre d'appels, recherche seule) ou avec `--ia` (fidélité, refus, pièges, saisie, répétition), sans écriture dans le journal ; documenté dans `docs/FIABILITE.md`
-- [ ] Première mesure de fiabilité avec l'IA : l'échantillon (`npm run fiabilite -- --ia --echantillon`), puis les blocs complets sur deux jours (quota gratuit de Groq) ; remplir le tableau « Mesures » de `docs/FIABILITE.md`
+- [x] Première mesure de fiabilité avec l'IA : l'échantillon fait le 14 octobre (69 questions : 0 inventé, 0 deviné, refus 9/10, pièges 8/10, stabilité 3/3 ; chiffres dans `docs/FIABILITE.md` et le README). Reste : les blocs complets (`--bloc=…`, ≈ 299 appels, à étaler sur deux jours à cause du quota) si le temps le permet avant le 19
 - [ ] Décider quoi faire des trous connus de `docs/FIABILITE.md` (les `todo` de `src/lib/ai/attaques.test.ts`, la vie privée, la robustesse)
 - [ ] Faire relire par un locuteur wolof les questions `mixte` et `wo` des jeux de fiabilité (`eval/fiabilite-*.jsonl`)
 - [x] Corriger `docs/PRD.md` : « 52 questions » devenu 95, dont 15 en wolof, et dates de soumission (14 octobre)
@@ -121,7 +121,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 
 - [ ] Vidéo de démonstration (3 minutes maximum, trame prête dans `docs/SOUMISSION.md`)
 - [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre)
-- [ ] Envoyer le dossier de présélection selon les modalités des organisateurs (à confirmer)
+- [ ] Remplir le formulaire de soumission des organisateurs avant le lundi 19 octobre (texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
 
 ## Lundi 19 — marge
 
