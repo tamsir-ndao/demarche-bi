@@ -74,7 +74,6 @@ function BarreDuBas({ actif }: { actif?: Onglet }) {
   );
 }
 
-const LIEN_PIED = "flex min-h-11 items-center rounded-full px-3.5 text-sm leading-5 font-bold text-leaf-deep transition-colors hover:bg-tint";
 
 type PageShellProps = {
   /** L'onglet à mettre en avant dans le menu. */
@@ -111,15 +110,11 @@ export function PageShell({ actif, retour, large = false, children }: PageShellP
         {children}
       </main>
 
-      <footer className="px-4 pt-2 pb-3 text-center lg:flex lg:items-center lg:justify-between lg:gap-6 lg:border-t lg:border-line lg:px-16 lg:pt-5 lg:pb-7 lg:text-left">
+      {/* Sur ordinateur, « À propos » est déjà dans le menu du haut : le pied de page ne garde que la mise en garde, centrée. */}
+      <footer className="px-4 pt-2 pb-3 text-center lg:border-t lg:border-line lg:px-16 lg:pt-5 lg:pb-7">
         <p className="text-[13px] leading-[18px] text-ink-3 lg:text-sm lg:leading-5">
           Information indicative, à vérifier avant de te déplacer.
         </p>
-        <nav aria-label="Liens utiles" className="hidden items-center gap-2 lg:flex">
-          <Link href="/a-propos" className={LIEN_PIED}>
-            À propos
-          </Link>
-        </nav>
       </footer>
 
       <BarreDuBas actif={actif} />
