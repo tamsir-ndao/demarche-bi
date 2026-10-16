@@ -62,7 +62,7 @@ Le Wi-Fi des événements publics est réputé instable. Démarche-Bi intègre u
 
 ### Question 4 : *« Les deux premiers commits du dépôt s'appellent « Jënd-Jaay ». Le projet a-t-il bien été initié pendant le hackathon ? »*
 > **Réponse recommandée :**
-> *« Oui. Le 7 octobre, jour du lancement, nous avons d'abord créé le dépôt pour une première idée, Jënd-Jaay, puis nous l'avons abandonnée le jour même pour Démarche-Bi, dans le même dépôt. L'historique est public et le montre : tout le code et toutes les fiches datent du hackathon. »*
+> *« Oui. Le 7 octobre, jour du lancement, nous avons créé le dépôt pour une première idée, Jënd-Jaay, un outil d'approvisionnement alimentaire par IA pour les restaurateurs et boutiquiers. Deux jours plus tard, le 9 octobre, nous avons changé pour Démarche-Bi, dans le même dépôt (commit « Pivot vers Démarche-Bi »). L'historique est public et le montre : tout le code et toutes les fiches datent du hackathon. »*
 
 ### Question 5 : *« Pourquoi la réponse n'est-elle pas lue en wolof ? »*
 > **Réponse recommandée :**
