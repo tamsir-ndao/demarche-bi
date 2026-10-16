@@ -3,7 +3,8 @@ import { BoutonVoix } from "@/components/BoutonVoix";
 import { PageShell } from "@/components/PageShell";
 import { QuestionForm } from "@/components/QuestionForm";
 
-const EXEMPLES = ["J’ai perdu ma carte d’identité", "Le NINEA, ça prend combien de jours ?", "Visa pour la France"];
+// Trois démarches parmi les plus demandées, toutes couvertes par une fiche : un exemple ne doit jamais mener à « je ne sais pas ».
+const EXEMPLES = ["J’ai perdu ma carte d’identité", "Comment faire mon passeport ?", "Un extrait de naissance, ça coûte combien ?"];
 
 export default function Accueil() {
   return (
