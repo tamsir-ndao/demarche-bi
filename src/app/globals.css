@@ -19,7 +19,6 @@
   --gd: #0e7c46;
   --gdd: #0b6b3a;
   --on-g: #0f2a1e;
-  --glow: rgb(34 209 131 / 0.4);
   --bar: #0f9d58;
   --sh-nav: 0 -8px 24px rgb(15 42 30 / 0.06);
 }
@@ -39,7 +38,6 @@
     --gd: #3ddc91;
     --gdd: #3ddc91;
     --on-g: #0a2016;
-    --glow: rgb(34 209 131 / 0.35);
     --bar: #22d183;
     --sh-nav: 0 -8px 24px rgb(0 0 0 / 0.35);
   }
@@ -60,7 +58,6 @@
   --color-on-brand: var(--on-g);
   --color-leaf: var(--gd);
   --color-leaf-deep: var(--gdd);
-  --color-glow: var(--glow);
   --color-bar: var(--bar);
 
   --shadow-nav: var(--sh-nav);
@@ -165,10 +162,10 @@
   outline-offset: 3px;
 }
 
-/* Les champs (ligne ou zone de texte) montrent le focus avec un halo vert plutôt qu'un contour carré. */
+/* Les champs ont déjà leur bord qui passe au vert ; le contour suit le bord arrondi, sans décalage. */
 input:focus-visible,
 textarea:focus-visible {
-  outline: none;
+  outline-offset: 0;
 }
 
 /* Les titres des écrans de la voix reçoivent le focus à chaque changement d'écran (pour le lecteur d'écran) : pas de cadre. */

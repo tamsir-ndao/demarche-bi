@@ -180,7 +180,7 @@ export function VoixVerification({
           C’est bien ça&nbsp;?
         </h2>
 
-        <div className="mt-5 rounded-[28px] border-2 border-edge bg-card px-5 pt-[18px] pb-4 transition-shadow focus-within:border-leaf focus-within:shadow-[0_0_0_4px_var(--glow)]">
+        <div className="mt-5 rounded-[28px] border-2 border-edge bg-card px-5 pt-[18px] pb-4 focus-within:border-leaf">
           <label htmlFor="question-voix" className="block text-[13px] leading-[18px] font-bold text-ink-2">
             Ta question
           </label>

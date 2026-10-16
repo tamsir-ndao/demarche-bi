@@ -44,7 +44,7 @@ export function ListeDemarches({ demarches, categories }: { demarches: DemarcheL
           onChange={(evenement) => setTexte(evenement.target.value)}
           autoComplete="off"
           placeholder="Chercher une démarche"
-          className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-5 pl-[52px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow)]"
+          className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-5 pl-[52px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf"
         />
       </div>
 

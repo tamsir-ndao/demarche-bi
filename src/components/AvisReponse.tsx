@@ -94,7 +94,7 @@ export function AvisReponse({ journalId }: { journalId: string }) {
                 maxLength={LONGUEUR_MAX_COMMENTAIRE}
                 value={commentaire}
                 onChange={(evenement) => setCommentaire(evenement.target.value)}
-                className="mt-2 block w-full resize-none rounded-[20px] border-[1.5px] border-edge bg-card px-4 py-3 text-[17px] leading-6 text-ink focus:border-leaf focus:shadow-[0_0_0_4px_var(--glow)] focus:outline-none"
+                className="mt-2 block w-full resize-none rounded-[20px] border-[1.5px] border-edge bg-card px-4 py-3 text-[17px] leading-6 text-ink focus:border-leaf focus:outline-none"
               />
               <div className={RANGEE_DE_BOUTONS}>
                 <button type="submit" disabled={envoi} className={classesBouton("principal", "moyen", PENDANT_L_ENVOI)}>
