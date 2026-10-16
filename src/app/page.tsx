@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { BoutonVoix } from "@/components/BoutonVoix";
-import { CarteArgument } from "@/components/CarteArgument";
 import { PageShell } from "@/components/PageShell";
 import { QuestionForm } from "@/components/QuestionForm";
 
@@ -53,14 +52,18 @@ export default function Accueil() {
         </section>
       </div>
 
-      <section
-        aria-label="Pourquoi te fier à Démarche-Bi"
-        className="mx-auto mt-[72px] hidden w-full max-w-[1200px] grid-cols-3 gap-6 lg:grid"
-      >
-        <CarteArgument grande icone="bouclier" titre="Des sources officielles" texte="Chaque réponse montre d’où elle vient." />
-        <CarteArgument grande icone="calendrier" titre="Une date de vérification" texte="Tu vois quand l’information a été relue." />
-        <CarteArgument grande pointille icone="aide" titre="Je ne devine pas" texte="Si je ne sais pas, je te le dis." />
-      </section>
+      {/* Trois promesses en une ligne (ordinateur seulement) ; le détail est sur la page « À propos », pour garder l'accueil léger. */}
+      <p className="mx-auto mt-[72px] hidden w-full max-w-[760px] flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-[15px] leading-[22px] text-ink-2 lg:flex">
+        <span>Des sources officielles</span>
+        <span aria-hidden="true">·</span>
+        <span>Une date de vérification</span>
+        <span aria-hidden="true">·</span>
+        <span>Si je ne sais pas, je te le dis</span>
+        <span aria-hidden="true">·</span>
+        <Link href="/a-propos" className="font-semibold text-leaf underline-offset-4 hover:underline">
+          En savoir plus
+        </Link>
+      </p>
 
       <div className="hidden min-h-12 flex-1 lg:block" />
     </PageShell>
