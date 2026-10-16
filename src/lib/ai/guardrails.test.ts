@@ -6,6 +6,7 @@ import { describe, it } from "node:test";
 import { ficheDeTest } from "./fiche-de-test";
 import {
   estDemandeFrauduleuse,
+  estSalutationSeule,
   extraireNombres,
   motsAbsolusNonPermis,
   ressembleAUneDemarche,
@@ -275,6 +276,41 @@ describe("estDemandeFrauduleuse", () => {
       "Combien coûte le timbre fiscal de la carte d'identité ?",
     ]) {
       assert.equal(estDemandeFrauduleuse(question), false, question);
+    }
+  });
+});
+
+describe("estSalutationSeule", () => {
+  it("reconnaît une salutation seule, en français, en wolof ou en arabe", () => {
+    for (const question of [
+      "Bonjour",
+      "bonsoir !",
+      "Salut, ça va ?",
+      "Salam aleykoum",
+      "Assalamu alaykum, nanga def ?",
+      "Nanga def",
+      "Naka nga def ?",
+      "Kassoumay",
+      "Bonjour, comment allez-vous ?",
+      "Bonjour, aidez-moi svp",
+    ]) {
+      assert.equal(estSalutationSeule(question), true, question);
+    }
+  });
+
+  it("laisse passer une question, même précédée d'une salutation", () => {
+    for (const question of [
+      "Bonjour, comment faire mon passeport ?",
+      "Salam, je veux une carte d'identité",
+      "Nanga def, naka laa defe sama passeport ?",
+      "Merci",
+      "ça va ?",
+      "passeport",
+      "",
+      "   ",
+      "Bonjour 2026",
+    ]) {
+      assert.equal(estSalutationSeule(question), false, question);
     }
   });
 });

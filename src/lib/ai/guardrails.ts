@@ -231,3 +231,35 @@ export function estDemandeFrauduleuse(question: string): boolean {
   const texte = simplifier(question);
   return MOTIFS_FRAUDE.some((motif) => motif.test(texte));
 }
+
+/**
+ * Mots de salutations et de politesse en français, wolof et arabe (courants au Sénégal).
+ */
+const MOTS_SALUTATIONS = new Set([
+  "bonjour", "bonsoir", "salut", "coucou", "allo",
+  "salam", "aleykoum", "alaykum", "assalam", "assalamu", "malaikoum", "malekoum", "wa",
+  "nanga", "naka", "nga", "def", "na",
+  "yaangi", "yangi", "ci", "jamm", "diamm", "rek", "rekk",
+  "kassoumay", "kasumay",
+  "ca", "va", "comment", "allez", "vous", "tu", "vas",
+  "merci", "aide", "moi", "aidez", "stp", "svp", "te", "plait"
+]);
+
+const RACINES_SALUTATIONS_OBLIGATOIRES = [
+  "bonjour", "bonsoir", "salut", "salam", "nanga", "def", "kassoumay", "coucou",
+];
+
+/**
+ * Vrai quand le message ne contient qu'une salutation ou formule de politesse (sans question administrative).
+ * Permet de répondre chaleureusement en demandant à l'usager comment l'aider.
+ */
+export function estSalutationSeule(question: string): boolean {
+  // Les chiffres restent : « Bonjour 2026 » ou un numéro après un salut, ce n'est plus une salutation seule.
+  const texte = simplifier(question).replace(/[^a-z0-9]+/g, " ").trim();
+  if (!texte) return false;
+  const mots = texte.split(/\s+/).filter(Boolean);
+  if (mots.length === 0) return false;
+  const aUnMotCle = mots.some((mot) => RACINES_SALUTATIONS_OBLIGATOIRES.includes(mot));
+  if (!aUnMotCle) return false;
+  return mots.every((mot) => MOTS_SALUTATIONS.has(mot));
+}

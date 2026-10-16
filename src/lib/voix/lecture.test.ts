@@ -12,6 +12,7 @@ import {
   scriptInconnue,
   scriptPrecision,
   scriptPrecisionGenerale,
+  scriptSalutation,
 } from "./lecture";
 
 const FICHE: Fiche = {
@@ -311,6 +312,15 @@ describe("autres réponses", () => {
       "De quelle carte parles-tu ?",
       "Ajoute un détail, et je te réponds.",
     ]);
+  });
+  it("salue en retour et invite à poser sa question, sans dire deux fois « Salam aleykoum »", () => {
+    const lignes = scriptSalutation("Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.");
+    assert.deepEqual(lignes, [
+      "Salam aleykoum !",
+      "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
+    ]);
+    assert.equal(lignes.join(" ").match(/Salam aleykoum/g)?.length, 1);
+    assert.equal(scriptSalutation()[0], "Salam aleykoum !");
   });
 });
 

@@ -179,6 +179,8 @@ function decrire(reponse: Reponse): string {
       return "hors domaine";
     case "interdit":
       return "interdit par la loi";
+    case "salutation":
+      return "salutation";
   }
 }
 

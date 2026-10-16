@@ -27,6 +27,7 @@ function slugsDe(reponse: Reponse): string[] {
     case "inconnue":
     case "hors_domaine":
     case "interdit":
+    case "salutation":
       return [];
   }
 }

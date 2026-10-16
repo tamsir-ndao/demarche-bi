@@ -12,6 +12,7 @@ import { Precision, PrecisionGenerale } from "@/components/Precision";
 import { QuestionForm } from "@/components/QuestionForm";
 import { Recherche } from "@/components/Recherche";
 import { ReponseFiche } from "@/components/ReponseFiche";
+import { Salutation } from "@/components/Salutation";
 import type { Reponse as ReponseDuSite } from "@/lib/ai/ask";
 import { repondreALaQuestion } from "@/lib/ai/serveur";
 import { visiteurDepuis } from "@/lib/ai/service";
@@ -81,6 +82,8 @@ async function Resultat({ question, reponse }: { question: string; reponse: Repo
       return <HorsDomaine message={reponse.message} />;
     case "interdit":
       return <Interdit message={reponse.message} />;
+    case "salutation":
+      return <Salutation message={reponse.message} />;
   }
 }
 

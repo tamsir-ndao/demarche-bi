@@ -132,7 +132,7 @@ Recherche lexicale écrite en code : normalisation (minuscules, accents retirés
 2. Ses sorties suivent un schéma JSON strict puis sont relues par Zod ; un identifiant de fiche qu'il invente est ignoré.
 3. Il n'écrit que l'introduction. Pièces, étapes, coût, délai, lieu et sources viennent de la fiche, mot pour mot.
 4. L'introduction est refusée si elle contient un nombre, une adresse web ou e-mail, un balisage, un identifiant interne ou un mot absolu (« seule », « gratuit », « toujours »…) que la fiche ne contient pas, ou si elle dépasse 450 caractères. Le modèle a une seconde chance avec la raison du refus ; ensuite la fiche est montrée sans introduction.
-5. Si la question concerne une pratique frauduleuse, falsifiée, corrompue ou illégale (faux papiers, falsification, corruption, pot-de-vin, fraude…) : « Interdit par la loi » (refus déterministe immédiat en code pur). Si le modèle dit que la fiche ne traite pas la question, ou si aucune démarche ne correspond : « Je ne sais pas encore » ; si le modèle juge que la question n'a aucun rapport avec les démarches administratives : « Ce n'est pas mon domaine ». Dans ces deux derniers cas, une phrase écrite pour la question remplace la phrase habituelle quand elle passe `verifierMessageSansReponse`.
+5. Si la question concerne une pratique frauduleuse, falsifiée, corrompue ou illégale (faux papiers, falsification, corruption, pot-de-vin, fraude…) : « Interdit par la loi » (refus déterministe immédiat en code pur). Si la question n'est qu'une salutation (« Bonjour », « Salam aleykoum », « Nanga def »…) : « Salam aleykoum ! » et une invitation à poser sa question, sans appel au modèle (code pur aussi). Si le modèle dit que la fiche ne traite pas la question, ou si aucune démarche ne correspond : « Je ne sais pas encore » ; si le modèle juge que la question n'a aucun rapport avec les démarches administratives : « Ce n'est pas mon domaine ». Dans ces deux derniers cas, une phrase écrite pour la question remplace la phrase habituelle quand elle passe `verifierMessageSansReponse`.
 6. Une phrase écrite par l'IA est signalée à l'écran (« Phrase écrite par l'IA, d'après la fiche. »).
 7. Le quota gratuit est protégé : mémoire des questions déjà posées (6 heures, 300 questions) et 10 questions par minute et par visiteur. Ces deux outils vivent dans l'instance du serveur : ils aident sur Vercel sans rien garantir.
 
@@ -147,6 +147,8 @@ Recherche lexicale écrite en code : normalisation (minuscules, accents retirés
 | `precision_generale` | `question` (peut être vide) |
 | `inconnue` | `message` (phrase écrite pour la question et vérifiée, absente sinon) : une démarche administrative que le site n'a pas |
 | `hors_domaine` | `message` (comme ci-dessus) : la question n'a aucun rapport avec les démarches administratives |
+| `interdit` | `message` : la question porte sur une pratique frauduleuse ou illégale (refus en code pur, sans modèle) |
+| `salutation` | `message` : la question n'est qu'une salutation ; l'écran salue en retour et invite à poser sa question (code pur, sans modèle) |
 
 Un corps illisible ou une question vide répondent `400` avec `{ "erreur": "…" }`. La route n'a pas de réglage CORS : seul le site l'appelle depuis un navigateur.
 

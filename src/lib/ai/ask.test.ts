@@ -313,3 +313,27 @@ describe("poserQuestion avec une demande frauduleuse", () => {
     }
   });
 });
+
+describe("poserQuestion avec une simple salutation", () => {
+  it("salue en retour sans appeler le modèle ni chercher de fiche", async () => {
+    const { modele, appels } = modeleDeTest(orienter({ demarches: ["passeport"] }));
+    const reponse = await poserQuestion("Salam aleykoum, nanga def ?", { fiches, modele });
+    assert.equal(reponse.type, "salutation");
+    if (reponse.type === "salutation") {
+      assert.match(reponse.message ?? "", /Pose-moi ta question/);
+      assert.doesNotMatch(reponse.message ?? "", /Salam aleykoum/, "l'écran et la voix disent déjà « Salam aleykoum ! »");
+    }
+    assert.equal(appels.length, 0);
+  });
+
+  it("salue aussi en mode repli par mots (sans modèle)", async () => {
+    const reponse = await poserQuestion("Bonjour", { fiches, modele: null });
+    assert.equal(reponse.type, "salutation");
+  });
+
+  it("ne confond pas une question qui commence par bonjour avec une salutation", async () => {
+    const { modele } = modeleDeTest(orienter({ demarches: ["passeport"] }));
+    const reponse = await poserQuestion("Bonjour, comment faire mon passeport ?", { fiches, modele });
+    assert.equal(reponse.type, "fiche");
+  });
+});

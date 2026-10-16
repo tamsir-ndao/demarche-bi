@@ -195,3 +195,11 @@ export function scriptInterdit(message?: string): string[] {
     message ?? "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
   ];
 }
+
+/** Salutations seules : on répond chaleureusement en demandant comment aider. */
+export function scriptSalutation(message?: string): string[] {
+  return [
+    "Salam aleykoum !",
+    message ?? "Comment puis-je t’aider aujourd’hui ? Pose-moi ta question sur tes démarches administratives au Sénégal.",
+  ];
+}
