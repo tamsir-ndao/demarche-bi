@@ -11,7 +11,7 @@ type CarteArgumentProps = {
 /** Une raison de faire confiance : une icône, un titre, une phrase (page « À propos »). */
 export function CarteArgument({ icone, titre, texte, pointille = false }: CarteArgumentProps) {
   return (
-    <div className="flex items-start gap-3.5 rounded-3xl bg-card p-[18px] shadow-soft">
+    <div className="flex items-start gap-3.5 rounded-3xl bg-card p-[18px]">
       <span
         aria-hidden="true"
         className={`flex size-11 flex-none items-center justify-center rounded-full text-leaf ${
