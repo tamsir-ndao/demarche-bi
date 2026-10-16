@@ -257,3 +257,38 @@ textarea:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Présentation « Bienvenue » (voir components/Bienvenue.tsx) : le palier qui arrive glisse depuis la droite, ou depuis
+   la gauche quand on revient en arrière. Animations coupées : il apparaît sans bouger. */
+.bienvenue-entree {
+  animation: bienvenue-entree 240ms ease-out both;
+}
+.bienvenue-entree-inverse {
+  animation: bienvenue-entree-inverse 240ms ease-out both;
+}
+@keyframes bienvenue-entree {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bienvenue-entree-inverse {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bienvenue-entree,
+  .bienvenue-entree-inverse {
+    animation: none;
+  }
+}

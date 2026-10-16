@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CarteArgument } from "@/components/CarteArgument";
+import { LienBouton } from "@/components/LienBouton";
 import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = { title: "À propos" };
@@ -33,6 +34,11 @@ export default function Page() {
           texte="Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Ta question est envoyée à Groq, un service d’IA, pour te répondre. Le site la garde (sans savoir qui tu es), avec ton avis si tu en donnes un, pour améliorer les fiches. Évite d’y mettre ton nom ou ton numéro."
         />
       </div>
+
+      {/* Rouvre la présentation « Bienvenue » de l'accueil, vue une seule fois au premier lancement. */}
+      <LienBouton href="/?presentation" variante="secondaire" icone="info" className="mt-5">
+        Revoir la présentation
+      </LienBouton>
 
       <p className="mt-3 text-center text-[13px] leading-[18px] text-ink-3">
         Logiciel libre sous licence MIT.{" "}

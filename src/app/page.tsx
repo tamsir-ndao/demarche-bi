@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Bienvenue } from "@/components/Bienvenue";
 import { BoutonVoix } from "@/components/BoutonVoix";
 import { PageShell } from "@/components/PageShell";
 import { QuestionForm } from "@/components/QuestionForm";
@@ -74,6 +75,8 @@ export default function Accueil() {
         </Link>
       </p>
 
+      {/* Présentation en trois paliers au premier lancement (ou `/?presentation`) : rien côté serveur, la page reste prérendue. */}
+      <Bienvenue />
     </PageShell>
   );
 }

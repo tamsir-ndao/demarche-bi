@@ -119,6 +119,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Audit du 16 octobre : garde-fous (texte sans lien avec la fiche ou la question, morceaux du prompt, chiffres Unicode et caractères invisibles, question de précision contrôlée) : 10 `todo` d'`attaques.test.ts` devenus de vrais tests, 7 restent
 - [x] 16 octobre (demande de Tamsir) : la conversation vocale continue sur les écrans de précision : bouton « Répondre à voix haute » (micro compact, question composée « question posée. réponse dite »), la note de lecture est prolongée (`enchainer`) et chaque choix touché garde la voix (`ChoixVocal`) ; « Autre chose » et « Annuler » l'arrêtent
 - [ ] Vérifier sur un vrai iPhone : question vocale → précision → réponse vocale ou toucher d'un choix → la fiche se lit toute seule
+- [x] 16 octobre (demande de Tamsir) : présentation « Bienvenue » en trois paliers au premier lancement, sur l'accueil, après l'écran de démarrage (`Bienvenue`, `lib/bienvenue.ts` testé, note `localStorage`), bouton « Revoir la présentation » sur « À propos » (`/?presentation`) ; vérifié dans Chrome en 320, 390 et 1440 px (balayage, clavier, Passer, axe : 0 violation)
+- [ ] Vérifier sur un vrai iPhone et un vrai Android : premier lancement de l'application installée (écran de démarrage puis Bienvenue), balayage, revoir depuis À propos
 
 ## Samedi 17 — open source et chiffres
 
