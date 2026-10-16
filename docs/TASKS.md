@@ -135,7 +135,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## Dimanche 18 — dossier prêt
 
 - [ ] Vidéo de démonstration (3 minutes maximum, trame prête dans `docs/SOUMISSION.md`)
-- [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre)
+- [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre ; remis à jour le 16 octobre avec l'état du projet, les textes prêts à coller case par case (section 8) et la liste de ce qui reste à faire (section 9))
+- [x] Flux `preparer-soumission` repassé le 16 octobre : dépôt public MIT, README complet, `npm run eval` inchangé (65/68 en 1er, 68/68 dans le top 3, refus 11/14), aucun secret dans l'historique (le seul motif trouvé est une expression de test), lint + fiches + 1 162 tests + build OK, 21 fiches vérifiées avec sources, date et auteur
 - [ ] Remplir le formulaire de soumission des organisateurs avant le lundi 19 octobre (texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
 
 ## Lundi 19 — marge
@@ -145,7 +146,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## 20 au 23 octobre — finale
 
 - [x] Pitch de 7 minutes préparé et minuté (voir guide `docs/PLAN-DEMO-FINALE.md`, 14 octobre)
-- [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
+- [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre) ; deux de plus le 16 octobre (commits « Jënd-Jaay », pas de voix wolof)
 - [x] Plan B et filets de sécurité documentés : fallback lexical automatique et démo mode avion hors-ligne (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
 
 ## Samedi 24 octobre — finale à l'Impact Hub Dakar

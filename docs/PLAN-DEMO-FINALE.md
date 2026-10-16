@@ -60,6 +60,14 @@ Le Wi-Fi des événements publics est réputé instable. Démarche-Bi intègre u
 > **Réponse recommandée :**
 > *« Démarche-Bi applique le principe de minimisation stricte : aucun compte utilisateur, aucun mot de passe, aucun dépôt de document personnel (CNI, avis d'imposition). Même pour les questions posées, notre journal anonymisé applique un masque automatique qui supprime les numéros de téléphone, emails et identifiants avant tout enregistrement, avec purge automatique à 90 jours. »*
 
+### Question 4 : *« Les deux premiers commits du dépôt s'appellent « Jënd-Jaay ». Le projet a-t-il bien été initié pendant le hackathon ? »*
+> **Réponse recommandée :**
+> *« Oui. Le 7 octobre, jour du lancement, nous avons d'abord créé le dépôt pour une première idée, Jënd-Jaay, puis nous l'avons abandonnée le jour même pour Démarche-Bi, dans le même dépôt. L'historique est public et le montre : tout le code et toutes les fiches datent du hackathon. »*
+
+### Question 5 : *« Pourquoi la réponse n'est-elle pas lue en wolof ? »*
+> **Réponse recommandée :**
+> *« Parce qu'aucune voix de synthèse gratuite ne parle wolof aujourd'hui, ni sur les téléphones ni chez les fournisseurs que nous utilisons ; nous préférons une voix française juste qu'un wolof approximatif. L'assistant comprend déjà le wolof mêlé de français, et il salue en wolof quand on le salue en wolof. Dès qu'une voix wolof fiable existe, elle se branche au même endroit. »*
+
 ---
 
 ## 4. Checklist matériel pour le Jour J (24 octobre à Dakar)

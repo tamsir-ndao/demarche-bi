@@ -6,7 +6,7 @@ Projet de l'**Open Source × AI Hackathon 2026** (Galsen DEV, Hacktoberfest Daka
 
 > Information indicative : confirme toujours auprès de l'administration concernée.
 
-**Statut : en développement.** Voir la feuille de route plus bas.
+**Statut : version du hackathon, en ligne et utilisable (16 octobre 2026).** Voir la feuille de route plus bas.
 
 **Site en ligne : https://demarche-bi.vercel.app** (le projet, pour le jury et les contributeurs : https://demarche-bi.vercel.app/projet). Les fiches sont relues une par une : le site ne répond qu'avec des fiches vérifiées (21 le 14 octobre 2026) et dit « Je ne sais pas encore » quand aucune ne correspond.
 
