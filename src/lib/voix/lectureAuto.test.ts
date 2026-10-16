@@ -6,6 +6,8 @@ import {
   consommerLaDemande,
   demanderLaLecture,
   DUREE_DEMANDE_MS,
+  oublierLaDemande,
+  prolongerLaDemande,
   stockageDeLOnglet,
   type StockageSession,
 } from "./lectureAuto";
@@ -76,6 +78,54 @@ describe("lecture automatique", () => {
     assert.equal(consommerLaDemande(casse, 1), false);
     demanderLaLecture(undefined, 1);
     assert.equal(consommerLaDemande(undefined, 1), false);
+  });
+});
+
+describe("la conversation continue après un écran de précision", () => {
+  it("consommer puis prolonger : la page suivante lit aussi, une seule fois", () => {
+    const stockage = faux();
+    demanderLaLecture(stockage, 1_000);
+    assert.equal(consommerLaDemande(stockage, 2_000), true);
+    prolongerLaDemande(stockage, 2_000);
+    assert.equal(consommerLaDemande(stockage, 3_000), true);
+    assert.equal(consommerLaDemande(stockage, 3_001), false);
+  });
+  it("prolonger repose la note sous la même clé, datée du moment de la lecture", () => {
+    // Prolonger sans demande préalable ne doit pas arriver : BoutonEcouter ne l'appelle qu'après une consommation vraie.
+    const stockage = faux();
+    prolongerLaDemande(stockage, 4_321);
+    assert.equal(stockage.valeurs.get(CLE_LECTURE_AUTO), "4321");
+  });
+  it("la page suivante a 90 secondes après la prolongation, pas une de plus", () => {
+    const juste = faux();
+    demanderLaLecture(juste, 0);
+    consommerLaDemande(juste, 10_000);
+    prolongerLaDemande(juste, 10_000);
+    assert.equal(consommerLaDemande(juste, 10_000 + DUREE_DEMANDE_MS - 1), true);
+    const trop = faux();
+    demanderLaLecture(trop, 0);
+    consommerLaDemande(trop, 10_000);
+    prolongerLaDemande(trop, 10_000);
+    assert.equal(consommerLaDemande(trop, 10_000 + DUREE_DEMANDE_MS), false);
+  });
+  it("oublier : plus de lecture automatique (retour à l'accueil, annulation)", () => {
+    const stockage = faux();
+    demanderLaLecture(stockage, 1_000);
+    oublierLaDemande(stockage);
+    assert.equal(stockage.valeurs.has(CLE_LECTURE_AUTO), false);
+    assert.equal(consommerLaDemande(stockage, 2_000), false);
+  });
+  it("oublier sans note ne change rien", () => {
+    const stockage = faux();
+    oublierLaDemande(stockage);
+    assert.equal(consommerLaDemande(stockage, 1_000), false);
+  });
+  it("ne plantent jamais quand le stockage est bloqué ou absent", () => {
+    prolongerLaDemande(casse, 1);
+    oublierLaDemande(casse);
+    prolongerLaDemande(undefined, 1);
+    oublierLaDemande(undefined);
+    assert.equal(consommerLaDemande(casse, 1), false);
   });
 });
 

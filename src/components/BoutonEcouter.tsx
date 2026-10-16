@@ -2,11 +2,14 @@
 
 import { useEffect, useEffectEvent, useRef, useSyncExternalStore } from "react";
 import type { LigneVocale } from "@/lib/voix/lecture";
-import { consommerLaDemande, stockageDeLOnglet } from "@/lib/voix/lectureAuto";
+import { consommerLaDemande, prolongerLaDemande, stockageDeLOnglet } from "@/lib/voix/lectureAuto";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { surligner } from "@/lib/voix/surlignage";
 import { Icon } from "./Icon";
 import { classesBouton } from "./LienBouton";
+
+/** Combien de boutons sont à l'écran : quand le dernier s'en va, la voix se coupe. */
+let montes = 0;
 
 /**
  * Lire l'essentiel de la réponse à voix haute, avec la voix du téléphone (rien n'est envoyé ailleurs). Le texte à lire
@@ -15,27 +18,40 @@ import { classesBouton } from "./LienBouton";
  * question posée à voix haute, la lecture démarre toute seule ; sinon, elle ne démarre que sur l'appui. Le bouton
  * disparaît si le téléphone n'a aucune voix française.
  */
-export function BoutonEcouter({ lignes, className = "" }: { lignes: LigneVocale[]; className?: string }) {
+export function BoutonEcouter({
+  lignes,
+  className = "",
+  enchainer = false,
+}: {
+  lignes: LigneVocale[];
+  className?: string;
+  /** Écran intermédiaire (précision) : après la lecture automatique, la page suivante se lira aussi toute seule. */
+  enchainer?: boolean;
+}) {
   const parleur = parleurDuNavigateur();
   // Sur le serveur, on montre le bouton : s'il n'y a pas de voix, il disparaît à l'arrivée de la page dans le navigateur.
   const etat = useSyncExternalStore(parleur.abonner, parleur.etat, () => "repos" as const);
   const cible = useSyncExternalStore(parleur.abonner, parleur.cible, () => null);
 
-  const lireLaReponse = useEffectEvent(() => parleur.lire(lignes));
+  const lireLaReponse = useEffectEvent(() => {
+    parleur.lire(lignes);
+    // La conversation continue : la note est reposée pour la page que la personne va choisir.
+    if (enchainer) prolongerLaDemande(stockageDeLOnglet(), Date.now());
+  });
   const demarre = useRef(false);
-  const monte = useRef(false);
 
   useEffect(() => {
-    monte.current = true;
+    montes += 1;
     if (!demarre.current) {
       demarre.current = true;
       if (consommerLaDemande(stockageDeLOnglet(), Date.now())) lireLaReponse();
     }
     return () => {
-      monte.current = false;
-      // Quitter la page coupe la voix. Le mode développement démonte puis remonte aussitôt : ce cas-là ne la coupe pas.
+      montes -= 1;
+      // Quitter la page coupe la voix. Le mode développement démonte puis remonte aussitôt, et l'écran de précision
+      // peut laisser la place à la fiche dans le même instant : dans ces cas-là, un bouton est encore là, on ne coupe pas.
       setTimeout(() => {
-        if (!monte.current) parleur.arreter();
+        if (montes === 0) parleur.arreter();
       }, 0);
     };
   }, [parleur]);

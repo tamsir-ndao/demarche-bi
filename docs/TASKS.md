@@ -116,6 +116,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Audit du 16 octobre : en-têtes de sécurité (CSP sans hôte tiers, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` ; `src/lib/entetes.ts` testé, vérifié dans Chrome : aucune violation)
 - [x] Audit du 16 octobre : page d'erreur en français (`error.tsx` et `global-error.tsx`, « Quelque chose a cassé. », bouton « Réessayer »)
 - [x] Audit du 16 octobre : garde-fous (texte sans lien avec la fiche ou la question, morceaux du prompt, chiffres Unicode et caractères invisibles, question de précision contrôlée) : 10 `todo` d'`attaques.test.ts` devenus de vrais tests, 7 restent
+- [x] 16 octobre (demande de Tamsir) : la conversation vocale continue sur les écrans de précision : bouton « Répondre à voix haute » (micro compact, question composée « question posée. réponse dite »), la note de lecture est prolongée (`enchainer`) et chaque choix touché garde la voix (`ChoixVocal`) ; « Autre chose » et « Annuler » l'arrêtent
+- [ ] Vérifier sur un vrai iPhone : question vocale → précision → réponse vocale ou toucher d'un choix → la fiche se lit toute seule
 
 ## Samedi 17 — open source et chiffres
 

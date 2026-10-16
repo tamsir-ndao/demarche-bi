@@ -9,7 +9,7 @@
     "lint": "eslint",
     "db:migrate": "node scripts/db.mjs migrate",
     "validate:fiches": "tsx scripts/validate-fiches.ts",
-    "test": "tsx --test \"src/**/*.test.ts\"",
+    "test": "tsx --test \"src/**/*.test.ts\" \"src/**/*.test.tsx\"",
     "eval": "tsx scripts/eval.ts",
     "fiabilite": "tsx scripts/fiabilite.ts"
   },

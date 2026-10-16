@@ -6,6 +6,9 @@ import { demarrerEnregistrement, ErreurMicro, type Enregistreur } from "@/lib/vo
 import { envoyerLaVoix } from "@/lib/voix/envoi";
 import { demanderLaLecture, stockageDeLOnglet } from "@/lib/voix/lectureAuto";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
+import { composerLaQuestion } from "@/lib/voix/question-composee";
+import { Icon } from "./Icon";
+import { classesBouton } from "./LienBouton";
 import {
   HAUTEUR_BARRE_MAX,
   HAUTEUR_BARRE_MIN,
@@ -17,9 +20,9 @@ import {
   VoixVerification,
 } from "./VoixEcrans";
 
-// Poser sa question à la voix : un bouton sur l'accueil ouvre une fenêtre plein écran où l'on parle (spectre en
-// direct), puis où l'on relit le texte reconnu avant de chercher la réponse. Rien n'est gardé : le son va à Whisper
-// (voir /api/transcribe), le texte revient ici et reste modifiable.
+// Poser sa question à la voix : un bouton (sur l'accueil, ou sur un écran de précision) ouvre une fenêtre plein écran
+// où l'on parle (spectre en direct), puis où l'on relit le texte reconnu avant de chercher la réponse. Rien n'est
+// gardé : le son va à Whisper (voir /api/transcribe), le texte revient ici et reste modifiable.
 
 type Etape =
   | { nom: "inactif" }
@@ -32,7 +35,21 @@ type Etape =
 /** Un enregistrement plus court que ça n'est pas une question (un appui trop rapide sur « Terminer »). */
 const DUREE_MIN_MS = 600;
 
-export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
+export function BoutonVoix({
+  idChampQuestion,
+  prefixe,
+  libelle = "Appuie et parle",
+  variante = "accueil",
+}: {
+  /** Le champ texte à focaliser quand la personne préfère écrire. Absent : « Écrire » ferme seulement la fenêtre. */
+  idChampQuestion?: string;
+  /** La question déjà posée : ce que la personne dit ensuite la complète (écran de précision). */
+  prefixe?: string;
+  /** Libellé du bouton (par défaut, celui de l'accueil). */
+  libelle?: string;
+  /** « accueil » : le grand rond qui respire ; « compact » : un bouton pleine largeur comme les autres (écran de précision). */
+  variante?: "accueil" | "compact";
+}) {
   const [etape, setEtape] = useState<Etape>({ nom: "inactif" });
   const [ecouleMs, setEcouleMs] = useState(0);
   const dialogue = useRef<HTMLDialogElement>(null);
@@ -68,7 +85,7 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
 
   function ecrire() {
     fermer();
-    document.getElementById(idChampQuestion)?.focus();
+    if (idChampQuestion) document.getElementById(idChampQuestion)?.focus();
   }
 
   /** Lève ou baisse chaque barre selon la voix (directement dans la page : 60 images par seconde sans repasser par React). */
@@ -107,7 +124,8 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
     } else if (resultat.texte === "") {
       setEtape({ nom: "erreur", code: "rien_entendu" });
     } else {
-      setEtape({ nom: "verification", texte: resultat.texte });
+      // Sur un écran de précision, ce qui vient d'être dit complète la question déjà posée.
+      setEtape({ nom: "verification", texte: composerLaQuestion(prefixe, resultat.texte) });
     }
   }
 
@@ -178,14 +196,21 @@ export function BoutonVoix({ idChampQuestion }: { idChampQuestion: string }) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={ouvrir}
-        className="press flex flex-col items-center gap-3 rounded-[40px] lg:flex-row lg:gap-5"
-      >
-        <RondMicro zone="size-48 lg:size-32" bouton="size-28 lg:size-[76px]" icone="size-12 lg:size-[34px]" />
-        <span className="text-lg leading-6 font-bold lg:text-xl lg:leading-7">Appuie et parle</span>
-      </button>
+      {variante === "compact" ? (
+        <button type="button" onClick={ouvrir} className={classesBouton("secondaire", "grand", "w-full")}>
+          <Icon name="micro" size={22} />
+          {libelle}
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={ouvrir}
+          className="press flex flex-col items-center gap-3 rounded-[40px] lg:flex-row lg:gap-5"
+        >
+          <RondMicro zone="size-48 lg:size-32" bouton="size-28 lg:size-[76px]" icone="size-12 lg:size-[34px]" />
+          <span className="text-lg leading-6 font-bold lg:text-xl lg:leading-7">{libelle}</span>
+        </button>
+      )}
 
       <dialog
         ref={dialogue}

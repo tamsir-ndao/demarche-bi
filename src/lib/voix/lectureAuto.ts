@@ -40,3 +40,21 @@ export function consommerLaDemande(stockage: StockageSession | undefined, mainte
     return false;
   }
 }
+
+/**
+ * Après une lecture automatique sur un écran intermédiaire (précision) : repose la note, datée de maintenant, pour que
+ * la page choisie ensuite se lise aussi toute seule. Seul `BoutonEcouter` l'appelle, et seulement juste après une
+ * consommation vraie : sans cette garde, une page ouverte sans la voix se mettrait à lire. Ne plante jamais.
+ */
+export function prolongerLaDemande(stockage: StockageSession | undefined, maintenantMs: number): void {
+  demanderLaLecture(stockage, maintenantMs);
+}
+
+/** La conversation vocale s'arrête là (retour à l'accueil, annulation) : plus de lecture automatique. Ne plante jamais. */
+export function oublierLaDemande(stockage: StockageSession | undefined): void {
+  try {
+    stockage?.removeItem(CLE_LECTURE_AUTO);
+  } catch {
+    // La note périme d'elle-même en 90 secondes.
+  }
+}
