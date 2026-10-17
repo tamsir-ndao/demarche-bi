@@ -123,8 +123,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [ ] Vérifier sur un vrai iPhone : question vocale → précision → réponse vocale ou toucher d'un choix → la fiche se lit toute seule
 - [x] 16 octobre (demande de Tamsir) : présentation « Bienvenue » en trois paliers au premier lancement, sur l'accueil, après l'écran de démarrage (`Bienvenue`, `lib/bienvenue.ts` testé, note `localStorage`), bouton « Revoir la présentation » sur « À propos » (`/?presentation`) ; vérifié dans Chrome en 320, 390 et 1440 px (balayage, clavier, Passer, axe : 0 violation)
 - [x] 16 octobre (demande de Tamsir : « trop d'informations d'un coup, que le texte se voie pendant que le système parle ») : réponse en couches (titre et phrase, faits clés compacts, pièces visibles avec leur nombre, étapes et notes multiples repliées dans `SectionRepliable`, « Voir aussi » ×2, fiche complète sur `/demarches/[slug]`) et apparition progressive (`Apparition` + `lib/voix/apparition.ts` : cascade de 90 ms, ou bloc par bloc au fil de la voix, tout dès le premier geste, repli 20 s, animations réduites = tout visible) ; 21 tests, vérifié dans Chrome 320/390/1440 avec faux moteur vocal
-- [ ] Vérifier sur un vrai iPhone et un vrai Android : la réponse apparaît au fil de la voix après une question dite à voix haute, et d'un coup (cascade) après une question écrite
-- [ ] Vérifier sur un vrai iPhone et un vrai Android : premier lancement de l'application installée (écran de démarrage puis Bienvenue), balayage, revoir depuis À propos
+- [x] Vérifier sur un vrai iPhone et un vrai Android : la réponse apparaît au fil de la voix après une question dite à voix haute, et d'un coup (cascade) après une question écrite : confirmé par Tamsir le 17 octobre
+- [x] Vérifier sur un vrai iPhone et un vrai Android : premier lancement de l'application installée (écran de démarrage puis Bienvenue), balayage, revoir depuis À propos : écran de démarrage et Bienvenue confirmés par Tamsir le 17 octobre
 
 ## Samedi 17 — open source et chiffres
 
