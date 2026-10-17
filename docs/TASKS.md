@@ -52,7 +52,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 
 - [x] `eval/questions.jsonl` : 95 questions (couvertes, hors périmètre, vagues), dont 15 en wolof ou mêlées de wolof (13 questions ajoutées le 13 octobre : 12 pour les 6 fiches nouvelles, 1 pour « Mon permis a été volé » ; puis 17 pour les 5 fiches du second lot : naissance et dédouanement, dont 2 de la vie réelle pour la déclaration de naissance et 4 mêlées de wolof ; « Comment obtenir un acte de naissance ? » reformulée en « Je voudrais la copie intégrale de mon acte de naissance, comment faire ? », car les trois documents de naissance sont à égalité sur la question générale)
 - [x] Vérifier la licence de Qwen3.8-27B : confirmée sous licence Apache 2.0 (Hugging Face / Groq, 14 octobre)
-- [ ] Faire relire par un locuteur wolof les 15 questions `mixte` et `wo` de `eval/questions.jsonl` (tournures rédigées sans locuteur natif)
+- [x] Faire relire par un locuteur wolof les 15 questions `mixte` et `wo` de `eval/questions.jsonl` (tournures rédigées sans locuteur natif) : validées telles quelles par Tamsir le 17 octobre
 - [x] `scripts/eval.ts` et `npm run eval` : recherche seule (`-- --brouillons` tant que des fiches sont en brouillon)
 - [x] `npm run eval -- --ia` de bout en bout : bonne fiche, refus, précision, introductions refusées par les garde-fous (premiers chiffres le 11 octobre ; à refaire une fois les fiches vérifiées)
 - [ ] Corriger la recherche et les prompts selon les résultats
@@ -63,13 +63,13 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] `npm run fiabilite` (`scripts/fiabilite.ts`) : sans IA (jeux validés, nombre d'appels, recherche seule) ou avec `--ia` (fidélité, refus, pièges, saisie, répétition), sans écriture dans le journal ; documenté dans `docs/FIABILITE.md`
 - [x] Première mesure de fiabilité avec l'IA : l'échantillon fait le 14 octobre (69 questions : 0 inventé, 0 deviné, refus 9/10, pièges 8/10, stabilité 3/3 ; chiffres dans `docs/FIABILITE.md` et le README). Reste : les blocs complets (`--bloc=…`, ≈ 299 appels, à étaler sur deux jours à cause du quota) si le temps le permet avant le 19
 - [x] Décider quoi faire des trous connus de `docs/FIABILITE.md` (les `todo` de `src/lib/ai/attaques.test.ts`, la vie privée, la robustesse) : 10 fermés, 7 restent (16 octobre, audit)
-- [ ] Faire relire par un locuteur wolof les questions `mixte` et `wo` des jeux de fiabilité (`eval/fiabilite-*.jsonl`)
+- [x] Faire relire par un locuteur wolof les questions `mixte` et `wo` des jeux de fiabilité (`eval/fiabilite-*.jsonl`) : validées telles quelles par Tamsir le 17 octobre
 - [x] Corriger `docs/PRD.md` : « 52 questions » devenu 95, dont 15 en wolof, et dates de soumission (14 octobre)
 - [x] Accueil allégé (16 octobre, demande de Tamsir) : les trois cartes « sources officielles / date de vérification / je ne devine pas » de l'accueil sur ordinateur remplacées par une ligne discrète avec un lien « En savoir plus » vers « À propos », où les cartes restent
 - [x] Comprendre : une question sur un détail (coût, délai, pièces, lieu) désigne la démarche (16 octobre) : gpt-oss-120b répondait « Je n'ai pas encore de source officielle pour le coût du passeport » à « Combien coûte le passeport ? » (les modèles de secours, eux, trouvaient la fiche) ; vérifié modèle par modèle avant et après. Attention : une quarantaine de questions d'essai suffisent à épuiser le quota gratuit quotidien de gpt-oss-120b, le site passe alors sur les modèles de secours
 - [x] Salutation seule (« Bonjour », « Salam aleykoum », « Nanga def ») : réponse chaleureuse et invitation à poser sa question, en code pur sans appel au modèle (écran `Salutation`, voix, journal, mesures) ; testée (16 octobre)
 - [x] Salutation dans la langue reçue (16 octobre, demande de Tamsir : « Bonjour » recevait « Salam aleykoum ») : le premier mot de salut décide, « Bonjour ! » / « Bonsoir ! » / « Salut ! » en français, « Maalekum salam ! » / « Maa ngi fi rekk ! » / « Kassoumay ! » en wolof, avec l'invitation dans la même langue ; testée (`salutationEnRetour`)
-- [ ] Relire la phrase wolof d'invitation « Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ? » et les saluts wolof avec un locuteur
+- [x] Relire la phrase wolof d'invitation « Lan nga bëgg a laaj ci say démarches administratives ci Senegaal ? » et les saluts wolof avec un locuteur : validés tels quels par Tamsir le 17 octobre
 
 ## Mercredi 14 — voix et consultation
 

@@ -100,4 +100,4 @@ En clair : un conseil juridique écrit en prose, sans chiffre ni adresse, passe 
 ### Robustesse
 
 - La limite de 10 questions par minute et par visiteur est en mémoire, par instance : chaque instance a son compteur et un redémarrage le remet à zéro. L'adresse du visiteur vient de `x-forwarded-for` (première valeur) : Vercel la renseigne, mais hors Vercel elle est falsifiable. Un visiteur sans adresse n'est pas limité. Au-delà de la limite, la fiche est montrée sans introduction et le modèle n'est pas appelé.
-- Les questions en wolof (`mixte` et `wo`) de tous les jeux n'ont pas été relues par un locuteur : à faire relire avant de s'appuyer sur les chiffres par langue.
+- Les questions en wolof (`mixte` et `wo`) de tous les jeux ont été rédigées sans locuteur natif, puis validées telles quelles par Tamsir le 17 octobre 2026.
