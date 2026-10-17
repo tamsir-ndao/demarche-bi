@@ -116,7 +116,7 @@ Aucune base de données n'est nécessaire. Pour valider les fiches : `npm run va
 - [x] Avis « Cette réponse t'a aidé ? » et journal anonyme (facultatifs, avec une base Neon)
 - [x] Partager une fiche sur WhatsApp (ou avec la feuille de partage du téléphone)
 - [x] Jeu d'évaluation et chiffres mesurés (95 questions, recherche seule et avec IA)
-- [ ] Vidéo de démonstration
+- [x] Vidéo de démonstration : [film de 2 min 02 sur YouTube](https://youtu.be/TF9t8Gp6h_c)
 
 ## Licence
 

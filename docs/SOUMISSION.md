@@ -143,13 +143,13 @@ Chaque bloc est écrit pour une case du formulaire : copier tel quel, raccourcir
 - Dépôt (MIT, historique public depuis le 7 octobre 2026) : https://github.com/tamsir-ndao/demarche-bi
 - Application : https://demarche-bi.vercel.app · page projet : https://demarche-bi.vercel.app/projet
 - Documentation : `README.md`, `docs/ARCHITECTURE.md`, `docs/AI-PROMPTS.md`, `docs/FIABILITE.md`, `docs/SETUP.md`, `CONTRIBUTING.md`
-- Vidéo de démonstration (3 min) : *à ajouter après l'enregistrement*
+- Vidéo de démonstration (2 min 02) : https://youtu.be/TF9t8Gp6h_c
 
 ---
 
 ## 9. Avant d'envoyer : ce qui reste à faire
 
-- [ ] Enregistrer la vidéo (3 minutes au plus, trame section 7) et ajouter son lien à la section 8.
+- [x] Vidéo mise en ligne le 17 octobre et lien ajouté à la section 8 : film de 2 min 02 sur YouTube (non répertorié, jusqu'en 4K).
 - [ ] Chaque membre de l'équipe s'inscrit sur MLH (demandé par les organisateurs, même avant la finale).
 - [ ] Remplir le formulaire des organisateurs avec les textes de la section 8 avant le lundi 19 octobre.
 - [ ] Vérifier sur un vrai téléphone, juste avant d'envoyer, les questions de la section 7 avec internet puis en mode avion.
