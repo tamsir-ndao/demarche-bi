@@ -148,6 +148,10 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## 20 au 23 octobre — finale
 
 - [x] Pitch de 7 minutes préparé et minuté (voir guide `docs/PLAN-DEMO-FINALE.md`, 14 octobre)
+- [x] Présentation refaite le 17 octobre pour le vrai format, 10 minutes de présentation et de démo puis 3 minutes de questions (`docs/PLAN-DEMO-FINALE.md`) : déroulé minuté, démo pas à pas, filets de sécurité, 8 réponses aux questions du jury (affirmations non mesurées retirées), liste du jour J ; diaporama de 9 diapos avec le texte à dire dans les notes ; ouverture du film de 29 secondes (`~/Downloads/demarche-bi-video/demarche-bi-film-ouverture.mp4`)
+- [ ] Compléter les réponses 5 et 8 de `docs/PLAN-DEMO-FINALE.md` : offres Groq et Vercel, projets après le hackathon
+- [ ] Essayer QuickTime avec le téléphone branché au Mac, aussi en mode avion (écran et voix du téléphone sur le Mac)
+- [ ] Répéter la présentation en entier avec un chronomètre (10 minutes), puis télécharger le diaporama en PDF et tout copier sur une clé USB
 - [x] Réponses types aux 3 questions clés du jury rédigées (`docs/PLAN-DEMO-FINALE.md`, 14 octobre) ; une de plus le 16 octobre (pas de voix wolof)
 - [x] Plan B et filets de sécurité documentés : fallback lexical automatique et démo mode avion hors-ligne (`docs/PLAN-DEMO-FINALE.md`, 14 octobre)
 

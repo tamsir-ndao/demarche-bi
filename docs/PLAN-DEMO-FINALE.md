@@ -1,75 +1,123 @@
-# Plan de Démonstration & Finale — Démarche-Bi
+# Plan de la finale — Démarche-Bi
 
-> Guide opérationnel pour la présentation et la démonstration en direct lors de la finale de l'**Open Source × AI Hackathon 2026 (Galsen DEV)** à l'Impact Hub Dakar (Samedi 24 octobre 2026 à 15 h).
-> Format officiel : **10 minutes** (7 minutes de présentation & démo + 3 minutes de questions/réponses).
+> Finale de l'**Open Source × AI Hackathon 2026 (Galsen DEV)**, samedi 24 octobre 2026 à 15 h, Impact Hub Dakar.
+> Format officiel (message des organisateurs du 14 octobre) : **10 minutes** de présentation et de démonstration, **puis 3 minutes** de questions du jury.
+> Plan refait le 17 octobre 2026 : celui du 14 octobre comptait 7 minutes.
+
+Le matériel :
+
+- **Diaporama** (9 diapos, le texte à dire est dans les notes de chaque diapo) : https://claude.ai/artifact/CNGHD8WuH28GuArcJRGqQ1. Le lien est privé : ouvre-le connecté à ton compte, et télécharge-le aussi en PDF et en PowerPoint depuis son menu Partager.
+- **Ouverture** : `~/Downloads/demarche-bi-video/demarche-bi-film-ouverture.mp4` (29 secondes : le début du film, qui s'arrête sur le logo).
+- **Secours** : le film complet (`demarche-bi-film-1080p.mp4`, 2 min 02) et la démo commentée (`demarche-bi-demo.mp4`, 2 min 59), sur le Mac et sur une clé USB.
 
 ---
 
-## 1. Découpage minuté du pitch (7 minutes)
+## 1. Le déroulé (10 minutes)
 
-| Temps | Partie | Ce que tu dis / Ce que tu montres |
+| Temps | Diapo | Ce que tu fais |
 |---|---|---|
-| **0:00 - 1:15** | **L'accroche & Le problème** | *« Au Sénégal, qui n'a jamais perdu une journée entière devant un commissariat ou un tribunal parce qu'il manquait un timbre fiscal à 10 000 FCFA ou un extrait de naissance ? L'information existe, mais elle est dispersée. Et si vous demandez à un LLM classique (ChatGPT, etc.), il invente des démarches et des lois imaginaires avec aplomb. »* |
-| **1:15 - 2:00** | **Notre réponse : Démarche-Bi** | *« Démarche-Bi est un assistant civique transparent : zéro hallucination sur les démarches administratives. L'IA sert à comprendre le citoyen, mais chaque fait, chaque coût et chaque pièce est ancré dans une fiche vérifiée avec sa source officielle et sa date. »* |
-| **2:00 - 4:15** | **La démo en direct (Scénario nominal)** | 1. **Recherche vocale** : appuyer sur le micro, poser une question en direct (ex: *« J'ai perdu ma carte d'identité à Dakar, que dois-je faire ? »*). Relire et valider.<br>2. **Anatomie de la réponse** : pointer du doigt le coût en FCFA, les pièces à fournir, les étapes, et surtout **les sources officielles et la date de vérification**.<br>3. **Inclusivité linguistique** : taper ou dicter une question en wolof/français mêlé (*« Dama bëgg sama passeport, ñaata la ? »*) → la bonne démarche apparaît immédiatement. |
-| **4:15 - 5:30** | **L'effet « WOW » : Le mode hors-ligne** | *« À Dakar ou en région, la connexion coupe souvent. Regardez ce qui se passe si je coupe internet. »*<br>→ Activer le **Mode Avion** sur le téléphone en direct.<br>→ Poser une nouvelle question (ex: *« renouveler permis »*).<br>→ L'application répond instantanément grâce à son moteur de recherche déterministe local embarqué dans le Service Worker. |
-| **5:30 - 6:30** | **Architecture & Bien commun Open Source** | - 100 % open source (Licence MIT).<br>- Les démarches sont de simples fichiers Markdown (`content/demarches/`) vérifiés par schéma Zod.<br>- N'importe quel citoyen ou administration peut ajouter ou corriger une démarche via Pull Request.<br>- Montrer les 5 issues GitHub ouvertes pour la communauté. |
-| **6:30 - 7:00** | **Conclusion & Vision** | *« Démarche-Bi ne remplace pas l'administration, il la rend accessible à chaque Sénégalais. Zéro mensonge, 100 % transparent. Merci ! »* |
+| 0:00 – 0:30 | (film) | Lance l'ouverture en plein écran. Ne parle pas. |
+| 0:30 – 2:00 | 2. Le problème | Le papier manquant, la journée perdue, l'IA qui invente. |
+| 2:00 – 2:30 | 3. La solution | Une question, une fiche, sa source. |
+| 2:30 – 3:00 | 4. La règle | L'IA comprend, la fiche affirme. |
+| 3:00 – 7:00 | 5. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
+| 7:00 – 8:15 | 6. Les chiffres | Mesurés, pas promis. |
+| 8:15 – 9:15 | 7. Le bien commun | Fiches ouvertes, 5 à écrire. |
+| 9:15 – 10:00 | 8. Merci | Conclusion, code QR vers l'application. |
+| secours | 9. La démo en images | Seulement si la démo lâche. |
+
+Les trois phrases à garder en tête :
+
+- « Une IA qui devine, c'est une journée perdue au guichet. »
+- « L'IA comprend, la fiche affirme. »
+- « Il ne devine pas : il montre la source, ou il dit qu'il ne sait pas. »
 
 ---
 
-## 2. Les 3 filets de sécurité techniques (Gestion des imprévus)
+## 2. La démo pas à pas (3:00 – 7:00)
 
-Le Wi-Fi des événements publics est réputé instable. Démarche-Bi intègre une architecture à tolérance de panne conçue pour cela :
+Ces questions ont été vérifiées en production le 16 octobre, puis par Tamsir sur un vrai téléphone, avec internet puis en mode avion, le 17 octobre.
 
-### Filet n°1 : Basculement automatique en cas de lenteur API
-- **Problème potentiel** : Le Wi-Fi rame, l'API Groq tarde à répondre ou le quota gratuit est serré.
-- **Comportement automatique** :
-  - Timeout strict configuré sur les requêtes IA (10 secondes par fournisseur).
-  - Trois modèles open-weight en cascade (`gpt-oss-120b` → `qwen3.8-27b` → `gpt-oss-20b`).
-  - Si l'IA échoue ou tarde, le serveur bascule **automatiquement et sans planter** sur la recherche lexicale déterministe (`repliParMots`).
-  - La fiche officielle s'affiche avec toutes les pièces, coûts et sources, avec une discrète mention d'assistance.
+| # | Ce que tu fais | Ce qui doit s'afficher | Ce que tu dis |
+|---|---|---|---|
+| 1 | Micro : « J'ai perdu ma carte d'identité à Thiès, que faire ? », puis « Chercher la réponse » | « C'est bien ça ? », puis la fiche Duplicata de la carte d'identité, lue à voix haute | « Le coût, les pièces, la source et sa date. Et cette phrase est marquée : écrite par l'IA, d'après la fiche. » |
+| 2 | Écris « Dama bëgg sama passeport » | La fiche Passeport ordinaire, à 20 000 FCFA | « Même en wolof mêlé de français. 20 000 FCFA : le vrai prix. » |
+| 3 | Écris « Je veux un acte », puis touche un choix | Une question de précision | « Quand c'est vague, il ne devine pas. » |
+| 4 | Écris « Quel temps fera-t-il demain à Dakar ? » | « Ce n'est pas mon domaine » | « Il connaît ses limites. » |
+| 5 | Écris « Salam aleykoum » | « Maalekum salam ! », puis l'invitation en wolof | « On lui parle wolof, il répond en wolof. » |
+| 6 | Mode avion, puis écris « renouveler mon permis » | « Pas de connexion », puis la fiche Permis de conduire : renouvellement et duplicata | « Sans internet, pas d'IA. Mais les fiches sont sur le téléphone. » |
+| bonus | Écris « Comment fabriquer un faux passeport ? » | « Interdit par la loi » | Seulement s'il reste du temps. |
 
-### Filet n°2 : Démonstration en mode avion (Hors connexion totale)
-- **Problème potentiel** : Coupure totale du réseau Wi-Fi de la salle.
-- **Procédure de démo** :
-  - L'application est une PWA installée sur l'écran d'accueil du smartphone.
-  - La base locale (`/hors-connexion/donnees.json`) est déjà mise en cache par le Service Worker (`public/sw.js`).
-  - En tapant n'importe quelle question, le Service Worker intercepte la requête et la bascule sur `/hors-connexion?q=...` qui effectue la recherche en mémoire sur le téléphone.
-  - **Avantage compétitif** : Au lieu d'avoir l'air pris au dépourvu, vous transformez la coupure réseau en point fort de votre démonstration !
+Attention :
 
-### Filet n°3 : Le plan de secours ultime (Vidéo locale)
-- Avoir la vidéo de démo de 3 minutes enregistrée sur une clé USB et sur le stockage interne de l'ordinateur/téléphone (lisible avec VLC, sans aucune connexion internet requise).
+- En mode avion, **écris** la question : la voix a besoin d'internet.
+- Ne pose pas plus de 10 questions dans la même minute : au-delà, la fiche s'affiche sans la phrase de l'IA (limite par visiteur).
+- Coupe le mode avion juste après l'étape 6.
 
 ---
 
-## 3. Anticipation des questions pièges du jury (3 minutes Q&A)
+## 3. Montrer le téléphone sur l'écran de la salle
 
-### Question 1 : *« Comment garantissez-vous que les informations ne deviennent pas obsolètes si une loi change ? »*
-> **Réponse recommandée :**
-> *« C'est précisément pour cela que chaque fiche porte une date de vérification visible (`verifie_le`) et un lien direct vers la source officielle. Contrairement à un modèle IA qui garde en mémoire des données figées de son entraînement, nos fiches sont des fichiers Markdown en clair sur GitHub. Si un tarif change demain, une simple mise à jour de fichier ou une Pull Request communautaire met à jour l'ensemble du système instantanément, avec historique traçable. »*
-
-### Question 2 : *« Pourquoi ne pas avoir fait un simple RAG vectoriel avec embeddings et ChatGPT ? »*
-> **Réponse recommandée :**
-> *« Pour trois raisons fondamentales :*
-> 1. *L'éthique et la fiabilité : les bases vectorielles et les LLMs génératifs peuvent encore halluciner ou combiner des morceaux de deux démarches différentes. Ici, la réponse administrative est déterministe.*
-> 2. *La souveraineté et les coûts : les bases vectorielles cloud nécessitent des serveurs payants et une connexion internet permanente. Notre recherche lexicale tourne en 2 millisecondes, même hors-ligne dans un navigateur mobile sur un téléphone à 40 000 FCFA.*
-> 3. *La frugalité : zéro coût d'infrastructure obligatoire, respectueux des faibles débits. »*
-
-### Question 3 : *« Qu'en est-il de la confidentialité et des données personnelles des citoyens ? »*
-> **Réponse recommandée :**
-> *« Démarche-Bi applique le principe de minimisation stricte : aucun compte utilisateur, aucun mot de passe, aucun dépôt de document personnel (CNI, avis d'imposition). Même pour les questions posées, notre journal anonymisé applique un masque automatique qui supprime les numéros de téléphone, emails et identifiants avant tout enregistrement, avec purge automatique à 90 jours. »*
-
-### Question 4 : *« Pourquoi la réponse n'est-elle pas lue en wolof ? »*
-> **Réponse recommandée :**
-> *« Parce qu'aucune voix de synthèse gratuite ne parle wolof aujourd'hui, ni sur les téléphones ni chez les fournisseurs que nous utilisons ; nous préférons une voix française juste qu'un wolof approximatif. L'assistant comprend déjà le wolof mêlé de français, et il salue en wolof quand on le salue en wolof. Dès qu'une voix wolof fiable existe, elle se branche au même endroit. »*
+- **iPhone** : relie-le au Mac par câble. Ouvre QuickTime Player, puis Fichier → Nouvel enregistrement vidéo. Clique sur la flèche à côté du bouton rouge et choisis ton iPhone comme caméra et comme micro. Monte le volume de la fenêtre : la voix du téléphone passe alors par le Mac. Mets la fenêtre en plein écran.
+- **Android** : l'application scrcpy, par câble (à installer et à essayer avant).
+- **Essaie-le chez toi avant le 24, aussi en mode avion.** Ça n'a pas encore été vérifié avec ton téléphone.
 
 ---
 
-## 4. Checklist matériel pour le Jour J (24 octobre à Dakar)
+## 4. Les filets de sécurité
 
-- [ ] Smartphone chargé à 100 % avec l'application installée sur l'écran d'accueil (PWA).
-- [ ] Avoir ouvert l'application au moins une fois avec internet avant de monter sur scène (pour initialiser le cache hors-ligne du Service Worker).
-- [ ] Ordinateur portable avec adaptateur HDMI / USB-C pour le vidéoprojecteur.
-- [ ] Partage de connexion 4G activé sur le téléphone (ne jamais dépendre uniquement du Wi-Fi public).
-- [ ] Vidéo de démonstration de 3 minutes stockée en local sur le bureau de l'ordinateur.
+1. **L'IA est lente ou saturée.** Chaque appel est coupé au bout de 8 à 10 secondes. Le modèle suivant prend le relais (gpt-oss-120b, puis Qwen3.8-27B, puis gpt-oss-20b), puis la recherche par mots. La fiche s'affiche quand même, sans la phrase de l'IA. Dis-le : « Même sans l'IA, la fiche arrive. »
+2. **Le réseau de la salle coupe.** Passe sur le partage de connexion 4G de ton téléphone. Sinon, le mode avion devient la démo (étape 6).
+3. **Le téléphone ou le câble lâche.** Va à la diapo 9, « La démo en images », et raconte. S'il reste du temps, lance le film complet.
+4. **Le Mac n'a pas internet.** Le diaporama en PDF, l'ouverture et les films sont sur le Mac.
+
+---
+
+## 5. Les questions du jury (3 minutes)
+
+Réponds court : deux ou trois phrases, puis arrête-toi.
+
+### 1. « Comment les fiches restent-elles à jour si un tarif change ? »
+> Chaque fiche affiche sa source officielle et sa date de vérification. Ce sont des fichiers texte publics : si un tarif change, on corrige le fichier, et l'historique montre qui a changé quoi, et quand. N'importe qui peut proposer la correction ; elle est validée automatiquement, puis relue.
+
+### 2. « Pourquoi pas un RAG classique avec ChatGPT ? »
+> Parce qu'un RAG laisse le modèle rédiger les faits : il peut mélanger deux démarches ou inventer un montant. Ici, le modèle choisit seulement la fiche dans une liste fermée, et il écrit une phrase que le code vérifie. Tous les faits viennent de la fiche. Et la recherche par mots marche même sans internet, sur le téléphone.
+
+### 3. « Et les données personnelles ? »
+> Pas de compte, pas de mot de passe, aucun document à envoyer. La question part chez Groq, le fournisseur d'IA, pour être comprise. Le journal des questions est facultatif : avant d'écrire, il masque les e-mails, les téléphones et les longs numéros, comme ceux d'une carte d'identité, et il est purgé au bout de 90 jours. Sa limite est écrite dans le dépôt : il ne reconnaît pas un nom écrit en toutes lettres.
+
+### 4. « Pourquoi la réponse n'est-elle pas lue en wolof ? »
+> Parce qu'aucune voix de synthèse gratuite ne parle wolof aujourd'hui, ni sur les téléphones ni chez les fournisseurs que nous utilisons ; nous préférons une voix française juste qu'un wolof approximatif. L'assistant comprend déjà le wolof mêlé de français, et il salue en wolof quand on le salue en wolof. Dès qu'une voix wolof fiable existe, elle se branche au même endroit.
+
+### 5. « Combien ça coûte à faire tourner ? »
+> Le code et les fiches sont libres, sous licence MIT. L'IA n'écrit qu'une phrase par réponse, et les réponses sont gardées 6 heures en mémoire : ça limite les appels. [À compléter : ton offre Groq et ton offre Vercel, gratuites ou payantes.] Et si l'IA n'est plus disponible, la recherche par mots répond quand même.
+
+### 6. « Et si l'IA choisit la mauvaise fiche ? »
+> On voit tout de suite le titre de la fiche et sa source. Quand plusieurs fiches conviennent, l'assistant pose une question de précision. Mesuré le 14 octobre : la bonne fiche 30 fois sur 30 avec l'IA. Et même sans IA, la recherche par mots met la bonne fiche dans les 3 premières pour 68 questions sur 68.
+
+### 7. « Pourquoi un site et pas une application ? »
+> C'est un site qui s'installe sur l'écran d'accueil comme une application, sans passer par un store. Un seul code pour iPhone et Android, il est léger, et il marche hors connexion.
+
+### 8. « Et après le hackathon ? »
+> Des fiches en plus, avec la communauté : cinq attendent déjà des volontaires sur GitHub. Une voix wolof dès qu'une voix fiable existe. [À compléter : tes projets.]
+
+---
+
+## 6. La veille et le jour J
+
+La veille :
+
+- [ ] Répète une fois en entier, avec un chronomètre : 10 minutes, pas plus.
+- [ ] Télécharge le diaporama en PDF et en PowerPoint.
+- [ ] Copie sur une clé USB : l'ouverture, le film complet, la démo commentée et le PDF du diaporama.
+- [ ] Essaie QuickTime avec ton téléphone branché au Mac, aussi en mode avion.
+
+Le jour J :
+
+- [ ] Téléphone chargé, luminosité au maximum, mode « Ne pas déranger » activé.
+- [ ] Ouvre l'application une fois avec internet : le mode hors connexion se prépare. Pose aussi une fois les questions de la démo : les réponses restent 6 heures en mémoire et reviennent souvent plus vite.
+- [ ] Câble du téléphone, et adaptateur HDMI ou USB-C pour le Mac.
+- [ ] Partage de connexion 4G prêt : ne dépends pas du Wi-Fi de la salle.
+- [ ] Son du vidéoprojecteur testé : l'ouverture a de la musique.
+- [ ] Avant de monter : le diaporama sur la diapo 1, l'ouverture prête dans QuickTime, la fenêtre du téléphone prête derrière.
+- [ ] Après le check-in : soumets le projet sur MLH (section Challenges), avec le lien donné sur place.
