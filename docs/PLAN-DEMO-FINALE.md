@@ -6,7 +6,7 @@
 
 Le matériel :
 
-- **Diaporama** (9 diapos, le texte à dire est dans les notes de chaque diapo) : https://claude.ai/artifact/CNGHD8WuH28GuArcJRGqQ1. Le lien est privé : ouvre-le connecté à ton compte, et télécharge-le aussi en PDF et en PowerPoint depuis son menu Partager.
+- **Diaporama** (10 diapos, le texte à dire est dans les notes de chaque diapo) : https://claude.ai/artifact/CNGHD8WuH28GuArcJRGqQ1. Le lien est privé : ouvre-le connecté à ton compte, et télécharge-le aussi en PDF et en PowerPoint depuis son menu Partager.
 - **Ouverture** : `~/Downloads/demarche-bi-video/demarche-bi-film-ouverture.mp4` (29 secondes : le début du film, qui s'arrête sur le logo).
 - **Secours** : le film complet (`demarche-bi-film-1080p.mp4`, 2 min 02) et la démo commentée (`demarche-bi-demo.mp4`, 2 min 59), sur le Mac et sur une clé USB.
 
@@ -16,15 +16,16 @@ Le matériel :
 
 | Temps | Diapo | Ce que tu fais |
 |---|---|---|
-| 0:00 – 0:30 | (film) | Lance l'ouverture en plein écran. Ne parle pas. |
-| 0:30 – 2:00 | 2. Le problème | Le papier manquant, la journée perdue, l'IA qui invente. |
-| 2:00 – 2:30 | 3. La solution | Une question, une fiche, sa source. |
-| 2:30 – 3:00 | 4. La règle | L'IA comprend, la fiche affirme. |
-| 3:00 – 7:00 | 5. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
-| 7:00 – 8:15 | 6. Les chiffres | Mesurés, pas promis. |
-| 8:15 – 9:15 | 7. Le bien commun | Fiches ouvertes, 5 à écrire. |
-| 9:15 – 10:00 | 8. Merci | Conclusion, code QR vers l'application. |
-| secours | 9. La démo en images | Seulement si la démo lâche. |
+| 0:00 – 0:30 | 1. Titre, puis le film | Lance l'ouverture en plein écran. Ne parle pas. |
+| 0:30 – 1:15 | 2. Le problème | Une pièce manque, une journée perdue ; l'information est éparpillée. |
+| 1:15 – 2:00 | 3. Les IA inventent | La fausse réponse tamponnée « INVENTÉ. ». |
+| 2:00 – 2:30 | 4. La solution | Une question, une fiche, sa source. |
+| 2:30 – 3:00 | 5. La règle | L'IA comprend, la fiche affirme. |
+| 3:00 – 7:00 | 6. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
+| 7:00 – 8:15 | 7. Les preuves | Mesuré, pas promis. |
+| 8:15 – 9:15 | 8. Le bien commun | Une vraie fiche, 5 à écrire. |
+| 9:15 – 10:00 | 9. Merci | Conclusion, code QR vers l'application. |
+| secours | 10. Ce que montre la démo | Seulement si la démo lâche. |
 
 Les trois phrases à garder en tête :
 
@@ -68,7 +69,7 @@ Attention :
 
 1. **L'IA est lente ou saturée.** Chaque appel est coupé au bout de 8 à 10 secondes. Le modèle suivant prend le relais (gpt-oss-120b, puis Qwen3.8-27B, puis gpt-oss-20b), puis la recherche par mots. La fiche s'affiche quand même, sans la phrase de l'IA. Dis-le : « Même sans l'IA, la fiche arrive. »
 2. **Le réseau de la salle coupe.** Passe sur le partage de connexion 4G de ton téléphone. Sinon, le mode avion devient la démo (étape 6).
-3. **Le téléphone ou le câble lâche.** Va à la diapo 9, « La démo en images », et raconte. S'il reste du temps, lance le film complet.
+3. **Le téléphone ou le câble lâche.** Va à la diapo 10, « Ce que montre la démo », et raconte. S'il reste du temps, lance le film complet.
 4. **Le Mac n'a pas internet.** Le diaporama en PDF, l'ouverture et les films sont sur le Mac.
 
 ---
