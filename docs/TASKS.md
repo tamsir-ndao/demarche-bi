@@ -13,7 +13,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## Vendredi 9 octobre — à faire par toi
 
 - [ ] Mettre à jour ton inscription au hackathon avec Démarche-Bi, track Civic Tech (`docs/SETUP.md`, étape 2)
-- [ ] Inscrire chaque membre de l'équipe sur MLH (mail des organisateurs du 11 octobre) : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
+- [x] Inscrire chaque membre de l'équipe sur MLH (mail des organisateurs du 11 octobre ; fait, confirmé par Tamsir le 17 octobre) : https://events.mlh.com/events/14896-hacktoberfest-hack-day-dakar-x-galsen-dev
 - [x] Créer le dépôt GitHub public `demarche-bi` et pousser le code (étape 3)
 - [x] Clé Groq dans `.env.local` (étapes 4 à 6)
 - [ ] Choisir les 15 démarches (`docs/FICHES-A-PRODUIRE.md`)
