@@ -36,7 +36,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Tests des garde-fous (identifiant inconnu, nombre inventé, adresse, balisage, mot absolu, sortie invalide)
 - [ ] Prévoir la capacité IA de la démo et de la finale : le gratuit de Groq plafonne à 200 000 tokens par jour et par modèle (80 à 100 questions) ; troisième modèle `openai/gpt-oss-20b` ajouté le 13 octobre (mesuré : 19 questions sur 21, échecs sans danger), soit environ 240 à 300 questions par jour au total ; reste à décider si on prend en plus l'offre payante à l'usage (très bon marché) ; la limite par visiteur (10 questions et 6 enregistrements par minute) se compte par adresse réseau : au Wi-Fi du lieu de la finale, tout le monde partage la même adresse, donc prévoir de la relever pour la démo
 - [x] Projet Vercel `demarche-bi` créé, Aperçu avec l'IA, la voix et les brouillons vérifié sur Vercel (11 octobre) : pages, réponse écrite par l'IA, transcription Whisper, parcours dans Chrome en https
-- [ ] Production Vercel : ajouter les clés en Production (le site public répond aujourd'hui « Je ne sais pas encore », sans IA ni voix), laisser les brouillons absents tant que des fiches ne sont pas vérifiées, connecter le dépôt GitHub, mettre l'adresse dans le README (un lien public sera sans doute demandé pour la présélection)
+- [x] Production Vercel : clés IA et voix en Production depuis le 12 octobre (réponse écrite par l'IA et transcription vérifiées sur un vrai téléphone le 17 octobre), brouillons absents (vérifié le 18 octobre : la fiche en brouillon renvoie 404 et n'est pas dans le plan du site), adresse https://demarche-bi.vercel.app dans le README
+- [ ] Connecter le dépôt GitHub au projet Vercel pour déployer à chaque poussée (facultatif : jusqu'ici, les déploiements se font par la ligne de commande ; la production du 16 octobre 23 h UTC est à jour, seuls des documents ont changé depuis)
 
 ## Lundi 12 — interface
 
@@ -139,7 +140,8 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Film de 2 min 02 choisi pour le formulaire et mis en ligne sur YouTube le 17 octobre (non répertorié, jusqu'en 4K) : https://youtu.be/TF9t8Gp6h_c, lien collé dans `docs/SOUMISSION.md` section 8
 - [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre ; remis à jour le 16 octobre avec l'état du projet, les textes prêts à coller case par case (section 8) et la liste de ce qui reste à faire (section 9))
 - [x] Flux `preparer-soumission` repassé le 16 octobre : dépôt public MIT, README complet, `npm run eval` inchangé (65/68 en 1er, 68/68 dans le top 3, refus 11/14), aucun secret dans l'historique (le seul motif trouvé est une expression de test), lint + fiches + 1 162 tests + build OK, 21 fiches vérifiées avec sources, date et auteur
-- [ ] Remplir le formulaire de soumission des organisateurs avant le lundi 19 octobre (texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
+- [x] Derniers tests avant le formulaire, le 18 octobre : lint, 22 fiches valides (21 vérifiées, 1 brouillon), 1 162 tests (0 échec, 7 à écrire), build, production vérifiée (accueil, liste et fiches, à propos, projet, hors connexion, manifeste, plan du site, robots, service worker ; brouillon caché)
+- [ ] Remplir le formulaire de soumission des organisateurs le lundi 19 octobre, dès que le lien arrive dans le groupe WhatsApp dans l'après-midi (message des organisateurs du 18 octobre ; texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
 
 ## Lundi 19 — marge
 
