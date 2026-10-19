@@ -151,5 +151,5 @@ Chaque bloc est écrit pour une case du formulaire : copier tel quel, raccourcir
 
 - [x] Vidéo mise en ligne le 17 octobre et lien ajouté à la section 8 : film de 2 min 02 sur YouTube (non répertorié, jusqu'en 4K).
 - [x] Chaque membre de l'équipe s'inscrit sur MLH (demandé par les organisateurs, même avant la finale) : fait, confirmé par Tamsir le 17 octobre.
-- [ ] Remplir le formulaire des organisateurs (https://tally.so/r/jeDjKJ, partagé le 19 octobre) avec les textes de la section 8, au plus tard le **mardi 20 octobre 2026 à 12 h** (délai repoussé par les organisateurs ; une seule soumission).
+- [x] Formulaire des organisateurs (https://tally.so/r/jeDjKJ) rempli avec les textes de la section 8 et soumis par Tamsir le 19 octobre, avant la date limite du mardi 20 octobre à 12 h. Page de confirmation reçue ; annonce des 5 finalistes le mercredi 21 octobre dans la soirée, par e-mail.
 - [x] Vérifier sur un vrai téléphone, juste avant d'envoyer, les questions de la section 7 avec internet puis en mode avion : fait par Tamsir le 17 octobre, tout est bon.

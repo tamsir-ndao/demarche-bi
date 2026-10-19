@@ -141,7 +141,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Texte de soumission : problème, solution, rôle de l'IA (rédigé dans `docs/SOUMISSION.md`, 14 octobre ; remis à jour le 16 octobre avec l'état du projet, les textes prêts à coller case par case (section 8) et la liste de ce qui reste à faire (section 9))
 - [x] Flux `preparer-soumission` repassé le 16 octobre : dépôt public MIT, README complet, `npm run eval` inchangé (65/68 en 1er, 68/68 dans le top 3, refus 11/14), aucun secret dans l'historique (le seul motif trouvé est une expression de test), lint + fiches + 1 162 tests + build OK, 21 fiches vérifiées avec sources, date et auteur
 - [x] Derniers tests avant le formulaire, le 18 octobre : lint, 22 fiches valides (21 vérifiées, 1 brouillon), 1 162 tests (0 échec, 7 à écrire), build, production vérifiée (accueil, liste et fiches, à propos, projet, hors connexion, manifeste, plan du site, robots, service worker ; brouillon caché)
-- [ ] Remplir le formulaire de soumission des organisateurs (https://tally.so/r/jeDjKJ, partagé le 19 octobre), au plus tard le mardi 20 octobre à 12 h (délai repoussé ; une seule soumission ; texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
+- [x] Formulaire de soumission des organisateurs (https://tally.so/r/jeDjKJ) soumis par Tamsir le 19 octobre, page de confirmation reçue ; finalistes annoncés par e-mail le mercredi 21 octobre dans la soirée (date limite du formulaire : mardi 20 octobre à 12 h ; une seule soumission ; texte prêt dans `docs/SOUMISSION.md` : présentation, dépôt, technologies et modèles, lien de la vidéo)
 
 ## Lundi 19 — marge
 
