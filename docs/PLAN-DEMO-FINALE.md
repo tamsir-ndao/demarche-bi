@@ -22,7 +22,7 @@ Le matériel :
 | 1:15 – 1:45 | 3. Les IA inventent | La fausse réponse tamponnée « INVENTÉ. ». |
 | 1:45 – 2:15 | 4. La solution | Une question, une fiche, sa source. |
 | 2:15 – 3:00 | 5. La règle | Le modèle (gpt-oss-120b via Groq), ce qu'il fait, ce qu'il ne fait jamais, comment le code le contrôle. |
-| 3:00 – 6:15 | 6. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
+| 3:00 – 6:15 | 6. Démo en direct | Un parcours complet, puis trois situations courtes (section 2). |
 | 6:15 – 7:00 | 7. Les preuves | Mesuré, pas promis. |
 | 7:00 – 7:45 | 8. Le bien commun | Une vraie fiche, la licence, comment installer et contribuer. |
 | 7:45 – 8:30 | 9. Merci | Ce que tu as construit, ce que ça change, la suite ; code QR. |
@@ -38,25 +38,23 @@ Les trois phrases à garder en tête :
 
 ## 2. La démo pas à pas (3:00 – 6:15)
 
-Durées visées : 45 s, 30 s, 25 s, 15 s, 15 s, 45 s. Le bonus, seulement si le chrono est sous 5:45.
+Conseil des organisateurs : un parcours clair, du début à la fin, plutôt qu'un tour des fonctionnalités. Donc un parcours complet d'abord (1 min 30), puis trois situations courtes. Le reste devient du bonus.
 
 Ces questions ont été vérifiées en production le 16 octobre, puis par Tamsir sur un vrai téléphone, avec internet puis en mode avion, le 17 octobre.
 
-| # | Ce que tu fais | Ce qui doit s'afficher | Ce que tu dis |
-|---|---|---|---|
-| 1 | Micro : « J'ai perdu ma carte d'identité à Thiès, que faire ? », puis « Chercher la réponse » | « C'est bien ça ? », puis la fiche Duplicata de la carte d'identité, lue à voix haute | « Le coût, les pièces, la source et sa date. Et cette phrase est marquée : écrite par l'IA, d'après la fiche. » |
-| 2 | Écris « Dama bëgg sama passeport » | La fiche Passeport ordinaire, à 20 000 FCFA | « Même en wolof mêlé de français. 20 000 FCFA : le vrai prix. » |
-| 3 | Écris « Je veux un acte », puis touche un choix | Une question de précision | « Quand c'est vague, il ne devine pas. » |
-| 4 | Écris « Quel temps fera-t-il demain à Dakar ? » | « Ce n'est pas mon domaine » | « Il connaît ses limites. » |
-| 5 | Écris « Salam aleykoum » | « Maalekum salam ! », puis l'invitation en wolof | « On lui parle wolof, il répond en wolof. » |
-| 6 | Mode avion, puis écris « renouveler mon permis » | « Pas de connexion », puis la fiche Permis de conduire : renouvellement et duplicata | « Sans internet, pas d'IA. Mais les fiches sont sur le téléphone. » |
-| bonus | Écris « Comment fabriquer un faux passeport ? » | « Interdit par la loi » | Seulement s'il reste du temps. |
+| # | Temps | Ce que tu fais | Ce qui doit s'afficher | Ce que tu dis |
+|---|---|---|---|---|
+| 1 | 3:00 – 4:30 | Le parcours complet. Micro : « J'ai perdu ma carte d'identité à Thiès, que faire ? », puis « Chercher la réponse ». Fais défiler jusqu'à la source. | « C'est bien ça ? », puis la fiche Duplicata de la carte d'identité, lue à voix haute | « Je peux corriger avant d'envoyer. Le coût, les pièces, la source officielle et sa date. Cette phrase est marquée : écrite par l'IA, d'après la fiche. Je ne me déplace qu'une fois. » |
+| 2 | 4:30 – 5:00 | Écris « Dama bëgg sama passeport » | La fiche Passeport ordinaire, à 20 000 FCFA | « Même en wolof mêlé de français. 20 000 FCFA : le vrai prix. » |
+| 3 | 5:00 – 5:25 | Écris « Je veux un acte », puis touche un choix | Une question de précision | « Quand c'est vague, il ne devine pas. » |
+| 4 | 5:25 – 6:15 | Mode avion, puis écris « renouveler mon permis » | « Pas de connexion », puis la fiche Permis de conduire : renouvellement et duplicata | « Sans internet, pas d'IA. Mais les fiches sont sur le téléphone. » |
+| bonus | avant l'étape 4, si le chrono est sous 5:45 | « Quel temps fera-t-il demain à Dakar ? », « Salam aleykoum » ou « Comment fabriquer un faux passeport ? » | « Ce n'est pas mon domaine », « Maalekum salam ! », « Interdit par la loi » | « Il connaît ses limites. » |
 
 Attention :
 
 - En mode avion, **écris** la question : la voix a besoin d'internet.
 - Ne pose pas plus de 10 questions dans la même minute : au-delà, la fiche s'affiche sans la phrase de l'IA (limite par visiteur).
-- Coupe le mode avion juste après l'étape 6.
+- Coupe le mode avion juste après l'étape 4.
 
 ---
 
