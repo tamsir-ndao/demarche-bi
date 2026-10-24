@@ -90,7 +90,7 @@ async function Resultat({ question, reponse }: { question: string; reponse: Repo
 function QuestionVide() {
   return (
     <section className="mt-6">
-      <h1 className="text-[28px] leading-[34px] font-bold tracking-[-0.01em]">Quelle démarche te bloque&nbsp;?</h1>
+      <h1 className="text-[28px] leading-[34px] font-bold tracking-[-0.01em]">De quelle démarche <span className="whitespace-nowrap">as-tu</span> besoin&nbsp;?</h1>
       <p className="mt-2 text-[17px] leading-[26px] text-ink-2">Écris ta question, je te réponds.</p>
       <div className="mt-4">
         <QuestionForm id="question-vide" />

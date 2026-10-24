@@ -21,7 +21,7 @@ export default function Accueil() {
             id="titre-accueil"
             className="text-[32px] leading-[38px] font-bold tracking-[-0.01em] text-balance lg:text-[52px] lg:leading-[58px] lg:tracking-[-0.02em] xl:text-[56px] xl:leading-[62px]"
           >
-            Quelle démarche te bloque&nbsp;?
+            De quelle démarche <span className="whitespace-nowrap">as-tu</span> besoin&nbsp;?
           </h1>
           <p className="mt-2 text-[17px] leading-6 text-ink-2 lg:mt-3 lg:text-[22px] lg:leading-8">
             Parle ou écris, je te réponds.
