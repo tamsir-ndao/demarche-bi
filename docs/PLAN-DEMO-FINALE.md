@@ -5,11 +5,13 @@
 > Démarche-Bi passe **en premier** sur cinq. Sur place **au plus tard à 14 h** pour tester le matériel, début à **14 h 30**. Impact Hub Dakar, Cité Keur Gorgui, en face de la DGPU. À l'accueil : se présenter comme participant du hackathon, projet Démarche-Bi.
 > Plan refait le 17 octobre 2026, puis resserré le 24 octobre à 8 min 30.
 
-Le matériel :
+La présentation repose sur trois supports :
 
-- **Diaporama** (10 diapos, le texte à dire est dans les notes de chaque diapo) : https://claude.ai/artifact/CNGHD8WuH28GuArcJRGqQ1. Le lien est privé : ouvre-le connecté à ton compte, et télécharge-le aussi en PDF et en PowerPoint depuis son menu Partager.
-- **Ouverture** : `~/Downloads/demarche-bi-video/demarche-bi-film-ouverture.mp4` (29 secondes : le début du film, qui s'arrête sur le logo).
-- **Secours** : le film complet (`demarche-bi-film-1080p.mp4`, 2 min 02) et la démo commentée (`demarche-bi-demo.mp4`, 2 min 59), sur le Mac et sur une clé USB.
+1. **Le PowerPoint** : `~/Downloads/Démarche-Bi — Finale.pptx` (10 diapos en images 4K, le texte à dire dans les notes de chaque diapo), présenté dans PowerPoint, sans internet. Version en ligne et PDF : https://claude.ai/artifact/CNGHD8WuH28GuArcJRGqQ1 (lien privé).
+2. **Le film** : `~/Downloads/demarche-bi-video/demarche-bi-film-ouverture.mp4` (29 secondes : le début du film, qui s'arrête sur le logo), en ouverture, inséré dans la diapo 1 ou lancé depuis QuickTime.
+3. **La démo en direct** : l'application sur l'iPhone, montrée par câble dans QuickTime (section 2).
+
+Secours : le film complet (`demarche-bi-film-1080p.mp4`, 2 min 02) et la diapo 10, « Ce que montre la démo ». Sur le Mac et sur une clé USB, avec le PowerPoint et le PDF.
 
 ---
 
