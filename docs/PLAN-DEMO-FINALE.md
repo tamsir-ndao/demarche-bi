@@ -1,8 +1,9 @@
 # Plan de la finale — Démarche-Bi
 
 > Finale de l'**Open Source × AI Hackathon 2026 (Galsen DEV)**, samedi 24 octobre 2026 à 15 h, Impact Hub Dakar.
-> Format officiel (message des organisateurs du 14 octobre) : **10 minutes** de présentation et de démonstration, **puis 3 minutes** de questions du jury.
-> Plan refait le 17 octobre 2026 : celui du 14 octobre comptait 7 minutes.
+> Format officiel (mail des organisateurs du 23 octobre) : **10 minutes** de pitch et de démo, **puis 5 minutes** de questions du jury. Le temps est strictement respecté : on vise **8 min 30**, pour garder de la marge.
+> Démarche-Bi passe **en premier** sur cinq. Sur place **au plus tard à 14 h** pour tester le matériel, début à **14 h 30**. Impact Hub Dakar, Cité Keur Gorgui, en face de la DGPU. À l'accueil : se présenter comme participant du hackathon, projet Démarche-Bi.
+> Plan refait le 17 octobre 2026, puis resserré le 24 octobre à 8 min 30.
 
 Le matériel :
 
@@ -12,19 +13,19 @@ Le matériel :
 
 ---
 
-## 1. Le déroulé (10 minutes)
+## 1. Le déroulé (8 min 30, sur 10 minutes autorisées)
 
 | Temps | Diapo | Ce que tu fais |
 |---|---|---|
 | 0:00 – 0:30 | 1. Titre, puis le film | Lance l'ouverture en plein écran. Ne parle pas. |
 | 0:30 – 1:15 | 2. Le problème | Une pièce manque, une journée perdue ; l'information est éparpillée. |
-| 1:15 – 2:00 | 3. Les IA inventent | La fausse réponse tamponnée « INVENTÉ. ». |
-| 2:00 – 2:30 | 4. La solution | Une question, une fiche, sa source. |
-| 2:30 – 3:00 | 5. La règle | L'IA comprend, la fiche affirme. |
-| 3:00 – 7:00 | 6. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
-| 7:00 – 8:15 | 7. Les preuves | Mesuré, pas promis. |
-| 8:15 – 9:15 | 8. Le bien commun | Une vraie fiche, 5 à écrire. |
-| 9:15 – 10:00 | 9. Merci | Conclusion, code QR vers l'application. |
+| 1:15 – 1:45 | 3. Les IA inventent | La fausse réponse tamponnée « INVENTÉ. ». |
+| 1:45 – 2:15 | 4. La solution | Une question, une fiche, sa source. |
+| 2:15 – 3:00 | 5. La règle | Le modèle (gpt-oss-120b via Groq), ce qu'il fait, ce qu'il ne fait jamais, comment le code le contrôle. |
+| 3:00 – 6:15 | 6. Démo en direct | Les 6 étapes sur le téléphone (section 2). |
+| 6:15 – 7:00 | 7. Les preuves | Mesuré, pas promis. |
+| 7:00 – 7:45 | 8. Le bien commun | Une vraie fiche, la licence, comment installer et contribuer. |
+| 7:45 – 8:30 | 9. Merci | Ce que tu as construit, ce que ça change, la suite ; code QR. |
 | secours | 10. Ce que montre la démo | Seulement si la démo lâche. |
 
 Les trois phrases à garder en tête :
@@ -35,7 +36,9 @@ Les trois phrases à garder en tête :
 
 ---
 
-## 2. La démo pas à pas (3:00 – 7:00)
+## 2. La démo pas à pas (3:00 – 6:15)
+
+Durées visées : 45 s, 30 s, 25 s, 15 s, 15 s, 45 s. Le bonus, seulement si le chrono est sous 5:45.
 
 Ces questions ont été vérifiées en production le 16 octobre, puis par Tamsir sur un vrai téléphone, avec internet puis en mode avion, le 17 octobre.
 
@@ -74,7 +77,7 @@ Attention :
 
 ---
 
-## 5. Les questions du jury (3 minutes)
+## 5. Les questions du jury (5 minutes)
 
 Réponds court : deux ou trois phrases, puis arrête-toi.
 
@@ -108,15 +111,17 @@ Réponds court : deux ou trois phrases, puis arrête-toi.
 
 La veille :
 
-- [ ] Répète une fois en entier, avec un chronomètre : 10 minutes, pas plus.
+- [ ] Répète une fois en entier, avec un chronomètre : vise 8 min 30, jamais plus de 9 minutes.
 - [ ] Télécharge le diaporama en PDF et en PowerPoint.
 - [ ] Copie sur une clé USB : l'ouverture, le film complet, la démo commentée et le PDF du diaporama.
 - [ ] Essaie QuickTime avec ton téléphone branché au Mac, aussi en mode avion.
 
 Le jour J :
 
+- [ ] Sur place au plus tard à 14 h : tu passes en premier, à 14 h 30. Ordinateur chargé et son chargeur.
 - [ ] Téléphone chargé, luminosité au maximum, mode « Ne pas déranger » activé.
-- [ ] Ouvre l'application une fois avec internet : le mode hors connexion se prépare. Pose aussi une fois les questions de la démo : les réponses restent 6 heures en mémoire et reviennent souvent plus vite.
+- [ ] Le diaporama est privé : connecte-toi à ton compte Claude sur le Mac avant de partir, et garde le PDF en secours.
+- [ ] Entre 12 h et 14 h : ouvre l'application une fois avec internet (le mode hors connexion se prépare) et pose une fois les questions de la démo. Les réponses restent 6 heures en mémoire et reviendront plus vite à 14 h 30.
 - [ ] Câble du téléphone, et adaptateur HDMI ou USB-C pour le Mac.
 - [ ] Partage de connexion 4G prêt : ne dépends pas du Wi-Fi de la salle.
 - [ ] Son du vidéoprojecteur testé : l'ouverture a de la musique.
