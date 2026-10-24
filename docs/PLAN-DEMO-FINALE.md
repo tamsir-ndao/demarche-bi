@@ -94,7 +94,7 @@ Réponds court : deux ou trois phrases, puis arrête-toi.
 > Parce qu'aucune voix de synthèse gratuite ne parle wolof aujourd'hui, ni sur les téléphones ni chez les fournisseurs que nous utilisons ; nous préférons une voix française juste qu'un wolof approximatif. L'assistant comprend déjà le wolof mêlé de français, et il salue en wolof quand on le salue en wolof. Dès qu'une voix wolof fiable existe, elle se branche au même endroit.
 
 ### 5. « Combien ça coûte à faire tourner ? »
-> Le code et les fiches sont libres, sous licence MIT. L'IA n'écrit qu'une phrase par réponse, et les réponses sont gardées 6 heures en mémoire : ça limite les appels. [À compléter : ton offre Groq et ton offre Vercel, gratuites ou payantes.] Et si l'IA n'est plus disponible, la recherche par mots répond quand même.
+> Le code et les fiches sont libres, sous licence MIT. L'IA n'écrit qu'une phrase par réponse, et les réponses sont gardées 6 heures en mémoire : ça limite les appels. Aujourd'hui, tout tourne sur les offres gratuites de Groq et de Vercel : ça coûte zéro franc. Avec les trois modèles, le gratuit de Groq tient environ 240 à 300 questions par jour. Si l'usage grandit, l'offre payante de Groq se paie à l'usage. Et si l'IA n'est plus disponible, la recherche par mots répond quand même.
 
 ### 6. « Et si l'IA choisit la mauvaise fiche ? »
 > On voit tout de suite le titre de la fiche et sa source. Quand plusieurs fiches conviennent, l'assistant pose une question de précision. Mesuré le 14 octobre : la bonne fiche 30 fois sur 30 avec l'IA. Et même sans IA, la recherche par mots met la bonne fiche dans les 3 premières pour 68 questions sur 68.
@@ -103,7 +103,7 @@ Réponds court : deux ou trois phrases, puis arrête-toi.
 > C'est un site qui s'installe sur l'écran d'accueil comme une application, sans passer par un store. Un seul code pour iPhone et Android, il est léger, et il marche hors connexion.
 
 ### 8. « Et après le hackathon ? »
-> Des fiches en plus, avec la communauté : cinq attendent déjà des volontaires sur GitHub. Une voix wolof dès qu'une voix fiable existe. [À compléter : tes projets.]
+> Je continue, oui. D'abord des fiches en plus, avec la communauté : cinq attendent déjà des volontaires sur GitHub. Ensuite une voix wolof, dès qu'une voix fiable existe. Le projet est ouvert : chacun peut l'installer, l'améliorer, ou ajouter la démarche qu'il connaît.
 
 ---
 
