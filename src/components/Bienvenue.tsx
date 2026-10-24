@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import {
+  ATTRIBUT_ATTENTE,
   fautMontrer,
   marquerVue,
   PALIERS,
@@ -88,8 +89,13 @@ export function Bienvenue() {
   // Au montage : faut-il la montrer ? Si non, rien ne change (null). Si oui, une fois la page dessinée, ou après
   // l'écran de démarrage quand il est affiché.
   useEffect(() => {
+    // L'accueil, caché avant le premier dessin (SCRIPT_BIENVENUE), réapparaît dès qu'on n'attend plus la fenêtre.
+    const montrerAccueil = () => document.documentElement.removeAttribute(ATTRIBUT_ATTENTE);
     const recherche = window.location.search;
-    if (!fautMontrer({ stockage: stockageLocal(), recherche })) return;
+    if (!fautMontrer({ stockage: stockageLocal(), recherche })) {
+      montrerAccueil();
+      return;
+    }
     forcee.current = presentationDemandee(recherche);
 
     let annule = false;
@@ -99,12 +105,14 @@ export function Bienvenue() {
       setDecision("montrer");
     };
 
+    // L'écran de démarrage n'est animé que sur téléphone (et pas quand les animations sont coupées) : sinon, rien à attendre.
     const demarrage = document.getElementById(ID_ECRAN_DEMARRAGE);
-    if (demarrage?.getAttribute("data-actif") !== "oui") {
+    if (demarrage?.getAttribute("data-actif") !== "oui" || getComputedStyle(demarrage).animationName === "none") {
       const trame = requestAnimationFrame(ouvrir);
       return () => {
         annule = true;
         cancelAnimationFrame(trame);
+        montrerAccueil();
       };
     }
     const minuterie = setTimeout(ouvrir, ATTENTE_DEMARRAGE_MAX_MS);
@@ -113,14 +121,17 @@ export function Bienvenue() {
       annule = true;
       clearTimeout(minuterie);
       demarrage.removeEventListener("animationend", ouvrir);
+      montrerAccueil();
     };
   }, []);
 
-  // La fenêtre existe maintenant : on l'ouvre (un très vieux navigateur sans showModal la laisse fermée, donc invisible).
+  // La fenêtre existe maintenant : on l'ouvre (un très vieux navigateur sans showModal la laisse fermée, donc invisible),
+  // puis l'accueil peut réapparaître derrière elle.
   useEffect(() => {
     if (decision !== "montrer") return;
     const fenetre = dialogue.current;
     if (fenetre && typeof fenetre.showModal === "function" && !fenetre.open) fenetre.showModal();
+    document.documentElement.removeAttribute(ATTRIBUT_ATTENTE);
   }, [decision]);
 
   // À chaque palier, le titre prend le focus : le lecteur d'écran annonce où l'on est.

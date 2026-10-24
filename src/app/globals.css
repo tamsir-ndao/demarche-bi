@@ -156,6 +156,26 @@
   }
 }
 
+/* Premier lancement (voir SCRIPT_BIENVENUE dans lib/bienvenue.ts) : l'accueil reste caché jusqu'à l'ouverture de la
+   présentation, pour que l'écran de démarrage s'efface sur elle et pas sur l'accueil. Filet de sécurité : sans
+   JavaScript, l'accueil réapparaît de lui-même au bout de 4 s (et tout de suite quand les animations sont coupées). */
+html[data-bienvenue="attendue"] body {
+  animation: bienvenue-attendue 4s step-end both;
+}
+
+html[data-bienvenue="attendue"] dialog[open] {
+  visibility: visible;
+}
+
+@keyframes bienvenue-attendue {
+  from {
+    visibility: hidden;
+  }
+  to {
+    visibility: visible;
+  }
+}
+
 /* Le clavier doit toujours montrer où l'on est. */
 :focus-visible {
   outline: 3px solid var(--gd);

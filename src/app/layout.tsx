@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { EcranDemarrage } from "@/components/EcranDemarrage";
 import { HorsConnexion } from "@/components/HorsConnexion";
 import { MessageInstaller } from "@/components/MessageInstaller";
+import { SCRIPT_BIENVENUE } from "@/lib/bienvenue";
 import { imagesDeDemarrage } from "@/lib/demarrage";
 import { URL_SITE } from "@/lib/liens";
 import "./globals.css";
@@ -34,9 +35,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr">
+    // suppressHydrationWarning : le script de la présentation pose `data-bienvenue` sur <html> avant React.
+    <html lang="fr" suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col bg-page font-sans text-ink antialiased">
         <EcranDemarrage />
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_BIENVENUE }} />
         <a
           href="#contenu"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand focus:px-5 focus:py-3 focus:font-bold focus:text-on-brand"

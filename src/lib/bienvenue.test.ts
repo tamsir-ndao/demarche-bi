@@ -8,6 +8,7 @@ import {
   marquerVue,
   PALIERS,
   presentationDemandee,
+  SCRIPT_BIENVENUE,
   stockageLocal,
   type StockageLocal,
 } from "./bienvenue";
@@ -109,5 +110,42 @@ describe("presentationDemandee", () => {
 describe("stockageLocal", () => {
   it("n'existe pas hors du navigateur", () => {
     assert.equal(stockageLocal(), undefined);
+  });
+});
+
+/** Joue le script comme le navigateur avant le premier dessin ; rend la valeur de `data-bienvenue` sur <html>. */
+function jouerScript({ chemin = "/", recherche = "", memoire = new Map<string, string>(), memoireBloquee = false } = {}) {
+  const attributs = new Map<string, string>();
+  const document = { documentElement: { setAttribute: (nom: string, valeur: string) => attributs.set(nom, valeur) } };
+  const location = { pathname: chemin, search: recherche };
+  const localStorage = {
+    getItem: (cle: string) => {
+      if (memoireBloquee) throw new Error("bloquée");
+      return memoire.get(cle) ?? null;
+    },
+  };
+  new Function("document", "location", "localStorage", SCRIPT_BIENVENUE)(document, location, localStorage);
+  return attributs.get("data-bienvenue");
+}
+
+describe("script de la présentation (avant le premier dessin)", () => {
+  it("cache l'accueil au premier lancement, en attendant la présentation", () => {
+    assert.equal(jouerScript(), "attendue");
+  });
+  it("ne cache rien quand la présentation a déjà été vue", () => {
+    assert.equal(jouerScript({ memoire: new Map([[CLE_BIENVENUE, "1"]]) }), undefined);
+  });
+  it("cache l'accueil quand l'adresse demande la présentation, même déjà vue", () => {
+    assert.equal(jouerScript({ recherche: "?presentation", memoire: new Map([[CLE_BIENVENUE, "1"]]) }), "attendue");
+  });
+  it("ne cache rien quand la mémoire est bloquée (la présentation ne s'ouvrira pas)", () => {
+    assert.equal(jouerScript({ memoireBloquee: true }), undefined);
+  });
+  it("ne cache rien sur les autres pages (la présentation n'existe que sur l'accueil)", () => {
+    assert.equal(jouerScript({ chemin: "/demarches" }), undefined);
+  });
+  it("ne dépend que du navigateur (document, location, localStorage)", () => {
+    assert.doesNotThrow(() => new Function("document", "location", "localStorage", SCRIPT_BIENVENUE));
+    assert.ok(!SCRIPT_BIENVENUE.includes("</script"));
   });
 });

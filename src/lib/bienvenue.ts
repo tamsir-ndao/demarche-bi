@@ -72,3 +72,13 @@ export function fautMontrer({ stockage, recherche }: { stockage: StockageLocal |
     return false;
   }
 }
+
+/** L'attribut posé sur <html> tant que la présentation doit s'ouvrir : l'accueil reste caché (voir globals.css). */
+export const ATTRIBUT_ATTENTE = "data-bienvenue";
+
+/**
+ * Le script joué avant le premier dessin, sur l'accueil : mêmes règles que `fautMontrer`. Sans lui, on voit l'accueil
+ * (sur téléphone, pendant le fondu de l'écran de démarrage) avant que la présentation s'ouvre. Bienvenue retire
+ * l'attribut à l'ouverture ; s'il ne le fait pas, le CSS montre l'accueil de lui-même au bout de 4 s.
+ */
+export const SCRIPT_BIENVENUE = `(function(){try{if(location.pathname!=="/")return;var montrer=new URLSearchParams(location.search).has("${PARAMETRE_PRESENTATION}");if(!montrer){try{montrer=localStorage.getItem("${CLE_BIENVENUE}")==null}catch(_){}}if(montrer)document.documentElement.setAttribute("${ATTRIBUT_ATTENTE}","attendue")}catch(_){}})()`;
