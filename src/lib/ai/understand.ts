@@ -49,12 +49,16 @@ function ligneDeLaListe(fiche: Fiche): string {
  * Demande au modèle de comprendre la question parmi les `fiches` disponibles (des fiches que le site peut montrer).
  * Lève l'erreur du modèle si l'IA ne répond pas.
  */
-export async function comprendre(question: string, fiches: Fiche[], modele: Modele): Promise<Comprehension> {
+export async function comprendre(question: string, fiches: Fiche[], modele: Modele, ficheEnCours?: Fiche): Promise<Comprehension> {
+  // Dans une conversation : « et ça coûte combien ? » parle de la démarche précédente, sauf si une autre est nommée.
+  const suite = ficheEnCours
+    ? `\nLa conversation parle de la démarche « ${ficheEnCours.slug} ». Si la question ne nomme aucune démarche et demande un détail ou une suite, choisis cet identifiant. Si elle parle d'autre chose, ignore cette indication.`
+    : "";
   const brute = await modele({
     nom: "comprehension",
     schema: ComprehensionSchema,
     messages: [
-      { role: "system", content: CONSIGNES(fiches.map(ligneDeLaListe).join("\n")) },
+      { role: "system", content: CONSIGNES(fiches.map(ligneDeLaListe).join("\n")) + suite },
       { role: "user", content: question },
     ],
     maxTokens: 700,

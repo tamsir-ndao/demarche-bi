@@ -22,21 +22,23 @@ export type DependancesService = {
 export type DemandeQuestion = {
   /** Démarche choisie sur l'écran de précision. */
   ficheSlug?: string;
+  /** La démarche dont la conversation parle. */
+  contexte?: string;
   /** Qui pose la question (pour la limite) ; sans visiteur, pas de limite. */
   visiteur?: string;
 };
 
 /** La même question écrite avec d'autres majuscules, accents ou espaces garde la même clé. */
-function cleDeLaQuestion(question: string, ficheSlug: string | undefined): string {
-  return `${simplifier(question).replace(/\s+/g, " ").trim()}|${ficheSlug ?? ""}`;
+function cleDeLaQuestion(question: string, ficheSlug: string | undefined, contexte: string | undefined): string {
+  return `${simplifier(question).replace(/\s+/g, " ").trim()}|${ficheSlug ?? ""}|${contexte ?? ""}`;
 }
 
 export function creerService(dependances: DependancesService) {
   const { modele, cache, limiteur, signaler } = dependances;
 
   return {
-    async repondre(question: string, { ficheSlug, visiteur }: DemandeQuestion): Promise<Reponse> {
-      const cle = cleDeLaQuestion(question, ficheSlug);
+    async repondre(question: string, { ficheSlug, contexte, visiteur }: DemandeQuestion): Promise<Reponse> {
+      const cle = cleDeLaQuestion(question, ficheSlug, contexte);
       const memorisee = cache.lire(cle);
       if (memorisee) return memorisee;
 
@@ -46,6 +48,7 @@ export function creerService(dependances: DependancesService) {
         fiches: dependances.fiches(),
         modele: autorise ? modele : null,
         ficheSlug,
+        contexte,
         signaler: (etape, erreur) => {
           echecDeLIA = true;
           signaler?.(etape, erreur);

@@ -1,5 +1,6 @@
 import type { Fiche } from "../fiches/schema";
 import { searchFiches } from "../fiches/search";
+import { simplifier } from "../texte";
 import { repondre } from "./answer";
 import { ErreurIA } from "./client";
 import { decider } from "./decide";
@@ -40,6 +41,8 @@ export type OptionsQuestion = {
   modele: Modele | null;
   /** Démarche choisie sur l'écran de précision : la compréhension est sautée. */
   ficheSlug?: string;
+  /** La démarche dont la conversation parle : une question de suite s'y rapporte. */
+  contexte?: string;
   /** Appelé quand l'IA échoue, pour garder une trace (sans clé ni question). */
   signaler?: (etape: "comprendre" | "repondre", erreur: unknown) => void;
 };
@@ -60,13 +63,34 @@ function fichesVoisines(question: string, fiches: Fiche[], sauf: Fiche): Fiche[]
   ).map((resultat) => resultat.fiche);
 }
 
+const DETAIL_DEMANDE = /\b(cout\w*|combien|prix|delai\w*|temps|ou|lieu|pieces?|papiers?|documents?|etapes?|apporter|aller)\b/;
+const MOTS_MAX_SUITE = 8;
+const LONGUEUR_MIN_MOT_DE_TITRE = 5;
+
+/** Sans IA : la question demande-t-elle un détail de la démarche en cours, sans en nommer une autre ? */
+export function estUneSuite(question: string, fiches: Fiche[], enCours: Fiche): boolean {
+  const lue = simplifier(question);
+  const mots = new Set(lue.split(/[^a-z0-9]+/).filter(Boolean));
+  if (mots.size > MOTS_MAX_SUITE || !DETAIL_DEMANDE.test(lue)) return false;
+  return !fiches.some(
+    (fiche) =>
+      fiche.slug !== enCours.slug &&
+      simplifier(fiche.titre)
+        .split(/[^a-z0-9]+/)
+        .some((mot) => mot.length >= LONGUEUR_MIN_MOT_DE_TITRE && mots.has(mot)),
+  );
+}
+
 /** Sans IA : la meilleure fiche trouvée par la recherche par mots, ou « je ne sais pas ». */
-function repliParMots(question: string, fiches: Fiche[], degrade: Degrade): Reponse {
+function repliParMots(question: string, fiches: Fiche[], degrade: Degrade, enCours?: Fiche): Reponse {
   if (estDemandeFrauduleuse(question)) {
     return {
       type: "interdit",
       message: "Cette démarche est interdite par la loi. Je ne peux pas t’aider pour une pratique frauduleuse ou illégale.",
     };
+  }
+  if (enCours && estUneSuite(question, fiches, enCours)) {
+    return { type: "fiche", fiche: enCours, autres: [], intro: null, degrade, rejet: null };
   }
   const [meilleur, ...voisines] = searchFiches(fiches, question, { inclureBrouillons: true });
   if (!meilleur) return { type: "inconnue" };
@@ -124,17 +148,18 @@ export async function poserQuestion(question: string, options: OptionsQuestion):
   }
   const { fiches, modele, signaler } = options;
   if (fiches.length === 0) return { type: "inconnue" };
-  if (modele === null) return repliParMots(question, fiches, null);
+  const enCours = options.contexte ? fiches.find((fiche) => fiche.slug === options.contexte) : undefined;
+  if (modele === null) return repliParMots(question, fiches, null, enCours);
 
   const choisie = options.ficheSlug ? fiches.find((fiche) => fiche.slug === options.ficheSlug) : undefined;
   if (choisie) return repondreAvecLaFiche(question, null, choisie, fiches, modele, signaler);
 
   let comprise: Comprehension;
   try {
-    comprise = await comprendre(question, fiches, modele);
+    comprise = await comprendre(question, fiches, modele, enCours);
   } catch (erreur) {
     signaler?.("comprendre", erreur);
-    return repliParMots(question, fiches, degradation(erreur));
+    return repliParMots(question, fiches, degradation(erreur), enCours);
   }
 
   const decision = decider(comprise, fiches);

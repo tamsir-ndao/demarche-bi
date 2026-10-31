@@ -160,3 +160,11 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 ## Samedi 24 octobre — finale à l'Impact Hub Dakar
 
 - [ ] Check-in sur place, puis soumission sur MLH Organizer HQ (section Challenges) pour les 5 finalistes
+
+## Assistant conversationnel (depuis le 31 octobre 2026)
+
+- [x] Partie 1 : accueil à un seul bouton, conversation en français, arrêt automatique après le silence, réponse lue sans confirmation, mémoire de la démarche en cours dans la page (`POST /api/conversation`, `src/components/Conversation.tsx`)
+- [ ] Essayer la partie 1 sur un vrai iPhone et un vrai Android, avec la vraie IA
+- [ ] Partie 2 : réponses orales courtes, avec test qu'aucun chiffre n'est inventé
+- [ ] Partie 3 : démo et présentation pour le ministère
+- [ ] Partie 4 : wolof, écoute puis voix, avec textes relus par une personne

@@ -1,6 +1,7 @@
 import { DUREE_MAX_ENREGISTREMENT_S } from "./audio";
 import type { CodeErreurVoix } from "./codes";
-import { creerDetecteurDeVoix, hauteursDuSpectre, lisser, niveauDeVoix, NOMBRE_DE_BARRES } from "./spectre";
+import { creerDetecteurFinDeParole } from "./fin-de-parole";
+import { creerDetecteurDeVoix,hauteursDuSpectre, lisser, niveauDeVoix, NOMBRE_DE_BARRES } from "./spectre";
 
 // L'enregistrement de la voix dans le navigateur : micro, enregistreur, spectre en direct.
 // À n'appeler que depuis un composant client. Rien n'est gardé : le son reste en mémoire jusqu'à l'envoi.
@@ -57,6 +58,8 @@ type OptionsEnregistreur = {
   surSpectre: (hauteurs: number[]) => void;
   /** Appelé quand la durée maximale est atteinte : l'appelant termine alors l'enregistrement. */
   surDureeMax: () => void;
+  /** Appelé quand la personne a parlé puis s'est tue : l'appelant peut alors terminer tout seul (conversation). */
+  surFinDeParole?: () => void;
 };
 
 /** 32 kbit/s suffisent pour la voix (Whisper la ramène à 16 kHz) : 30 secondes pèsent 120 ko, utile avec un forfait data limité. */
@@ -65,13 +68,14 @@ const TAILLE_FFT = 2048;
 /** Puissance (de 0 à 1) à partir de laquelle on entend du son, et durée de son nécessaire pour dire que quelqu'un a parlé. */
 const SEUIL_DE_VOIX = 0.02;
 const DUREE_MIN_DE_VOIX_MS = 300;
+const SILENCE_DE_FIN_MS = 1500;
 
 /**
  * Ouvre le micro (le navigateur demande l'autorisation) et démarre l'enregistrement.
  * À appeler directement dans le geste de la personne (un appui) : Safari n'autorise le son qu'à ce moment-là.
  * Lève une ErreurMicro quand le micro n'est pas utilisable.
  */
-export async function demarrerEnregistrement({ surSpectre, surDureeMax }: OptionsEnregistreur): Promise<Enregistreur> {
+export async function demarrerEnregistrement({ surSpectre, surDureeMax, surFinDeParole }: OptionsEnregistreur): Promise<Enregistreur> {
   if (!voixDisponible({ mediaDevices: navigator.mediaDevices, MediaRecorder: window.MediaRecorder })) {
     throw new ErreurMicro("voix_indisponible");
   }
@@ -124,6 +128,7 @@ export async function demarrerEnregistrement({ surSpectre, surDureeMax }: Option
   const cases = new Uint8Array(analyseur.frequencyBinCount);
   const onde = new Uint8Array(analyseur.fftSize);
   const detecteur = creerDetecteurDeVoix({ seuil: SEUIL_DE_VOIX, dureeMinMs: DUREE_MIN_DE_VOIX_MS });
+  const finDeParole = creerDetecteurFinDeParole({ seuil: SEUIL_DE_VOIX, silenceMs: SILENCE_DE_FIN_MS });
   let hauteurs: number[] = new Array<number>(NOMBRE_DE_BARRES).fill(0);
   let image = 0;
 
@@ -131,7 +136,9 @@ export async function demarrerEnregistrement({ surSpectre, surDureeMax }: Option
     analyseur.getByteFrequencyData(cases);
     analyseur.getByteTimeDomainData(onde);
     hauteurs = lisser(hauteurs, hauteursDuSpectre(cases, { echantillonnage: contexte.sampleRate, tailleFft: TAILLE_FFT }));
-    detecteur.suivre(niveauDeVoix(onde), maintenantMs);
+    const niveau = niveauDeVoix(onde);
+    detecteur.suivre(niveau, maintenantMs);
+    if (finDeParole.suivre(niveau, maintenantMs) && detecteur.voixEntendue()) surFinDeParole?.();
     surSpectre(hauteurs);
     image = requestAnimationFrame(dessiner);
   };
