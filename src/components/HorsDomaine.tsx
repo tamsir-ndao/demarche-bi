@@ -34,8 +34,8 @@ export function HorsDomaine({ message }: { message?: string }) {
       <LienBouton href="/" icone="bulle" className="mt-5">
         Poser une autre question
       </LienBouton>
-      <LienBouton href="/demarches" variante="secondaire" icone="livre" className="mt-3">
-        Voir les démarches que je connais
+      <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-3">
+        Retour à l’accueil
       </LienBouton>
     </>
   );

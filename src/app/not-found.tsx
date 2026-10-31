@@ -19,8 +19,8 @@ export default function NotFound() {
         <p className="mt-2 text-[17px] leading-[26px] text-ink-2">Le lien est peut-être faux. Tu peux chercher une démarche ou poser ta question.</p>
       </Carte>
 
-      <LienBouton href="/demarches" icone="livre" className="mt-5">
-        Voir les démarches
+      <LienBouton href="/" icone="bulle" className="mt-5">
+        Retour à l’accueil
       </LienBouton>
       <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-3">
         Poser une question

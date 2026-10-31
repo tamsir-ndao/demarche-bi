@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["content/demarches/*.md"],
   },
+  // La liste des démarches et la page du projet ne font plus partie de l'application : tout passe par la conversation.
+  async redirects() {
+    return [
+      { source: "/demarches", destination: "/", permanent: false },
+      { source: "/projet", destination: "/", permanent: false },
+    ];
+  },
   async headers() {
     return [
       // Les en-têtes de sécurité (CSP, cadres, referrer, micro) sur toutes les adresses : voir src/lib/entetes.ts.

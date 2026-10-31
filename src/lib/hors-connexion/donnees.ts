@@ -22,7 +22,7 @@ export type DonneesHorsConnexion = {
 
 /** Les pages à copier : l'accueil, la liste, chaque fiche visible, les pages d'information et la page « hors connexion ». */
 export function pagesAGarder(fiches: Pick<Fiche, "slug">[]): string[] {
-  return ["/", "/demarches", ...fiches.map((fiche) => `/demarches/${fiche.slug}`), "/projet", "/a-propos", PAGE_HORS_CONNEXION];
+  return ["/", ...fiches.map((fiche) => `/demarches/${fiche.slug}`), "/a-propos", PAGE_HORS_CONNEXION];
 }
 
 function estTexte(valeur: unknown): valeur is string {

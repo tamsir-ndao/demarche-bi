@@ -22,6 +22,9 @@ type Phase = "repos" | "demande" | "ecoute" | "transcription";
 /** Un enregistrement plus court que ça n'est pas une question. */
 const DUREE_MIN_MS = 600;
 
+/** La discussion reste le temps de l'onglet : revenir d'une fiche ne la fait pas perdre. */
+const CLE_DISCUSSION = "demarche-bi:discussion";
+
 const LIBELLES: Record<Phase, string> = {
   repos: "Touche et parle",
   demande: "Autorise ton micro",
@@ -92,6 +95,8 @@ export function Conversation() {
   const enregistreur = useRef<Enregistreur | undefined>(undefined);
   const jeton = useRef(0);
   const compteur = useRef(0);
+  /** Change au retour à l'accueil : une réponse encore en route ne concerne plus l'écran. */
+  const session = useRef(0);
   /** La démarche dont on parle, et la question trop vague que la prochaine parole complète. */
   const memoire = useRef<{ contexte?: string; aCompleter?: string }>({});
   const bas = useRef<HTMLDivElement>(null);
@@ -99,6 +104,31 @@ export function Conversation() {
   const parleur = parleurDuNavigateur();
   const parle = useSyncExternalStore(parleur.abonner, () => parleur.etat() === "lecture", () => false);
   const attente = tours.at(-1)?.etat === "attente";
+
+  // Après le premier dessin (le serveur ne connaît pas l'onglet) : on retrouve la discussion en cours.
+  useEffect(() => {
+    const trame = requestAnimationFrame(() => {
+      try {
+        const gardee = JSON.parse(sessionStorage.getItem(CLE_DISCUSSION) ?? "null") as { tours: Tour[]; memoire: typeof memoire.current } | null;
+        if (!gardee) return;
+        const retrouves = gardee.tours.filter((tour) => tour.etat !== "attente");
+        compteur.current = Math.max(0, ...retrouves.map((tour) => tour.id));
+        memoire.current = gardee.memoire;
+        setTours(retrouves);
+      } catch {
+        // Mémoire de l'onglet bloquée ou illisible : on repart de l'accueil.
+      }
+    });
+    return () => cancelAnimationFrame(trame);
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (tours.length > 0) sessionStorage.setItem(CLE_DISCUSSION, JSON.stringify({ tours, memoire: memoire.current }));
+    } catch {
+      // Sans mémoire d'onglet, la discussion dure seulement le temps de la page.
+    }
+  }, [tours]);
 
   useEffect(() => {
     if (tours.length > 0) bas.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -116,6 +146,7 @@ export function Conversation() {
 
   async function poser(affichee: string, question: string, ficheSlug?: string) {
     const id = ++compteur.current;
+    const maSession = session.current;
     const changer = (tour: Tour) => setTours((liste) => liste.map((autre) => (autre.id === id ? tour : autre)));
     setErreur(null);
     setTours((liste) => [...liste, { id, question: affichee, etat: "attente" }]);
@@ -127,6 +158,7 @@ export function Conversation() {
       });
       if (!reponse.ok) throw new Error("réponse refusée");
       const tour = (await reponse.json()) as TourAssistant;
+      if (maSession !== session.current) return;
       memoire.current = { contexte: tour.fiche?.slug ?? memoire.current.contexte, aCompleter: tour.aCompleter ? question : undefined };
       changer({ id, question: affichee, etat: "pret", reponse: tour });
       parleurDuNavigateur().lire(tour.lignes);
@@ -220,6 +252,26 @@ export function Conversation() {
     void poser(titre, derniere, slug);
   }
 
+  /** Retour à l'accueil : tout s'arrête et la discussion est oubliée. */
+  function retourAccueil() {
+    session.current += 1;
+    jeton.current += 1;
+    enregistreur.current?.annuler();
+    enregistreur.current = undefined;
+    parleur.arreter();
+    memoire.current = {};
+    try {
+      sessionStorage.removeItem(CLE_DISCUSSION);
+    } catch {
+      // Rien à oublier si la mémoire de l'onglet est bloquée.
+    }
+    setTours([]);
+    setPhase("repos");
+    setErreur(null);
+    setEcrire(false);
+    window.scrollTo({ top: 0 });
+  }
+
   const occupe = attente || phase === "demande" || phase === "transcription";
   const libelle = attente ? "Je cherche…" : parle ? "Touche pour poser une autre question" : LIBELLES[phase];
   const vide = tours.length === 0;
@@ -233,6 +285,13 @@ export function Conversation() {
           </h1>
           <p className="mt-2 text-[17px] leading-6 text-ink-2">Pose ta question, je te réponds.</p>
         </>
+      )}
+
+      {!vide && (
+        <button type="button" onClick={retourAccueil} className="press mb-3 flex min-h-11 items-center gap-2 self-start rounded-full bg-card pr-4 pl-3 text-[15px] leading-5 font-semibold">
+          <Icon name="fleche-gauche" size={20} />
+          Accueil
+        </button>
       )}
 
       {!vide && (

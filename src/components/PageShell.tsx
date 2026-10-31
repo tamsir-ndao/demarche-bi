@@ -2,11 +2,10 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "./Icon";
 
-export type Onglet = "question" | "demarches" | "a-propos";
+export type Onglet = "question" | "a-propos";
 
 const ONGLETS: { id: Onglet; href: string; libelle: string; icone: IconName }[] = [
-  { id: "question", href: "/", libelle: "Question", icone: "bulle" },
-  { id: "demarches", href: "/demarches", libelle: "Démarches", icone: "livre" },
+  { id: "question", href: "/", libelle: "Accueil", icone: "bulle" },
   { id: "a-propos", href: "/a-propos", libelle: "À propos", icone: "info" },
 ];
 

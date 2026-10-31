@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CarteArgument } from "@/components/CarteArgument";
 import { LienBouton } from "@/components/LienBouton";
 import { PageShell } from "@/components/PageShell";
@@ -11,7 +10,7 @@ export default function Page() {
     <PageShell actif="a-propos">
       <h1 className="mx-1 mt-3 text-[32px] leading-[38px] font-bold tracking-[-0.01em]">À propos</h1>
       <p className="mx-1 mt-2.5 text-[17px] leading-[26px] text-ink-2">
-        Démarche-Bi t’explique les démarches administratives du Sénégal. Écris ta question, je te réponds avec les sources
+        Démarche-Bi t’explique les démarches administratives du Sénégal. Pose ta question, je te réponds avec les sources
         officielles.
       </p>
 
@@ -22,11 +21,6 @@ export default function Page() {
           texte="Chaque réponse vient d’une page officielle. Tu vois la source et la date."
         />
         <CarteArgument pointille icone="aide" titre="Je ne devine pas" texte="Si je n’ai pas l’information, je te le dis." />
-        <CarteArgument
-          icone="personnes"
-          titre="Ouvert à tous"
-          texte="Les démarches et le code sont publics. Tout le monde peut les corriger."
-        />
         {/* Le site garde maintenant les questions et les avis : la personne doit pouvoir le lire sans chercher. */}
         <CarteArgument
           icone="info"
@@ -39,13 +33,6 @@ export default function Page() {
       <LienBouton href="/?presentation" variante="secondaire" icone="info" className="mt-5">
         Revoir la présentation
       </LienBouton>
-
-      <p className="mt-3 text-center text-[13px] leading-[18px] text-ink-3">
-        Logiciel libre sous licence MIT.{" "}
-        <Link href="/projet" className="inline-flex min-h-11 items-center font-bold text-leaf-deep underline underline-offset-4">
-          Voir le projet
-        </Link>
-      </p>
       <div className="min-h-3 flex-1" />
     </PageShell>
   );

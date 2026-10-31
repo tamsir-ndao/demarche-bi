@@ -15,10 +15,8 @@ describe("pagesAGarder", () => {
   it("liste l'accueil, les démarches, chaque fiche visible, les pages d'information et la page « hors connexion »", () => {
     assert.deepEqual(pagesAGarder(fiches), [
       "/",
-      "/demarches",
       "/demarches/passeport",
       "/demarches/casier",
-      "/projet",
       "/a-propos",
       PAGE_HORS_CONNEXION,
     ]);

@@ -88,8 +88,8 @@ export function ResultatsHorsConnexion() {
             <div className="mt-5">
               <QuestionForm id="question-hors-connexion" valeurInitiale={question} />
             </div>
-            <LienBouton href="/demarches" variante="secondaire" icone="livre" className="mt-5">
-              Voir les démarches que je connais
+            <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-5">
+              Retour à l’accueil
             </LienBouton>
             {question ? (
               <LienBouton href={urlReponse(question)} variante="lien" className="mt-3">

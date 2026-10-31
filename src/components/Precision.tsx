@@ -72,8 +72,8 @@ export function PrecisionGenerale({ question, questionPosee }: { question: strin
           libelle="Répondre à voix haute"
         />
       </div>
-      <LienBouton href="/demarches" variante="secondaire" icone="livre" className="mt-5">
-        Voir les démarches que je connais
+      <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-5">
+        Retour à l’accueil
       </LienBouton>
     </section>
   );

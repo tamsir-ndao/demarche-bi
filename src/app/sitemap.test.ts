@@ -5,7 +5,7 @@ import { loadFiches } from "../lib/fiches/load";
 import { URL_SITE } from "../lib/liens";
 import sitemap, { entreesDuSitemap } from "./sitemap";
 
-const PAGES_FIXES = ["/", "/demarches", "/projet", "/a-propos"];
+const PAGES_FIXES = ["/", "/a-propos"];
 
 describe("sitemap", () => {
   const { fiches } = loadFiches();

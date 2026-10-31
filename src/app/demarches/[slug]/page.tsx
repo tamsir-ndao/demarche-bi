@@ -15,7 +15,6 @@ import { ListeSources } from "@/components/Sources";
 import { estAConfirmer, notesDeLaFiche, statutAffichage } from "@/lib/fiches/affichage";
 import { ficheAffichable, maintenant } from "@/lib/fiches/disponibles";
 import { loadFiches } from "@/lib/fiches/load";
-import { URL_SIGNALER, urlCorrectionFiche } from "@/lib/liens";
 
 // Chaque fiche a sa page, créée à la construction du site. Les fiches non montrables (brouillons en
 // production) restent dans la liste : leur page répond « introuvable », car Next exige au moins un chemin.
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: PageProps<"/demarches/[slug]"
 
 export default function Page({ params }: PageProps<"/demarches/[slug]">) {
   return (
-    <PageShell actif="demarches" retour={{ href: "/demarches", libelle: "Retour aux démarches" }}>
+    <PageShell actif="question" retour={{ href: "/", libelle: "Retour à la conversation" }}>
       {/* Le cadre de la page part tout de suite ; la fiche suit, même pour une adresse qu'on ne connaît pas. */}
       <Suspense fallback={<Recherche />}>
         <Demarche params={params} />
@@ -102,21 +101,6 @@ async function Demarche({ params }: Pick<PageProps<"/demarches/[slug]">, "params
           Sources officielles
         </h2>
         <ListeSources sources={fiche.sources} />
-      </Carte>
-
-      <Carte fond="teinte" aria-labelledby="titre-erreur" className="mt-4">
-        <h2 id="titre-erreur" className="text-lg leading-6 font-bold">
-          Tu vois une erreur&nbsp;?
-        </h2>
-        <p className="mt-1 text-[15px] leading-[22px] text-ink-2">Dis-le-nous, on corrige. Ce contenu est ouvert à tous.</p>
-        <div className="mt-3.5 flex flex-wrap gap-2">
-          <LienBouton href={URL_SIGNALER} externe variante="secondaire" taille="petit">
-            Signaler une erreur
-          </LienBouton>
-          <LienBouton href={urlCorrectionFiche(fiche.slug)} externe variante="secondaire" taille="petit">
-            Proposer une correction
-          </LienBouton>
-        </div>
       </Carte>
 
       <LienBouton href="/" icone="bulle" className="mt-5">

@@ -54,7 +54,7 @@ describe("PrecisionGenerale (rendu serveur)", () => {
     assert.doesNotMatch(html, /size-48/);
   });
 
-  it("garde le lien vers les démarches", () => {
-    assert.match(html, /href="\/demarches"/);
+  it("garde le retour à l’accueil", () => {
+    assert.match(html, /href="\/"/);
   });
 });

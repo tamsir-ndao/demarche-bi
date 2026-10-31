@@ -37,8 +37,8 @@ export default function Erreur({ error, retry }: { error: Error & { digest?: str
       <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-3">
         Accueil
       </LienBouton>
-      <LienBouton href="/demarches" variante="secondaire" icone="livre" className="mt-3">
-        Voir les démarches
+      <LienBouton href="/" variante="secondaire" icone="bulle" className="mt-3">
+        Retour à l’accueil
       </LienBouton>
       <div className="min-h-3 flex-1" />
     </PageShell>
