@@ -40,5 +40,5 @@ verifie_par: tamsir-ndao
 ---
 
 - Divergence entre deux pages du même ministère : la page « Duplicata » demande un extrait de naissance de moins d'1 an et un justificatif d'adresse, alors que la rubrique « En cas de perte ? » de la page « Carte nationale d'identité biométrique » demande un extrait de moins de 3 mois et ne mentionne pas de justificatif d'adresse. À confirmer auprès de la DAF (numéro vert 800 00 2012) avant de se déplacer.
-- Le délai de fabrication n'est pas indiqué sur les pages consultées.
+- Le délai de fabrication n'est pas indiqué par les sources officielles.
 - Retrait : la page « Carte nationale d'identité biométrique » indique que la carte se retire au lieu de dépôt, sur présentation du récépissé.

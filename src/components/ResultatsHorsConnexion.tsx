@@ -51,10 +51,10 @@ export function ResultatsHorsConnexion() {
         <h1 id="titre-hors-connexion" className={TITRE}>
           Pas de connexion
         </h1>
-        {copie === undefined ? <p className={TEXTE}>Je cherche dans les fiches de ton téléphone…</p> : null}
+        {copie === undefined ? <p className={TEXTE}>Je cherche sur ton téléphone…</p> : null}
         {copie === null ? (
           <>
-            <p className={TEXTE}>Je n’ai pas encore de fiches sur ce téléphone. Reviens quand tu as du réseau, et je les garderai.</p>
+            <p className={TEXTE}>Je n’ai pas encore les informations sur ce téléphone. Reviens quand tu as du réseau, et je les garderai.</p>
             <LienBouton href={question ? urlReponse(question) : "/"} className="mt-5">
               Réessayer
             </LienBouton>
@@ -64,8 +64,8 @@ export function ResultatsHorsConnexion() {
           <>
             <p className={TEXTE}>
               {question
-                ? "Je ne peux pas te répondre avec l’IA sans internet. Voici ce que je trouve dans les fiches de ton téléphone."
-                : "Je ne peux pas utiliser l’IA sans internet. Tu peux écrire ta question : je cherche dans les fiches de ton téléphone."}
+                ? "Tu n’as pas de connexion. Voici ce que je trouve sur ton téléphone."
+                : "Tu n’as pas de connexion. Écris ta question : je cherche sur ton téléphone."}
             </p>
             {question && trouvees.length > 0 ? (
               <ul className="mt-5 flex flex-col gap-3">
@@ -84,7 +84,7 @@ export function ResultatsHorsConnexion() {
                 })}
               </ul>
             ) : null}
-            {question && trouvees.length === 0 ? <p className={TEXTE}>Je ne trouve pas de fiche qui ressemble à ta question.</p> : null}
+            {question && trouvees.length === 0 ? <p className={TEXTE}>Je ne trouve rien qui ressemble à ta question.</p> : null}
             <div className="mt-5">
               <QuestionForm id="question-hors-connexion" valeurInitiale={question} />
             </div>

@@ -62,6 +62,13 @@ describe("construireTour", () => {
     assert.deepEqual(tour.pieces, ["Extrait de naissance", "Photo"]);
   });
 
+  it("prévient en langage simple quand un point est incertain, sans dire de date ni montrer la note de rédaction", () => {
+    const incertaine = { ...fiche, corps: "- À confirmer : la rubrique de la page est vide." } as unknown as Fiche;
+    const tour = construireTour({ ...reponse, fiche: incertaine }, { suite: false, statut });
+    assert.match(tour.miseEnGarde ?? "", /Renseigne-toi/);
+    assert.doesNotMatch(JSON.stringify({ ...tour, lignes: [] }), /rubrique|consultée/);
+  });
+
   it("propose les démarches au choix quand la question ne suffit pas", () => {
     const tour = construireTour({ type: "precision", options: [fiche], question: "Que veux-tu faire ?" }, { suite: false });
     assert.deepEqual(tour.options, [{ slug: "passeport", titre: "Passeport ordinaire" }]);

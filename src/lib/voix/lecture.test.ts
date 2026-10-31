@@ -234,7 +234,7 @@ describe("scriptFiche : l'essentiel, dans l'ordre de l'écran", () => {
     assert.ok(!tout.includes("Divergence entre deux pages"));
     assert.ok(!tout.includes("Se procurer un certificat de perte"));
     assert.deepEqual(script.find((l) => l.cible === "a-confirmer"), {
-      texte: "Attention, une information est à confirmer : regarde l’écran.",
+      texte: "Attention, certains points peuvent varier. Renseigne-toi auprès du service concerné avant de te déplacer.",
       cible: "a-confirmer",
     });
     assert.deepEqual(script.at(-1), { texte: "Il y a 2 étapes, juste en dessous.", cible: "etapes" });
@@ -264,7 +264,7 @@ describe("scriptFiche : l'essentiel, dans l'ordre de l'écran", () => {
   it("garde l'avertissement quand la vérification date de plus d'un an", () => {
     const vieille = { ...FICHE, statut: "verifie", verifie_le: "2024-01-05" } as Fiche;
     const s = scriptFiche({ fiche: vieille, statut: { type: "perimee", libelle: "Vérifié il y a plus d’un an" }, intro: INTRO });
-    assert.deepEqual(s[0], { texte: "Attention, cette fiche a été vérifiée il y a plus d’un an.", cible: "statut" });
+    assert.deepEqual(s[0], { texte: "Attention, cette information peut avoir changé.", cible: "statut" });
   });
   it("est bien plus court que l'écran entier", () => {
     const longueur = textes.join(" ").length;

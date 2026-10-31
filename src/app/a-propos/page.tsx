@@ -18,14 +18,14 @@ export default function Page() {
         <CarteArgument
           icone="bouclier"
           titre="Des sources officielles"
-          texte="Chaque réponse vient d’une page officielle. Tu vois la source et la date."
+          texte="Chaque réponse vient d’une source officielle, que tu peux consulter. Une IA comprend ta question et la reformule, sans inventer d’information."
         />
         <CarteArgument pointille icone="aide" titre="Je ne devine pas" texte="Si je n’ai pas l’information, je te le dis." />
         {/* Le site garde maintenant les questions et les avis : la personne doit pouvoir le lire sans chercher. */}
         <CarteArgument
           icone="info"
           titre="Tes données"
-          texte="Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Ta question est envoyée à Groq, un service d’IA, pour te répondre. Le site la garde (sans savoir qui tu es), avec ton avis si tu en donnes un, pour améliorer les fiches. Évite d’y mettre ton nom ou ton numéro."
+          texte="Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Ta question est envoyée à Groq, un service d’IA, pour te répondre. Le site la garde (sans savoir qui tu es), avec ton avis si tu en donnes un, pour améliorer le service. Évite d’y mettre ton nom ou ton numéro."
         />
       </div>
 

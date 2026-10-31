@@ -14,7 +14,7 @@ export function Pieces({ pieces }: { pieces: string[] }) {
               <span className="min-w-0 text-base leading-6 font-semibold">
                 <span className="group-has-[:checked]:text-ink-3 group-has-[:checked]:line-through">{piece.principal}</span>
                 {piece.aConfirmer ? <EtiquetteAConfirmer /> : null}
-                {piece.precision ? (
+                {piece.precision && !piece.aConfirmer ? (
                   <span className="block text-sm leading-5 font-normal text-ink-2">{piece.precision}</span>
                 ) : null}
               </span>

@@ -25,7 +25,7 @@ pieces:
   - "Pour un duplicata : le certificat de perte, ou le talon du permis de conduire"
   - "Si l'adresse figurant sur le permis n'est plus valide : la photocopie et l'original du certificat de résidence de la nouvelle adresse"
 etapes:
-  - "Réunir les pièces demandées. La page indique : renouveler avec les mêmes pièces ; en cas de perte ou de vol, établir un duplicata avec les mêmes pièces."
+  - "Réunir les pièces demandées. Renouveler avec les mêmes pièces ; en cas de perte ou de vol, établir un duplicata avec les mêmes pièces."
   - "Pour un duplicata, le certificat de perte s'obtient sur une déclaration de perte écrite, avec les références du permis, déposée à la 4e section du commissariat central de Dakar, ou dans les commissariats centraux des régions."
   - "Le lieu de dépôt est à confirmer : les deux pages officielles n'indiquent pas le même."
 cout: "10 000 FCFA pour les catégories B, C, D et poids lourds ; 5 000 FCFA pour les catégories A1 et A"

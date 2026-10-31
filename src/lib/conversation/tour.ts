@@ -1,5 +1,5 @@
 import type { Reponse } from "../ai/ask";
-import { decouperPiece, formaterDate, type StatutAffichage } from "../fiches/affichage";
+import { decouperPiece, ficheAConfirmer, MISE_EN_GARDE, type StatutAffichage } from "../fiches/affichage";
 import {
   preparerLaLecture,
   scriptFiche,
@@ -35,6 +35,8 @@ export type TourAssistant = {
   fiche: { slug: string; titre: string; source: string | null } | null;
   /** Les démarches au choix quand la question ne suffit pas. */
   options: { slug: string; titre: string }[];
+  /** La mise en garde quand un point de la démarche reste incertain. */
+  miseEnGarde: string | null;
   /** La démarche se fait aussi en ligne, sur e-Sénégal. */
   enLigne: EnLigne | null;
   /** Vrai quand la prochaine parole complète cette question, trop vague. */
@@ -43,7 +45,7 @@ export type TourAssistant = {
 };
 
 function sansFiche(script: string[], options: Partial<TourAssistant> = {}): TourAssistant {
-  return { texte: script, faits: [], pieces: [], fiche: null, options: [], enLigne: null, aCompleter: false, lignes: preparerLaLecture(script), ...options };
+  return { texte: script, faits: [], pieces: [], fiche: null, options: [], miseEnGarde: null, enLigne: null, aCompleter: false, lignes: preparerLaLecture(script), ...options };
 }
 
 /** `suite` : la conversation continue sur la même démarche ; on répond alors à la question, sans tout relire. */
@@ -64,8 +66,9 @@ export function construireTour(reponse: Reponse, { suite, statut }: { suite: boo
           { libelle: "Où", valeur: fiche.lieu ?? "Non précisé" },
         ],
         pieces: courte ? [] : fiche.pieces.map((piece) => decouperPiece(piece).principal),
-        fiche: { slug: fiche.slug, titre: fiche.titre, source: source ? `${source.titre}, consultée le ${formaterDate(source.consulte_le)}` : null },
+        fiche: { slug: fiche.slug, titre: fiche.titre, source: source ? source.titre : null },
         options: [],
+        miseEnGarde: ficheAConfirmer(fiche) ? MISE_EN_GARDE : null,
         enLigne,
         aCompleter: false,
         lignes: preparerLaLecture(enLigne ? [...dites, enLigne.note] : dites),

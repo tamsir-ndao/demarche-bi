@@ -17,6 +17,7 @@ import {
   notesDeLaFiche,
   resumeCoutDelai,
   resumeSources,
+  notesPourUsager,
   statutAffichage,
 } from "./affichage";
 
@@ -79,20 +80,29 @@ describe("libelleCategorie", () => {
   });
 });
 
+describe("notesPourUsager", () => {
+  it("écarte les notes de rédaction et les « à confirmer », garde ce qui sert à l'usager", () => {
+    assert.deepEqual(
+      notesPourUsager(["Provenance : texte relu par quelqu'un.", "La page ne dit rien.", "Voir la fiche voisine.", "À confirmer : le coût.", "Le retrait se fait au lieu de dépôt."]),
+      ["Le retrait se fait au lieu de dépôt."],
+    );
+  });
+});
+
 describe("statutAffichage", () => {
   const maintenant = new Date("2026-10-20T10:00:00Z");
 
-  it("affiche la date de vérification d'une fiche vérifiée", () => {
+  it("présente une fiche vérifiée comme une source officielle, sans date interne", () => {
     assert.deepEqual(statutAffichage(fiche({ verifie_le: "2026-10-14" }), maintenant), {
       type: "verifie",
-      libelle: "Vérifié le 14 oct. 2026",
+      libelle: "Source officielle",
     });
   });
 
   it("signale une vérification de plus d'un an", () => {
     assert.deepEqual(statutAffichage(fiche({ verifie_le: "2025-09-01" }), maintenant), {
       type: "perimee",
-      libelle: "Vérifié il y a plus d’un an",
+      libelle: "Information à revérifier",
     });
   });
 
@@ -234,17 +244,17 @@ describe("domaine", () => {
 describe("resumeSources", () => {
   const source = (url: string, consulte_le: string) => ({ titre: "Source de test", url, consulte_le });
 
-  it("résume une seule source avec son domaine et sa date de consultation", () => {
+  it("résume une seule source avec son domaine, sans date", () => {
     assert.deepEqual(resumeSources([source("https://www.example.org/a", "2026-10-11")]), {
       titre: "Source officielle",
-      detail: "example.org, consultée le 11 oct. 2026",
+      detail: "example.org",
     });
   });
 
   it("met au pluriel et ne répète pas le domaine quand les sources ont la même date", () => {
     assert.deepEqual(
       resumeSources([source("https://example.org/a", "2026-10-11"), source("https://example.org/b", "2026-10-11")]),
-      { titre: "Sources officielles", detail: "example.org, consultées le 11 oct. 2026" },
+      { titre: "Sources officielles", detail: "example.org" },
     );
   });
 

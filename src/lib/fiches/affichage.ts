@@ -54,9 +54,9 @@ export function statutAffichage(
     return { type: "brouillon", libelle: "Brouillon, pas encore vérifiée" };
   }
   if (estPerimee(fiche.verifie_le, now)) {
-    return { type: "perimee", libelle: "Vérifié il y a plus d’un an" };
+    return { type: "perimee", libelle: "Information à revérifier" };
   }
-  return { type: "verifie", libelle: `Vérifié le ${formaterDate(fiche.verifie_le)}` };
+  return { type: "verifie", libelle: "Source officielle" };
 }
 
 /**
@@ -110,6 +110,22 @@ export function estAConfirmer(texte: string): boolean {
   return /\ba confirmer\b/.test(simplifier(texte));
 }
 
+/** Les mots d'une note de rédaction (d'où vient l'information, ce que dit la page) : utiles à l'équipe, pas à l'usager. */
+const NOTE_DE_REDACTION = /\b(provenance|la page|cette page|page officielle|fiche|le document|le resume)\b/;
+
+/** Les notes qu'on montre à l'usager : ni « à confirmer » (dit autrement à l'écran), ni notes de rédaction. */
+export function notesPourUsager(notes: string[]): string[] {
+  return notes.filter((note) => !estAConfirmer(note) && !NOTE_DE_REDACTION.test(simplifier(note)));
+}
+
+/** La mise en garde, en langage simple, quand un point de la démarche reste incertain. */
+export const MISE_EN_GARDE = "Renseigne-toi auprès du service concerné avant de te déplacer ou de payer : certains points peuvent varier.";
+
+/** Vrai si une note ou une pièce de la fiche reste à confirmer. */
+export function ficheAConfirmer(fiche: Pick<Fiche, "corps" | "pieces">): boolean {
+  return notesDeLaFiche(fiche.corps).some(estAConfirmer) || fiche.pieces.some(estAConfirmer);
+}
+
 export type PieceAffichee = {
   principal: string;
   /** Ce qui est entre parenthèses à la fin de la pièce, affiché en plus petit. */
@@ -141,14 +157,10 @@ export function domaine(url: string): string {
  */
 export function resumeSources(sources: Source[]): { titre: string; detail: string } {
   const domaines = [...new Set(sources.map((source) => domaine(source.url)))];
-  const dates = [...new Set(sources.map((source) => source.consulte_le))];
   const plusieurs = sources.length > 1;
   return {
     titre: plusieurs ? "Sources officielles" : "Source officielle",
-    detail:
-      dates.length === 1
-        ? `${domaines.join(", ")}, ${plusieurs ? "consultées" : "consultée"} le ${formaterDate(dates[0])}`
-        : domaines.join(", "),
+    detail: domaines.join(", "),
   };
 }
 

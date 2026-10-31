@@ -26,7 +26,7 @@ pieces:
 etapes:
   - "Réunir les sept pièces demandées."
   - "Adresser une demande à la division régionale des transports compétente, en se présentant avec le véhicule."
-  - "Le délai de délivrance donné par la page est de 2 jours."
+  - "Le délai de délivrance est de 2 jours."
 cout: null
 delai: "2 jours"
 lieu: "Division régionale des transports compétente, avec le véhicule."

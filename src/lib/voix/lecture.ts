@@ -96,7 +96,7 @@ function phrase(texte: string): string {
 /** L'avertissement d'une fiche pas vérifiée ou vérifiée depuis trop longtemps ; une fiche à jour n'en a pas. */
 function phraseStatut(statut: StatutAffichage): string | null {
   if (statut.type === "brouillon") return "Attention, cette fiche n’est pas encore vérifiée.";
-  if (statut.type === "perimee") return "Attention, cette fiche a été vérifiée il y a plus d’un an.";
+  if (statut.type === "perimee") return "Attention, cette information peut avoir changé.";
   return null;
 }
 
@@ -146,7 +146,7 @@ export function scriptFiche({ fiche, statut, intro }: { fiche: Fiche; statut: St
 
   const pieces = fiche.pieces.map(decouperPiece);
   const aConfirmer = notesDeLaFiche(fiche.corps).some(estAConfirmer) || pieces.some((piece) => piece.aConfirmer);
-  if (aConfirmer) lignes.push({ texte: "Attention, une information est à confirmer : regarde l’écran.", cible: "a-confirmer" });
+  if (aConfirmer) lignes.push({ texte: "Attention, certains points peuvent varier. Renseigne-toi auprès du service concerné avant de te déplacer.", cible: "a-confirmer" });
 
   if (pieces.length > 0) {
     lignes.push({ texte: "Ce qu’il faut apporter.", cible: "pieces" });

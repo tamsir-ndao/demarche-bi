@@ -17,7 +17,7 @@ export const PALIERS: readonly Palier[] = [
   { titre: "Pose ta question", texte: "Parle ou écris, en français ou en wolof.", icone: "micro" },
   {
     titre: "Une réponse avec ses sources",
-    texte: "Pièces, coût, délai, lieu : tout vient d’une page officielle, avec sa date de vérification.",
+    texte: "Pièces, coût, délai, lieu : tout vient d’une source officielle.",
     icone: "dossier",
   },
   {

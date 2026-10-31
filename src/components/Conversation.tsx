@@ -92,6 +92,12 @@ function Reponse({
           </ul>
         </div>
       )}
+      {reponse.miseEnGarde && (
+        <p className="mt-4 flex gap-2.5 rounded-2xl border border-edge px-3.5 py-3 text-[14px] leading-5">
+          <Icon name="info" size={18} className="mt-px flex-none text-leaf" />
+          <span>{reponse.miseEnGarde}</span>
+        </p>
+      )}
       {reponse.options.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
           {reponse.options.map(({ slug, titre }) => (

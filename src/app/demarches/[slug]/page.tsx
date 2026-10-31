@@ -12,7 +12,7 @@ import { Pieces } from "@/components/Pieces";
 import { Recherche } from "@/components/Recherche";
 import { SectionRepliable } from "@/components/SectionRepliable";
 import { SourcesRepliables } from "@/components/Sources";
-import { estAConfirmer, notesDeLaFiche, statutAffichage } from "@/lib/fiches/affichage";
+import { ficheAConfirmer, MISE_EN_GARDE, notesDeLaFiche, notesPourUsager, statutAffichage } from "@/lib/fiches/affichage";
 import { ficheAffichable, maintenant } from "@/lib/fiches/disponibles";
 import { loadFiches } from "@/lib/fiches/load";
 
@@ -46,9 +46,7 @@ async function Demarche({ params }: Pick<PageProps<"/demarches/[slug]">, "params
   if (!fiche) notFound();
 
   const statut = statutAffichage(fiche, await maintenant());
-  const notes = notesDeLaFiche(fiche.corps);
-  const notesAConfirmer = notes.filter(estAConfirmer);
-  const notesASavoir = notes.filter((note) => !estAConfirmer(note));
+  const notesASavoir = notesPourUsager(notesDeLaFiche(fiche.corps));
 
   return (
     <>
@@ -62,9 +60,7 @@ async function Demarche({ params }: Pick<PageProps<"/demarches/[slug]">, "params
           {fiche.titre}
         </h1>
         <p className="mt-2 text-[15px] leading-[22px] text-ink-2">{fiche.resume}</p>
-        {notesAConfirmer.map((note) => (
-          <NoteAConfirmer key={note} texte={note} />
-        ))}
+        {ficheAConfirmer(fiche) ? <NoteAConfirmer texte={MISE_EN_GARDE} /> : null}
       </Carte>
 
       <div className="mt-3 flex flex-col gap-2.5">

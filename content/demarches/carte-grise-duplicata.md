@@ -21,7 +21,7 @@ pieces:
   - "La carte grise endommagée, ou le certificat de perte"
   - "La quittance de la taxe de duplicata, selon qu'il s'agit de vélomoteurs, de voitures ou de véhicules de transport"
 etapes:
-  - "Réunir les trois pièces demandées. Pour un renouvellement, la page dit : renouveler avec les mêmes pièces."
+  - "Réunir les trois pièces demandées. Pour un renouvellement : renouveler avec les mêmes pièces."
   - "Payer la taxe de duplicata, dont le montant dépend du type de véhicule et de sa puissance : la quittance fait partie des pièces à fournir."
   - "S'adresser aux bureaux régionaux des transports routiers. La pièce délivrée est une nouvelle carte grise (en duplicata ou en renouvellement), en 2 jours."
 cout: "3 000 FCFA pour les vélomoteurs et scooters ; 4 500 FCFA pour les véhicules de 2 à 9 CV ; 7 500 FCFA pour les véhicules de 10 à 13 CV ; 10 500 FCFA pour les véhicules de plus de 13 CV ; 1 000 FCFA pour les véhicules de transport public de moins de 12 CV ; 2 000 FCFA pour les véhicules de transport public de plus de 12 CV"

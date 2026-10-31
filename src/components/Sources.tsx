@@ -1,4 +1,4 @@
-import { domaine, formaterDate, resumeSources, type Source } from "@/lib/fiches/affichage";
+import { domaine, resumeSources, type Source } from "@/lib/fiches/affichage";
 import { Icon } from "./Icon";
 
 /** Les pages officielles d'où vient la fiche, avec la date où elles ont été consultées. */
@@ -16,7 +16,7 @@ export function ListeSources({ sources }: { sources: Source[] }) {
             <span className="min-w-0 flex-1">
               <span className="block text-sm leading-5 font-semibold">{source.titre}</span>
               <span className="block text-[13px] leading-[18px] text-ink-2">
-                {domaine(source.url)} · consultée le {formaterDate(source.consulte_le)}
+                {domaine(source.url)}
               </span>
             </span>
             <Icon name="lien-externe" size={18} className="flex-none" />

@@ -19,7 +19,7 @@ pieces:
   - "2 photos d'identité en couleur"
   - "Des timbres fiscaux d'une valeur de 25 000 FCFA"
 etapes:
-  - "Se procurer l'attestation d'authenticité du permis de conduire : la page indique qu'elle est délivrée par la division du Permis de conduire de la direction des Transports terrestres et des auto-écoles (voir la démarche « Permis de conduire : attestation d'authenticité »)."
+  - "Se procurer l'attestation d'authenticité du permis de conduire : elle est délivrée par la division du Permis de conduire de la direction des Transports terrestres et des auto-écoles (voir la démarche « Permis de conduire : attestation d'authenticité »)."
   - "Déposer le dossier à l'Automobile Club du Sénégal ou à la Chambre de Commerce, d'industrie et d'agriculture de Dakar (CCIAD)."
   - "Payer les frais de service de 15 000 FCFA, à l'avance et en espèces, si le dossier est déposé directement à l'Automobile Club du Sénégal. Si le dossier est déposé à la Chambre de Commerce, d'industrie et d'agriculture de Dakar (CCIAD), une participation aux frais de 5 000 FCFA est perçue en plus des frais de service de 15 000 FCFA."
 cout: "Timbres fiscaux de 25 000 FCFA à fournir dans le dossier ; frais de service de 15 000 FCFA, payables à l'avance et en espèces, si le dossier est déposé directement à l'Automobile club du Sénégal ; si le dossier est déposé à la Chambre de Commerce, d'industrie et d'agriculture de Dakar (CCIAD), une participation aux frais de 5 000 FCFA est perçue en plus des frais de service de 15 000 FCFA."
