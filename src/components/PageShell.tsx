@@ -81,11 +81,13 @@ type PageShellProps = {
   retour?: { href: string; libelle: string };
   /** Pleine largeur (page d'accueil) au lieu de la colonne centrée. */
   large?: boolean;
+  /** Sur téléphone, un écran de détail : le bouton retour suffit, le menu flottant ne couvre pas le contenu. */
+  sansMenu?: boolean;
   children: ReactNode;
 };
 
 /** Le cadre commun des pages : en-tête, menu (en haut sur ordinateur, en bas sur téléphone) et avertissement. */
-export function PageShell({ actif, retour, large = false, children }: PageShellProps) {
+export function PageShell({ actif, retour, large = false, sansMenu = false, children }: PageShellProps) {
   return (
     <>
       <header className="flex items-center justify-between px-5 py-1.5 lg:px-16 lg:py-5">
@@ -116,7 +118,7 @@ export function PageShell({ actif, retour, large = false, children }: PageShellP
         </p>
       </footer>
 
-      <BarreDuBas actif={actif} />
+      {sansMenu ? null : <BarreDuBas actif={actif} />}
     </>
   );
 }

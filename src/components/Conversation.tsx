@@ -395,14 +395,14 @@ export function Conversation() {
   return (
     <>
       {/* L'accueil : le titre et le bouton, rien d'autre. */}
-      <div className="mx-auto my-auto flex w-full max-w-[560px] flex-col items-center py-6 text-center">
+      <div className="mx-auto my-auto flex w-full max-w-[560px] flex-col items-center py-2 text-center [@media(min-height:700px)]:py-6">
         <p className="montee rounded-full bg-tint px-3.5 py-1.5 text-[13px] leading-[18px] font-semibold text-leaf-deep">Sources officielles du Sénégal</p>
         <h1 className="montee mt-4 text-[38px] leading-[42px] font-bold tracking-[-0.03em] text-balance lg:text-[56px] lg:leading-[60px]">
           De quelle démarche <span className="whitespace-nowrap">as-tu</span> besoin&nbsp;?
         </h1>
-        <button type="button" onClick={toucherMicro} className="press montee mt-12 flex flex-col items-center gap-5 rounded-[48px]">
-          <Orbe taille="size-36" icone="size-14" />
-          <span className="mt-4 text-xl leading-7 font-bold">Touche et parle</span>
+        <button type="button" onClick={toucherMicro} className="press montee mt-10 flex [@media(min-height:700px)]:mt-16 flex-col items-center rounded-[48px]">
+          <Orbe taille="size-24 [@media(min-height:700px)]:size-36" icone="size-10 [@media(min-height:700px)]:size-14" />
+          <span className="mt-10 text-xl [@media(min-height:700px)]:mt-14 leading-7 font-bold">Touche et parle</span>
         </button>
         <div className="mt-4 w-full">{tours.length === 0 && phase === "repos" ? messageErreur : null}</div>
         <div className="mt-1 flex w-full justify-center">
