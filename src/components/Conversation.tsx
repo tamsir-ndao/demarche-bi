@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
+import { flushSync } from "react-dom";
 import type { TourAssistant } from "@/lib/conversation/tour";
 import { LONGUEUR_MAX_QUESTION } from "@/lib/texte";
 import type { CodeErreurVoix } from "@/lib/voix/codes";
@@ -143,6 +144,7 @@ export function Conversation() {
   const [lu, setLu] = useState<number | null>(null);
   const enregistreur = useRef<Enregistreur | undefined>(undefined);
   const barres = useRef<HTMLDivElement>(null);
+  const champ = useRef<HTMLTextAreaElement>(null);
   const debutMs = useRef(0);
   const jeton = useRef(0);
   const compteur = useRef(0);
@@ -338,7 +340,13 @@ export function Conversation() {
     setPhase("repos");
   }
 
-  function envoyerTexte(evenement: FormEvent) {
+  function ouvrirEcriture() {
+    // Le champ prend le curseur pendant l'appui : sinon l'iPhone n'ouvre pas le clavier.
+    flushSync(() => setEcrire(true));
+    champ.current?.focus();
+  }
+
+  function envoyerTexte(evenement: FormEvent | KeyboardEvent) {
     evenement.preventDefault();
     const question = texte.trim();
     if (question === "") return;
@@ -364,28 +372,6 @@ export function Conversation() {
     void poser(titre, derniere, slug);
   }
 
-  const formulaire = (
-    <form onSubmit={envoyerTexte} className="relative w-full">
-      <label htmlFor="question-conversation" className="sr-only">
-        Écris ta question
-      </label>
-      <input
-        id="question-conversation"
-        type="text"
-        value={texte}
-        onChange={(evenement) => setTexte(evenement.target.value)}
-        maxLength={LONGUEUR_MAX_QUESTION}
-        autoComplete="off"
-        enterKeyHint="send"
-        placeholder="Écris ta question"
-        className="block h-14 w-full rounded-full border border-line bg-card pr-16 pl-[22px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf"
-      />
-      <button type="submit" aria-label="Envoyer" className="press absolute top-1.5 right-1.5 flex size-11 items-center justify-center rounded-full bg-brand text-on-brand">
-        <Icon name="fleche-droite" size={22} strokeWidth={2.4} />
-      </button>
-    </form>
-  );
-
   const messageErreur = (
     <p role="status" className="mx-auto min-h-6 max-w-[420px] text-center text-[15px] leading-[22px] text-ink-2">
       {erreur ? erreurDeVoix(erreur).message : ""}
@@ -404,15 +390,11 @@ export function Conversation() {
           <Orbe taille="size-24 [@media(min-height:700px)]:size-36" icone="size-10 [@media(min-height:700px)]:size-14" />
           <span className="mt-10 text-xl [@media(min-height:700px)]:mt-14 leading-7 font-bold">Touche et parle</span>
         </button>
-        <div className="mt-4 w-full">{tours.length === 0 && phase === "repos" ? messageErreur : null}</div>
+        <div className="mt-4 w-full">{tours.length === 0 && phase === "repos" && !ecrire ? messageErreur : null}</div>
         <div className="mt-1 flex w-full justify-center">
-          {ecrire && tours.length === 0 ? (
-            formulaire
-          ) : (
-            <button type="button" onClick={() => setEcrire(true)} className="min-h-11 text-[15px] leading-5 font-semibold text-ink-2 underline-offset-4 hover:underline">
+          <button type="button" onClick={ouvrirEcriture} className="min-h-11 text-[15px] leading-5 font-semibold text-ink-2 underline-offset-4 hover:underline">
               Je préfère écrire
             </button>
-          )}
         </div>
       </div>
 
@@ -450,20 +432,59 @@ export function Conversation() {
             <div ref={bas} />
           </div>
           <div className="mx-auto flex w-full max-w-[640px] flex-none flex-col items-center gap-2 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]">
-            {erreur && messageErreur}
-            {ecrire ? (
-              formulaire
-            ) : (
-              <div className="flex w-full items-center gap-3">
-                <button type="button" onClick={() => setEcrire(true)} className="press flex h-14 min-w-0 flex-1 items-center rounded-full border border-line bg-card px-5 text-left text-base leading-6 text-ink-3">
+            {erreur && !ecrire && messageErreur}
+            <div className="flex w-full items-center gap-3">
+                <button type="button" onClick={ouvrirEcriture} className="press flex h-14 min-w-0 flex-1 items-center rounded-full border border-line bg-card px-5 text-left text-base leading-6 text-ink-3">
                   Écrire une question
                 </button>
                 <button type="button" onClick={toucherMicro} aria-label="Poser une autre question à la voix" className="press flex-none rounded-full">
                   <Orbe taille="size-14 orbe-petit" icone="size-6" />
                 </button>
               </div>
-            )}
           </div>
+        </section>
+      )}
+
+      {/* Écrire : un écran à part, le champ en haut pour rester au-dessus du clavier du téléphone. */}
+      {ecrire && (
+        <section role="dialog" aria-modal="true" aria-labelledby="titre-ecrire" className="ecran ecran-entree z-50 flex flex-col">
+          <header className="flex flex-none items-center gap-3 px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2">
+            <button type="button" onClick={() => setEcrire(false)} aria-label="Fermer" className="press flex size-11 items-center justify-center rounded-full bg-card">
+              <Icon name="croix" size={20} />
+            </button>
+            <h2 id="titre-ecrire" className="text-[17px] leading-6 font-bold tracking-[-0.01em]">
+              Écris ta question
+            </h2>
+          </header>
+          <form onSubmit={envoyerTexte} className="mx-auto flex w-full max-w-[640px] flex-col gap-3 px-4 pt-2">
+            <label htmlFor="question-conversation" className="sr-only">
+              Écris ta question
+            </label>
+            <textarea
+              ref={champ}
+              id="question-conversation"
+              rows={3}
+              value={texte}
+              onChange={(evenement) => setTexte(evenement.target.value)}
+              onKeyDown={(evenement) => {
+                if (evenement.key === "Enter" && !evenement.shiftKey) envoyerTexte(evenement);
+              }}
+              maxLength={LONGUEUR_MAX_QUESTION}
+              autoComplete="off"
+              enterKeyHint="send"
+              placeholder="Par exemple : j’ai perdu ma carte d’identité"
+              className="block w-full resize-none rounded-3xl border border-line bg-card px-5 py-4 text-[17px] leading-[26px] text-ink placeholder:text-ink-3 focus:border-leaf"
+            />
+            {erreur && messageErreur}
+            <button
+              type="submit"
+              disabled={texte.trim() === ""}
+              className="press flex h-14 items-center justify-center gap-2 rounded-full bg-brand text-[17px] leading-6 font-bold text-on-brand disabled:opacity-50"
+            >
+              Envoyer
+              <Icon name="fleche-droite" size={22} strokeWidth={2.4} />
+            </button>
+          </form>
         </section>
       )}
 
