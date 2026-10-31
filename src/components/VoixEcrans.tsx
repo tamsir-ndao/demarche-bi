@@ -78,7 +78,7 @@ export function VoixDemande({ onFermer }: { onFermer: () => void }) {
 }
 
 /** Les barres du spectre : BoutonVoix change leur hauteur à chaque image, sans repasser par React. */
-const Spectre = memo(function Spectre({ refBarres }: { refBarres: RefObject<HTMLDivElement | null> }) {
+export const Spectre = memo(function Spectre({ refBarres }: { refBarres: RefObject<HTMLDivElement | null> }) {
   return (
     <div role="img" aria-label="Spectre de ta voix en direct" className="relative h-[170px] w-full">
       <span aria-hidden="true" className="absolute inset-x-3 top-1/2 h-px bg-tint-2" />

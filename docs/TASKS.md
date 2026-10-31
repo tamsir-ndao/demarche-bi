@@ -166,6 +166,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 - [x] Partie 1 : accueil à un seul bouton, conversation en français, arrêt automatique après le silence, réponse lue sans confirmation, mémoire de la démarche en cours dans la page (`POST /api/conversation`, `src/components/Conversation.tsx`)
 - [ ] Essayer la partie 1 sur un vrai iPhone et un vrai Android, avec la vraie IA
 - [x] Lot 1 : erreurs dites à voix haute, « Réécouter », réponses de suite courtes à l'écran et à la voix, lien e-Sénégal pour le casier judiciaire (vérifié le 31 octobre)
-- [ ] Vérifier qu'une réponse de suite ne contient aucun chiffre inventé, avec la vraie IA
+- [x] Trois écrans (accueil, écoute plein écran avec envoi au bouton, conversation), menu flottant, nouveau design ; parcours testé en local avec Whisper et la vraie IA le 31 octobre
+- [ ] Mesurer sur un échantillon qu'une réponse de suite ne contient aucun chiffre inventé (un seul essai fait : prix du passeport juste)
 - [ ] Partie 3 : démo et présentation pour le ministère
 - [ ] Partie 4 : wolof, écoute puis voix, avec textes relus par une personne

@@ -176,6 +176,120 @@ html[data-bienvenue="attendue"] dialog[open] {
   }
 }
 
+/* L'application : une lueur verte en fond, l'orbe du micro, le menu flottant, les écrans qui arrivent en douceur.
+   Les animations sont coupées avec les autres quand le téléphone le demande (prefers-reduced-motion). */
+body,
+.ecran {
+  background-color: var(--bg);
+  background-image: radial-gradient(90rem 34rem at 50% -14rem, color-mix(in srgb, var(--g) 16%, transparent), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+.ecran {
+  position: fixed;
+  inset: 0;
+}
+
+.ecran-entree {
+  animation: ecran-entree 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.montee {
+  animation: montee 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.page-entree {
+  /* Sans « both » : une fois finie, l'animation ne doit plus enfermer les écrans plein écran sous le menu. */
+  animation: page-entree 0.28s ease-out;
+}
+
+.carte-reponse {
+  margin-right: 0.5rem;
+  border: 1px solid var(--hair);
+  border-radius: 28px 28px 28px 8px;
+  background: var(--card);
+  padding: 1.125rem;
+}
+
+.menu-flottant {
+  border: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+}
+
+.orbe {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 34% 28%, #6df2b6, var(--g) 52%, #10a765);
+  color: var(--on-g);
+  box-shadow:
+    0 18px 50px color-mix(in srgb, var(--g) 42%, transparent),
+    inset 0 -10px 26px rgb(0 0 0 / 0.1);
+}
+
+.orbe::before,
+.orbe::after {
+  position: absolute;
+  z-index: -1;
+  border-radius: inherit;
+  content: "";
+}
+
+.orbe::before {
+  inset: -14%;
+  background: color-mix(in srgb, var(--g) 22%, transparent);
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+.orbe::after {
+  inset: -30%;
+  background: color-mix(in srgb, var(--g) 10%, transparent);
+  animation: breathe 3.6s ease-in-out 0.5s infinite;
+}
+
+.orbe-petit::before,
+.orbe-petit::after {
+  display: none;
+}
+
+.orbe-tourne::after {
+  inset: -9%;
+  background: conic-gradient(from 0deg, transparent 15%, var(--g) 100%);
+  animation: orbe-tourne 1.1s linear infinite;
+}
+
+@keyframes ecran-entree {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}
+
+@keyframes montee {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes page-entree {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes orbe-tourne {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Le clavier doit toujours montrer où l'on est. */
 :focus-visible {
   outline: 3px solid var(--gd);

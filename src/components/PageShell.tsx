@@ -49,8 +49,9 @@ function BarreDuBas({ actif }: { actif?: Onglet }) {
   return (
     <nav
       aria-label="Navigation principale"
-      className="sticky bottom-0 z-10 flex bg-card px-2 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-nav lg:hidden"
+      className="pointer-events-none sticky bottom-0 z-10 flex justify-center px-4 pt-2 pb-[max(0.875rem,env(safe-area-inset-bottom))] lg:hidden"
     >
+      <div className="menu-flottant pointer-events-auto flex gap-1 rounded-full p-1.5">
       {ONGLETS.map((onglet) => {
         const courant = onglet.id === actif;
         return (
@@ -58,17 +59,16 @@ function BarreDuBas({ actif }: { actif?: Onglet }) {
             key={onglet.id}
             href={onglet.href}
             aria-current={courant ? "page" : undefined}
-            className={`flex min-h-12 flex-1 flex-col items-center gap-1 ${courant ? "" : "text-ink-2"}`}
+            className={`press flex min-h-12 items-center gap-2 rounded-full px-5 text-[15px] leading-5 transition-colors ${
+              courant ? "bg-brand font-bold text-on-brand" : "font-semibold text-ink-2"
+            }`}
           >
-            <span
-              className={`flex h-8 w-14 items-center justify-center rounded-full ${courant ? "bg-tint-2 text-leaf-deep" : ""}`}
-            >
-              <Icon name={onglet.icone} size={22} strokeWidth={courant ? 2.2 : 2} />
-            </span>
-            <span className={`text-xs leading-4 ${courant ? "font-bold" : "font-semibold"}`}>{onglet.libelle}</span>
+            <Icon name={onglet.icone} size={21} strokeWidth={courant ? 2.3 : 2} />
+            {onglet.libelle}
           </Link>
         );
       })}
+      </div>
     </nav>
   );
 }
@@ -104,7 +104,7 @@ export function PageShell({ actif, retour, large = false, children }: PageShellP
 
       <main
         id="contenu"
-        className={`mx-auto flex w-full flex-1 flex-col ${large ? "max-w-[1200px] px-5 lg:px-16" : "max-w-[720px] px-4 lg:px-6"}`}
+        className={`page-entree mx-auto flex w-full flex-1 flex-col ${large ? "max-w-[1200px] px-5 lg:px-16" : "max-w-[720px] px-4 lg:px-6"}`}
       >
         {children}
       </main>

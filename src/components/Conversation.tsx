@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
 import type { TourAssistant } from "@/lib/conversation/tour";
 import { LONGUEUR_MAX_QUESTION } from "@/lib/texte";
 import type { CodeErreurVoix } from "@/lib/voix/codes";
@@ -10,11 +10,13 @@ import { envoyerLaVoix } from "@/lib/voix/envoi";
 import { erreurDeVoix } from "@/lib/voix/messages";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { composerLaQuestion } from "@/lib/voix/question-composee";
-import { Icon } from "./Icon";
-import { RondMicro } from "./VoixEcrans";
+import { formaterDuree } from "@/lib/voix/spectre";
+import { Icon, type IconName } from "./Icon";
+import { HAUTEUR_BARRE_MAX, HAUTEUR_BARRE_MIN, Spectre } from "./VoixEcrans";
 
-// L'assistant : un bouton, une conversation. La personne touche, parle, et la réponse s'affiche et se lit toute seule ;
-// elle retouche pour la question suivante. Le navigateur retient seulement la démarche en cours, le temps de la page.
+// L'assistant, en trois écrans comme une application : l'accueil et son bouton ; l'écoute en plein écran (la voix fait
+// bouger le spectre, un bouton envoie) ; puis la conversation, où la réponse s'affiche et se lit toute seule.
+// Le navigateur retient seulement la discussion, le temps de l'onglet.
 
 type Tour = { id: number; question: string } & ({ etat: "attente" } | { etat: "pret"; reponse: TourAssistant } | { etat: "hors_ligne" });
 type Phase = "repos" | "demande" | "ecoute" | "transcription";
@@ -25,59 +27,81 @@ const DUREE_MIN_MS = 600;
 /** La discussion reste le temps de l'onglet : revenir d'une fiche ne la fait pas perdre. */
 const CLE_DISCUSSION = "demarche-bi:discussion";
 
-const LIBELLES: Record<Phase, string> = {
-  repos: "Touche et parle",
-  demande: "Autorise ton micro",
-  ecoute: "Je t’écoute… Touche pour finir",
-  transcription: "Je note ta question…",
-};
+function Orbe({ taille, icone, tourne = false }: { taille: string; icone: string; tourne?: boolean }) {
+  return (
+    <span aria-hidden="true" className={`orbe ${tourne ? "orbe-tourne" : ""} ${taille}`}>
+      {tourne ? <Icon name="loupe" className={`relative ${icone}`} /> : <Icon name="micro" strokeWidth={2} className={`relative ${icone}`} />}
+    </span>
+  );
+}
+
+function Fait({ icone, libelle, children }: { icone: IconName; libelle: string; children: ReactNode }) {
+  return (
+    <div className="flex gap-3">
+      <span aria-hidden="true" className="flex size-9 flex-none items-center justify-center rounded-xl bg-tint text-leaf">
+        <Icon name={icone} size={19} />
+      </span>
+      <div className="min-w-0">
+        <dt className="text-[13px] leading-[18px] text-ink-2">{libelle}</dt>
+        <dd className="text-[15px] leading-[22px] font-semibold">{children}</dd>
+      </div>
+    </div>
+  );
+}
+
+const ICONES_FAITS: Record<string, IconName> = { Coût: "billet", Délai: "horloge", Où: "lieu" };
 
 function Reponse({
   reponse,
+  enLecture,
   surChoix,
   surEcouter,
 }: {
   reponse: TourAssistant;
+  enLecture: boolean;
   surChoix: (slug: string, titre: string) => void;
   surEcouter: () => void;
 }) {
   return (
-    <div className="mr-6 rounded-3xl rounded-bl-md bg-card px-[18px] py-4 lg:mr-16">
+    <div className="carte-reponse montee">
       {reponse.texte.map((phrase) => (
-        <p key={phrase} className="text-[17px] leading-[26px] font-semibold">
+        <p key={phrase} className="text-[18px] leading-[27px] font-semibold tracking-[-0.005em]">
           {phrase}
         </p>
       ))}
       {reponse.faits.length > 0 && (
-        <dl className="mt-3 space-y-1.5 text-base leading-6">
+        <dl className="mt-4 flex flex-col gap-3">
           {reponse.faits.map(({ libelle, valeur }) => (
-            <div key={libelle}>
-              <dt className="inline text-ink-2">{libelle} : </dt>
-              <dd className="inline font-semibold">{valeur}</dd>
-            </div>
+            <Fait key={libelle} icone={ICONES_FAITS[libelle] ?? "info"} libelle={libelle}>
+              {valeur}
+            </Fait>
           ))}
         </dl>
       )}
       {reponse.pieces.length > 0 && (
-        <>
-          <p className="mt-3 text-base leading-6 text-ink-2">À apporter :</p>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-base leading-6">
+        <div className="mt-4 rounded-2xl bg-tint p-3.5">
+          <p className="text-[13px] leading-[18px] font-semibold text-ink-2">À apporter</p>
+          <ul className="mt-2 flex flex-col gap-2 text-[15px] leading-[22px]">
             {reponse.pieces.map((piece) => (
-              <li key={piece}>{piece}</li>
+              <li key={piece} className="flex gap-2.5">
+                <Icon name="coche" size={18} strokeWidth={2.6} className="mt-0.5 flex-none text-leaf" />
+                <span>{piece}</span>
+              </li>
             ))}
           </ul>
-        </>
+        </div>
       )}
       {reponse.options.length > 0 && (
-        <div className="mt-3 flex flex-col items-start gap-2">
+        <div className="mt-4 flex flex-col gap-2">
           {reponse.options.map(({ slug, titre }) => (
             <button
               key={slug}
               type="button"
               onClick={() => surChoix(slug, titre)}
-              className="press min-h-11 rounded-full border border-line px-4 text-left text-[15px] leading-5 font-semibold hover:bg-tint-2"
+              className="press flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-tint px-4 py-2.5 text-left text-[15px] leading-5 font-semibold hover:bg-tint-2"
             >
               {titre}
+              <Icon name="fleche-droite" size={18} className="flex-none text-leaf" />
             </button>
           ))}
         </div>
@@ -87,24 +111,24 @@ function Reponse({
           href={reponse.enLigne.url}
           target="_blank"
           rel="noreferrer"
-          className="press mt-3 flex min-h-11 items-center gap-2 rounded-2xl bg-tint px-3.5 py-2.5 text-[15px] leading-5 font-semibold"
+          className="press mt-4 flex min-h-11 items-center gap-2.5 rounded-2xl border border-line px-3.5 py-2.5 text-[15px] leading-5 font-semibold"
         >
-          <Icon name="lien-externe" size={18} className="flex-none" />
+          <Icon name="lien-externe" size={18} className="flex-none text-leaf" />
           {reponse.enLigne.note}
         </a>
       )}
-      <button type="button" onClick={surEcouter} className="press mt-3 flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-[15px] leading-5 font-semibold">
-        <Icon name="haut-parleur" size={20} />
-        Réécouter
-      </button>
-      {reponse.fiche && (
-        <p className="mt-3 border-t border-line pt-3 text-sm leading-5 text-ink-2">
-          {reponse.fiche.source && <>Source : {reponse.fiche.source}. </>}
-          <Link href={`/demarches/${reponse.fiche.slug}`} className="font-semibold text-leaf underline underline-offset-4">
+      <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <button type="button" onClick={surEcouter} className="press flex min-h-11 items-center gap-2 rounded-full bg-tint px-4 text-[15px] leading-5 font-semibold">
+          <Icon name={enLecture ? "arreter" : "haut-parleur"} size={19} />
+          {enLecture ? "Arrêter" : "Réécouter"}
+        </button>
+        {reponse.fiche && (
+          <Link href={`/demarches/${reponse.fiche.slug}`} className="flex min-h-11 items-center text-[15px] leading-5 font-semibold text-leaf underline-offset-4 hover:underline">
             Voir le détail
           </Link>
-        </p>
-      )}
+        )}
+      </div>
+      {reponse.fiche?.source && <p className="mt-2 text-[13px] leading-[18px] text-ink-3">Source : {reponse.fiche.source}</p>}
     </div>
   );
 }
@@ -115,7 +139,11 @@ export function Conversation() {
   const [erreur, setErreur] = useState<CodeErreurVoix | null>(null);
   const [ecrire, setEcrire] = useState(false);
   const [texte, setTexte] = useState("");
+  const [ecouleMs, setEcouleMs] = useState(0);
+  const [lu, setLu] = useState<number | null>(null);
   const enregistreur = useRef<Enregistreur | undefined>(undefined);
+  const barres = useRef<HTMLDivElement>(null);
+  const debutMs = useRef(0);
   const jeton = useRef(0);
   const compteur = useRef(0);
   /** Change au retour à l'accueil : une réponse encore en route ne concerne plus l'écran. */
@@ -151,10 +179,7 @@ export function Conversation() {
     } catch {
       // Sans mémoire d'onglet, la discussion dure seulement le temps de la page.
     }
-  }, [tours]);
-
-  useEffect(() => {
-    if (tours.length > 0) bas.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    bas.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [tours]);
 
   // Une erreur est aussi dite à voix haute : tout le monde ne peut pas la lire.
@@ -162,21 +187,57 @@ export function Conversation() {
     if (erreur) parleurDuNavigateur().lire([{ texte: erreurDeVoix(erreur).message, cible: null }]);
   }, [erreur]);
 
-  // Quitter la page coupe le micro et la voix.
-  useEffect(
-    () => () => {
+  // Le chronomètre de l'écoute.
+  useEffect(() => {
+    if (phase !== "ecoute") return;
+    const minuteur = setInterval(() => setEcouleMs(performance.now() - debutMs.current), 250);
+    return () => clearInterval(minuteur);
+  }, [phase]);
+
+  // Le geste « retour » du téléphone ramène de la conversation à l'accueil ; quitter la page coupe le micro et la voix.
+  useEffect(() => {
+    const surRetour = () => reinitialiser();
+    window.addEventListener("popstate", surRetour);
+    return () => {
+      window.removeEventListener("popstate", surRetour);
       jeton.current += 1;
       enregistreur.current?.annuler();
       parleurDuNavigateur().arreter();
-    },
-    [],
-  );
+    };
+
+    /** Tout s'arrête et la discussion est oubliée : on revient à l'accueil. */
+    function reinitialiser() {
+      session.current += 1;
+      jeton.current += 1;
+      enregistreur.current?.annuler();
+      enregistreur.current = undefined;
+      parleurDuNavigateur().arreter();
+      memoire.current = {};
+      try {
+        sessionStorage.removeItem(CLE_DISCUSSION);
+      } catch {
+        // Rien à oublier si la mémoire de l'onglet est bloquée.
+      }
+      setTours([]);
+      setPhase("repos");
+      setErreur(null);
+      setEcrire(false);
+    }
+  }, []);
+
+  function retourAccueil() {
+    // Une discussion retrouvée n'a pas d'étape dans l'historique : on en crée une, pour que le retour passe par le même chemin.
+    if (!(window.history.state as { discussion?: boolean } | null)?.discussion) window.history.pushState({ ...window.history.state, discussion: true }, "");
+    window.history.back();
+  }
 
   async function poser(affichee: string, question: string, ficheSlug?: string) {
+    if (tours.length === 0) window.history.pushState({ ...window.history.state, discussion: true }, "");
     const id = ++compteur.current;
     const maSession = session.current;
     const changer = (tour: Tour) => setTours((liste) => liste.map((autre) => (autre.id === id ? tour : autre)));
     setErreur(null);
+    setEcrire(false);
     setTours((liste) => [...liste, { id, question: affichee, etat: "attente" }]);
     try {
       const reponse = await fetch("/api/conversation", {
@@ -189,10 +250,12 @@ export function Conversation() {
       if (maSession !== session.current) return;
       memoire.current = { contexte: tour.fiche?.slug ?? memoire.current.contexte, aCompleter: tour.aCompleter ? question : undefined };
       changer({ id, question: affichee, etat: "pret", reponse: tour });
+      setLu(id);
       parleurDuNavigateur().lire(tour.lignes);
     } catch {
+      if (maSession !== session.current) return;
       changer({ id, question: affichee, etat: "hors_ligne" });
-      if (maSession === session.current) parleurDuNavigateur().lire([{ texte: "Je n’arrive pas à joindre le serveur. Réessaie dans un moment.", cible: null }]);
+      parleurDuNavigateur().lire([{ texte: "Je n’arrive pas à joindre le serveur. Réessaie dans un moment.", cible: null }]);
     }
   }
 
@@ -201,7 +264,17 @@ export function Conversation() {
     void poser(dite, composerLaQuestion(memoire.current.aCompleter, dite));
   }
 
-  async function terminer(monJeton: number) {
+  /** Lève ou baisse chaque barre selon la voix (directement dans la page : 60 images par seconde sans repasser par React). */
+  function dessiner(hauteurs: number[]) {
+    const elements = barres.current?.children;
+    if (!elements) return;
+    hauteurs.forEach((hauteur, i) => {
+      const barre = elements[i];
+      if (barre instanceof HTMLElement) barre.style.height = `${HAUTEUR_BARRE_MIN + hauteur * (HAUTEUR_BARRE_MAX - HAUTEUR_BARRE_MIN)}px`;
+    });
+  }
+
+  async function envoyer(monJeton: number) {
     const enCours = enregistreur.current;
     if (!enCours || monJeton !== jeton.current) return;
     enregistreur.current = undefined;
@@ -235,16 +308,14 @@ export function Conversation() {
     }
     setPhase("demande");
     try {
-      const nouveau = await demarrerEnregistrement({
-        surSpectre: () => undefined,
-        surDureeMax: () => void terminer(monJeton),
-        surFinDeParole: () => void terminer(monJeton),
-      });
+      const nouveau = await demarrerEnregistrement({ surSpectre: dessiner, surDureeMax: () => void envoyer(monJeton) });
       if (monJeton !== jeton.current) {
         nouveau.annuler();
         return;
       }
       enregistreur.current = nouveau;
+      debutMs.current = performance.now();
+      setEcouleMs(0);
       setPhase("ecoute");
     } catch (probleme) {
       if (monJeton !== jeton.current) return;
@@ -253,15 +324,18 @@ export function Conversation() {
     }
   }
 
-  function toucher() {
-    if (phase === "ecoute") {
-      void terminer(jeton.current);
-      return;
-    }
+  function toucherMicro() {
     // Pendant l'appui : l'iPhone n'autorise le micro et la voix qu'à ce moment-là.
     parleur.arreter();
     parleur.debloquer();
     void ecouter();
+  }
+
+  function annulerEcoute() {
+    jeton.current += 1;
+    enregistreur.current?.annuler();
+    enregistreur.current = undefined;
+    setPhase("repos");
   }
 
   function envoyerTexte(evenement: FormEvent) {
@@ -274,8 +348,12 @@ export function Conversation() {
     poserLaSuite(question);
   }
 
-  function reecouter(reponse: TourAssistant) {
-    if (phase !== "repos") return;
+  function ecouterEncore(id: number, reponse: TourAssistant) {
+    if (parle && lu === id) {
+      parleur.arreter();
+      return;
+    }
+    setLu(id);
     parleur.lire(reponse.lignes);
   }
 
@@ -286,104 +364,152 @@ export function Conversation() {
     void poser(titre, derniere, slug);
   }
 
-  /** Retour à l'accueil : tout s'arrête et la discussion est oubliée. */
-  function retourAccueil() {
-    session.current += 1;
-    jeton.current += 1;
-    enregistreur.current?.annuler();
-    enregistreur.current = undefined;
-    parleur.arreter();
-    memoire.current = {};
-    try {
-      sessionStorage.removeItem(CLE_DISCUSSION);
-    } catch {
-      // Rien à oublier si la mémoire de l'onglet est bloquée.
-    }
-    setTours([]);
-    setPhase("repos");
-    setErreur(null);
-    setEcrire(false);
-    window.scrollTo({ top: 0 });
-  }
+  const formulaire = (
+    <form onSubmit={envoyerTexte} className="relative w-full">
+      <label htmlFor="question-conversation" className="sr-only">
+        Écris ta question
+      </label>
+      <input
+        id="question-conversation"
+        type="text"
+        value={texte}
+        onChange={(evenement) => setTexte(evenement.target.value)}
+        maxLength={LONGUEUR_MAX_QUESTION}
+        autoComplete="off"
+        enterKeyHint="send"
+        placeholder="Écris ta question"
+        className="block h-14 w-full rounded-full border border-line bg-card pr-16 pl-[22px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf"
+      />
+      <button type="submit" aria-label="Envoyer" className="press absolute top-1.5 right-1.5 flex size-11 items-center justify-center rounded-full bg-brand text-on-brand">
+        <Icon name="fleche-droite" size={22} strokeWidth={2.4} />
+      </button>
+    </form>
+  );
 
-  const occupe = attente || phase === "demande" || phase === "transcription";
-  const libelle = attente ? "Je cherche…" : parle ? "Touche pour poser une autre question" : LIBELLES[phase];
-  const vide = tours.length === 0;
+  const messageErreur = (
+    <p role="status" className="mx-auto min-h-6 max-w-[420px] text-center text-[15px] leading-[22px] text-ink-2">
+      {erreur ? erreurDeVoix(erreur).message : ""}
+    </p>
+  );
 
   return (
-    <div className={`mx-auto flex w-full max-w-[640px] flex-col ${vide ? "my-auto items-center text-center" : "pt-4"}`}>
-      {vide && (
-        <>
-          <h1 className="text-[32px] leading-[38px] font-bold tracking-[-0.01em] text-balance lg:text-[44px] lg:leading-[52px]">
-            De quelle démarche <span className="whitespace-nowrap">as-tu</span> besoin&nbsp;?
-          </h1>
-          <p className="mt-2 text-[17px] leading-6 text-ink-2">Pose ta question, je te réponds.</p>
-        </>
-      )}
-
-      {!vide && (
-        <button type="button" onClick={retourAccueil} className="press mb-3 flex min-h-11 items-center gap-2 self-start rounded-full bg-card pr-4 pl-3 text-[15px] leading-5 font-semibold">
-          <Icon name="fleche-gauche" size={20} />
-          Accueil
+    <>
+      {/* L'accueil : le titre et le bouton, rien d'autre. */}
+      <div className="mx-auto my-auto flex w-full max-w-[560px] flex-col items-center py-6 text-center">
+        <p className="montee rounded-full bg-tint px-3.5 py-1.5 text-[13px] leading-[18px] font-semibold text-leaf-deep">Sources officielles du Sénégal</p>
+        <h1 className="montee mt-4 text-[38px] leading-[42px] font-bold tracking-[-0.03em] text-balance lg:text-[56px] lg:leading-[60px]">
+          De quelle démarche <span className="whitespace-nowrap">as-tu</span> besoin&nbsp;?
+        </h1>
+        <button type="button" onClick={toucherMicro} className="press montee mt-12 flex flex-col items-center gap-5 rounded-[48px]">
+          <Orbe taille="size-36" icone="size-14" />
+          <span className="mt-4 text-xl leading-7 font-bold">Touche et parle</span>
         </button>
-      )}
-
-      {!vide && (
-        <ol aria-label="La conversation" className="flex flex-col gap-3">
-          {tours.map((tour) => (
-            <li key={tour.id} className="flex flex-col gap-3">
-              <p className="ml-10 self-end rounded-3xl rounded-br-md bg-tint px-4 py-2.5 text-base leading-6 font-semibold">{tour.question}</p>
-              {tour.etat === "attente" && <p className="text-base leading-6 text-ink-2">Je cherche…</p>}
-              {tour.etat === "pret" && <Reponse reponse={tour.reponse} surChoix={choisir} surEcouter={() => reecouter(tour.reponse)} />}
-              {tour.etat === "hors_ligne" && (
-                <p className="mr-6 rounded-3xl rounded-bl-md bg-card px-[18px] py-4 text-base leading-6">
-                  Je n’arrive pas à joindre le serveur.{" "}
-                  <Link href={`/hors-connexion?q=${encodeURIComponent(tour.question)}`} className="font-semibold text-leaf underline underline-offset-4">
-                    Chercher sur le téléphone
-                  </Link>
-                </p>
-              )}
-            </li>
-          ))}
-        </ol>
-      )}
-
-      <div ref={bas} className={`flex flex-col items-center ${vide ? "mt-5" : "mt-6 pb-4"}`}>
-        <button type="button" onClick={toucher} disabled={occupe} aria-pressed={phase === "ecoute"} className="press flex flex-col items-center gap-2 rounded-[40px] disabled:opacity-60">
-          <RondMicro zone={vide ? "size-48" : "size-28"} bouton={vide ? "size-28" : "size-16"} icone={vide ? "size-12" : "size-7"} />
-          <span className="text-lg leading-6 font-bold">{libelle}</span>
-        </button>
-
-        <p role="status" className="mt-2 min-h-6 max-w-[420px] text-center text-base leading-6 text-ink-2">
-          {erreur ? erreurDeVoix(erreur).message : ""}
-        </p>
-
-        {ecrire ? (
-          <form onSubmit={envoyerTexte} className="relative mt-2 w-full">
-            <label htmlFor="question-conversation" className="sr-only">
-              Écris ta question
-            </label>
-            <input
-              id="question-conversation"
-              type="text"
-              value={texte}
-              onChange={(evenement) => setTexte(evenement.target.value)}
-              maxLength={LONGUEUR_MAX_QUESTION}
-              autoComplete="off"
-              enterKeyHint="send"
-              placeholder="Écris ta question"
-              className="block h-14 w-full rounded-full border-[1.5px] border-edge bg-card pr-16 pl-[22px] text-[17px] leading-6 text-ink placeholder:text-ink-3 focus:border-leaf"
-            />
-            <button type="submit" aria-label="Envoyer" className="press absolute top-1.5 right-1.5 flex size-11 items-center justify-center rounded-full bg-brand text-on-brand">
-              <Icon name="fleche-droite" size={22} strokeWidth={2.4} />
+        <div className="mt-4 w-full">{tours.length === 0 && phase === "repos" ? messageErreur : null}</div>
+        <div className="mt-1 flex w-full justify-center">
+          {ecrire && tours.length === 0 ? (
+            formulaire
+          ) : (
+            <button type="button" onClick={() => setEcrire(true)} className="min-h-11 text-[15px] leading-5 font-semibold text-ink-2 underline-offset-4 hover:underline">
+              Je préfère écrire
             </button>
-          </form>
-        ) : (
-          <button type="button" onClick={() => setEcrire(true)} className="min-h-11 text-[15px] leading-5 font-semibold text-ink-2 underline underline-offset-4">
-            Je préfère écrire
-          </button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* La conversation : un écran à elle, sans le menu. */}
+      {tours.length > 0 && (
+        <section aria-label="La conversation" className="ecran ecran-entree z-40 flex flex-col">
+          <header className="flex flex-none items-center gap-3 px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2">
+            <button type="button" onClick={retourAccueil} aria-label="Retour à l’accueil" className="press flex size-11 items-center justify-center rounded-full bg-card">
+              <Icon name="fleche-gauche" />
+            </button>
+            <p className="text-[17px] leading-6 font-bold tracking-[-0.01em]">
+              Démarche<span className="text-leaf">-Bi</span>
+            </p>
+          </header>
+          <div className="min-h-0 flex-1 overflow-y-auto px-4">
+            <ol className="mx-auto flex w-full max-w-[640px] flex-col gap-4 pt-2 pb-4">
+              {tours.map((tour) => (
+                <li key={tour.id} className="flex flex-col gap-3">
+                  <p className="montee ml-12 self-end rounded-[22px] rounded-br-md bg-brand px-4 py-2.5 text-base leading-6 font-semibold text-on-brand">{tour.question}</p>
+                  {tour.etat === "attente" && <p className="text-[15px] leading-6 text-ink-2">Je cherche…</p>}
+                  {tour.etat === "pret" && (
+                    <Reponse reponse={tour.reponse} enLecture={parle && lu === tour.id} surChoix={choisir} surEcouter={() => ecouterEncore(tour.id, tour.reponse)} />
+                  )}
+                  {tour.etat === "hors_ligne" && (
+                    <p className="carte-reponse montee text-base leading-6">
+                      Je n’arrive pas à joindre le serveur.{" "}
+                      <Link href={`/hors-connexion?q=${encodeURIComponent(tour.question)}`} className="font-semibold text-leaf underline underline-offset-4">
+                        Chercher sur le téléphone
+                      </Link>
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+            <div ref={bas} />
+          </div>
+          <div className="mx-auto flex w-full max-w-[640px] flex-none flex-col items-center gap-2 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            {erreur && messageErreur}
+            {ecrire ? (
+              formulaire
+            ) : (
+              <div className="flex w-full items-center gap-3">
+                <button type="button" onClick={() => setEcrire(true)} className="press flex h-14 min-w-0 flex-1 items-center rounded-full border border-line bg-card px-5 text-left text-base leading-6 text-ink-3">
+                  Écrire une question
+                </button>
+                <button type="button" onClick={toucherMicro} aria-label="Poser une autre question à la voix" className="press flex-none rounded-full">
+                  <Orbe taille="size-14 orbe-petit" icone="size-6" />
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* L'écoute : tout l'écran pour la voix. */}
+      {(phase === "demande" || phase === "ecoute") && (
+        <section role="dialog" aria-modal="true" aria-labelledby="titre-ecoute" className="ecran ecran-entree z-50 flex flex-col">
+          <header className="flex flex-none items-center justify-between px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2">
+            <button type="button" onClick={annulerEcoute} aria-label="Annuler" className="press flex size-11 items-center justify-center rounded-full bg-card">
+              <Icon name="croix" size={20} />
+            </button>
+            {phase === "ecoute" && (
+              <p role="timer" className="flex h-9 items-center gap-2 rounded-full bg-card px-3.5 text-[15px] leading-5 font-semibold tabular-nums">
+                <span aria-hidden="true" className="size-2 animate-pulse-dot rounded-full bg-brand" />
+                {formaterDuree(ecouleMs)}
+              </p>
+            )}
+          </header>
+          <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col items-center justify-center gap-8 px-4 text-center">
+            <h2 id="titre-ecoute" className="text-[34px] leading-10 font-bold tracking-[-0.02em]">
+              {phase === "demande" ? "Autorise ton micro" : "Je t’écoute…"}
+            </h2>
+            {phase === "ecoute" ? <Spectre refBarres={barres} /> : <p className="max-w-[280px] text-base leading-6 text-ink-2">Ton navigateur va te demander la permission. Touche « Autoriser ».</p>}
+          </div>
+          {phase === "ecoute" && (
+            <div className="flex flex-none justify-center px-4 pt-2 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+              <button type="button" onClick={() => void envoyer(jeton.current)} className="press flex flex-col items-center gap-3">
+                <span className="flex size-24 animate-halo items-center justify-center rounded-full bg-brand text-on-brand">
+                  <Icon name="fleche-droite" strokeWidth={2.6} className="size-10 -rotate-90" />
+                </span>
+                <span className="text-xl leading-7 font-bold">Envoyer</span>
+              </button>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Entre l'envoi et la réponse : on montre que ça travaille, en plein écran. */}
+      {(phase === "transcription" || attente) && (
+        <section role="status" className="ecran ecran-entree z-50 flex flex-col items-center justify-center gap-7 px-6 text-center">
+          <Orbe taille="size-32" icone="size-12" tourne />
+          <div>
+            <h2 className="text-[30px] leading-9 font-bold tracking-[-0.02em]">{phase === "transcription" ? "Je note ta question…" : "Je cherche…"}</h2>
+            <p className="mt-2 text-base leading-6 text-ink-2">{phase === "transcription" ? "Un instant." : "Dans les sources officielles."}</p>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
