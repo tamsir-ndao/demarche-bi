@@ -165,6 +165,7 @@ Cocher au fur et à mesure. **Soumission au plus tard le lundi 19 octobre 2026**
 
 - [x] Partie 1 : accueil à un seul bouton, conversation en français, arrêt automatique après le silence, réponse lue sans confirmation, mémoire de la démarche en cours dans la page (`POST /api/conversation`, `src/components/Conversation.tsx`)
 - [ ] Essayer la partie 1 sur un vrai iPhone et un vrai Android, avec la vraie IA
-- [ ] Partie 2 : réponses orales courtes, avec test qu'aucun chiffre n'est inventé
+- [x] Lot 1 : erreurs dites à voix haute, « Réécouter », réponses de suite courtes à l'écran et à la voix, lien e-Sénégal pour le casier judiciaire (vérifié le 31 octobre)
+- [ ] Vérifier qu'une réponse de suite ne contient aucun chiffre inventé, avec la vraie IA
 - [ ] Partie 3 : démo et présentation pour le ministère
 - [ ] Partie 4 : wolof, écoute puis voix, avec textes relus par une personne

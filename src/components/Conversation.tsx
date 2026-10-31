@@ -32,7 +32,15 @@ const LIBELLES: Record<Phase, string> = {
   transcription: "Je note ta question…",
 };
 
-function Reponse({ reponse, surChoix }: { reponse: TourAssistant; surChoix: (slug: string, titre: string) => void }) {
+function Reponse({
+  reponse,
+  surChoix,
+  surEcouter,
+}: {
+  reponse: TourAssistant;
+  surChoix: (slug: string, titre: string) => void;
+  surEcouter: () => void;
+}) {
   return (
     <div className="mr-6 rounded-3xl rounded-bl-md bg-card px-[18px] py-4 lg:mr-16">
       {reponse.texte.map((phrase) => (
@@ -74,6 +82,21 @@ function Reponse({ reponse, surChoix }: { reponse: TourAssistant; surChoix: (slu
           ))}
         </div>
       )}
+      {reponse.enLigne && (
+        <a
+          href={reponse.enLigne.url}
+          target="_blank"
+          rel="noreferrer"
+          className="press mt-3 flex min-h-11 items-center gap-2 rounded-2xl bg-tint px-3.5 py-2.5 text-[15px] leading-5 font-semibold"
+        >
+          <Icon name="lien-externe" size={18} className="flex-none" />
+          {reponse.enLigne.note}
+        </a>
+      )}
+      <button type="button" onClick={surEcouter} className="press mt-3 flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-[15px] leading-5 font-semibold">
+        <Icon name="haut-parleur" size={20} />
+        Réécouter
+      </button>
       {reponse.fiche && (
         <p className="mt-3 border-t border-line pt-3 text-sm leading-5 text-ink-2">
           {reponse.fiche.source && <>Source : {reponse.fiche.source}. </>}
@@ -134,6 +157,11 @@ export function Conversation() {
     if (tours.length > 0) bas.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [tours]);
 
+  // Une erreur est aussi dite à voix haute : tout le monde ne peut pas la lire.
+  useEffect(() => {
+    if (erreur) parleurDuNavigateur().lire([{ texte: erreurDeVoix(erreur).message, cible: null }]);
+  }, [erreur]);
+
   // Quitter la page coupe le micro et la voix.
   useEffect(
     () => () => {
@@ -164,6 +192,7 @@ export function Conversation() {
       parleurDuNavigateur().lire(tour.lignes);
     } catch {
       changer({ id, question: affichee, etat: "hors_ligne" });
+      if (maSession === session.current) parleurDuNavigateur().lire([{ texte: "Je n’arrive pas à joindre le serveur. Réessaie dans un moment.", cible: null }]);
     }
   }
 
@@ -245,6 +274,11 @@ export function Conversation() {
     poserLaSuite(question);
   }
 
+  function reecouter(reponse: TourAssistant) {
+    if (phase !== "repos") return;
+    parleur.lire(reponse.lignes);
+  }
+
   function choisir(slug: string, titre: string) {
     const derniere = tours.at(-1)?.question ?? titre;
     parleur.arreter();
@@ -300,7 +334,7 @@ export function Conversation() {
             <li key={tour.id} className="flex flex-col gap-3">
               <p className="ml-10 self-end rounded-3xl rounded-br-md bg-tint px-4 py-2.5 text-base leading-6 font-semibold">{tour.question}</p>
               {tour.etat === "attente" && <p className="text-base leading-6 text-ink-2">Je cherche…</p>}
-              {tour.etat === "pret" && <Reponse reponse={tour.reponse} surChoix={choisir} />}
+              {tour.etat === "pret" && <Reponse reponse={tour.reponse} surChoix={choisir} surEcouter={() => reecouter(tour.reponse)} />}
               {tour.etat === "hors_ligne" && (
                 <p className="mr-6 rounded-3xl rounded-bl-md bg-card px-[18px] py-4 text-base leading-6">
                   Je n’arrive pas à joindre le serveur.{" "}

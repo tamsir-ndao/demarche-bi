@@ -15,6 +15,17 @@ import {
 // Un tour de conversation : ce que l'assistant affiche et dit, préparé par le serveur à partir de la réponse du site.
 // Tous les faits restent ceux de la fiche ; la seule phrase du modèle est l'introduction déjà vérifiée. Fonction pure, testée.
 
+type EnLigne = { url: string; note: string };
+
+// Vérifié sur https://e-senegal.sn le 31 octobre 2026, à revérifier avant d'en ajouter. Seules les démarches ouvertes,
+// et qui correspondent bien à la fiche, y figurent : le NINEA et l'extrait de naissance y sont encore « à venir ».
+const DEMARCHES_EN_LIGNE: Record<string, EnLigne> = {
+  "casier-judiciaire": {
+    url: "https://e-senegal.sn/#/home/demarches",
+    note: "Tu peux aussi faire cette demande en ligne sur e-Sénégal, dans les juridictions pilotes.",
+  },
+};
+
 export type TourAssistant = {
   /** Les phrases affichées dans la bulle de l'assistant. */
   texte: string[];
@@ -24,13 +35,15 @@ export type TourAssistant = {
   fiche: { slug: string; titre: string; source: string | null } | null;
   /** Les démarches au choix quand la question ne suffit pas. */
   options: { slug: string; titre: string }[];
+  /** La démarche se fait aussi en ligne, sur e-Sénégal. */
+  enLigne: EnLigne | null;
   /** Vrai quand la prochaine parole complète cette question, trop vague. */
   aCompleter: boolean;
   lignes: LigneVocale[];
 };
 
 function sansFiche(script: string[], options: Partial<TourAssistant> = {}): TourAssistant {
-  return { texte: script, faits: [], pieces: [], fiche: null, options: [], aCompleter: false, lignes: preparerLaLecture(script), ...options };
+  return { texte: script, faits: [], pieces: [], fiche: null, options: [], enLigne: null, aCompleter: false, lignes: preparerLaLecture(script), ...options };
 }
 
 /** `suite` : la conversation continue sur la même démarche ; on répond alors à la question, sans tout relire. */
@@ -41,18 +54,21 @@ export function construireTour(reponse: Reponse, { suite, statut }: { suite: boo
       const script = scriptFiche({ fiche, statut: statut as StatutAffichage, intro });
       const dites = suite && intro ? script.filter(({ cible }) => cible === "statut" || cible === "intro") : script.filter(({ cible }) => cible !== "etapes");
       const source = fiche.sources[0];
+      const courte = suite && intro !== null;
+      const enLigne = courte ? null : (DEMARCHES_EN_LIGNE[fiche.slug] ?? null);
       return {
         texte: [intro ?? fiche.titre],
-        faits: [
+        faits: courte ? [] : [
           { libelle: "Coût", valeur: fiche.cout ?? "Non précisé" },
           { libelle: "Délai", valeur: fiche.delai ?? "Non précisé" },
           { libelle: "Où", valeur: fiche.lieu ?? "Non précisé" },
         ],
-        pieces: fiche.pieces.map((piece) => decouperPiece(piece).principal),
+        pieces: courte ? [] : fiche.pieces.map((piece) => decouperPiece(piece).principal),
         fiche: { slug: fiche.slug, titre: fiche.titre, source: source ? `${source.titre}, consultée le ${formaterDate(source.consulte_le)}` : null },
         options: [],
+        enLigne,
         aCompleter: false,
-        lignes: preparerLaLecture(dites),
+        lignes: preparerLaLecture(enLigne ? [...dites, enLigne.note] : dites),
       };
     }
     case "precision": {

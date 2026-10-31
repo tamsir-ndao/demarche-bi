@@ -34,6 +34,22 @@ describe("construireTour", () => {
     assert.equal(dit(tour.lignes), "Le passeport coûte 20000 francs CFA.");
   });
 
+  it("n'affiche que la réponse dans une suite : la fiche complète est déjà au-dessus", () => {
+    const tour = construireTour(reponse, { suite: true, statut });
+    assert.deepEqual(tour.faits, []);
+    assert.deepEqual(tour.pieces, []);
+    assert.equal(tour.fiche?.slug, "passeport");
+  });
+
+  it("indique e-Sénégal seulement pour une démarche vérifiée, avec sa limite, et le dit à voix haute", () => {
+    const casier = { ...fiche, slug: "casier-judiciaire" } as unknown as Fiche;
+    const tour = construireTour({ ...reponse, fiche: casier }, { suite: false, statut });
+    assert.equal(tour.enLigne?.url, "https://e-senegal.sn/#/home/demarches");
+    assert.match(tour.enLigne?.note ?? "", /juridictions pilotes/);
+    assert.match(dit(tour.lignes), /e-Sénégal/);
+    assert.equal(construireTour(reponse, { suite: false, statut }).enLigne, null);
+  });
+
   it("redonne tous les faits de la fiche quand l'IA n'a pas écrit de phrase, même dans une suite", () => {
     const tour = construireTour({ ...reponse, intro: null }, { suite: true, statut });
     assert.match(dit(tour.lignes), /Coût : 20000 francs CFA/);
