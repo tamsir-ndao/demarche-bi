@@ -11,7 +11,7 @@ import { envoyerLaVoix } from "@/lib/voix/envoi";
 import { erreurDeVoix } from "@/lib/voix/messages";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { composerLaQuestion } from "@/lib/voix/question-composee";
-import { formaterDuree } from "@/lib/voix/spectre";
+import { formaterDuree, NOMBRE_DE_BARRES } from "@/lib/voix/spectre";
 import { Icon, type IconName } from "./Icon";
 import { HAUTEUR_BARRE_MAX, HAUTEUR_BARRE_MIN, Spectre } from "./VoixEcrans";
 
@@ -24,6 +24,10 @@ type Phase = "repos" | "demande" | "ecoute" | "transcription";
 
 /** Un enregistrement plus court que ça n'est pas une question. */
 const DUREE_MIN_MS = 600;
+
+/** Hauteur des barres du spectre dans la barre du bas de la conversation, en pixels. */
+const BARRE_COMPACTE_MIN = 4;
+const BARRE_COMPACTE_MAX = 36;
 
 /** La discussion reste le temps de l'onglet : revenir d'une fiche ne la fait pas perdre. */
 const CLE_DISCUSSION = "demarche-bi:discussion";
@@ -160,6 +164,8 @@ export function Conversation() {
   const memoire = useRef<{ contexte?: string; aCompleter?: string }>({});
   const bas = useRef<HTMLDivElement>(null);
 
+  const enConversation = useRef(false);
+
   const parleur = parleurDuNavigateur();
   const parle = useSyncExternalStore(parleur.abonner, () => parleur.etat() === "lecture", () => false);
   const attente = tours.at(-1)?.etat === "attente";
@@ -276,9 +282,13 @@ export function Conversation() {
   function dessiner(hauteurs: number[]) {
     const elements = barres.current?.children;
     if (!elements) return;
+    // Dans la conversation, le spectre tient dans la barre du bas.
+    const compacte = enConversation.current;
+    const minimum = compacte ? BARRE_COMPACTE_MIN : HAUTEUR_BARRE_MIN;
+    const maximum = compacte ? BARRE_COMPACTE_MAX : HAUTEUR_BARRE_MAX;
     hauteurs.forEach((hauteur, i) => {
       const barre = elements[i];
-      if (barre instanceof HTMLElement) barre.style.height = `${HAUTEUR_BARRE_MIN + hauteur * (HAUTEUR_BARRE_MAX - HAUTEUR_BARRE_MIN)}px`;
+      if (barre instanceof HTMLElement) barre.style.height = `${minimum + hauteur * (maximum - minimum)}px`;
     });
   }
 
@@ -308,6 +318,7 @@ export function Conversation() {
 
   async function ecouter() {
     const monJeton = ++jeton.current;
+    enConversation.current = tours.length > 0;
     setErreur(null);
     if (!navigator.onLine) {
       setErreur("reseau");
@@ -439,7 +450,33 @@ export function Conversation() {
           </div>
           <div className="mx-auto flex w-full max-w-[640px] flex-none flex-col items-center gap-2 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))]">
             {erreur && !ecrire && messageErreur}
-            <div className="flex w-full items-center gap-3">
+            {phase !== "repos" && (
+              <div className="montee flex h-16 w-full items-center gap-2.5 rounded-full border border-line bg-card pr-1.5 pl-2">
+                <button type="button" onClick={annulerEcoute} aria-label="Annuler" className="press flex size-11 flex-none items-center justify-center rounded-full bg-tint">
+                  <Icon name="croix" size={18} />
+                </button>
+                {phase === "ecoute" ? (
+                  <>
+                    <div ref={barres} role="img" aria-label="Spectre de ta voix en direct" className="flex h-10 min-w-0 flex-1 items-center justify-center gap-px overflow-hidden min-[360px]:gap-[2px]">
+                      {Array.from({ length: NOMBRE_DE_BARRES }, (_, i) => (
+                        <span key={i} className="block w-[3px] min-w-px shrink rounded-full bg-bar" style={{ height: BARRE_COMPACTE_MIN }} />
+                      ))}
+                    </div>
+                    <p role="timer" className="flex-none text-[15px] leading-5 font-semibold tabular-nums">
+                      {formaterDuree(ecouleMs)}
+                    </p>
+                    <button type="button" onClick={() => void envoyer(jeton.current)} aria-label="Envoyer" className="press flex size-[52px] flex-none items-center justify-center rounded-full bg-brand text-on-brand">
+                      <Icon name="fleche-droite" strokeWidth={2.6} className="size-6 -rotate-90" />
+                    </button>
+                  </>
+                ) : (
+                  <p role="status" className="min-w-0 flex-1 text-[15px] leading-5 font-semibold text-ink-2">
+                    {phase === "demande" ? "Autorise ton micro…" : "Je note ta question…"}
+                  </p>
+                )}
+              </div>
+            )}
+            <div className={`w-full items-center gap-3 ${phase === "repos" ? "flex" : "hidden"}`}>
                 <button type="button" onClick={ouvrirEcriture} className="press flex h-14 min-w-0 flex-1 items-center rounded-full border border-line bg-card px-5 text-left text-base leading-6 text-ink-3">
                   Écrire une question
                 </button>
@@ -495,7 +532,7 @@ export function Conversation() {
       )}
 
       {/* L'écoute : tout l'écran pour la voix. */}
-      {(phase === "demande" || phase === "ecoute") && (
+      {tours.length === 0 && (phase === "demande" || phase === "ecoute") && (
         <section role="dialog" aria-modal="true" aria-labelledby="titre-ecoute" className="ecran ecran-entree z-50 flex flex-col">
           <header className="flex flex-none items-center justify-between px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2">
             <button type="button" onClick={annulerEcoute} aria-label="Annuler" className="press flex size-11 items-center justify-center rounded-full bg-card">
@@ -528,7 +565,7 @@ export function Conversation() {
       )}
 
       {/* Entre l'envoi et la réponse : on montre que ça travaille, en plein écran. */}
-      {(phase === "transcription" || attente) && (
+      {((tours.length === 0 && phase === "transcription") || (tours.length === 1 && attente)) && (
         <section role="status" className="ecran ecran-entree z-50 flex flex-col items-center justify-center gap-7 px-6 text-center">
           <Orbe taille="size-32" icone="size-12" tourne />
           <div>
