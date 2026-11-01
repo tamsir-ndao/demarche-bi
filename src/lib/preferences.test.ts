@@ -2,7 +2,24 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { StockageLocal } from "./bienvenue";
-import { choisirVoixAutomatique, voixAutomatique } from "./preferences";
+import { appareilExclu, choisirAppareilExclu, choisirVoixAutomatique, voixAutomatique } from "./preferences";
+
+describe("appareil de test", () => {
+  it("est compté par défaut, s'exclut et se réintègre", () => {
+    const notes = new Map<string, string>();
+    const stockage: StockageLocal = {
+      getItem: (cle) => notes.get(cle) ?? null,
+      setItem: (cle, valeur) => void notes.set(cle, valeur),
+      removeItem: (cle) => void notes.delete(cle),
+    };
+    assert.equal(appareilExclu(stockage), false);
+    choisirAppareilExclu(stockage, true);
+    assert.equal(appareilExclu(stockage), true);
+    choisirAppareilExclu(stockage, false);
+    assert.equal(appareilExclu(stockage), false);
+    assert.equal(appareilExclu(undefined), false);
+  });
+});
 
 describe("lecture automatique à voix haute", () => {
   it("est active par défaut, se coupe et se rallume", () => {

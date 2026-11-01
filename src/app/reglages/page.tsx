@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "@/components/Icon";
 import { PageShell } from "@/components/PageShell";
-import { ReglageEffacer, ReglageVoix } from "@/components/ReglagesActions";
+import { ReglageEffacer, ReglageVersion, ReglageVoix } from "@/components/ReglagesActions";
 import { version } from "../../../package.json";
 
 export const metadata: Metadata = { title: "Réglages" };
@@ -60,10 +60,7 @@ export default function Page() {
       </Groupe>
 
       <Groupe titre="Application">
-        <div className="flex min-h-[52px] items-center justify-between px-4 py-3 text-[15px] leading-5">
-          <span className="font-semibold">Version</span>
-          <span className="text-ink-2">{version}</span>
-        </div>
+        <ReglageVersion version={version} />
       </Groupe>
       <div className="min-h-6 flex-1" />
     </PageShell>

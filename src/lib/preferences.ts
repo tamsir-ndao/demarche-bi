@@ -13,6 +13,26 @@ export function voixAutomatique(stockage: StockageLocal | undefined): boolean {
   }
 }
 
+const CLE_NON_COMPTE = "demarche-bi:non-compte";
+
+/** Vrai sur un appareil de test : ses questions et ses passages ne comptent pas dans les chiffres du back-office. */
+export function appareilExclu(stockage: StockageLocal | undefined): boolean {
+  try {
+    return stockage?.getItem(CLE_NON_COMPTE) === "oui";
+  } catch {
+    return false;
+  }
+}
+
+export function choisirAppareilExclu(stockage: StockageLocal | undefined, exclu: boolean): void {
+  try {
+    if (exclu) stockage?.setItem(CLE_NON_COMPTE, "oui");
+    else stockage?.removeItem(CLE_NON_COMPTE);
+  } catch {
+    // Sans mémoire, l'appareil reste compté.
+  }
+}
+
 export function choisirVoixAutomatique(stockage: StockageLocal | undefined, active: boolean): void {
   try {
     if (active) stockage?.removeItem(CLE_VOIX_AUTO);

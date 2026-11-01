@@ -7,7 +7,7 @@ import { codeAppareil } from "@/lib/appareil";
 import { stockageLocal } from "@/lib/bienvenue";
 import { CLE_DISCUSSION, fermerDiscussion, garderConversation, PARAMETRE_CONVERSATION, retrouverConversation, toursAGarder, type Memoire, type Tour } from "@/lib/conversation/historique";
 import type { TourAssistant } from "@/lib/conversation/tour";
-import { voixAutomatique } from "@/lib/preferences";
+import { appareilExclu, voixAutomatique } from "@/lib/preferences";
 import { LONGUEUR_MAX_QUESTION } from "@/lib/texte";
 import type { CodeErreurVoix } from "@/lib/voix/codes";
 import { demarrerEnregistrement, ErreurMicro, type Enregistreur } from "@/lib/voix/enregistreur";
@@ -40,6 +40,7 @@ function lireSiActif(lignes: LigneVocale[]) {
 
 /** Note un passage vers e-Sénégal, sans retenir la page qui s'ouvre. */
 function noterPassage(fiche: string | undefined) {
+  if (appareilExclu(stockageLocal())) return;
   try {
     navigator.sendBeacon("/api/evenement", new Blob([JSON.stringify({ fiche, appareil: codeAppareil(stockageLocal()) })], { type: "application/json" }));
   } catch {
@@ -306,7 +307,7 @@ export function Conversation() {
       const reponse = await fetch("/api/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, fiche: ficheSlug, contexte: memoire.current.contexte, canal, appareil: codeAppareil(stockageLocal()) }),
+        body: JSON.stringify({ question, fiche: ficheSlug, contexte: memoire.current.contexte, canal, appareil: codeAppareil(stockageLocal()), ...(appareilExclu(stockageLocal()) ? { nonCompte: true } : {}) }),
       });
       if (!reponse.ok) throw new Error("réponse refusée");
       const tour = (await reponse.json()) as TourAssistant;

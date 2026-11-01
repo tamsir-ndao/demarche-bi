@@ -16,10 +16,10 @@ export async function POST(request: Request) {
   const demande = lireDemandeApi(corps);
   if (!demande.ok) return Response.json({ erreur: demande.erreur }, { status: 400 });
 
-  const { question, ficheSlug, contexte, canal, appareil } = demande;
+  const { question, ficheSlug, contexte, canal, appareil, nonCompte } = demande;
   const visiteur = visiteurDepuis(request.headers);
   const reponse = await repondreALaQuestion(question, { ficheSlug, contexte, visiteur });
-  noterLaReponse(question, reponse, visiteur, { canal, appareil });
+  if (!nonCompte) noterLaReponse(question, reponse, visiteur, { canal, appareil });
 
   if (reponse.type !== "fiche") return Response.json(construireTour(reponse, { suite: false }));
   const statut = statutAffichage(reponse.fiche, await maintenant());

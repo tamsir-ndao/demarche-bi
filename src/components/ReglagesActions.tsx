@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { stockageLocal } from "@/lib/bienvenue";
 import { effacerHistorique } from "@/lib/conversation/historique";
-import { choisirVoixAutomatique, voixAutomatique } from "@/lib/preferences";
+import { appareilExclu, choisirAppareilExclu, choisirVoixAutomatique, voixAutomatique } from "@/lib/preferences";
 import { Icon, type IconName } from "./Icon";
 
 function Pastille({ icone }: { icone: IconName }) {
@@ -34,6 +34,39 @@ export function ReglageVoix() {
       <span className="min-w-0 flex-1 text-[16px] leading-[22px] font-semibold">Lire les réponses à voix haute</span>
       <span aria-hidden="true" className={`flex h-[30px] w-[50px] flex-none items-center rounded-full p-[3px] transition-colors ${active ? "justify-end bg-brand" : "justify-start bg-tint-2"}`}>
         <span className={`block size-6 rounded-full ${active ? "bg-on-brand" : "bg-ink-2"}`} />
+      </span>
+    </button>
+  );
+}
+
+const APPUIS_POUR_EXCLURE = 7;
+
+/** La version. Sept appuis de suite excluent cet appareil des chiffres, ou l'y remettent : un réglage pour l'équipe, pas pour les usagers. */
+export function ReglageVersion({ version }: { version: string }) {
+  const [exclu, setExclu] = useState(false);
+  const [appuis, setAppuis] = useState(0);
+
+  useEffect(() => {
+    const trame = requestAnimationFrame(() => setExclu(appareilExclu(stockageLocal())));
+    return () => cancelAnimationFrame(trame);
+  }, []);
+
+  function appuyer() {
+    if (appuis + 1 < APPUIS_POUR_EXCLURE) {
+      setAppuis(appuis + 1);
+      return;
+    }
+    choisirAppareilExclu(stockageLocal(), !exclu);
+    setExclu(!exclu);
+    setAppuis(0);
+  }
+
+  return (
+    <button type="button" onClick={appuyer} className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left text-[15px] leading-5">
+      <span className="font-semibold">Version</span>
+      <span role="status" className="text-right text-ink-2">
+        {version}
+        {exclu ? " · appareil non compté" : ""}
       </span>
     </button>
   );
