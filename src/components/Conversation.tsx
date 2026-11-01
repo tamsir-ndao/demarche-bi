@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { flushSync } from "react-dom";
+import { stockageLocal } from "@/lib/bienvenue";
+import { CLE_DISCUSSION, fermerDiscussion, garderConversation, PARAMETRE_CONVERSATION, retrouverConversation, toursAGarder, type Memoire, type Tour } from "@/lib/conversation/historique";
 import type { TourAssistant } from "@/lib/conversation/tour";
+import { voixAutomatique } from "@/lib/preferences";
 import { LONGUEUR_MAX_QUESTION } from "@/lib/texte";
 import type { CodeErreurVoix } from "@/lib/voix/codes";
 import { demarrerEnregistrement, ErreurMicro, type Enregistreur } from "@/lib/voix/enregistreur";
 import { envoyerLaVoix } from "@/lib/voix/envoi";
 import { erreurDeVoix } from "@/lib/voix/messages";
+import type { LigneVocale } from "@/lib/voix/lecture";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { composerLaQuestion } from "@/lib/voix/question-composee";
 import { formaterDuree, NOMBRE_DE_BARRES } from "@/lib/voix/spectre";
@@ -17,9 +21,8 @@ import { HAUTEUR_BARRE_MAX, HAUTEUR_BARRE_MIN, Spectre } from "./VoixEcrans";
 
 // L'assistant, en trois écrans comme une application : l'accueil et son bouton ; l'écoute en plein écran (la voix fait
 // bouger le spectre, un bouton envoie) ; puis la conversation, où la réponse s'affiche et se lit toute seule.
-// Le navigateur retient seulement la discussion, le temps de l'onglet.
+// Les conversations restent sur le téléphone, dans l'historique (voir historique.ts).
 
-type Tour = { id: number; question: string } & ({ etat: "attente" } | { etat: "pret"; reponse: TourAssistant } | { etat: "hors_ligne" });
 type Phase = "repos" | "demande" | "ecoute" | "transcription";
 
 /** Un enregistrement plus court que ça n'est pas une question. */
@@ -29,8 +32,10 @@ const DUREE_MIN_MS = 600;
 const BARRE_COMPACTE_MIN = 4;
 const BARRE_COMPACTE_MAX = 36;
 
-/** La discussion reste le temps de l'onglet : revenir d'une fiche ne la fait pas perdre. */
-const CLE_DISCUSSION = "demarche-bi:discussion";
+/** Lit à voix haute sans qu'on le demande, sauf si la personne l'a coupé dans les réglages. */
+function lireSiActif(lignes: LigneVocale[]) {
+  if (voixAutomatique(stockageLocal())) parleurDuNavigateur().lire(lignes);
+}
 
 function Orbe({ taille, icone, tourne = false }: { taille: string; icone: string; tourne?: boolean }) {
   return (
@@ -161,7 +166,10 @@ export function Conversation() {
   /** Change au retour à l'accueil : une réponse encore en route ne concerne plus l'écran. */
   const session = useRef(0);
   /** La démarche dont on parle, et la question trop vague que la prochaine parole complète. */
-  const memoire = useRef<{ contexte?: string; aCompleter?: string }>({});
+  const memoire = useRef<Memoire>({});
+  /** La conversation dans l'historique, et le nombre de réponses déjà gardées : rouvrir ne la remonte pas en tête de liste. */
+  const idConversation = useRef<string | undefined>(undefined);
+  const reponsesGardees = useRef(0);
   const bas = useRef<HTMLDivElement>(null);
 
   const enConversation = useRef(false);
@@ -172,14 +180,39 @@ export function Conversation() {
 
   // Après le premier dessin (le serveur ne connaît pas l'onglet) : on retrouve la discussion en cours.
   useEffect(() => {
+    // Next garde l'écran en mémoire, caché, et le réaffiche : lu ici, avant que la discussion affichée soit de nouveau notée.
+    let fermee = false;
+    try {
+      fermee = sessionStorage.getItem(CLE_DISCUSSION) === null;
+    } catch {
+      // Mémoire de l'onglet bloquée : l'écran garde ce qu'il affiche.
+    }
     const trame = requestAnimationFrame(() => {
       try {
-        const gardee = JSON.parse(sessionStorage.getItem(CLE_DISCUSSION) ?? "null") as { tours: Tour[]; memoire: typeof memoire.current } | null;
-        if (!gardee) return;
-        const retrouves = gardee.tours.filter((tour) => tour.etat !== "attente");
-        compteur.current = Math.max(0, ...retrouves.map((tour) => tour.id));
-        memoire.current = gardee.memoire;
-        setTours(retrouves);
+        const reprendre = (id: string | undefined, tours: Tour[], memoireGardee: Memoire) => {
+          compteur.current = Math.max(0, ...tours.map((tour) => tour.id));
+          memoire.current = memoireGardee;
+          idConversation.current = id;
+          reponsesGardees.current = toursAGarder(tours).length;
+          setTours(tours);
+        };
+        // Depuis l'historique : l'adresse redevient celle de l'accueil, et le retour ramène à la liste.
+        const demandee = new URLSearchParams(window.location.search).get(PARAMETRE_CONVERSATION);
+        if (demandee) {
+          window.history.replaceState({ ...window.history.state, discussion: true }, "", "/");
+          const conversation = retrouverConversation(stockageLocal(), demandee);
+          session.current += 1;
+          if (conversation) reprendre(conversation.id, conversation.tours, conversation.memoire);
+          return;
+        }
+        if (fermee) {
+          session.current += 1;
+          fermerDiscussion();
+          reprendre(undefined, [], {});
+          return;
+        }
+        const gardee = JSON.parse(sessionStorage.getItem(CLE_DISCUSSION) ?? "null") as { id?: string; tours: Tour[]; memoire: Memoire } | null;
+        if (gardee) reprendre(gardee.id, gardee.tours.filter((tour) => tour.etat !== "attente"), gardee.memoire);
       } catch {
         // Mémoire de l'onglet bloquée ou illisible : on repart de l'accueil.
       }
@@ -189,16 +222,22 @@ export function Conversation() {
 
   useEffect(() => {
     try {
-      if (tours.length > 0) sessionStorage.setItem(CLE_DISCUSSION, JSON.stringify({ tours, memoire: memoire.current }));
+      if (tours.length > 0) sessionStorage.setItem(CLE_DISCUSSION, JSON.stringify({ id: idConversation.current, tours, memoire: memoire.current }));
     } catch {
       // Sans mémoire d'onglet, la discussion dure seulement le temps de la page.
+    }
+    // Une nouvelle réponse : la conversation est gardée dans l'historique.
+    const pretes = toursAGarder(tours);
+    if (idConversation.current && pretes.length > reponsesGardees.current) {
+      reponsesGardees.current = pretes.length;
+      garderConversation(stockageLocal(), { id: idConversation.current, maj: Date.now(), tours: pretes, memoire: memoire.current });
     }
     bas.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [tours]);
 
   // Une erreur est aussi dite à voix haute : tout le monde ne peut pas la lire.
   useEffect(() => {
-    if (erreur) parleurDuNavigateur().lire([{ texte: erreurDeVoix(erreur).message, cible: null }]);
+    if (erreur) lireSiActif([{ texte: erreurDeVoix(erreur).message, cible: null }]);
   }, [erreur]);
 
   // Le chronomètre de l'écoute.
@@ -219,7 +258,7 @@ export function Conversation() {
       parleurDuNavigateur().arreter();
     };
 
-    /** Tout s'arrête et la discussion est oubliée : on revient à l'accueil. */
+    /** Tout s'arrête et l'écran se vide (la conversation reste dans l'historique) : on revient à l'accueil. */
     function reinitialiser() {
       session.current += 1;
       jeton.current += 1;
@@ -227,11 +266,9 @@ export function Conversation() {
       enregistreur.current = undefined;
       parleurDuNavigateur().arreter();
       memoire.current = {};
-      try {
-        sessionStorage.removeItem(CLE_DISCUSSION);
-      } catch {
-        // Rien à oublier si la mémoire de l'onglet est bloquée.
-      }
+      idConversation.current = undefined;
+      reponsesGardees.current = 0;
+      fermerDiscussion();
       setTours([]);
       setPhase("repos");
       setErreur(null);
@@ -247,6 +284,7 @@ export function Conversation() {
 
   async function poser(affichee: string, question: string, ficheSlug?: string) {
     if (tours.length === 0) window.history.pushState({ ...window.history.state, discussion: true }, "");
+    idConversation.current ??= String(Date.now());
     const id = ++compteur.current;
     const maSession = session.current;
     const changer = (tour: Tour) => setTours((liste) => liste.map((autre) => (autre.id === id ? tour : autre)));
@@ -265,11 +303,11 @@ export function Conversation() {
       memoire.current = { contexte: tour.fiche?.slug ?? memoire.current.contexte, aCompleter: tour.aCompleter ? question : undefined };
       changer({ id, question: affichee, etat: "pret", reponse: tour });
       setLu(id);
-      parleurDuNavigateur().lire(tour.lignes);
+      lireSiActif(tour.lignes);
     } catch {
       if (maSession !== session.current) return;
       changer({ id, question: affichee, etat: "hors_ligne" });
-      parleurDuNavigateur().lire([{ texte: "Je n’arrive pas à joindre le serveur. Réessaie dans un moment.", cible: null }]);
+      lireSiActif([{ texte: "Je n’arrive pas à joindre le serveur. Réessaie dans un moment.", cible: null }]);
     }
   }
 

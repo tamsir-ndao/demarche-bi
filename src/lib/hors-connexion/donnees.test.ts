@@ -17,7 +17,8 @@ describe("pagesAGarder", () => {
       "/",
       "/demarches/passeport",
       "/demarches/casier",
-      "/a-propos",
+      "/historique",
+      "/reglages",
       PAGE_HORS_CONNEXION,
     ]);
   });

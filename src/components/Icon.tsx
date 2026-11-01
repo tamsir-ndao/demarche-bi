@@ -149,6 +149,23 @@ const TRACES = {
       <path d="M12 18v3" />
     </>
   ),
+  poubelle: (
+    <>
+      <path d="M4 7h16" />
+      <path d="M9 7V4h6v3" />
+      <path d="M6 7l1 13h10l1-13" />
+    </>
+  ),
+  reglages: (
+    <>
+      <path d="M4 7h9" />
+      <path d="M19 7h1" />
+      <circle cx="16" cy="7" r="3" />
+      <path d="M4 17h1" />
+      <path d="M11 17h9" />
+      <circle cx="8" cy="17" r="3" />
+    </>
+  ),
   croix: (
     <>
       <path d="M6 6l12 12" />

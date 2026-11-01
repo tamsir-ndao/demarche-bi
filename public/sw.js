@@ -28,7 +28,8 @@ function estPageGardee(chemin) {
     chemin === "/" ||
     chemin === "/demarches" ||
     chemin === "/projet" ||
-    chemin === "/a-propos" ||
+    chemin === "/historique" ||
+    chemin === "/reglages" ||
     chemin === PAGE_HORS_CONNEXION ||
     chemin === URL_DONNEES ||
     /^\/demarches\/[a-z0-9-]+$/.test(chemin)

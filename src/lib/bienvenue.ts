@@ -6,7 +6,7 @@ import type { IconName } from "@/components/Icon";
 /** Note laissée dans la mémoire du téléphone : la présentation a été vue, elle ne revient plus. */
 export const CLE_BIENVENUE = "demarche-bi:bienvenue-vue";
 
-/** Le paramètre d'adresse qui rouvre la présentation (lien « Revoir la présentation ») : `/?presentation`. */
+/** Le paramètre d'adresse qui rouvre la présentation (aucun lien dans l'application) : `/?presentation`. */
 export const PARAMETRE_PRESENTATION = "presentation";
 
 export type StockageLocal = Pick<Storage, "getItem" | "setItem" | "removeItem">;

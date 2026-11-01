@@ -2,11 +2,12 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "./Icon";
 
-export type Onglet = "question" | "a-propos";
+export type Onglet = "question" | "historique" | "reglages";
 
 const ONGLETS: { id: Onglet; href: string; libelle: string; icone: IconName }[] = [
   { id: "question", href: "/", libelle: "Accueil", icone: "bulle" },
-  { id: "a-propos", href: "/a-propos", libelle: "À propos", icone: "info" },
+  { id: "historique", href: "/historique", libelle: "Historique", icone: "horloge" },
+  { id: "reglages", href: "/reglages", libelle: "Réglages", icone: "reglages" },
 ];
 
 function Logo({ masqueSurMobile }: { masqueSurMobile: boolean }) {
@@ -59,7 +60,7 @@ function BarreDuBas({ actif }: { actif?: Onglet }) {
             key={onglet.id}
             href={onglet.href}
             aria-current={courant ? "page" : undefined}
-            className={`press flex min-h-12 items-center gap-2 rounded-full px-5 text-[15px] leading-5 transition-colors ${
+            className={`press flex min-h-[52px] w-[84px] flex-col items-center justify-center gap-0.5 rounded-full text-[12px] leading-4 transition-colors ${
               courant ? "bg-brand font-bold text-on-brand" : "font-semibold text-ink-2"
             }`}
           >
@@ -111,7 +112,7 @@ export function PageShell({ actif, retour, large = false, sansMenu = false, chil
         {children}
       </main>
 
-      {/* Sur ordinateur, « À propos » est déjà dans le menu du haut : le pied de page ne garde que la mise en garde, centrée. */}
+      {/* Sur ordinateur, les onglets sont dans le menu du haut : le pied de page ne garde que la mise en garde, centrée. */}
       <footer className="px-4 pt-2 pb-3 text-center lg:border-t lg:border-line lg:px-16 lg:pt-5 lg:pb-7">
         <p className="text-[13px] leading-[18px] text-ink-3 lg:text-sm lg:leading-5">
           Information indicative, à vérifier avant de te déplacer.

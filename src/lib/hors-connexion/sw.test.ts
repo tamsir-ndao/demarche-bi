@@ -94,7 +94,7 @@ describe("quelles adresses sont gardées", () => {
   const fichier = fonctions("estFichierGarde") as unknown as (chemin: string) => boolean;
 
   it("garde les pages du site et chaque fiche", () => {
-    for (const chemin of ["/", "/demarches", "/demarches/passeport-ordinaire", "/projet", "/a-propos", "/hors-connexion", "/hors-connexion/donnees.json"]) {
+    for (const chemin of ["/", "/demarches", "/demarches/passeport-ordinaire", "/projet", "/historique", "/reglages", "/hors-connexion", "/hors-connexion/donnees.json"]) {
       assert.equal(page(chemin), true, chemin);
     }
   });

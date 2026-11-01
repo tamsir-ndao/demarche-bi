@@ -7,7 +7,7 @@ import { URL_SITE } from "@/lib/liens";
 // Le plan du site pour les moteurs de recherche : les pages fixes et une entrée par fiche vérifiée.
 // Un brouillon n'y figure jamais, même en développement : il n'a rien à faire dans un moteur de recherche.
 
-const PAGES_FIXES = ["/", "/a-propos"];
+const PAGES_FIXES = ["/", "/reglages"];
 
 /** Les entrées du plan du site, à partir des fiches lues (fonction pure, testée). */
 export function entreesDuSitemap(fiches: Pick<Fiche, "slug" | "statut" | "verifie_le">[]): MetadataRoute.Sitemap {

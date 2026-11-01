@@ -16,7 +16,7 @@ import { Icon } from "./Icon";
 import { classesBouton } from "./LienBouton";
 
 // La présentation « Bienvenue » : trois paliers au premier lancement, sur l'accueil, puis plus jamais (note dans
-// localStorage), sauf par le lien « Revoir la présentation » qui ouvre `/?presentation`. Même fenêtre plein écran
+// localStorage), sauf par l'adresse `/?presentation`. Même fenêtre plein écran
 // que la voix (<dialog>, showModal) ; sur ordinateur, une carte centrée sur un fond assombri. Les règles sont dans
 // lib/bienvenue ; ici on attend la fin de l'écran de démarrage, on enchaîne les paliers et on ferme.
 

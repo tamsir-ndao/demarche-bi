@@ -1,0 +1,24 @@
+// Tests des réglages de la personne. Lancer : npm test
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import type { StockageLocal } from "./bienvenue";
+import { choisirVoixAutomatique, voixAutomatique } from "./preferences";
+
+describe("lecture automatique à voix haute", () => {
+  it("est active par défaut, se coupe et se rallume", () => {
+    const notes = new Map<string, string>();
+    const stockage: StockageLocal = {
+      getItem: (cle) => notes.get(cle) ?? null,
+      setItem: (cle, valeur) => void notes.set(cle, valeur),
+      removeItem: (cle) => void notes.delete(cle),
+    };
+    assert.equal(voixAutomatique(stockage), true);
+    choisirVoixAutomatique(stockage, false);
+    assert.equal(voixAutomatique(stockage), false);
+    choisirVoixAutomatique(stockage, true);
+    assert.equal(voixAutomatique(stockage), true);
+  });
+  it("reste active sans mémoire", () => {
+    assert.equal(voixAutomatique(undefined), true);
+  });
+});
