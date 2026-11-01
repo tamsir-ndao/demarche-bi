@@ -25,17 +25,21 @@ const fiche = (slug: string) => ({ slug }) as Fiche;
 describe("entreeDeLaReponse", () => {
   it("note une fiche montrée : répondue, avec son identifiant", () => {
     const reponse: Reponse = { type: "fiche", fiche: fiche("carte-identite"), autres: [fiche("passeport")], intro: null, degrade: null, rejet: null };
-    assert.deepEqual(entreeDeLaReponse("ma carte", reponse), { question: "ma carte", repondue: true, fiches: ["carte-identite"] });
+    assert.deepEqual(entreeDeLaReponse("ma carte", reponse), { question: "ma carte", repondue: true, fiches: ["carte-identite"], type: "fiche" });
   });
 
   it("note « je ne sais pas encore » : non répondue, sans fiche", () => {
-    assert.deepEqual(entreeDeLaReponse("une question", { type: "inconnue" }), { question: "une question", repondue: false, fiches: [] });
+    assert.deepEqual(entreeDeLaReponse("une question", { type: "inconnue" }), { question: "une question", repondue: false, fiches: [], type: "inconnue" });
+  });
+
+  it("ne note pas une salutation : ce n'est pas une question", () => {
+    assert.equal(entreeDeLaReponse("bonjour", { type: "salutation", titre: "Bonjour", message: "Pose ta question." }), null);
   });
 
   it("note aussi une question hors domaine comme non répondue, sans fiche", () => {
     const reponse: Reponse = { type: "hors_domaine", message: "Ce n’est pas mon domaine." };
-    assert.deepEqual(entreeDeLaReponse("une recette", reponse), { question: "une recette", repondue: false, fiches: [] });
-    assert.deepEqual(entreeDeLaReponse("une recette", { type: "hors_domaine" }), { question: "une recette", repondue: false, fiches: [] });
+    assert.deepEqual(entreeDeLaReponse("une recette", reponse), { question: "une recette", repondue: false, fiches: [], type: "hors_domaine" });
+    assert.deepEqual(entreeDeLaReponse("une recette", { type: "hors_domaine" }), { question: "une recette", repondue: false, fiches: [], type: "hors_domaine" });
   });
 
   it("ne note pas les questions de précision : la réponse viendra après", () => {
@@ -53,8 +57,8 @@ describe("noterReponse", () => {
 
     assert.equal(note, true);
     assert.equal(base.appels.length, 1);
-    assert.match(base.appels[0].texte, /^insert into question_logs \(id, question, answered, fiche_slugs, channel, device_id\) values \(\$1, \$2, \$3, \$4, \$5, \$6\)$/);
-    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Combien coûte la carte ?", true, ["carte-identite"], "text", null]);
+    assert.match(base.appels[0].texte, /^insert into question_logs \(id, question, answered, fiche_slugs, channel, device_id, answer_type\) values \(\$1, \$2, \$3, \$4, \$5, \$6, \$7\)$/);
+    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Combien coûte la carte ?", true, ["carte-identite"], "text", null, "fiche"]);
   });
 
   it("coupe la question à la limite de la base, sans casser un emoji", async () => {

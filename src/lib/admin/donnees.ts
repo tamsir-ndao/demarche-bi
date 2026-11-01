@@ -6,7 +6,7 @@ import type { Requete } from "../avis/journal";
 const JOUR_MS = 86_400_000;
 
 export type Jour = { jour: string; questions: number };
-export type LigneExport = { jour: string; questions: number; repondues: number; voix: number; appareils: number; esenegal: number };
+export type LigneExport = { jour: string; questions: number; repondues: number; voix: number; appareils: number; esenegal: number; sansReponse: number };
 
 export type Tableau = {
   aujourdhui: number;
@@ -17,16 +17,27 @@ export type Tableau = {
   depuisLeDebut: number;
   premierJour: string | null;
   repondues30: number;
+  /** Les démarches demandées et inconnues : les sujets hors démarches ne comptent pas contre le service. */
+  inconnues30: number;
   voix30: number;
   appareils7: number;
   appareils30: number;
   revenants30: number;
   esenegal30: number;
   parJour: Jour[];
-  demarches: { slug: string; questions: number }[];
-  sansReponse: { question: string; fois: number }[];
-  dernieres: { quand: string; question: string; repondue: boolean; voix: boolean; demarche: string | null }[];
+  demarches: LigneDemarche[];
 };
+
+export type LigneDemarche = { slug: string; questions: number; passages: number };
+export type LigneSansReponse = { question: string; fois: number };
+export type LigneQuestion = { quand: string; question: string; type: string | null; voix: boolean; demarche: string | null };
+export type FiltresQuestions = { canal?: "voice" | "text"; reponse?: "oui" | "non" };
+
+/** Ne garde des paramètres d'adresse que les valeurs prévues. */
+export function lireFiltres(parametres: Record<string, string | string[] | undefined>): FiltresQuestions {
+  const { canal, reponse } = parametres;
+  return { ...(canal === "voice" || canal === "text" ? { canal } : {}), ...(reponse === "oui" || reponse === "non" ? { reponse } : {}) };
+}
 
 const lignes = <T>(resultat: unknown) => (Array.isArray(resultat) ? (resultat as T[]) : []);
 const debutDuJour = (ms: number) => Math.floor(ms / JOUR_MS) * JOUR_MS;
@@ -39,17 +50,18 @@ export async function agreger(requete: Requete, maintenantMs: number): Promise<v
   await requete(
     `with q as (
        select (created_at at time zone 'UTC')::date as day, count(*)::int as questions, count(*) filter (where answered)::int as answered,
-              count(*) filter (where channel = 'voice')::int as voice, count(distinct device_id)::int as devices
+              count(*) filter (where channel = 'voice')::int as voice, count(distinct device_id)::int as devices,
+              count(*) filter (where answer_type = 'inconnue')::int as unknown
        from question_logs where created_at >= $1 and created_at < $2 group by 1
      ), e as (
        select (created_at at time zone 'UTC')::date as day, count(*)::int as esenegal
        from usage_events where kind = 'esenegal' and created_at >= $1 and created_at < $2 group by 1
      )
-     insert into usage_daily (day, questions, answered, voice, devices, esenegal)
-     select coalesce(q.day, e.day), coalesce(q.questions, 0), coalesce(q.answered, 0), coalesce(q.voice, 0), coalesce(q.devices, 0), coalesce(e.esenegal, 0)
+     insert into usage_daily (day, questions, answered, voice, devices, esenegal, unknown)
+     select coalesce(q.day, e.day), coalesce(q.questions, 0), coalesce(q.answered, 0), coalesce(q.voice, 0), coalesce(q.devices, 0), coalesce(e.esenegal, 0), coalesce(q.unknown, 0)
      from q full join e on q.day = e.day
      on conflict (day) do update set questions = excluded.questions, answered = excluded.answered, voice = excluded.voice,
-       devices = excluded.devices, esenegal = excluded.esenegal`,
+       devices = excluded.devices, esenegal = excluded.esenegal, unknown = excluded.unknown`,
     [debut, fin],
   );
   await requete(
@@ -82,11 +94,11 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
   const il14 = new Date(debutDuJour(maintenantMs) - 13 * JOUR_MS).toISOString();
   const il30 = new Date(debutDuJour(maintenantMs) - 29 * JOUR_MS).toISOString();
 
-  const [chiffres, revenants, clics, total, parJour, demarches, sansReponse, dernieres] = await Promise.all([
+  const [chiffres, revenants, clics, total, parJour, demarches] = await Promise.all([
     requete(
       `select count(*) filter (where created_at >= $1)::int as aujourdhui, count(*) filter (where created_at >= $2)::int as sept,
               count(*) filter (where created_at >= $4 and created_at < $2)::int as sept_precedents,
-              count(*)::int as trente, count(*) filter (where answered)::int as repondues, count(*) filter (where channel = 'voice')::int as voix,
+              count(*)::int as trente, count(*) filter (where answered)::int as repondues, count(*) filter (where answer_type = 'inconnue')::int as inconnues, count(*) filter (where channel = 'voice')::int as voix,
               count(distinct device_id) filter (where created_at >= $2)::int as appareils7, count(distinct device_id)::int as appareils30
        from question_logs where created_at >= $3`,
       [auj, il7, il30, il14],
@@ -108,18 +120,7 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
       "select to_char(created_at at time zone 'UTC', 'YYYY-MM-DD') as jour, count(*)::int as questions from question_logs where created_at >= $1 group by 1",
       [il30],
     ),
-    requete(
-      "select unnest(fiche_slugs) as slug, count(*)::int as questions from question_logs where created_at >= $1 group by 1 order by 2 desc, 1 limit 10",
-      [il30],
-    ),
-    requete(
-      "select min(question) as question, count(*)::int as fois from question_logs where created_at >= $1 and not answered group by lower(question) order by 2 desc, 1 limit 20",
-      [il30],
-    ),
-    requete(
-      "select created_at as quand, question, answered as repondue, channel = 'voice' as voix, fiche_slugs[1] as demarche from question_logs order by created_at desc limit 30",
-      [],
-    ),
+    lireDemarches(requete, maintenantMs, 5),
   ]);
 
   const c = lignes<Record<string, number>>(chiffres)[0] ?? {};
@@ -133,16 +134,51 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
     depuisLeDebut: t?.n ?? 0,
     premierJour: t?.premier ?? null,
     repondues30: c.repondues ?? 0,
+    inconnues30: c.inconnues ?? 0,
     voix30: c.voix ?? 0,
     appareils7: c.appareils7 ?? 0,
     appareils30: c.appareils30 ?? 0,
     revenants30: nombre(revenants),
     esenegal30: nombre(clics),
     parJour: completerLesJours(lignes<Jour>(parJour), maintenantMs),
-    demarches: lignes(demarches),
-    sansReponse: lignes(sansReponse),
-    dernieres: lignes<Tableau["dernieres"][number]>(dernieres).map((ligne) => ({ ...ligne, quand: new Date(ligne.quand).toISOString() })),
+    demarches,
   };
+}
+
+const debut30 = (maintenantMs: number) => new Date(debutDuJour(maintenantMs) - 29 * JOUR_MS).toISOString();
+
+/** Les démarches demandées sur 30 jours, avec leurs passages vers e-Sénégal. */
+export async function lireDemarches(requete: Requete, maintenantMs: number, limite = 100): Promise<LigneDemarche[]> {
+  return lignes<LigneDemarche>(
+    await requete(
+      `with q as (select unnest(fiche_slugs) as slug, count(*)::int as questions from question_logs where created_at >= $1 group by 1),
+            e as (select fiche_slug as slug, count(*)::int as passages from usage_events where kind = 'esenegal' and created_at >= $1 and fiche_slug is not null group by 1)
+       select q.slug, q.questions, coalesce(e.passages, 0) as passages from q left join e on q.slug = e.slug order by q.questions desc, q.slug limit $2`,
+      [debut30(maintenantMs), limite],
+    ),
+  );
+}
+
+/** Les questions sans réponse sur 30 jours, regroupées : les démarches qui manquent, puis les sujets hors démarches. */
+export async function lireSansReponse(requete: Requete, maintenantMs: number): Promise<{ manques: LigneSansReponse[]; horsSujet: LigneSansReponse[] }> {
+  const groupe = (types: string[]) =>
+    requete(
+      "select min(question) as question, count(*)::int as fois from question_logs where created_at >= $1 and answer_type = any($2) group by lower(question) order by 2 desc, 1 limit 100",
+      [debut30(maintenantMs), types],
+    );
+  const [manques, horsSujet] = await Promise.all([groupe(["inconnue"]), groupe(["hors_domaine", "interdit"])]);
+  return { manques: lignes(manques), horsSujet: lignes(horsSujet) };
+}
+
+/** Les 100 dernières questions, selon les filtres. Les valeurs passent toujours en paramètres de la requête. */
+export async function lireQuestions(requete: Requete, { canal, reponse }: FiltresQuestions): Promise<LigneQuestion[]> {
+  const liste = await requete(
+    `select created_at as quand, question, answer_type as type, channel = 'voice' as voix, fiche_slugs[1] as demarche from question_logs
+     where ($1::text is null or channel = $1) and ($2::boolean is null or answered = $2)
+     order by created_at desc limit 100`,
+    [canal ?? null, reponse === undefined ? null : reponse === "oui"],
+  );
+  return lignes<LigneQuestion>(liste).map((ligne) => ({ ...ligne, quand: new Date(ligne.quand).toISOString() }));
 }
 
 /** Les totaux par jour, à joindre à un dossier : aucun texte de question, aucun code de téléphone. */
@@ -150,15 +186,15 @@ export async function lireExport(requete: Requete, maintenantMs: number): Promis
   await agreger(requete, maintenantMs);
   return lignes<LigneExport>(
     await requete(
-      "select day::text as jour, questions, answered as repondues, voice as voix, devices as appareils, esenegal from usage_daily order by day",
+      `select day::text as jour, questions, answered as repondues, voice as voix, devices as appareils, esenegal, unknown as "sansReponse" from usage_daily order by day`,
       [],
     ),
   );
 }
 
 export function enCsv(liste: LigneExport[]): string {
-  const entete = "jour,questions,repondues,voix,appareils,clics_esenegal";
-  return [entete, ...liste.map((l) => [l.jour, l.questions, l.repondues, l.voix, l.appareils, l.esenegal].join(","))].join("\n") + "\n";
+  const entete = "jour,questions,repondues,voix,appareils,clics_esenegal,demarches_inconnues";
+  return [entete, ...liste.map((l) => [l.jour, l.questions, l.repondues, l.voix, l.appareils, l.esenegal, l.sansReponse].join(","))].join("\n") + "\n";
 }
 
 /** L'écart avec la période d'avant, en toutes lettres : « +3 », « −2 » ou « = ». */

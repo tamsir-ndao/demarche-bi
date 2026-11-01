@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Requete } from "../avis/journal";
-import { agreger, completerLesJours, enCsv, evolution, lireTableau, pourcent, purgerEvenements } from "./donnees";
+import { agreger, completerLesJours, enCsv, evolution, lireFiltres, lireQuestions, lireSansReponse, lireTableau, pourcent, purgerEvenements } from "./donnees";
 
 const T = Date.UTC(2026, 10, 1, 15);
 
@@ -33,14 +33,34 @@ describe("chiffres du back-office", () => {
   });
   it("écrit un CSV sans texte libre", () => {
     assert.equal(
-      enCsv([{ jour: "2026-11-01", questions: 3, repondues: 2, voix: 1, appareils: 2, esenegal: 1 }]),
-      "jour,questions,repondues,voix,appareils,clics_esenegal\n2026-11-01,3,2,1,2,1\n",
+      enCsv([{ jour: "2026-11-01", questions: 3, repondues: 2, voix: 1, appareils: 2, esenegal: 1, sansReponse: 1 }]),
+      "jour,questions,repondues,voix,appareils,clics_esenegal,demarches_inconnues\n2026-11-01,3,2,1,2,1,1\n",
     );
   });
   it("écrit l'écart avec la période d'avant", () => {
     assert.equal(evolution(5, 2), "+3");
     assert.equal(evolution(2, 5), "−3");
     assert.equal(evolution(2, 2), "=");
+  });
+  it("ne retient des filtres que les valeurs prévues", () => {
+    assert.deepEqual(lireFiltres({ canal: "voice", reponse: "non" }), { canal: "voice", reponse: "non" });
+    assert.deepEqual(lireFiltres({ canal: "x' or 1=1", reponse: ["oui", "non"] }), {});
+  });
+  it("passe les filtres en paramètres de la requête", async () => {
+    let recues: readonly unknown[] = [];
+    await lireQuestions(async (_, valeurs) => {
+      recues = valeurs;
+      return [];
+    }, { canal: "voice", reponse: "non" });
+    assert.deepEqual(recues, ["voice", false]);
+  });
+  it("sépare les démarches qui manquent des sujets hors démarches", async () => {
+    const types: unknown[] = [];
+    await lireSansReponse(async (_, valeurs) => {
+      types.push(valeurs[1]);
+      return [];
+    }, T);
+    assert.deepEqual(types, [["inconnue"], ["hors_domaine", "interdit"]]);
   });
   it("calcule une part sans diviser par zéro", () => {
     assert.equal(pourcent(1, 3), 33);

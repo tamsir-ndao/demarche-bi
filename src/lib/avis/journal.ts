@@ -20,12 +20,15 @@ export type EntreeJournal = {
   /** Faux quand le site a répondu « je ne sais pas encore ». */
   repondue: boolean;
   fiches: string[];
+  /** D'où vient l'absence de réponse : une démarche qui manque, ou un sujet hors démarches. */
+  type?: TypeDeReponse;
   canal?: Canal;
   /** Le code anonyme du téléphone (voir lib/appareil). */
   appareil?: string;
 };
 
 export type Canal = "text" | "voice";
+export type TypeDeReponse = "fiche" | "inconnue" | "hors_domaine" | "interdit";
 
 /**
  * Ce que le journal garde d'une réponse. Seules les réponses finales comptent : une question de précision attend
@@ -34,12 +37,13 @@ export type Canal = "text" | "voice";
 export function entreeDeLaReponse(question: string, reponse: Reponse): EntreeJournal | null {
   switch (reponse.type) {
     case "fiche":
-      return { question, repondue: true, fiches: [reponse.fiche.slug] };
+      return { question, repondue: true, fiches: [reponse.fiche.slug], type: "fiche" };
     case "inconnue":
     case "hors_domaine":
     case "interdit":
+      return { question, repondue: false, fiches: [], type: reponse.type };
+    // Un « bonjour » n'est pas une question : il ne compte pas dans l'usage.
     case "salutation":
-      return { question, repondue: false, fiches: [] };
     case "precision":
     case "precision_generale":
       return null;
@@ -71,16 +75,17 @@ export function creerJournal({ requete, signaler }: DependancesJournal): Journal
   }
 
   return {
-    noterReponse(id, { question, repondue, fiches, canal = "text", appareil }) {
+    noterReponse(id, { question, repondue, fiches, type = repondue ? "fiche" : "inconnue", canal = "text", appareil }) {
       // Le masque passe avant la coupe : couper d'abord laisserait le début d'un numéro, trop court pour être reconnu.
       const coupee = Array.from(masquerDonneesPersonnelles(question)).slice(0, LONGUEUR_MAX_QUESTION_JOURNAL).join("");
-      return ecrire("reponse", "insert into question_logs (id, question, answered, fiche_slugs, channel, device_id) values ($1, $2, $3, $4, $5, $6)", [
+      return ecrire("reponse", "insert into question_logs (id, question, answered, fiche_slugs, channel, device_id, answer_type) values ($1, $2, $3, $4, $5, $6, $7)", [
         id,
         coupee,
         repondue,
         fiches,
         canal,
         appareil ?? null,
+        type,
       ]);
     },
     noterAvis({ journalId, utile, commentaire }) {

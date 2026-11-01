@@ -72,7 +72,7 @@ describe("noterLaReponse", () => {
 
     await travaux[0]();
     assert.deepEqual(base.reponses, [
-      { id: IDENTIFIANT, entree: { question: "Combien coûte la carte ?", repondue: true, fiches: ["carte-identite"] } },
+      { id: IDENTIFIANT, entree: { question: "Combien coûte la carte ?", repondue: true, fiches: ["carte-identite"], type: "fiche" } },
     ]);
   });
 
@@ -82,7 +82,7 @@ describe("noterLaReponse", () => {
     assert.equal(instance.noterLaReponse("une question", { type: "inconnue" }), IDENTIFIANT);
     await travaux[0]();
 
-    assert.deepEqual(base.reponses[0].entree, { question: "une question", repondue: false, fiches: [] });
+    assert.deepEqual(base.reponses[0].entree, { question: "une question", repondue: false, fiches: [], type: "inconnue" });
   });
 
   it("ne note rien (et ne rend pas d'identifiant) pour une question de précision", () => {
