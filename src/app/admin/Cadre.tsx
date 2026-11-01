@@ -7,13 +7,14 @@ import { Connexion } from "./Connexion";
 
 // Le cadre des pages du back-office : la connexion, la navigation, le titre. Chaque lecture de chiffres revérifie la session (lireAdmin).
 
-export type PageAdmin = "ensemble" | "demarches" | "sans-reponse" | "questions";
+export type PageAdmin = "ensemble" | "demarches" | "sans-reponse" | "questions" | "avis";
 
 const PAGES: { id: PageAdmin; href: string; libelle: string; icone: IconName }[] = [
   { id: "ensemble", href: "/admin", libelle: "Vue d’ensemble", icone: "bulle" },
   { id: "demarches", href: "/admin/demarches", libelle: "Démarches", icone: "dossier" },
   { id: "sans-reponse", href: "/admin/sans-reponse", libelle: "Sans réponse", icone: "aide" },
   { id: "questions", href: "/admin/questions", libelle: "Questions", icone: "loupe" },
+  { id: "avis", href: "/admin/avis", libelle: "Avis", icone: "crayon" },
 ];
 
 function Marque() {

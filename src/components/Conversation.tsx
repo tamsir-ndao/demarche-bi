@@ -17,6 +17,7 @@ import type { LigneVocale } from "@/lib/voix/lecture";
 import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { composerLaQuestion } from "@/lib/voix/question-composee";
 import { formaterDuree, NOMBRE_DE_BARRES } from "@/lib/voix/spectre";
+import { AvisReponse } from "./AvisReponse";
 import { Icon, type IconName } from "./Icon";
 import { HAUTEUR_BARRE_MAX, HAUTEUR_BARRE_MIN, Spectre } from "./VoixEcrans";
 
@@ -75,11 +76,14 @@ const ICONES_FAITS: Record<string, IconName> = { Coût: "billet", Délai: "horlo
 function Reponse({
   reponse,
   enLecture,
+  demanderAvis,
   surChoix,
   surEcouter,
 }: {
   reponse: TourAssistant;
   enLecture: boolean;
+  /** La dernière réponse de la conversation, qui vient d'arriver : on demande si elle a aidé. */
+  demanderAvis: boolean;
   surChoix: (slug: string, titre: string) => void;
   surEcouter: () => void;
 }) {
@@ -157,6 +161,7 @@ function Reponse({
         )}
       </div>
       {reponse.fiche?.source && <p className="mt-2 text-[13px] leading-[18px] text-ink-3">Source : {reponse.fiche.source}</p>}
+      {demanderAvis && reponse.fiche && reponse.journalId && <AvisReponse key={reponse.journalId} journalId={reponse.journalId} />}
     </div>
   );
 }
@@ -214,7 +219,8 @@ export function Conversation() {
           window.history.replaceState({ ...window.history.state, discussion: true }, "", "/");
           const conversation = retrouverConversation(stockageLocal(), demandee);
           session.current += 1;
-          if (conversation) reprendre(conversation.id, conversation.tours, conversation.memoire);
+          // Une réponse rouverte ne redemande pas d'avis : la personne l'a peut-être déjà donné.
+          if (conversation) reprendre(conversation.id, conversation.tours.map((tour) => ({ ...tour, reponse: { ...tour.reponse, journalId: undefined } })), conversation.memoire);
           return;
         }
         if (fermee) {
@@ -483,7 +489,8 @@ export function Conversation() {
                   <p className="montee ml-12 self-end rounded-[22px] rounded-br-md bg-brand px-4 py-2.5 text-base leading-6 font-semibold text-on-brand">{tour.question}</p>
                   {tour.etat === "attente" && <p className="text-[15px] leading-6 text-ink-2">Je cherche…</p>}
                   {tour.etat === "pret" && (
-                    <Reponse reponse={tour.reponse} enLecture={parle && lu === tour.id} surChoix={choisir} surEcouter={() => ecouterEncore(tour.id, tour.reponse)} />
+                    <Reponse reponse={tour.reponse} demanderAvis={tour.id === tours.at(-1)?.id}
+                    enLecture={parle && lu === tour.id} surChoix={choisir} surEcouter={() => ecouterEncore(tour.id, tour.reponse)} />
                   )}
                   {tour.etat === "hors_ligne" && (
                     <p className="carte-reponse montee text-base leading-6">

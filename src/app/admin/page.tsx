@@ -130,6 +130,7 @@ function Vue({ t }: { t: Tableau }) {
           {t.premierJour && <p className="mt-2 text-[12px] leading-4 text-ink-2">Premier jour compté : {jourCourt(t.premierJour)}</p>}
           <div className="mt-5 flex flex-col gap-4 border-t border-line pt-4">
             <Mesure libelle="Questions à la voix" part={pourcent(t.voix30, t.trente)} detail={`${nombre(t.voix30)} sur ${nombre(t.trente)}, sur 30 jours`} />
+            <Mesure libelle="Avis positifs" part={pourcent(t.avisPositifs30, t.avis30)} detail={`${nombre(t.avisPositifs30)} sur ${nombre(t.avis30)} avis, sur 30 jours`} />
             <Mesure libelle="Utilisateurs revenus" part={pourcent(t.revenants30, t.appareils30)} detail={`${nombre(t.revenants30)} sur ${nombre(t.appareils30)}, un autre jour`} />
           </div>
         </Carte>

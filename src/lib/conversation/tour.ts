@@ -42,6 +42,8 @@ export type TourAssistant = {
   /** Vrai quand la prochaine parole complète cette question, trop vague. */
   aCompleter: boolean;
   lignes: LigneVocale[];
+  /** La ligne du journal à laquelle rattacher l'avis ; absente si la réponse n'est pas notée. */
+  journalId?: string;
 };
 
 function sansFiche(script: string[], options: Partial<TourAssistant> = {}): TourAssistant {

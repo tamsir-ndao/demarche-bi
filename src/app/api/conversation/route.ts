@@ -19,9 +19,10 @@ export async function POST(request: Request) {
   const { question, ficheSlug, contexte, canal, appareil, nonCompte } = demande;
   const visiteur = visiteurDepuis(request.headers);
   const reponse = await repondreALaQuestion(question, { ficheSlug, contexte, visiteur });
-  if (!nonCompte) noterLaReponse(question, reponse, visiteur, { canal, appareil });
+  const journalId = nonCompte ? null : noterLaReponse(question, reponse, visiteur, { canal, appareil });
+  const noteDuJournal = journalId ? { journalId } : {};
 
-  if (reponse.type !== "fiche") return Response.json(construireTour(reponse, { suite: false }));
+  if (reponse.type !== "fiche") return Response.json({ ...construireTour(reponse, { suite: false }), ...noteDuJournal });
   const statut = statutAffichage(reponse.fiche, await maintenant());
-  return Response.json(construireTour(reponse, { suite: reponse.fiche.slug === contexte, statut }));
+  return Response.json({ ...construireTour(reponse, { suite: reponse.fiche.slug === contexte, statut }), ...noteDuJournal });
 }

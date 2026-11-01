@@ -24,9 +24,13 @@ export type Tableau = {
   appareils30: number;
   revenants30: number;
   esenegal30: number;
+  avis30: number;
+  avisPositifs30: number;
   parJour: Jour[];
   demarches: LigneDemarche[];
 };
+
+export type LigneAvis = { quand: string; utile: boolean; commentaire: string | null; question: string | null; demarche: string | null };
 
 export type LigneDemarche = { slug: string; questions: number; passages: number };
 export type LigneSansReponse = { question: string; fois: number };
@@ -94,7 +98,7 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
   const il14 = new Date(debutDuJour(maintenantMs) - 13 * JOUR_MS).toISOString();
   const il30 = new Date(debutDuJour(maintenantMs) - 29 * JOUR_MS).toISOString();
 
-  const [chiffres, revenants, clics, total, parJour, demarches] = await Promise.all([
+  const [chiffres, revenants, clics, total, parJour, demarches, avis] = await Promise.all([
     requete(
       `select count(*) filter (where created_at >= $1)::int as aujourdhui, count(*) filter (where created_at >= $2)::int as sept,
               count(*) filter (where created_at >= $4 and created_at < $2)::int as sept_precedents,
@@ -121,10 +125,12 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
       [il30],
     ),
     lireDemarches(requete, maintenantMs, 5),
+    requete("select count(*)::int as total, count(*) filter (where helpful)::int as positifs from feedback where created_at >= $1", [il30]),
   ]);
 
   const c = lignes<Record<string, number>>(chiffres)[0] ?? {};
   const t = lignes<{ n?: number; premier?: string | null }>(total)[0];
+  const a = lignes<{ total?: number; positifs?: number }>(avis)[0];
   const nombre = (resultat: unknown) => lignes<{ n?: number }>(resultat)[0]?.n ?? 0;
   return {
     aujourdhui: c.aujourdhui ?? 0,
@@ -140,6 +146,8 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
     appareils30: c.appareils30 ?? 0,
     revenants30: nombre(revenants),
     esenegal30: nombre(clics),
+    avis30: a?.total ?? 0,
+    avisPositifs30: a?.positifs ?? 0,
     parJour: completerLesJours(lignes<Jour>(parJour), maintenantMs),
     demarches,
   };
@@ -179,6 +187,16 @@ export async function lireQuestions(requete: Requete, { canal, reponse }: Filtre
     [canal ?? null, reponse === undefined ? null : reponse === "oui"],
   );
   return lignes<LigneQuestion>(liste).map((ligne) => ({ ...ligne, quand: new Date(ligne.quand).toISOString() }));
+}
+
+/** Les 100 derniers avis, avec la question et la démarche quand ils y sont encore rattachés. */
+export async function lireAvis(requete: Requete): Promise<LigneAvis[]> {
+  const liste = await requete(
+    `select f.created_at as quand, f.helpful as utile, f.comment as commentaire, q.question, q.fiche_slugs[1] as demarche
+     from feedback f left join question_logs q on q.id = f.question_log_id order by f.created_at desc limit 100`,
+    [],
+  );
+  return lignes<LigneAvis>(liste).map((ligne) => ({ ...ligne, quand: new Date(ligne.quand).toISOString() }));
 }
 
 /** Les totaux par jour, à joindre à un dossier : aucun texte de question, aucun code de téléphone. */

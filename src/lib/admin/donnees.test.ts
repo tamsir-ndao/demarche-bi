@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Requete } from "../avis/journal";
-import { agreger, completerLesJours, enCsv, evolution, lireFiltres, lireQuestions, lireSansReponse, lireTableau, pourcent, purgerEvenements } from "./donnees";
+import { agreger, lireAvis, completerLesJours, enCsv, evolution, lireFiltres, lireQuestions, lireSansReponse, lireTableau, pourcent, purgerEvenements } from "./donnees";
 
 const T = Date.UTC(2026, 10, 1, 15);
 
@@ -61,6 +61,11 @@ describe("chiffres du back-office", () => {
       return [];
     }, T);
     assert.deepEqual(types, [["inconnue"], ["hors_domaine", "interdit"]]);
+  });
+  it("rend les avis avec une date lisible", async () => {
+    const liste = await lireAvis(async () => [{ quand: new Date(T), utile: false, commentaire: "Il manque le prix", question: "Passeport ?", demarche: "passeport" }]);
+    assert.equal(liste[0]?.quand, new Date(T).toISOString());
+    assert.equal(liste[0]?.commentaire, "Il manque le prix");
   });
   it("calcule une part sans diviser par zéro", () => {
     assert.equal(pourcent(1, 3), 33);
