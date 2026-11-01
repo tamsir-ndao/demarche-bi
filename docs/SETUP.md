@@ -126,3 +126,13 @@ Suis le workflow `preparer-soumission` : README final avec les chiffres d'évalu
 | Le build échoue sur les polices | Le projet utilise des polices système ; ne réintroduis pas `next/font/google` |
 | « DATABASE_URL manquante » | La variable n'est pas dans `.env.local`, ou le fichier n'est pas à la racine du projet. Elle n'est nécessaire que pour `db:migrate` |
 | Erreur de connexion SSL ou mot de passe | Recopie la chaîne de connexion complète depuis Neon (avec `sslmode=require`) |
+
+## Back-office `/admin`
+
+La page `/admin` montre l'usage de l'application. Elle reste fermée tant que `ADMIN_PASSWORD` n'est pas réglé.
+
+1. Choisis un mot de passe long, et garde-le pour toi.
+2. Ajoute-le dans Vercel (Settings → Environment Variables → `ADMIN_PASSWORD`, en Production), jamais dans un fichier du dépôt ni dans un chat.
+3. Redéploie : la variable n'est lue qu'au déploiement suivant.
+
+Les questions, le code anonyme du téléphone et les passages vers e-Sénégal sont supprimés après 90 jours. Les totaux par jour (`usage_daily`, `usage_daily_fiches`) restent, sans texte ni code.

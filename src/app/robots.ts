@@ -5,7 +5,7 @@ import { URL_SITE } from "@/lib/liens";
 // la page de réponse (elle porte la question dans l'adresse) et la page hors connexion (réservée au téléphone).
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/reponse", "/hors-connexion"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api/", "/reponse", "/hors-connexion"] },
     sitemap: `${URL_SITE}/sitemap.xml`,
   };
 }

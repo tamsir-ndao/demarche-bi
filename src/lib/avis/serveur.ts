@@ -1,8 +1,9 @@
 import { after } from "next/server";
 import { creerLimiteur } from "../ai/cache";
 import type { Reponse } from "../ai/ask";
+import { agreger, purgerEvenements } from "../admin/donnees";
 import { getSql } from "../db";
-import { creerJournal } from "./journal";
+import { creerJournal, type Canal } from "./journal";
 import { autoriserLaPurge, creerPurge } from "./purge";
 import { creerServiceAvis, type ResultatAvis } from "./service";
 
@@ -35,8 +36,8 @@ function leService() {
 }
 
 /** Note la réponse montrée (après l'envoi de la page) et rend son identifiant, ou `null` si elle n'est pas notée. */
-export function noterLaReponse(question: string, reponse: Reponse, visiteur?: string): string | null {
-  return leService().noterLaReponse(question, reponse, visiteur);
+export function noterLaReponse(question: string, reponse: Reponse, visiteur?: string, origine?: { canal?: Canal; appareil?: string }): string | null {
+  return leService().noterLaReponse(question, reponse, visiteur, origine);
 }
 
 /** Enregistre l'avis d'une demande POST /api/feedback. Ne lève jamais d'erreur à cause de la base. */
@@ -55,6 +56,16 @@ export type ResultatPurgeDemandee = { statut: 200; reponses: number; avis: numbe
 export async function purgerLeJournal(demande: Request): Promise<ResultatPurgeDemandee> {
   if (!autoriserLaPurge(demande.headers.get("authorization"), process.env.CRON_SECRET)) return { statut: 401 };
   if (!process.env.DATABASE_URL) return { statut: 200, reponses: 0, avis: 0 };
+
+  // Les totaux par jour d'abord : si ce calcul échoue, rien n'est supprimé, et la nuit suivante le refera.
+  const requete = (texte: string, valeurs: readonly unknown[]) => getSql().query(texte, [...valeurs]);
+  try {
+    await agreger(requete, Date.now());
+    await purgerEvenements(requete, Date.now());
+  } catch (erreur) {
+    console.warn(`[purge] totaux : ${natureDeLaPanne(erreur)}`);
+    return { statut: 503 };
+  }
 
   purge ??= creerPurge({
     requete: (texte, valeurs) => getSql().query(texte, [...valeurs]),

@@ -5,7 +5,7 @@ import type { Avis } from "./avis";
 
 // Le journal anonyme (tables question_logs et feedback, db/migrations/0001_init.sql). Il garde la question (sur une
 // ligne, 500 caractères au plus), si le site a su répondre, la fiche montrée et l'avis de la personne. Jamais d'adresse,
-// de compte, d'identifiant de visiteur ni de voix. La question et le commentaire passent par le masque de anonymiser.ts
+// de compte ni de voix. Le seul identifiant est le code anonyme tiré au hasard sur le téléphone, pour compter les utilisateurs. La question et le commentaire passent par le masque de anonymiser.ts
 // (e-mails, téléphones, numéros longs) avant d'être écrits : ce sont les deux seuls textes libres envoyés à la base.
 // Le journal est facultatif : sans base, ou si la base tombe, le site répond comme avant et rien ne remonte à la personne.
 
@@ -20,7 +20,12 @@ export type EntreeJournal = {
   /** Faux quand le site a répondu « je ne sais pas encore ». */
   repondue: boolean;
   fiches: string[];
+  canal?: Canal;
+  /** Le code anonyme du téléphone (voir lib/appareil). */
+  appareil?: string;
 };
+
+export type Canal = "text" | "voice";
 
 /**
  * Ce que le journal garde d'une réponse. Seules les réponses finales comptent : une question de précision attend
@@ -66,14 +71,16 @@ export function creerJournal({ requete, signaler }: DependancesJournal): Journal
   }
 
   return {
-    noterReponse(id, { question, repondue, fiches }) {
+    noterReponse(id, { question, repondue, fiches, canal = "text", appareil }) {
       // Le masque passe avant la coupe : couper d'abord laisserait le début d'un numéro, trop court pour être reconnu.
       const coupee = Array.from(masquerDonneesPersonnelles(question)).slice(0, LONGUEUR_MAX_QUESTION_JOURNAL).join("");
-      return ecrire("reponse", "insert into question_logs (id, question, answered, fiche_slugs) values ($1, $2, $3, $4)", [
+      return ecrire("reponse", "insert into question_logs (id, question, answered, fiche_slugs, channel, device_id) values ($1, $2, $3, $4, $5, $6)", [
         id,
         coupee,
         repondue,
         fiches,
+        canal,
+        appareil ?? null,
       ]);
     },
     noterAvis({ journalId, utile, commentaire }) {

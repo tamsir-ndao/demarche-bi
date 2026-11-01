@@ -53,8 +53,8 @@ describe("noterReponse", () => {
 
     assert.equal(note, true);
     assert.equal(base.appels.length, 1);
-    assert.match(base.appels[0].texte, /^insert into question_logs \(id, question, answered, fiche_slugs\) values \(\$1, \$2, \$3, \$4\)$/);
-    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Combien coûte la carte ?", true, ["carte-identite"]]);
+    assert.match(base.appels[0].texte, /^insert into question_logs \(id, question, answered, fiche_slugs, channel, device_id\) values \(\$1, \$2, \$3, \$4, \$5, \$6\)$/);
+    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Combien coûte la carte ?", true, ["carte-identite"], "text", null]);
   });
 
   it("coupe la question à la limite de la base, sans casser un emoji", async () => {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { flushSync } from "react-dom";
+import { codeAppareil } from "@/lib/appareil";
 import { stockageLocal } from "@/lib/bienvenue";
 import { CLE_DISCUSSION, fermerDiscussion, garderConversation, PARAMETRE_CONVERSATION, retrouverConversation, toursAGarder, type Memoire, type Tour } from "@/lib/conversation/historique";
 import type { TourAssistant } from "@/lib/conversation/tour";
@@ -35,6 +36,15 @@ const BARRE_COMPACTE_MAX = 36;
 /** Lit à voix haute sans qu'on le demande, sauf si la personne l'a coupé dans les réglages. */
 function lireSiActif(lignes: LigneVocale[]) {
   if (voixAutomatique(stockageLocal())) parleurDuNavigateur().lire(lignes);
+}
+
+/** Note un passage vers e-Sénégal, sans retenir la page qui s'ouvre. */
+function noterPassage(fiche: string | undefined) {
+  try {
+    navigator.sendBeacon("/api/evenement", new Blob([JSON.stringify({ fiche, appareil: codeAppareil(stockageLocal()) })], { type: "application/json" }));
+  } catch {
+    // Une mesure en moins : le lien s'ouvre quand même.
+  }
 }
 
 function Orbe({ taille, icone, tourne = false }: { taille: string; icone: string; tourne?: boolean }) {
@@ -127,6 +137,7 @@ function Reponse({
           href={reponse.enLigne.url}
           target="_blank"
           rel="noreferrer"
+          onClick={() => noterPassage(reponse.fiche?.slug)}
           className="press mt-4 flex min-h-11 items-center gap-2.5 rounded-2xl border border-line px-3.5 py-2.5 text-[15px] leading-5 font-semibold"
         >
           <Icon name="lien-externe" size={18} className="flex-none text-leaf" />
@@ -282,7 +293,7 @@ export function Conversation() {
     window.history.back();
   }
 
-  async function poser(affichee: string, question: string, ficheSlug?: string) {
+  async function poser(affichee: string, question: string, ficheSlug?: string, canal?: "voice") {
     if (tours.length === 0) window.history.pushState({ ...window.history.state, discussion: true }, "");
     idConversation.current ??= String(Date.now());
     const id = ++compteur.current;
@@ -295,7 +306,7 @@ export function Conversation() {
       const reponse = await fetch("/api/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, fiche: ficheSlug, contexte: memoire.current.contexte }),
+        body: JSON.stringify({ question, fiche: ficheSlug, contexte: memoire.current.contexte, canal, appareil: codeAppareil(stockageLocal()) }),
       });
       if (!reponse.ok) throw new Error("réponse refusée");
       const tour = (await reponse.json()) as TourAssistant;
@@ -312,8 +323,8 @@ export function Conversation() {
   }
 
   /** Une question nouvelle, ou le complément de la question trop vague d'avant. */
-  function poserLaSuite(dite: string) {
-    void poser(dite, composerLaQuestion(memoire.current.aCompleter, dite));
+  function poserLaSuite(dite: string, canal?: "voice") {
+    void poser(dite, composerLaQuestion(memoire.current.aCompleter, dite), undefined, canal);
   }
 
   /** Lève ou baisse chaque barre selon la voix (directement dans la page : 60 images par seconde sans repasser par React). */
@@ -350,7 +361,7 @@ export function Conversation() {
     } else if (resultat.texte === "") {
       setErreur("rien_entendu");
     } else {
-      poserLaSuite(resultat.texte);
+      poserLaSuite(resultat.texte, "voice");
     }
   }
 

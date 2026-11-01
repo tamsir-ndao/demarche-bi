@@ -129,8 +129,8 @@ describe("noterReponse : la question est masquée avant d'être écrite", () => 
 
     await journal.noterReponse(IDENTIFIANT, { question: "Ma CNI 1234567890123", repondue: false, fiches: ["a", "b"] });
 
-    assert.equal(base.appels[0].texte, "insert into question_logs (id, question, answered, fiche_slugs) values ($1, $2, $3, $4)");
-    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Ma CNI [numéro]", false, ["a", "b"]]);
+    assert.equal(base.appels[0].texte, "insert into question_logs (id, question, answered, fiche_slugs, channel, device_id) values ($1, $2, $3, $4, $5, $6)");
+    assert.deepEqual(base.appels[0].valeurs, [IDENTIFIANT, "Ma CNI [numéro]", false, ["a", "b"], "text", null]);
   });
 
   it("garde à l'identique une question sans donnée personnelle, avec ses chiffres de la vie courante", async () => {

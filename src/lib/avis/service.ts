@@ -1,7 +1,7 @@
 import type { Reponse } from "../ai/ask";
 import { visiteurDepuis } from "../ai/service";
 import { lireAvis } from "./avis";
-import { entreeDeLaReponse, type Journal } from "./journal";
+import { entreeDeLaReponse, type Canal, type Journal } from "./journal";
 
 // Ce que le site fait du journal : noter la réponse montrée (en arrière-plan, après l'envoi de la page) et recevoir
 // l'avis de la personne (POST /api/feedback). Sans base de données (`journal` vide), rien n'est noté et la barre
@@ -41,9 +41,10 @@ export function creerServiceAvis({ journal, limiteurAvis, limiteurJournal, apres
      * notée : pas de base, question de précision, ou visiteur qui recharge trop vite. L'écriture se fait après l'envoi.
      * Sans identifiant, la page n'affiche pas « Cette réponse t'a aidé ? ».
      */
-    noterLaReponse(question: string, reponse: Reponse, visiteur?: string): string | null {
-      const entree = entreeDeLaReponse(question, reponse);
-      if (journal === null || entree === null) return null;
+    noterLaReponse(question: string, reponse: Reponse, visiteur?: string, origine?: { canal?: Canal; appareil?: string }): string | null {
+      const base = entreeDeLaReponse(question, reponse);
+      if (journal === null || base === null) return null;
+      const entree = { ...base, ...origine };
       if (visiteur !== undefined && !limiteurJournal.autoriser(visiteur)) return null;
 
       const id = nouvelIdentifiant();

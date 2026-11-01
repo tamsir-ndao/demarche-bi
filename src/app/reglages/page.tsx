@@ -54,7 +54,7 @@ export default function Page() {
             <Icon name="chevron-bas" size={18} className="flex-none text-ink-2 transition-transform group-open:rotate-180" />
           </summary>
           <p className="px-4 pb-4 text-[14px] leading-5 text-ink-2">
-            Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Ta question est envoyée à Groq, un service d’IA, pour te répondre. Le site la garde (sans savoir qui tu es), avec ton avis si tu en donnes un, pour améliorer le service. Évite d’y mettre ton nom ou ton numéro. Une IA comprend ta question et la reformule, sans inventer d’information. Ton historique reste sur ce téléphone.
+            Je ne te demande aucune donnée personnelle et je ne garde pas ta voix. Ta question est envoyée à Groq, un service d’IA, pour te répondre. Le site la garde (sans savoir qui tu es), avec ton avis si tu en donnes un, pour améliorer le service. Évite d’y mettre ton nom ou ton numéro. Une IA comprend ta question et la reformule, sans inventer d’information. Un code anonyme, tiré au hasard sur ce téléphone, sert seulement à compter les utilisateurs : il ne dit pas qui tu es. Ton historique reste sur ce téléphone.
           </p>
         </details>
       </Groupe>
