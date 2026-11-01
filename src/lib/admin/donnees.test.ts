@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Requete } from "../avis/journal";
-import { agreger, completerLesJours, enCsv, lireTableau, pourcent, purgerEvenements } from "./donnees";
+import { agreger, completerLesJours, enCsv, evolution, lireTableau, pourcent, purgerEvenements } from "./donnees";
 
 const T = Date.UTC(2026, 10, 1, 15);
 
@@ -36,6 +36,11 @@ describe("chiffres du back-office", () => {
       enCsv([{ jour: "2026-11-01", questions: 3, repondues: 2, voix: 1, appareils: 2, esenegal: 1 }]),
       "jour,questions,repondues,voix,appareils,clics_esenegal\n2026-11-01,3,2,1,2,1\n",
     );
+  });
+  it("écrit l'écart avec la période d'avant", () => {
+    assert.equal(evolution(5, 2), "+3");
+    assert.equal(evolution(2, 5), "−3");
+    assert.equal(evolution(2, 2), "=");
   });
   it("calcule une part sans diviser par zéro", () => {
     assert.equal(pourcent(1, 3), 33);

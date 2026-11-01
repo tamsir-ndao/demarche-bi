@@ -11,6 +11,8 @@ export type LigneExport = { jour: string; questions: number; repondues: number; 
 export type Tableau = {
   aujourdhui: number;
   sept: number;
+  /** Les 7 jours d'avant, pour comparer. */
+  septPrecedents: number;
   trente: number;
   depuisLeDebut: number;
   premierJour: string | null;
@@ -77,15 +79,17 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
   await agreger(requete, maintenantMs);
   const auj = new Date(debutDuJour(maintenantMs)).toISOString();
   const il7 = new Date(debutDuJour(maintenantMs) - 6 * JOUR_MS).toISOString();
+  const il14 = new Date(debutDuJour(maintenantMs) - 13 * JOUR_MS).toISOString();
   const il30 = new Date(debutDuJour(maintenantMs) - 29 * JOUR_MS).toISOString();
 
   const [chiffres, revenants, clics, total, parJour, demarches, sansReponse, dernieres] = await Promise.all([
     requete(
       `select count(*) filter (where created_at >= $1)::int as aujourdhui, count(*) filter (where created_at >= $2)::int as sept,
+              count(*) filter (where created_at >= $4 and created_at < $2)::int as sept_precedents,
               count(*)::int as trente, count(*) filter (where answered)::int as repondues, count(*) filter (where channel = 'voice')::int as voix,
               count(distinct device_id) filter (where created_at >= $2)::int as appareils7, count(distinct device_id)::int as appareils30
        from question_logs where created_at >= $3`,
-      [auj, il7, il30],
+      [auj, il7, il30, il14],
     ),
     requete(
       `select count(*)::int as n from (select device_id from question_logs where created_at >= $1 and device_id is not null
@@ -124,6 +128,7 @@ export async function lireTableau(requete: Requete, maintenantMs: number): Promi
   return {
     aujourdhui: c.aujourdhui ?? 0,
     sept: c.sept ?? 0,
+    septPrecedents: c.sept_precedents ?? 0,
     trente: c.trente ?? 0,
     depuisLeDebut: t?.n ?? 0,
     premierJour: t?.premier ?? null,
@@ -154,6 +159,13 @@ export async function lireExport(requete: Requete, maintenantMs: number): Promis
 export function enCsv(liste: LigneExport[]): string {
   const entete = "jour,questions,repondues,voix,appareils,clics_esenegal";
   return [entete, ...liste.map((l) => [l.jour, l.questions, l.repondues, l.voix, l.appareils, l.esenegal].join(","))].join("\n") + "\n";
+}
+
+/** L'écart avec la période d'avant, en toutes lettres : « +3 », « −2 » ou « = ». */
+export function evolution(actuel: number, avant: number): string {
+  const ecart = actuel - avant;
+  if (ecart === 0) return "=";
+  return ecart > 0 ? `+${ecart}` : `−${-ecart}`;
 }
 
 /** Une part en pourcentage, arrondie ; zéro s'il n'y a rien à diviser. */
