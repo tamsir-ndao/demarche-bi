@@ -14,7 +14,9 @@ export async function POST(request: Request) {
   if (!requete || (visiteur !== undefined && !limiteur.autoriser(visiteur))) return new Response(null, { status: 204 });
 
   const corps = (await request.json().catch(() => null)) as { fiche?: unknown; appareil?: unknown } | null;
-  const fiche = typeof corps?.fiche === "string" ? (nettoyerSlug(corps.fiche) ?? null) : null;
+  // Un passage vient toujours d'une démarche : sans elle, ce n'est pas l'application qui écrit.
+  const fiche = typeof corps?.fiche === "string" ? nettoyerSlug(corps.fiche) : undefined;
+  if (!fiche) return new Response(null, { status: 204 });
   const appareil = estCodeAppareil(corps?.appareil) ? corps.appareil : null;
   after(() =>
     requete("insert into usage_events (kind, fiche_slug, device_id) values ('esenegal', $1, $2)", [fiche, appareil]).catch((erreur: unknown) => {
