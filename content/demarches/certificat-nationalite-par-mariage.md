@@ -37,8 +37,8 @@ verifie_par: tamsir-ndao
 ---
 
 - Qui peut l'obtenir : l'étrangère mariée à un Sénégalais ou l'étranger marié à une Sénégalaise. Le conjoint doit être de nationalité sénégalaise au moment de la célébration ou de la constatation du mariage.
-- Durée du mariage : cinq (5) ans à compter de la célébration ou de la constatation du mariage.
+- Durée de mariage exigée : 5 ans à compter de la célébration ou de la constatation du mariage.
 - Les documents rédigés dans une autre langue que le français doivent être traduits et certifiés par le ministère chargé des Affaires étrangères.
-- En cas de perte ou de vol du certificat : demander un duplicata au greffe du Tribunal qui l'a délivré.
+- Certificat perdu ou volé : demande un duplicata au greffe du Tribunal qui l'a délivré.
 - Cette fiche ne couvre que l'acquisition de la nationalité par mariage. La même page décrit aussi la naturalisation et la perte de la nationalité sénégalaise, qui ne sont pas traitées ici.
 - À confirmer : la page officielle du ministère de la Justice ne décrit le certificat de nationalité que pour cette procédure. La démarche d'une personne sénégalaise de naissance n'y figure pas : à confirmer auprès du ministère de la Justice avant de se déplacer.

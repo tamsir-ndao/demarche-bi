@@ -30,7 +30,7 @@ verifie_le: 2026-10-12
 verifie_par: tamsir-ndao
 ---
 
-- Qui peut le demander : le demandeur en personne.
-- En cas de perte ou de vol, il faut recommencer la procédure : il n'est pas délivré de duplicata.
+- Qui peut le demander : la personne concernée, qui doit venir elle-même.
+- Perdu ou volé : il faut refaire la demande, car il n'y a pas de duplicata.
 - Pour en savoir plus : service de l'Identité judiciaire de la direction de la Police judiciaire (DPJ).
 - Le coût n'est pas indiqué sur la page consultée : à confirmer auprès du commissariat ou de la brigade avant de donner un montant.

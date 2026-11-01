@@ -27,5 +27,5 @@ verifie_le: 2026-10-12
 verifie_par: tamsir-ndao
 ---
 
-- Pour obtenir un autre extrait, il faut reprendre la procédure.
-- La durée de validité de l'extrait n'est pas précisée sur la page consultée. Une autre démarche (voir la fiche certificat-bonne-vie-et-moeurs) exige un extrait datant de moins de 3 mois.
+- Pour obtenir un autre extrait, il faut refaire la demande.
+- La durée de validité de l'extrait n'est pas précisée. Le certificat de bonne vie et mœurs exige un extrait datant de moins de 3 mois.

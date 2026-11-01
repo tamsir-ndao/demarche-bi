@@ -41,11 +41,11 @@ verifie_par: tamsir-ndao
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la démarche : toute personne qui réside sur le territoire sénégalais et remplit la condition d'âge, soit 22 ans ou plus.
-- Le permis de catégorie C autorise son titulaire à conduire un véhicule automobile dit poids lourd. La page indique deux permis délivrés : un permis de catégorie C et un permis de catégorie C1.
+- Le permis de catégorie C autorise son titulaire à conduire un véhicule automobile dit poids lourd. Deux permis sont délivrés : un permis de catégorie C et un permis de catégorie C1.
 - À confirmer : la page ne dit pas ce que permet la catégorie C1, ni dans quel cas on obtient la catégorie C ou la catégorie C1.
 - À confirmer : la page n'est pas claire sur le permis pour véhicules légers. Elle dit que la démarche est ouverte à toute personne « titulaire ou pas d'un permis de conduire pour véhicules légers » et, dans les obligations de l'usager, qu'il faut « posséder le permis de conduire pour véhicules légers depuis au moins une année pour la catégorie C1 ». Elle ne précise pas si cette condition vaut aussi pour la catégorie C.
-- Perte ou vol du permis : la page prévoit une demande de duplicata, avec une liste de pièces différente de celle de la demande de permis : un certificat de perte ; un certificat médical ; 2 photos d'identité ; un timbre fiscal de 10 000 FCFA.
-- Le certificat de perte s'obtient sur déclaration de perte écrite, avec les références du permis, déposée à la 4e section du commissariat central de Dakar ou dans les commissariats centraux des régions. La page ne dit pas où déposer la demande de duplicata, ni en combien de temps.
+- Perte ou vol du permis : il faut demander un duplicata, avec ces pièces : un certificat de perte ; un certificat médical ; 2 photos d'identité ; un timbre fiscal de 10 000 FCFA.
+- Le certificat de perte s'obtient sur déclaration de perte écrite, avec les références du permis, déposée à la 4e section du commissariat central de Dakar ou dans les commissariats centraux des régions. Le lieu de dépôt du duplicata et le délai ne sont pas précisés : renseigne-toi avant de te déplacer.
 - Texte de référence : décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002.
-- Pour en savoir plus : ministère des Infrastructures et des Transports terrestres et du Désenclavement (MITTD), Direction des transports terrestres (routiers), avenue André Peytavin x Corniche, téléphone 33 826 45 61, site www.mittd.gouv.sn. La page ne dit pas si le dossier se dépose à cette adresse.
-- Assistance en ligne de la plateforme e-Sénégal : courriel contact@e-senegal.sn, téléphone +221 33 879 34 34.
+- Pour en savoir plus : ministère des Infrastructures et des Transports terrestres et du Désenclavement (MITTD), Direction des transports terrestres (routiers), avenue André Peytavin x Corniche, téléphone 33 826 45 61, site www.mittd.gouv.sn. Cette adresse n'est pas forcément le lieu de dépôt du dossier.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

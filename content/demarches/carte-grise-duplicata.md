@@ -38,9 +38,9 @@ verifie_par: tamsir-ndao
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la demande : le propriétaire du véhicule ou l'agent vérificateur.
-- Pièce délivrée : une nouvelle carte grise (en duplicata ou en renouvellement).
+- Tu reçois une nouvelle carte grise (en duplicata ou en renouvellement).
 - À confirmer : la page donne un montant pour les véhicules de transport public de puissance inférieure à 12 CV et un autre pour ceux de puissance supérieure à 12 CV. Elle ne dit pas quel montant s'applique à un véhicule de transport public d'exactement 12 CV.
 - À confirmer : la page parle de « l'agent vérificateur » (il vise la déclaration de mise en circulation, et il peut aussi faire la demande) sans dire qui il est ni où le trouver.
 - Textes de référence : décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
 - Pour en savoir plus : Direction des Transports terrestres (routiers), ministère des Infrastructures, des Transports terrestres et du Désenclavement (MITTD), avenue André Peytavin X Corniche, téléphone 33 826 45 61, site www.mittd.gouv.sn.
-- Assistance en ligne du portail e-Sénégal : contact@e-senegal.sn, téléphone +221 33 879 34 34.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

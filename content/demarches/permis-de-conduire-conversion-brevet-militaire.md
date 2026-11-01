@@ -35,11 +35,11 @@ verifie_par: tamsir-ndao
 ---
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
-- Qui peut faire la démarche : le titulaire d'un brevet militaire de conduite des véhicules automobiles, délivré par l'armée. La page dit que cette conversion permet aux militaires ou anciens militaires de conduire légalement sur le réseau routier civil.
-- Pièce délivrée : un permis numérisé. La page dit que c'est un permis civil, valable pour la circulation publique.
-- Texte de référence donné par la page : annexe M15 de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
-- Pour en savoir plus : la page indique « Au niveau DFEPC ».
-- Assistance en ligne de la plateforme e-Sénégal : courriel contact@e-senegal.sn, téléphone +221 33 879 34 34.
+- Qui peut faire la démarche : le titulaire d'un brevet militaire de conduite des véhicules automobiles, délivré par l'armée. Cette conversion permet aux militaires ou anciens militaires de conduire légalement sur le réseau routier civil.
+- Tu reçois un permis numérisé : c'est un permis civil, valable pour la circulation publique.
+- Texte de référence : annexe M15 de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
+- Pour en savoir plus : adresse-toi à la DFEPC.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.
 - À confirmer : le résumé de la page affiche « Coût : 30000 FCFA », alors que le détail donne trois montants de 10 000 FCFA (timbre, enrôlement, délivrance). La page ne précise pas le lien entre les deux.
 - À confirmer : DFEPC est un sigle que la page ne développe pas. La page dit que le dossier se dépose et que l'on s'adresse « au niveau DFEPC ».
 - À confirmer : la page parle du « bat train » sans l'expliquer (« Le représentant du bat train dépose le dossier au niveau DFEPC »).

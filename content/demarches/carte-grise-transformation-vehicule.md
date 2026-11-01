@@ -41,10 +41,10 @@ verifie_par: tamsir-ndao
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Cette fiche ne traite que la transformation du véhicule et le changement de source d'énergie ou de catégorie. Elle ne couvre ni la première immatriculation, ni le changement de propriétaire.
-- Qui peut faire la démarche : la page indique « Usager ».
-- Base réglementaire : article K12 du décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
+- Qui peut faire la démarche : tout usager.
+- Texte de référence : article K12 du décret n° 2004-13 du 19 janvier 2004 fixant les règles d'application de la loi n° 2002-30 du 24 décembre 2002 portant code de la route.
 - À confirmer : le coût. La page cite « Quittance et timbre » parmi les pièces, sans donner aucun montant.
 - À confirmer : la page cite une « facture moteur ou attestation du peintre », un « ticket de pesage » et un « agrément » sans dire ce que ces documents désignent ni où les obtenir.
 - À confirmer : le titre de la page parle d'une carte grise « avec les mentions », sans dire de quelles mentions il s'agit.
 - À confirmer : la rubrique « Expiration de la procédure » est vide sur la page.
-- Assistance en ligne du portail e-Sénégal : contact@e-senegal.sn, téléphone +221 33 879 34 34.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

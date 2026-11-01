@@ -38,6 +38,6 @@ verifie_par: tamsir-ndao
 - Qui peut le demander : tout citoyen sénégalais, dès la naissance.
 - À quoi il sert : à entrer dans un pays étranger, et à sortir du territoire national par l'aéroport, sauf pour les destinations où la carte nationale d'identité est acceptée.
 - Durée de validité : 4 ans. Il est renouvelable une fois, sur présentation de l'ancien passeport et de la quittance de 20 000 FCFA.
-- En cas de perte ou de vol : faire une déclaration de perte et refaire la procédure, car il n'est pas délivré de duplicata.
+- Perdu ou volé : fais une déclaration de perte et refais la demande, car il n'y a pas de duplicata.
 - Pour en savoir plus : direction de la Police des étrangers et des titres de voyage (DPETV).
 - La page officielle ne porte pas de date de mise à jour : à confirmer auprès de la DPETV avant de se déplacer ou de payer.

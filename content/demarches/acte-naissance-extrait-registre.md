@@ -29,12 +29,12 @@ verifie_par: tamsir-ndao
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
 - Qui peut faire la demande : la personne elle-même ou toute personne intéressée ; les autorités administratives et judiciaires.
-- Quand le demander : à tout moment, afin de compléter un dossier administratif.
-- Pour obtenir une copie littérale, voir la fiche « Copie littérale d'acte de naissance ». La page cite une copie littérale d'acte de naissance parmi les pièces acceptées.
-- En cas de perte ou de vol : renouveler la procédure.
-- Pour les Sénégalais nés à l'étranger : s'adresser au ministère des Affaires étrangères ou à la représentation diplomatique ou consulaire du Sénégal du pays de naissance.
-- Les personnes résidant à l'étranger peuvent s'adresser à la représentation diplomatique ou consulaire du Sénégal du pays de résidence.
+- Quand le demander : à tout moment, pour compléter un dossier administratif.
+- Une copie littérale d'acte de naissance fait partie des pièces acceptées.
+- Perdu ou volé : il faut refaire la demande.
+- Pour les Sénégalais nés à l'étranger : adresse-toi au ministère des Affaires étrangères ou à l'ambassade ou au consulat du Sénégal dans le pays de naissance.
+- Si tu vis à l'étranger, tu peux t'adresser à l'ambassade ou au consulat du Sénégal dans ton pays de résidence.
 - À confirmer : le coût et le délai. Le bas de la page annonce « Coût : 500 FCFA » et « Délai : 1 jour(s) », alors que le détail de la page donne une vignette dont la valeur varie selon la localité (de 200 FCFA à 500 FCFA pour les communes ; de 75 FCFA à 150 FCFA pour les communautés rurales) et un délai « Dans la journée ». Cette fiche reprend le détail ; le montant exact à payer est à confirmer.
-- Pour en savoir plus : s'adresser au Centre national d'état civil ou au tribunal départemental.
-- Textes de référence indiqués par la page : décret n° 89-492 du 22 avril 1989 fixant les droits de délivrance des copies et actes de l'état civil ; Code de la famille ; « Comment déclarer une naissance pour les sénégalais de l'extérieur » ; décret relatif à la reconstitution de registres des actes de naissance.
-- Assistance en ligne e-Sénégal, telle que la page la donne : contact@e-senegal.sn ; téléphone : +221 33 879 34 34.
+- Pour en savoir plus : adresse-toi au Centre national d'état civil ou au tribunal départemental.
+- Textes de référence : décret n° 89-492 du 22 avril 1989 fixant les droits de délivrance des copies et actes de l'état civil ; Code de la famille ; « Comment déclarer une naissance pour les sénégalais de l'extérieur » ; décret relatif à la reconstitution de registres des actes de naissance.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

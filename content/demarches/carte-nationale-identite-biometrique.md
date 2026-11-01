@@ -33,8 +33,8 @@ verifie_par: tamsir-ndao
 ---
 
 - Qui peut la demander : tout citoyen sénégalais âgé d'au moins 5 ans.
-- Durée de validité : dix (10) ans.
-- En période de révision du fichier électoral, la demande peut aussi être reçue par les commissions administratives d'inscription sur les listes électorales, instituées par arrêté.
-- En cas de perte, la démarche est différente : voir la fiche « Duplicata de la carte nationale d'identité » (duplicata-carte-nationale-identite).
+- Durée de validité : 10 ans.
+- Pendant la révision du fichier électoral, tu peux aussi déposer ta demande auprès des commissions administratives d'inscription sur les listes électorales.
+- En cas de perte, la démarche est différente : c'est le duplicata de la carte nationale d'identité.
 - Pour en savoir plus : direction de l'Automatisation des fichiers (DAF), numéro vert 800 00 2012.
 - Le coût et le délai d'une première demande ne sont pas indiqués sur la page officielle consultée : à confirmer auprès de la DAF avant de donner un montant ou une durée.

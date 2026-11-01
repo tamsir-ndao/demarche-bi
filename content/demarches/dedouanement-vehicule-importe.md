@@ -49,25 +49,25 @@ verifie_par: null
 - Limite d'âge : l'importation des cycles et cyclomoteurs usagés d'une cylindrée n'excédant pas 50 cm³ est interdite sur l'ensemble du territoire.
 - À confirmer : la limite d'âge a peut-être changé depuis la publication de ce document ; vérifie-la auprès des Douanes avant d'importer.
 - À confirmer : le document ne dit pas comment l'âge d'un véhicule est calculé.
-- Le Directeur général des Douanes peut accorder des autorisations de dédouanement pour cinq cas de véhicules, malgré la limite d'âge. Ils sont donnés dans les puces qui suivent.
+- Malgré la limite d'âge, le Directeur général des Douanes peut autoriser le dédouanement dans cinq cas, listés ci-dessous.
 - Dérogation possible : les véhicules de tourisme de plus de 8 ans, importés dans le cadre du décret relatif aux franchises douanières accordées aux fonctionnaires et agents de l'État en poste à l'étranger au moment de leur retour définitif.
 - Dérogation possible : les véhicules à usages spéciaux (véhicules spécialement construits ou transformés, équipés de dispositifs ou appareillages divers les rendant propres à remplir certaines fonctions distinctes du transport proprement dit). On peut citer à titre d'exemple les camions bétonnières, les camions grues, les camions foreurs, les camions hydrocureurs.
 - Dérogation possible : les véhicules importés par les membres du Corps diplomatique, lorsqu'ils entrent dans leur quota familial normal et lors de leur première installation.
 - Dérogation possible : les véhicules déclarés en admission temporaire avant la limite d'âge.
 - Dérogation possible : les véhicules dont les formalités liées au transport ont été remplies avant le 31 décembre de l'année marquant la limite d'âge.
-- Déclaration en douane : elle est levée par un commissionnaire en douane agréé lorsque la valeur du véhicule excède 300 000 FCFA.
+- Si le véhicule vaut plus de 300 000 FCFA, la déclaration en douane est faite par un commissionnaire en douane agréé.
 - À confirmer : le document ne dit pas qui lève la déclaration en douane quand la valeur du véhicule est de 300 000 FCFA ou moins.
-- Les pièces de la liste sont celles qui sont notamment jointes à la déclaration en douane.
-- Calcul des droits et taxes : montant des droits et taxes dus = valeur en douane × taux cumulé. Les taux sont dans les tableaux du document officiel des Douanes, qui ne sont pas repris dans cette fiche.
-- Valeur en douane : la valeur taxable est la valeur FOB majorée du montant du fret ainsi que, s'il y a lieu, de l'assurance et des autres frais.
+- Ces pièces sont à joindre à la déclaration en douane. D'autres peuvent être demandées.
+- Calcul des droits et taxes : montant des droits et taxes dus = valeur en douane × taux cumulé. Les taux sont dans les tableaux officiels des Douanes.
+- Valeur en douane : la valeur taxée est la valeur FOB, plus le fret et, s'il y a lieu, l'assurance et les autres frais.
 - Valeur FOB d'un véhicule neuf : c'est la valeur facture. En l'absence d'une facture authentique, il est fait recours au prix catalogue du tarif d'exportation du véhicule, ou à défaut aux sites internet spécialisés, dans la rubrique des véhicules neufs, reconnus par le service des Douanes. Le recours à ces sites est subordonné à l'autorisation préalable du service, sur la base d'une demande d'assimilation dûment adressée au Chef de Bureau.
-- Valeur FOB d'un véhicule d'occasion : elle est déterminée en se fondant sur le catalogue Argus pour les véhicules en provenance d'Europe, et sur le site Key Blue Book pour ceux provenant du marché nord-américain et asiatique.
+- Valeur FOB d'un véhicule d'occasion : elle est déterminée en se fondant sur le catalogue Argus pour les véhicules venant d'Europe, et sur le site Key Blue Book pour ceux provenant du marché nord-américain et asiatique.
 - Véhicule d'occasion coté à l'Argus : la valeur FOB à retenir pour le dédouanement est la cotation à l'Argus après application d'un abattement de 20 %.
 - Véhicule d'occasion pas encore coté à l'Argus : la valeur FOB à retenir est le prix catalogue au tarif d'exportation du véhicule neuf ou, à défaut, le prix obtenu après avoir procédé à une assimilation.
 - Véhicule accidenté ou épave : la valeur à retenir est celle fixée par le service sur la base d'un rapport d'expertise, qui ne lie pas l'Administration des Douanes.
 - Épave : lorsque l'appréciation du service établit le caractère d'épave du véhicule, sa valeur est déterminée en raison de 600 FCFA le kilogramme net. La carte d'immatriculation du véhicule concerné est retirée et transmise au Service des Transports terrestres pour destruction.
-- Le document donne aussi la valeur à retenir pour d'autres cas (véhicules sous admission temporaire exceptionnelle ou sous importation temporaire, véhicules réformés et proposés à la vente par les missions diplomatiques et organisations assimilées, engins de la position tarifaire n° 84.29) : cette fiche ne les reprend pas ; voir le document officiel.
-- Fret : le fret à retenir varie en fonction du type de véhicule et du pays de provenance. Il ne peut pas être inférieur aux montants minimums indiqués dans les puces qui suivent.
+- D'autres cas ont leur propre valeur à retenir (véhicules sous admission temporaire exceptionnelle ou sous importation temporaire, véhicules réformés et proposés à la vente par les missions diplomatiques et organisations assimilées, engins de la position tarifaire n° 84.29) : renseigne-toi auprès des Douanes.
+- Fret : le fret à retenir varie en fonction du type de véhicule et du pays d'origine. Il ne peut pas être inférieur aux montants minimums indiqués ci-dessous.
 - Fret minimum, véhicules de tourisme berline de 5 places : zone Europe 500 000 FCFA ; zone Afrique 500 000 FCFA ; zone Amérique 700 000 FCFA ; zone Asie 700 000 FCFA.
 - Fret minimum, véhicules de tourisme break de plus de 5 places : zone Europe 700 000 FCFA ; zone Afrique 700 000 FCFA ; zone Amérique 900 000 FCFA ; zone Asie 900 000 FCFA.
 - Fret minimum, véhicules mixtes (type Kango, Partner, Berlingo, etc.) : zone Europe 500 000 FCFA ; zone Afrique 500 000 FCFA ; zone Amérique 700 000 FCFA ; zone Asie 700 000 FCFA.

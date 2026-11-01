@@ -41,10 +41,10 @@ verifie_par: tamsir-ndao
 - Renouvellement : le permis de conduire international est valable un an. Pour le renouveler, il faut fournir l'ancien permis de conduire international, 3 photos d'identité et des timbres fiscaux d'une valeur de 25 000 FCFA.
 - À confirmer : la page dit « Le coût total du renouvellement est de 25 000 FCFA ». Elle ne dit pas si les frais de service de 15 000 FCFA, ni la participation de 5 000 FCFA, s'y ajoutent. Elle ne donne ni délai ni lieu de dépôt propres au renouvellement.
 - Perte ou vol : il faut signaler la perte aux autorités de police ou de gendarmerie pour obtenir un certificat de perte, et se faire établir un duplicata. Documents à fournir : un certificat de perte, une copie certifiée conforme du permis de conduire international et 4 photos d'identité.
-- Il ne faut pas oublier de faire une photocopie certifiée conforme du permis de conduire international : elle sera exigée pour établir un duplicata en cas de perte ou de vol.
+- Pense à faire une photocopie certifiée conforme de ton permis international : elle sera exigée pour un duplicata en cas de perte ou de vol.
 - À confirmer : la page ne donne ni le coût ni le délai du duplicata.
 - L'attestation d'authenticité du permis de conduire est délivrée par la division du Permis de conduire de la direction des Transports terrestres et des auto-écoles.
 - Textes de référence : Convention de Vienne sur la circulation routière du 8 novembre 1968 ; loi n° 2002-30 du 24 décembre 2002 portant code de la route ; décret fixant les règles d'application de la loi portant code de la route.
-- Contacts donnés par la page : Automobile Club, téléphone 33 821 99 11 ; Chambre de Commerce d'Industrie et d'agriculture de Dakar, téléphone 33 842 70 87.
+- Contacts : Automobile Club, téléphone 33 821 99 11 ; Chambre de Commerce d'Industrie et d'agriculture de Dakar, téléphone 33 842 70 87.
 - Pour en savoir plus : ministère des Infrastructures et des transports terrestres et du désenclavement (MITTD), Direction des Transports routiers, avenue André Peytavin x Corniche, site web www.mittd.gouv.sn, téléphone 33 826 45 61.
-- Assistance de la plateforme e-Sénégal : contact@e-senegal.sn ; téléphone +221 33 879 34 34.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

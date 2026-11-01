@@ -3,7 +3,7 @@
 {"question":"Ma carte d'identité a été voler, quelle papier il me faut pour la refaire ?","famille":"couverte","attendu_slug":"duplicata-carte-nationale-identite","doit_contenir":["justifier l'adresse"]}
 {"question":"Cobien de temp pour avoir mon casié judiciaire ?","famille":"couverte","attendu_slug":"casier-judiciaire","doit_contenir":["Un jour"]}
 {"question":"Je voudrai faire mon NINEA mai je sait pas quel papié apporter","famille":"couverte","attendu_slug":"ninea","doit_contenir":["photocopie de la carte nationale d'identité"]}
-{"question":"Je suis marier a une senegalaise, au bout de combien d'année je peut demander la nationalité ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["cinq (5) ans"]}
+{"question":"Je suis marier a une senegalaise, au bout de combien d'année je peut demander la nationalité ?","famille":"couverte","attendu_slug":"certificat-nationalite-par-mariage","doit_contenir":["5 ans"]}
 {"question":"Comment déclaré la naissence de mon bébé ?","famille":"couverte","attendu_slug":"acte-naissance-declaration","doit_contenir":["centre d'état civil du lieu de naissance"]}
 {"question":"J'ai acheter une voiture, il me fau quoi comme papier pour mettre la carte grise a mon nom ?","famille":"couverte","attendu_slug":"carte-grise-changement-de-proprietaire","doit_contenir":["Attestation d'assurance"]}
 {"question":"Combiens coute le duplicata de la carte grise pour ma voiture de 5 cv ?","famille":"couverte","attendu_slug":"carte-grise-duplicata","doit_contenir":["4 500 FCFA pour les véhicules de 2 à 9 CV"]}

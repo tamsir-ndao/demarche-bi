@@ -46,13 +46,13 @@ verifie_par: tamsir-ndao
 ---
 
 - Provenance : texte de la page officielle e-senegal.sn copié le 13 octobre 2026, puis relu sur la page par tamsir-ndao le 14 octobre 2026.
-- Qui peut faire cette démarche : l'usager qui achète un véhicule déjà immatriculé au Sénégal, ou qui possède un véhicule immatriculé dans une région et veut changer de région ou de série.
-- La page dit que la mutation peut être considérée comme un changement de nom, de région ou de département.
-- Pièce délivrée : certificat d'immatriculation et d'aptitude technique. Délai de délivrance : 5 jours.
-- Texte réglementaire indiqué par la page : article L10, 46 et 47 du code de la route.
+- Qui peut faire cette démarche : toute personne qui achète un véhicule déjà immatriculé au Sénégal, ou qui possède un véhicule immatriculé dans une région et veut changer de région ou de série.
+- La mutation peut être considérée comme un changement de nom, de région ou de département.
+- Tu reçois un certificat d'immatriculation et d'aptitude technique. Délai : 5 jours.
+- Texte de référence : article L10, 46 et 47 du code de la route.
 - À confirmer : coût. La rubrique « Quel est le coût ? » de la page est vide. La page demande une quittance et un timbre payés aux impôts, sans donner de montant.
 - À confirmer : la page demande à la fois un « certificat de vente » et une « attestation de vente légalisée » (si changement de nom), sans expliquer la différence ni qui les établit.
 - À confirmer : après « certificat d'immatriculation et d'aptitude technique », la page écrit « (à changer) » sans dire ce que cela veut dire. Elle écrit aussi « certification » à la place de « certificat », dans cette liste et pour la pièce délivrée.
 - À confirmer : la page ne met une condition (« si changement de nom », « personne morale », « transfert de région ») que sur certaines pièces. Le certificat de résidence, le certificat d'immatriculation et d'aptitude technique, l'attestation d'assurance, la quittance et le timbre sont listés sans condition.
 - La page renvoie à la démarche associée « Certificat d'immatriculation et d'aptitude technique (Carte grise) avec les mentions ».
-- Assistance en ligne indiquée par la page : courriel contact@e-senegal.sn ; téléphone +221 33 879 34 34.
+- Besoin d'aide ? e-Sénégal répond à contact@e-senegal.sn et au +221 33 879 34 34.

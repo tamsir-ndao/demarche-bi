@@ -35,5 +35,5 @@ verifie_par: tamsir-ndao
 ---
 
 - Toute personne exerçant une activité au Sénégal doit figurer dans un répertoire des contribuables, des établissements et des associations, ce qui facilite ses démarches administratives. Le NINEA est le numéro unique attribué dans ce répertoire.
-- Qui peut faire la demande : les personnes physiques (l'intéressé ou toute personne dûment mandatée) et les personnes morales (le responsable de la structure), éventuellement représentées par un cabinet conseil.
-- Hors timbre fiscal, la délivrance du NINEA est gratuite.
+- Qui peut faire la demande : pour un particulier, lui-même ou une personne mandatée ; pour une structure, son responsable. Un cabinet conseil peut représenter l'un ou l'autre.
+- Le NINEA est gratuit, en dehors du timbre fiscal.
