@@ -18,6 +18,7 @@ import { parleurDuNavigateur } from "@/lib/voix/parleur";
 import { composerLaQuestion } from "@/lib/voix/question-composee";
 import { formaterDuree, NOMBRE_DE_BARRES } from "@/lib/voix/spectre";
 import { AvisReponse } from "./AvisReponse";
+import { BoutonPartager } from "./BoutonPartager";
 import { Icon, type IconName } from "./Icon";
 import { HAUTEUR_BARRE_MAX, HAUTEUR_BARRE_MIN, Spectre } from "./VoixEcrans";
 
@@ -154,6 +155,7 @@ function Reponse({
           <Icon name={enLecture ? "arreter" : "haut-parleur"} size={19} />
           {enLecture ? "Arrêter" : "Réécouter"}
         </button>
+        {reponse.fiche && <BoutonPartager compact fiche={{ slug: reponse.fiche.slug, titre: reponse.fiche.titre, resume: reponse.fiche.resume ?? reponse.fiche.titre }} />}
         {reponse.fiche && (
           <Link href={`/demarches/${reponse.fiche.slug}`} className="flex min-h-11 items-center text-[15px] leading-5 font-semibold text-leaf underline-offset-4 hover:underline">
             Voir le détail

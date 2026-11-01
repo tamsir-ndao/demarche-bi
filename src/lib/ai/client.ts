@@ -1,5 +1,9 @@
 import { getChatProviders, getWhisperConfig, type ChatProvider, type WhisperConfig } from "./config";
 
+/** Le vocabulaire des démarches, donné à Whisper pour qu'il l'écrive juste (« passeport » plutôt que « passe-for »). */
+export const LEXIQUE_WHISPER =
+  "Démarches au Sénégal : passeport, carte nationale d'identité, extrait de naissance, copie littérale, casier judiciaire, certificat de bonne vie et mœurs, permis de conduire, carte grise, NINEA, dédouanement, timbre fiscal, FCFA.";
+
 export type ChatMessage = {
   role: "system" | "user" | "assistant";
   content: string;
@@ -180,6 +184,7 @@ export async function transcribe(
   form.append("file", audio, options.nomFichier ?? "audio.webm");
   form.append("model", config.model);
   form.append("language", "fr");
+  form.append("prompt", LEXIQUE_WHISPER);
 
   let res: Response;
   try {

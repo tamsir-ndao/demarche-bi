@@ -21,5 +21,6 @@ export function texteDeSilence(texte: string): boolean {
   const normalise = simplifier(texte)
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
-  return normalise.startsWith("sous titr") || PHRASES_INVENTEES.has(normalise);
+  // Sans lettre ni chiffre (« ... » sur du bruit), ce n'est pas une question non plus.
+  return (normalise === "" && texte.trim() !== "") || normalise.startsWith("sous titr") || PHRASES_INVENTEES.has(normalise);
 }

@@ -11,6 +11,8 @@ const DUREE_MESSAGE_MS = 2000;
 type BoutonPartagerProps = {
   fiche: Pick<Fiche, "slug" | "titre" | "resume">;
   className?: string;
+  /** Petit bouton, dans la rangée d'actions d'une réponse. */
+  compact?: boolean;
 };
 
 /**
@@ -18,7 +20,7 @@ type BoutonPartagerProps = {
  * ouvre WhatsApp dans un nouvel onglet et on copie le lien, avec un mot pour le dire. Rien n'est envoyé au site :
  * pas de script tiers, pas de suivi. L'adresse est lue au clic, jamais au rendu : la page est prérendue.
  */
-export function BoutonPartager({ fiche, className = "" }: BoutonPartagerProps) {
+export function BoutonPartager({ fiche, className = "", compact = false }: BoutonPartagerProps) {
   const [copie, setCopie] = useState(false);
   const minuterie = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -58,8 +60,8 @@ export function BoutonPartager({ fiche, className = "" }: BoutonPartagerProps) {
 
   return (
     <>
-      <button type="button" onClick={partager} className={classesBouton("secondaire", "grand", className)}>
-        <Icon name="partager" size={22} />
+      <button type="button" onClick={partager} className={compact ? "press flex min-h-11 items-center gap-2 rounded-full bg-tint px-4 text-[15px] leading-5 font-semibold" : classesBouton("secondaire", "grand", className)}>
+        <Icon name="partager" size={compact ? 19 : 22} />
         Partager
       </button>
       <p aria-live="polite" className={`text-center text-sm leading-5 text-ink-2 ${copie ? "mt-2" : "sr-only"}`}>

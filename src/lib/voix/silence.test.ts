@@ -4,6 +4,12 @@ import { describe, it } from "node:test";
 import { texteDeSilence } from "./silence";
 
 describe("texteDeSilence", () => {
+  it("reconnaît un texte sans lettre ni chiffre, rendu sur du bruit", () => {
+    assert.equal(texteDeSilence("..."), true);
+    assert.equal(texteDeSilence(" … ! "), true);
+    assert.equal(texteDeSilence("passeport ?"), false);
+  });
+
   it("repère les crédits de sous-titres que Whisper invente sur du silence (mesurés le 11 octobre 2026)", () => {
     for (const texte of [
       "Sous-titrage Société Radio-Canada",

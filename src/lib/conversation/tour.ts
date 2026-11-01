@@ -32,7 +32,7 @@ export type TourAssistant = {
   faits: { libelle: string; valeur: string }[];
   pieces: string[];
   /** La démarche dont on parle (mémoire de la conversation) et sa source. */
-  fiche: { slug: string; titre: string; source: string | null } | null;
+  fiche: { slug: string; titre: string; source: string | null; resume?: string } | null;
   /** Les démarches au choix quand la question ne suffit pas. */
   options: { slug: string; titre: string }[];
   /** La mise en garde quand un point de la démarche reste incertain. */
@@ -68,7 +68,7 @@ export function construireTour(reponse: Reponse, { suite, statut }: { suite: boo
           { libelle: "Où", valeur: fiche.lieu ?? "Non précisé" },
         ],
         pieces: courte ? [] : fiche.pieces.map((piece) => decouperPiece(piece).principal),
-        fiche: { slug: fiche.slug, titre: fiche.titre, source: source ? source.titre : null },
+        fiche: { slug: fiche.slug, titre: fiche.titre, source: source ? source.titre : null, resume: fiche.resume },
         options: [],
         miseEnGarde: ficheAConfirmer(fiche) ? MISE_EN_GARDE : null,
         enLigne,

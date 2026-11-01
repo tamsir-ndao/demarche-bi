@@ -186,6 +186,7 @@ describe("transcribe", () => {
     assert.equal(fichier.size, 4);
     assert.equal(formulaire.get("model"), "modele-whisper");
     assert.equal(formulaire.get("language"), "fr");
+    assert.match(String(formulaire.get("prompt")), /passeport.*NINEA/);
   });
 
   it("nomme le fichier audio.webm quand rien d'autre n'est demandé", async () => {

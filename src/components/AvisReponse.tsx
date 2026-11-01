@@ -85,7 +85,7 @@ export function AvisReponse({ journalId }: { journalId: string }) {
               }}
             >
               <label htmlFor="commentaire-avis" className="block text-[15px] leading-5 font-bold text-ink-2">
-                Dis-moi ce qui manque (facultatif)
+                Dis-moi ce qui manque ou ce qui est faux (facultatif)
               </label>
               <textarea
                 id="commentaire-avis"
